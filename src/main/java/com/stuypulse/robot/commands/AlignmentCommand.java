@@ -12,7 +12,7 @@ public class AlignmentCommand extends DriveInstructions {
     // PID Controllers for Alignment
     private PIDController mSpeedPID;
     private PIDController mAnglePID;
-    
+
     public AlignmentCommand(Drivetrain drivetrain) {
         // Pass Drivetrain to the super class
         super(drivetrain);
@@ -38,18 +38,16 @@ public class AlignmentCommand extends DriveInstructions {
         return 0.0;
     }
 
-    public double getSpeed() { 
-        if( // Check if the angle is aligned before moving forward
-            mAnglePID.getError() < Alignment.Speed.kMaxAngleErr &&
-            mAnglePID.getVelocity() < Alignment.Speed.kMaxAngleVel
-        ) { 
-            return mSpeedPID.update(getSpeedError()); 
+    public double getSpeed() {
+        if ( // Check if the angle is aligned before moving forward
+        mAnglePID.getError() < Alignment.Speed.kMaxAngleErr && mAnglePID.getVelocity() < Alignment.Speed.kMaxAngleVel) {
+            return mSpeedPID.update(getSpeedError());
         } else {
             return 0.0;
         }
     }
 
-    public double getAngle() { 
-        return mAnglePID.update(getAngleError()); 
+    public double getAngle() {
+        return mAnglePID.update(getAngleError());
     }
 }

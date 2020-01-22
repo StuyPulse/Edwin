@@ -3,7 +3,6 @@ package com.stuypulse.robot.commands;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,7 +13,7 @@ public abstract class DriveInstructions implements Command {
     // Store and report the requirements
     private Set<Subsystem> mRequirements;
 
-    public Set<Subsystem> getRequirements() { 
+    public Set<Subsystem> getRequirements() {
         return mRequirements;
     }
 
@@ -32,6 +31,7 @@ public abstract class DriveInstructions implements Command {
 
     // Override these two functions in other commands
     public abstract double getSpeed();
+
     public abstract double getAngle();
 
     // Update the drivetrain with the new speed and angle

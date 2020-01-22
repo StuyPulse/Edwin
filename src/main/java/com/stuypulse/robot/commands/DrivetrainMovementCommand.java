@@ -33,7 +33,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
         public Aligner(Drivetrain drivetrain, double angle, double distance) {
             this.drivetrain = drivetrain;
 
-            this.angle = (angle + 360) % 360;
+            this.angle = angle;
             this.distance = distance;
             this.justTurning = false;
 
@@ -50,7 +50,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
          * Set goals based on when the command is initialized
          */
         public void init() {
-            goalAngle = (drivetrain.getGyroAngle() + angle + 360) % 360;
+            goalAngle = drivetrain.getGyroAngle() + angle;
             goalDistance = drivetrain.getGreyhillDistance() + distance;
         }
 
@@ -63,17 +63,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
         }
 
         public double getAngleError() {
-            double angleError = goalAngle - drivetrain.getGyroAngle();
-
-            if (angleError > 180) {
-                angleError -= 360;
-            }
-
-            if (angleError < -180) {
-                angleError += 360;
-            }
-
-            return angleError;
+            return goalAngle - drivetrain.getGyroAngle();
         }
     }
 

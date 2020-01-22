@@ -107,7 +107,18 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update angle based on angle error
     public double getAngle() {
-        return angle.update(aligner.getAngleError());
+        double error = aligner.getAngleError();
+        error = Math.copySign(Math.abs(error) % 360, error);
+
+        if(error > 180) { 
+            error -= 360;
+        }
+
+        if(error < -180) { 
+            error += 360;
+        }
+    
+        return angle.update(error);
     }
 
     // Set the gear and other things when initializing

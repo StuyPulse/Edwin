@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import subsystems.Funnel;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -19,8 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-
-
+  private final Funnel funnel = new Funnel();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

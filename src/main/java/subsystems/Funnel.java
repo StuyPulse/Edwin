@@ -18,7 +18,7 @@ public class Funnel extends SubsystemBase {
         motor.set(1.0);
     }
 
-    public void unfunnnel() {  
+    public void unfunnel() {
         motor.set(-1.0);
     }
 

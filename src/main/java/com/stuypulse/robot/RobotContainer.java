@@ -49,7 +49,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
   }
 
   /**

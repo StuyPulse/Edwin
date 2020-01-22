@@ -17,18 +17,43 @@ package com.stuypulse.robot;
  */
 public interface Constants {
 
-    /*********************************************************************************************
-     * Drivetrain Motor Ports
-     *********************************************************************************************/
-    //Left Side Motors
-    int DRIVETRAIN_LEFT_TOP_MOTOR_PORT = -1;
-    int DRIVETRAIN_LEFT_MIDDLE_MOTOR_PORT = -1;
-    int DRIVETRAIN_LEFT_BOTTOM_MOTOR_PORT = -1;
-    //Right Side Motors
-    int DRIVETRAIN_RIGHT_TOP_MOTOR_PORT = -1;
-    int DRIVETRAIN_RIGHT_MIDDLE_MOTOR_PORT = -1;
-    int DRIVETRAIN_RIGHT_BOTTOM_MOTOR_PORT = -1;
+    public interface ControllerPorts {
+        int kOperator = 0;
+        int kDriver = 1;
+    }
+
+    public interface DrivetrainPorts {
+        int kLeftTop = -1;
+        int kLeftMiddle = -1;
+        int kLeftBottom = -1;
+        
+        int kRightTop = -1;
+        int kRightMiddle = -1;
+        int kRightBottom = -1;
+    }
     
+    public interface Alignment {
+        public interface Speed {
+            int kP = -1;
+            int kI = -1;
+            int kD = -1;
+
+            double kInSmoothTime = 0.1;
+            double kOutSmoothTime = 0.1;
+
+            double kMaxAngleErr = 3;
+            double kMaxAngleVel = 2;
+        }
+
+        public interface Angle {
+            int kP = -1;
+            int kI = -1;
+            int kD = -1;
+
+            double kInSmoothTime = 0.05;
+            double kOutSmoothTime = 0.05;
+        }
+    }
     /*********************************************************************************************
      * Funnel Motor Port
      *********************************************************************************************/

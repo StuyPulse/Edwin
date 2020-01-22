@@ -7,12 +7,15 @@
 
 package com.stuypulse.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
+
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.*;
+
+import com.stuypulse.robot.Constants.ControllerPorts;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -22,9 +25,12 @@ import com.stuypulse.robot.subsystems.Drivetrain;
  */
 public class RobotContainer {
 
-  private final Funnel funnel = new Funnel();
-  private final Climber climber = new Climber();
-  private final Drivetrain drivetrain = new Drivetrain();
+  public final Funnel funnel = new Funnel();
+  public final Climber climber = new Climber();
+  public final Drivetrain drivetrain = new Drivetrain();
+
+  public final Gamepad driver = new PS4(ControllerPorts.kDriver);
+  public final Gamepad operator = new PS4(ControllerPorts.kOperator);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

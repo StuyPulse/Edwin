@@ -4,57 +4,50 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.DrivetrainPorts;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
 
-    //LEFT SIDE MOTORS
-    private CANSparkMax leftTopMotor;
-    private CANSparkMax leftMiddleMotor;
-    private CANSparkMax leftBottomMotor;
+    private CANSparkMax mLeftTopMotor;
+    private CANSparkMax mLeftMiddleMotor;
+    private CANSparkMax mLeftBottomMotor;
     
-    //RIGHT SIDE MOTORS
-    private CANSparkMax rightTopMotor;
-    private CANSparkMax rightMiddleMotor;
-    private CANSparkMax rightBottomMotor;
+    private CANSparkMax mRightTopMotor;
+    private CANSparkMax mRightMiddleMotor;
+    private CANSparkMax mRightBottomMotor;
 
-    //Speed Controller Groups
-    private SpeedControllerGroup leftMotors;
-    private SpeedControllerGroup rightMotors;
+    private SpeedControllerGroup mLeftMotors;
+    private SpeedControllerGroup mRightMotors;
 
-    private DifferentialDrive drivetrain;
+    private DifferentialDrive mDrivetrain;
 
     public Drivetrain() {
-        //LEFT SIDE MOTORS
-        leftTopMotor = new CANSparkMax(Constants.DRIVETRAIN_LEFT_TOP_MOTOR_PORT, MotorType.kBrushless);
-        leftMiddleMotor = new CANSparkMax(Constants.DRIVETRAIN_LEFT_MIDDLE_MOTOR_PORT, MotorType.kBrushless);
-        leftBottomMotor = new CANSparkMax(Constants.DRIVETRAIN_LEFT_BOTTOM_MOTOR_PORT, MotorType.kBrushless);
+        mLeftTopMotor = new CANSparkMax(DrivetrainPorts.kLeftTop, MotorType.kBrushless);
+        mLeftMiddleMotor = new CANSparkMax(DrivetrainPorts.kLeftMiddle, MotorType.kBrushless);
+        mLeftBottomMotor = new CANSparkMax(DrivetrainPorts.kLeftBottom, MotorType.kBrushless);
 
-        //RIGHT SIDE MOTORS
-        rightTopMotor = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_TOP_MOTOR_PORT, MotorType.kBrushless);
-        rightMiddleMotor = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_MIDDLE_MOTOR_PORT, MotorType.kBrushless);
-        rightBottomMotor = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_BOTTOM_MOTOR_PORT, MotorType.kBrushless);
+        mRightTopMotor = new CANSparkMax(DrivetrainPorts.kRightTop, MotorType.kBrushless);
+        mRightMiddleMotor = new CANSparkMax(DrivetrainPorts.kRightMiddle, MotorType.kBrushless);
+        mRightBottomMotor = new CANSparkMax(DrivetrainPorts.kRightBottom, MotorType.kBrushless);
 
-        //Speed Controller Groups
-        leftMotors = new SpeedControllerGroup(leftTopMotor, leftMiddleMotor, leftBottomMotor);
-        rightMotors = new SpeedControllerGroup(rightTopMotor, rightMiddleMotor, rightBottomMotor);
+        mLeftMotors = new SpeedControllerGroup(mLeftTopMotor, mLeftMiddleMotor, mLeftBottomMotor);
+        mRightMotors = new SpeedControllerGroup(mRightTopMotor, mRightMiddleMotor, mRightBottomMotor);
 
-        //Differential Drive Object
-        drivetrain = new DifferentialDrive(leftMotors, rightMotors);
+        mDrivetrain = new DifferentialDrive(mLeftMotors, mRightMotors);
     }
 
     public void tankDrive(double left, double right) {
-        drivetrain.tankDrive(left, right);
+        mDrivetrain.tankDrive(left, right);
     }
 
     public void arcadeDrive(double speed, double rotation) {
-        drivetrain.arcadeDrive(speed, rotation);
+        mDrivetrain.arcadeDrive(speed, rotation, false);
     }
 
     public void curvatureDrive(double speed, double rotation, boolean quickturn) {
-        drivetrain.curvatureDrive(speed, rotation, quickturn);
+        mDrivetrain.curvatureDrive(speed, rotation, quickturn);
     }
 
 }

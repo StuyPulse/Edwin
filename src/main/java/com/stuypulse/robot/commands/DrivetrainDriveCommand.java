@@ -12,6 +12,10 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 import com.stuypulse.stuylib.math.SLMath;
 
+/**
+ * DrivetrainDriveCommand takes in a drivetrain and a gamepad and feeds the
+ * signals to the drivetrain through a DriveCommand
+ */
 public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     private Gamepad mGamepad;

@@ -4,7 +4,9 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
 /**
- * The drivetrain goal aligner
+ * The drivetrain goal aligner is an aligner that uses the limelight to send
+ * instructions to the drivetrain on how it should move to align with the
+ * target.
  */
 public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner {
 

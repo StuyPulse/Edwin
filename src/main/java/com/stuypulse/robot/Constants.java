@@ -77,7 +77,6 @@ public interface Constants {
         public interface Encoders {
             double kNEODistancePerRotation = 1.0;
             double kGreyhillDistancePerPulse = 1.0;
-            
         }
     }
     
@@ -92,8 +91,8 @@ public interface Constants {
             double kInSmoothTime = 0.0;
             double kOutSmoothTime = 0.1;
 
-            double kMaxAngleErr = 5;
-            double kMaxAngleVel = 5;
+            double kMaxSpeedErr = 1;
+            double kMaxSpeedVel = 0.5;
         }
 
         public interface Angle {
@@ -105,6 +104,9 @@ public interface Constants {
 
             double kInSmoothTime = 0.00;
             double kOutSmoothTime = 0.05;
+
+            double kMaxAngleErr = 2;
+            double kMaxAngleVel = 1;
         }
 
         public interface Measurements {

@@ -7,10 +7,17 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
+/**
+ * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two
+ * controllers. This lets you align the robot with whatever controllers you
+ * want. Most commonly, a DrivetrainPIDAlignmentCommand is used instead as it
+ * automatically provides the controllers for you.
+ */
 public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     public interface Aligner {
         public double getSpeedError();
+
         public double getAngleError();
     }
 
@@ -62,15 +69,22 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Update the speed if the angle is aligned
     public double getSpeed() {
         if ( // Check if the angle is aligned before moving forward
-        mAngle.getError() < Alignment.Speed.kMaxAngleErr && mAngle.getVelocity() < Alignment.Speed.kMaxAngleVel) {
+        mAngle.getError() < Alignment.Angle.kMaxAngleErr && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel) {
             return mSpeed.update(mAligner.getSpeedError());
         } else {
             return 0.0;
         }
     }
 
-    // Update angle 
+    // Update angle
     public double getAngle() {
         return mAngle.update(mAligner.getAngleError());
+    }
+
+    public boolean isFinished() {
+        return ( // Return if everything is aligned
+        mSpeed.getError() < Alignment.Speed.kMaxSpeedErr && mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel
+                && mAngle.getError() < Alignment.Angle.kMaxAngleErr
+                && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel);
     }
 }

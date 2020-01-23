@@ -16,4 +16,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final int CHUTE_LIFT_MOTOR_PORT = -1;
+    public static final int CHUTE_SPEED_MOTOR_PORT = -1;
+    public static final int CHUTE_LIFT_UP_SPEED = -1;
+    public static final int CHUTE_ACCEL_UP_SPEED = -1;
 }

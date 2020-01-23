@@ -15,11 +15,11 @@ public class Funnel extends SubsystemBase {
     }
 
     public void funnel() {
-        motor.set(1.0);
+        motor.set(Constants.FUNNEL_SPEED);
     }
 
     public void unfunnel() {
-        motor.set(-1.0);
+        motor.set(Constants.UNFUNNEL_SPEED);
     }
 
 }

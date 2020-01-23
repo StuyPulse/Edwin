@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Funnel;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Drivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -23,7 +22,6 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
 
   private final Funnel funnel = new Funnel();
-  private final Drivetrain drivetrain = new Drivetrain();
   private final Climber climber = new Climber();
 
   /**

@@ -17,11 +17,11 @@ public class Climber extends SubsystemBase {
     }
 
     public void climbUp() {
-        liftMotor.set(1.0);
+        liftMotor.set(Constants.CLIMB_UP_SPEED);
     }
 
     public void climbDown() {
-        liftMotor.set(-1.0);
+        liftMotor.set(Constants.CLIMB_DOWN_SPEED);
     }
 
     public void moveLeft(double speed) {

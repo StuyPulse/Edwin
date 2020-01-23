@@ -28,4 +28,17 @@ public interface Constants {
     int CLIMBER_LIFT_MOTOR_PORT = -1;
     int CLIMBER_YOYO_MOTOR_PORT = -1;
 
+    /*********************************************************************************************
+     * Funnel Constants
+     *********************************************************************************************/
+    //TODO: Test speeds
+    double FUNNEL_SPEED = 0.5;
+    double UNFUNNEL_SPEED = -FUNNEL_SPEED;
+
+    /*********************************************************************************************
+     * Climber Constants
+     *********************************************************************************************/
+    //TODO: Test speeds
+    double CLIMB_UP_SPEED = 0.5;
+    double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
 }

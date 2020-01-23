@@ -7,7 +7,7 @@ Testing Status: Robot currently doesn't exist
   - 6 sparks -- use all 6 when in high gear, use 4 when in low gear
   - 1 solenoid to gear shift
 - Climber
-  - 1 spark to climb
+  - 2 sparks -- one to climb up/down, one to move left/right (yoyo)
 - Control Panel
   - 1 spark to spin control panel
 - Intake

@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Funnel;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -19,6 +21,9 @@ import frc.robot.subsystems.Drivetrain;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final Funnel funnel = new Funnel();
+  private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
 
   /**

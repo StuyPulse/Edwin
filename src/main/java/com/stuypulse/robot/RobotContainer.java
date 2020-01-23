@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Funnel;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Funnel;
+import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.Drivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a

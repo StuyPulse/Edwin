@@ -18,6 +18,18 @@ package frc.robot;
 public interface Constants {
 
     /*********************************************************************************************
+     * Drivetrain Motor Ports
+     *********************************************************************************************/
+    //Left Side Motors
+    int DRIVETRAIN_LEFT_TOP_MOTOR_PORT = -1;
+    int DRIVETRAIN_LEFT_MIDDLE_MOTOR_PORT = -1;
+    int DRIVETRAIN_LEFT_BOTTOM_MOTOR_PORT = -1;
+    //Right Side Motors
+    int DRIVETRAIN_RIGHT_TOP_MOTOR_PORT = -1;
+    int DRIVETRAIN_RIGHT_MIDDLE_MOTOR_PORT = -1;
+    int DRIVETRAIN_RIGHT_BOTTOM_MOTOR_PORT = -1;
+    
+    /*********************************************************************************************
      * Funnel Motor Port
      *********************************************************************************************/
     int FUNNEL_MOTOR_PORT = -1;

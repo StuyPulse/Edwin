@@ -53,4 +53,13 @@ public interface Constants {
     //TODO: Test speeds
     double CLIMB_UP_SPEED = 0.5;
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
+
+    /*********************************************************************************************
+     * Climber Constants
+     *********************************************************************************************/
+    //TODO: PID
+    int SHOOTER_SHOOTER_MOTOR = -1;
+    int SHOOTER_ALT_SHOOTER_MOTOR = -1;
+    int SHOOTER_FEEDER_MOTOR = -1;
+
 }

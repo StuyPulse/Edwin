@@ -53,4 +53,25 @@ public interface Constants {
     //TODO: Test speeds
     double CLIMB_UP_SPEED = 0.5;
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
+    
+     /*********************************************************************************************
+     * C010R Wheel Constants
+     *********************************************************************************************/
+    public static double CYAN_RED = 0.2;
+    public static double CYAN_GREEN = 0.56;
+    public static double CYAN_BLUE = 0.3;
+    
+    public static double GREEN_RED = 0.25;
+    public static double GREEN_GREEN = 0.65;
+    public static double GREEN_BLUE = 0.17;
+
+    public static double RED_RED = 0.60;
+    public static double RED_GREEN = 0.35;
+    public static double RED_BLUE = 0.1;
+
+    public static double YELLOW_RED = 0.30;
+    public static double YELLOW_GREEN = 0.50;
+    public static double YELLOW_BLUE = 0.1;
+
+
 }

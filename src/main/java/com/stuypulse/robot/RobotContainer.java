@@ -17,6 +17,8 @@ import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.ControllerPorts;
 
+import com.stuypulse.robot.commands.*;
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -36,6 +38,10 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    // Default driving command that uses gamepad
+    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driver));
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -47,6 +53,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    driver.getLeftButton().whenHeld(new AlignmentCommand(drivetrain));
+    driver.getTopButton().whenHeld(new AlignmentCommand(drivetrain));
   }
 
 

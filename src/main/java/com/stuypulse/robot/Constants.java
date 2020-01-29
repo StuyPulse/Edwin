@@ -55,8 +55,11 @@ public interface Constants {
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
     
      /*********************************************************************************************
-     * C010R Wheel Constants
+     * Co1oR Wheel Constants
      *********************************************************************************************/
+    int CONTROL_PANEL_MOTOR_PORT = -1;
+    int CONTROL_SENSOR_PORT = -1;
+    double CONTROL_PANEL_TURN_SPEED = -1;
     public static double CYAN_RED = 0.2;
     public static double CYAN_GREEN = 0.56;
     public static double CYAN_BLUE = 0.3;

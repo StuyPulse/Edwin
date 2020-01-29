@@ -76,6 +76,9 @@ javadoc {
     destinationDir = file("docs/")
 }
 
+/*
+ Uncomment when you're ready to start building javadocs
 build {
     dependsOn javadoc
 }
+*/

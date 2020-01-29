@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.stuypulse.robot"},{"l":"com.stuypulse.robot.subsystems"}]

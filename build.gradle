@@ -73,5 +73,5 @@ javadoc {
 }
 
 build {
-    dependOn javadoc
+    dependsOn javadoc
 }

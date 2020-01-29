@@ -41,6 +41,9 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
@@ -48,6 +51,7 @@ dependencies {
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
+    implementation 'com.github.StuyPulse:StuyLib:v2020.1.8.5'
 
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)

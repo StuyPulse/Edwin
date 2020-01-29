@@ -26,7 +26,7 @@ public class ColorSensor {
         m_colorMatcher.addColorMatch(kYellowTarget);
     }
 
-    private Color getRawDetectedColor() {
+    public Color getRawDetectedColor() {
         return m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).color;
     }
 

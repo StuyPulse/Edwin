@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -9,9 +10,11 @@ import com.stuypulse.robot.Constants;
 public class Funnel extends SubsystemBase {
 
     private CANSparkMax motor;
+    private CANEncoder encoder; 
 
     public Funnel() {
         motor = new CANSparkMax(Constants.FUNNEL_MOTOR_PORT, MotorType.kBrushless);
+        encoder = motor.getEncoder();
     }
 
     public void funnel() {
@@ -20,6 +23,10 @@ public class Funnel extends SubsystemBase {
 
     public void unfunnel() {
         motor.set(Constants.UNFUNNEL_SPEED);
+    }
+
+    public double getEncoderVal() {
+        return encoder.getPosition();
     }
 
 }

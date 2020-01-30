@@ -53,8 +53,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driver.getLeftButton().whenHeld(new AlignmentCommand(drivetrain));
-    driver.getTopButton().whenHeld(new AlignmentCommand(drivetrain));
+    driver.getLeftButton().whenHeld(new AlignmentCommand(drivetrain, 10));
+    driver.getTopButton().whenHeld(new AlignmentCommand(drivetrain, 20));
   }
 
 

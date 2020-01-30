@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DriveInstructions;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 public class AlignmentCommand extends DriveInstructions {
@@ -13,7 +14,9 @@ public class AlignmentCommand extends DriveInstructions {
     private PIDController mSpeedPID;
     private PIDController mAnglePID;
 
-    public AlignmentCommand(Drivetrain drivetrain) {
+    private double mTargetDistance;
+
+    public AlignmentCommand(Drivetrain drivetrain, double distance) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
@@ -26,16 +29,26 @@ public class AlignmentCommand extends DriveInstructions {
         mAnglePID = new PIDController(Alignment.Angle.kP, Alignment.Angle.kI, Alignment.Angle.kD);
         mAnglePID.setErrorFilter(new LowPassFilter(Alignment.Angle.kInSmoothTime));
         mAnglePID.setOutputFilter(new LowPassFilter(Alignment.Angle.kOutSmoothTime));
+
+        // Target distance for the Alignment Command
+        mTargetDistance = distance;
     }
 
     public double getSpeedError() {
-        // TODO: Get CV team to implement this function
-        return 0.0;
+        double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.kPitch;
+    
+        // Get the height of the goal reletive to the limelight
+        double goal_height = Alignment.Measurements.kGoalHeight - Alignment.Measurements.Limelight.kHeight;
+    
+        // Get the distance of the the target from the limelight using geometry
+        double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch)) - Alignment.Measurements.Limelight.kDistance;
+
+        // Return the error from the target distance
+        return goal_dist - mTargetDistance;
     }
 
     public double getAngleError() {
-        // TODO: Get CV team to implement this function
-        return 0.0;
+        return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.kYaw;
     }
 
     public double getSpeed() {

@@ -53,7 +53,24 @@ public interface Constants {
             double kInSmoothTime = 0.05;
             double kOutSmoothTime = 0.05;
         }
+
+        public interface Measurements {
+
+            private static double toFeet(int feet, double inches) {
+                return ((double) feet) + (inches / 12.0);
+            }
+
+            double kGoalHeight = toFeet(7, 6);
+
+            public interface Limelight {
+                double kHeight = toFeet(2, 7);
+                double kDistance = toFeet(0, 0);
+                double kPitch = 17.3;
+                double kYaw = 0.0;
+            }
+        }
     }
+
     /*********************************************************************************************
      * Funnel Motor Port
      *********************************************************************************************/

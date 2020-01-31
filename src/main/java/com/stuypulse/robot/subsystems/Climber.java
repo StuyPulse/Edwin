@@ -10,7 +10,8 @@ public class Climber extends SubsystemBase {
 
     private CANSparkMax liftMotor;
     private CANSparkMax yoyoMotor;
-
+    
+    
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);

@@ -39,6 +39,12 @@ public interface Constants {
      *********************************************************************************************/
     int CLIMBER_LIFT_MOTOR_PORT = -1;
     int CLIMBER_YOYO_MOTOR_PORT = -1;
+    
+    /*********************************************************************************************
+     * Co1or Wheel Ports
+     *********************************************************************************************/
+    int CONTROL_PANEL_MOTOR_PORT = -1;
+    int CONTROL_SENSOR_PORT = -1;
 
     /*********************************************************************************************
      * Funnel Constants
@@ -55,26 +61,25 @@ public interface Constants {
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
     
      /*********************************************************************************************
-     * Co1oR Wheel Constants
+     * Co1or Wheel Constants
      *********************************************************************************************/
-    int CONTROL_PANEL_MOTOR_PORT = -1;
-    int CONTROL_SENSOR_PORT = -1;
     double CONTROL_PANEL_TURN_SPEED = -1;
-    public static double CYAN_RED = 0.2;
-    public static double CYAN_GREEN = 0.56;
-    public static double CYAN_BLUE = 0.3;
     
-    public static double GREEN_RED = 0.25;
-    public static double GREEN_GREEN = 0.65;
-    public static double GREEN_BLUE = 0.17;
+    double CYAN_RED = 0.2;
+    double CYAN_GREEN = 0.56;
+    double CYAN_BLUE = 0.3;
+    
+    double GREEN_RED = 0.25;
+    double GREEN_GREEN = 0.65;
+    double GREEN_BLUE = 0.17;
 
-    public static double RED_RED = 0.60;
-    public static double RED_GREEN = 0.35;
-    public static double RED_BLUE = 0.1;
+    double RED_RED = 0.60;
+    double RED_GREEN = 0.35;
+    double RED_BLUE = 0.1;
 
-    public static double YELLOW_RED = 0.30;
-    public static double YELLOW_GREEN = 0.50;
-    public static double YELLOW_BLUE = 0.1;
+    double YELLOW_RED = 0.30;
+    double YELLOW_GREEN = 0.50;
+    double YELLOW_BLUE = 0.1;
 
 
 }

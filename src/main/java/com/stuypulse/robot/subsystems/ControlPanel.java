@@ -19,35 +19,12 @@ public class ControlPanel extends SubsystemBase {
     
     }
 
-    public void turnToColor(Color color) {
-        while (color != getColor()) {
-            turnClockwise(Constants.CONTROL_PANEL_TURN_SPEED);
-        }
-        motor.set(0);
-    }
-
-    public void turnNumberOfTimes(int times) {
-        int colorCount = 0;
-        int goal = times * 8;
-        Color prevColor = getColor();
-        while (colorCount < goal) {
-            turnClockwise(Constants.CONTROL_PANEL_TURN_SPEED);
-            Color currColor = getColor();
-            if (currColor != prevColor) {
-                colorCount += 1;
-            }
-        }
-    }
-
-    public void turnClockwise(double speed) {
+    public void turn(double speed) {
         motor.set(speed);
-    }
-
-    public void turnCounterClockwise(double speed) {
-        turnClockwise(-speed);
     }
 
     public Color getColor() {
        return cs.getRawDetectedColor();
     }
 }
+

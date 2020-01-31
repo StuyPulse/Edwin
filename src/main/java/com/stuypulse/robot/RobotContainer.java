@@ -22,9 +22,9 @@ import com.stuypulse.robot.subsystems.Drivetrain;
  */
 public class RobotContainer {
 
-  private final Funnel funnel = new Funnel();
-  private final Climber climber = new Climber();
-  private final Drivetrain drivetrain = new Drivetrain();
+  public final Funnel funnel = new Funnel();
+  public final Climber climber = new Climber();
+  public final Drivetrain drivetrain = new Drivetrain();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

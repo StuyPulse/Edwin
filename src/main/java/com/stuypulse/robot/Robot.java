@@ -28,9 +28,6 @@ public class Robot extends TimedRobot {
   private FRCLogger logger;
   private RobotContainer m_robotContainer;
 
-  private Drivetrain drivetrain;
-  private Funnel funnel;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -42,11 +39,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     logger = new FRCLogger(Filesystem.getDeployDirectory().toString(), "palmetto");
 
-    drivetrain = new Drivetrain();
-    funnel = new Funnel();
-
-    logger.registerLoggable(drivetrain);
-    logger.registerLoggable(funnel);
+    logger.registerLoggable(m_robotContainer.drivetrain);
+    logger.registerLoggable(m_robotContainer.funnel);
+    logger.registerLoggable(m_robotContainer.climber);
   }
 
   /**

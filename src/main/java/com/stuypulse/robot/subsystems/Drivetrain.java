@@ -77,7 +77,16 @@ public class Drivetrain extends SubsystemBase implements Loggable {
                 rightMiddleMotor.getEncoder().getVelocity() + 
                 rightBottomMotor.getEncoder().getVelocity()
             ) / 3
-        );
+        ) + 
+        "\n" + 
+        "Left side currents, top to bottom:\n" + 
+        Double.toString(leftTopMotor.getOutputCurrent()) + "\n" +
+        Double.toString(leftMiddleMotor.getOutputCurrent()) + "\n" +
+        Double.toString(leftBottomMotor.getOutputCurrent()) + "\n" +
+        "Right side currents, top to bottom:\n" + 
+        Double.toString(rightTopMotor.getOutputCurrent()) + "\n" +
+        Double.toString(rightMiddleMotor.getOutputCurrent()) + "\n" +
+        Double.toString(rightBottomMotor.getOutputCurrent()); 
 
     }
 

@@ -7,8 +7,6 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.util.FRCLogger;
 
 import edu.wpi.first.wpilibj.Filesystem;

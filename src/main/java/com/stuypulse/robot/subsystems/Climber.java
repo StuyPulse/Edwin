@@ -12,43 +12,44 @@ public class Climber extends SubsystemBase implements Loggable {
     private CANSparkMax liftMotor;
     private CANSparkMax yoyoMotor;
 
-    private boolean stateChanged;
+    private String stateChanged;
 
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);
+        stateChanged = "none";
     }
 
     public void climbUp() {
         liftMotor.set(Constants.CLIMB_UP_SPEED);
-        stateChanged = true;
+        stateChanged = "Climbing up";
     }
 
     public void climbDown() {
         liftMotor.set(Constants.CLIMB_DOWN_SPEED);
-        stateChanged = true;
+        stateChanged = "Climbing down";
     }
 
     public void moveLeft(double speed) {
         yoyoMotor.set(speed);
+        stateChanged = "Moving left";
     }
 
     public void moveRight(double speed) {
         yoyoMotor.set(speed);
+        stateChanged = "Moving right";
     }
 
     public boolean logThisIteration() {
-        if(stateChanged) {
-            stateChanged = false;
+        if(!stateChanged.equals("none")) {
+            stateChanged = "none";
             return true;
         }
         return false;
     }
 
     public String getLogData() {
-        return 
-        "State changed to:" +
-        (liftMotor.get() == Constants.CLIMB_UP_SPEED ? "Started climb up" : "Started climb down");
+        return "State changed to: " + stateChanged;
     }
-    
+
 }

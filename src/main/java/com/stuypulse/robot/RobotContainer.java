@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
-
+import com.stuypulse.robot.subsystems.Intake;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -25,6 +25,7 @@ public class RobotContainer {
   public final Funnel funnel = new Funnel();
   public final Climber climber = new Climber();
   public final Drivetrain drivetrain = new Drivetrain();
+  public final Intake intake = new Intake();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

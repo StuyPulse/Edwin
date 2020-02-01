@@ -5,25 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.stuypulse.robot;
+package com.stuypulse.robot.util;
 
 import com.stuypulse.robot.subsystems.Funnel;
-
+import java.util.ArrayList;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class MotorStall implements Runnable {
-        
-    private final Funnel m_Funnel;
 
-    private double start_encoder_value;
-    private double current_encoder_value;
-    private double change_distance;
-    private double encoder_approach_stall_threshold;
     private int counter;
+    private ArrayList<Stallable> subsystemArray;
 
-    public MotorStall(Funnel funnel) {
-        encoder_approach_stall_threshold = 3.0;
-        m_Funnel = funnel;
+    public MotorStall(int arraySize) {
+        subsystemArray = new ArrayList<Stallable>();
+    }
+
+    public void addSubsystem(Stallable subsystem) {
+        subsystemArray.add(subsystem);
     }
 
     @Override
@@ -32,6 +31,9 @@ public class MotorStall implements Runnable {
     }
 
     public void checkStall() {
+        int current_encoder_value;
+        int change_distance;
+        int start_encoder_value = 0;
         while(true) {
             current_encoder_value = Math.abs(m_Funnel.getEncoderVal());
             change_distance = Math.abs(current_encoder_value - start_encoder_value);

@@ -57,7 +57,7 @@ public class ControlPanelSpinToColorCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        // code to run wwhen ends
+        // code to run when ends
         m_cPanel.stop();
     }
 }

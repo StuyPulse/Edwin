@@ -8,37 +8,50 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.util.FRCLogger.Loggable;
 
 public class Funnel extends SubsystemBase implements Loggable {
+    private enum State {
+        NONE(""),
+        FUNNEL("Funneled"),
+        UNFUNNEL("Unfunneled");
+
+        private String message;
+
+        State(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 
     private CANSparkMax motor;
-    private boolean stateChanged;
+    private State state;
 
     public Funnel() {
         motor = new CANSparkMax(Constants.FUNNEL_MOTOR_PORT, MotorType.kBrushless);
-        stateChanged = false;
+        state = State.NONE;
     }
 
     public void funnel() {
         motor.set(Constants.FUNNEL_SPEED);
-        stateChanged = true;
+        state = State.FUNNEL;
     }
 
     public void unfunnel() {
         motor.set(Constants.UNFUNNEL_SPEED);
-        stateChanged = true;
+        state = State.UNFUNNEL;
     }
 
     public boolean logThisIteration() {
-        if(stateChanged) {
-            stateChanged = false;
-            return true;
+        boolean result = state != State.NONE;
+        if(result) {
+            state = State.NONE;
         }
-        return false;
+        return result;
     }
 
     public String getLogData() {
-        return 
-        "State changed to:" +
-        (motor.get() == Constants.FUNNEL_SPEED ? "Funneled" : "Unfunneled");
+        return state.getMessage();
     }
 
 }

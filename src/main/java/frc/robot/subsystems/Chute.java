@@ -1,15 +1,14 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
-import frc.robot.subsystems.Chute;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.utils.NEOEncoder;
 
 public class Chute extends SubsystemBase {
 
     private static Chute instance;
+
     public static Chute getChute() {
         if (instance == null) {
             instance = new Chute();
@@ -26,7 +25,7 @@ public class Chute extends SubsystemBase {
         liftMotor = new CANSparkMax(Constants.CHUTE_LIFT_MOTOR_PORT, MotorType.kBrushless);
         feederMotor = new CANSparkMax(Constants.CHUTE_SPEED_MOTOR_PORT, MotorType.kBrushless);
 
-        liftEncoder = new NeoEncoder(new CANEncoder(liftMotor, SensorType.kEncoder, Constants.CHUTE_TICKS_PER_REVOLUTION));
+        liftEncoder = new NEOEncoder(new CANEncoder(liftMotor, SensorType.kEncoder, Constants.CHUTE_TICKS_PER_REVOLUTION));
     }
 
     public void liftUp() {

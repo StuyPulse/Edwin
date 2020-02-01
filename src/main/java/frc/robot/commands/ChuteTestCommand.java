@@ -1,9 +1,9 @@
-package main.java.frc.robot.commands;
+package frc.robot.commands;
 
-import com.stuypulse.robot.subsystems.ControlPanel;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Chute;
 
 /**
  * An example command that uses an example subsystem.
@@ -32,6 +32,10 @@ public class ChuteTestCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return true;
+    }
+
+    @Override void end(boolea interrupted) {
+        
     }
 
 }

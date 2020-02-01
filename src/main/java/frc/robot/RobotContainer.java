@@ -6,8 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+
+import frc.robot.commands.ChuteTakeBallCommand;
+import frc.robot.commands.ChuteTestCommand;
 import frc.robot.subsystems.Chute;
-import main.java.frc.robot.commands.ChuteTestCommand;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;

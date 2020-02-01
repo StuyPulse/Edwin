@@ -12,7 +12,9 @@ import frc.robot.commands.ChuteTestCommand;
 import frc.robot.subsystems.Chute;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.utils.Logitech;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -22,16 +24,15 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-  // Commands
-  private ChuteTestCommand m_chuteTestCommand;
-  private ChuteTakeBallCommand m_chuteTakeBallCommand;
+  public static Logitech gamepad;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_chuteTestCommand = new ChuteTestCommand(Chute.getChute());
+    gamepad = new Logitech(0);
 
+    SmartDashboard.putNumber("ball_intake", 1);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -43,7 +44,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+    gamepad.getDPadUp().whenPressed(new ChuteTakeBallCommand(Chute.getChute(), (int) SmartDashboard.getNumber("ball_intake", 1)));
   }
 
 

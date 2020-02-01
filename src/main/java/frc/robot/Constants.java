@@ -17,7 +17,12 @@ package frc.robot;
  */
 public final class Constants {
     public static final int CHUTE_LIFT_MOTOR_PORT = -1;
-    public static final int CHUTE_SPEED_MOTOR_PORT = -1;
+    public static final int CHUTE_FEEDER_MOTOR_PORT = -1;
+
     public static final int CHUTE_LIFT_UP_SPEED = -1;
     public static final int CHUTE_ACCEL_UP_SPEED = -1;
+
+    public static final int CHUTE_TICKS_PER_REVOLUTION = -1;
+    public static final int CHUTE_RADIUS = -1;
+
 }

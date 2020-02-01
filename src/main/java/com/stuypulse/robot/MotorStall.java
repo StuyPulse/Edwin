@@ -7,41 +7,43 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.subsystems.Funnel;
+
 import edu.wpi.first.wpilibj.Timer;
 
 public class MotorStall implements Runnable {
-    
-    public boolean stalled;
-    
+        
+    private final Funnel m_Funnel;
+
     private double start_encoder_value;
     private double current_encoder_value;
     private double change_distance;
     private double encoder_approach_stall_threshold;
-    private double start_time;
-    private double time_now;
     private int counter;
 
-    public MotorStall() {
+    public MotorStall(Funnel funnel) {
         encoder_approach_stall_threshold = 3.0;
+        m_Funnel = funnel;
     }
 
     @Override
     public void run() {
-
+        checkStall();
     }
 
-    public boolean isStalled() {
+    public void checkStall() {
         while(true) {
-            current_encoder_value = Math.abs(Robot.m_robotContainer.funnel.getEncoderVal());
+            current_encoder_value = Math.abs(m_Funnel.getEncoderVal());
             change_distance = Math.abs(current_encoder_value - start_encoder_value);
             if(change_distance <= encoder_approach_stall_threshold && true) //TODO : replace true with corresponding gamepad button
                 counter++;
             else {
-                stalled = false;
+                m_Funnel.setStalled(false);
                 counter = 0;
             }
             if(counter >= 5)
-                stalled = true; 
+                m_Funnel.setStalled(true);
+            start_encoder_value = current_encoder_value;
             Timer.delay(0.2);
         }
 

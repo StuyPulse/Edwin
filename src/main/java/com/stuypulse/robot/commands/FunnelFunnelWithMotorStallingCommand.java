@@ -5,28 +5,31 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
-import java.util.Set;
+package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.MotorStall;
-import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.subsystems.Funnel;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
+    
+    private final Funnel m_Funnel;
 
-public class FunnelMotorStallingCommand implements Command {
+    public FunnelFunnelWithMotorStallingCommand(Funnel funnel) {
+        m_Funnel = funnel;
+        addRequirements(m_Funnel);
+    }
 
     @Override
-	public void initialize() {
-        new Thread(new MotorStall()).start();
+    public void initialize() {
+        new Thread(new MotorStall(m_Funnel)).start();
     }
 
     @Override
     public void execute() {
-        if(Robot.m_robotContainer.funnel.stalled)
+        if(m_Funnel.isStalled())
            //TODO : when it stalls, gamepad will vibrate unil not stalled anymore
-        Robot.m_robotContainer.funnel.funnel();
+        m_Funnel.funnel();
     }
 
     @Override
@@ -34,9 +37,8 @@ public class FunnelMotorStallingCommand implements Command {
       return false;
     }
 
-	@Override
-	public Set<Subsystem> getRequirements() {
-		return Set.of(Robot.m_robotContainer.funnel);
-	}
-  }
+    @Override
+    public void end(boolean interrupted) {
+        m_Funnel.stop();
+    }
 }

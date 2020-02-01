@@ -10,7 +10,8 @@ import com.stuypulse.robot.Constants;
 public class Funnel extends SubsystemBase {
 
     private CANSparkMax motor;
-    private CANEncoder encoder; 
+    private CANEncoder encoder;
+    private boolean stalled;
 
     public Funnel() {
         motor = new CANSparkMax(Constants.FUNNEL_MOTOR_PORT, MotorType.kBrushless);
@@ -25,8 +26,20 @@ public class Funnel extends SubsystemBase {
         motor.set(Constants.UNFUNNEL_SPEED);
     }
 
+    public void stop() {
+        motor.set(0);
+    }
+
     public double getEncoderVal() {
         return encoder.getPosition();
+    }
+
+    public boolean isStalled() {
+        return stalled;
+    }
+
+    public void setStalled(boolean value) {
+        stalled = value;
     }
 
 }

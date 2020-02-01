@@ -36,6 +36,6 @@ public abstract class DriveInstructions implements Command {
 
     // Update the drivetrain with the new speed and angle
     public void execute() {
-        mDrivetrain.arcadeDrive(this.getSpeed(), this.getAngle());
+        mDrivetrain.curvatureDrive(this.getSpeed(), this.getAngle());
     }
 }

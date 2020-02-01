@@ -15,7 +15,7 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.*;
 
-import com.stuypulse.robot.Constants.ControllerPorts;
+import com.stuypulse.robot.Constants.Ports;
 
 import com.stuypulse.robot.commands.*;
 
@@ -31,8 +31,8 @@ public class RobotContainer {
   public final Climber climber = new Climber();
   public final Drivetrain drivetrain = new Drivetrain();
 
-  public final Gamepad driver = new PS4(ControllerPorts.kDriver);
-  public final Gamepad operator = new PS4(ControllerPorts.kOperator);
+  public final Gamepad driver = new PS4(Ports.Gamepad.kDriver);
+  public final Gamepad operator = new PS4(Ports.Gamepad.kOperator);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -53,8 +53,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driver.getLeftButton().whenHeld(new AlignmentCommand(drivetrain, 10));
-    driver.getTopButton().whenHeld(new AlignmentCommand(drivetrain, 20));
+    driver.getLeftButton().whenHeld(new PIDAlignmentCommand(drivetrain, 10));
+    driver.getTopButton().whenHeld(new PIDAlignmentCommand(drivetrain, 20));
   }
 
 

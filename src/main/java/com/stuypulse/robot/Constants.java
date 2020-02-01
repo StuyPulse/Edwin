@@ -17,19 +17,33 @@ package com.stuypulse.robot;
  */
 public interface Constants {
 
-    public interface ControllerPorts {
-        int kOperator = 0;
-        int kDriver = 1;
+    public interface Ports {
+
+        public interface Gamepad {
+            int kOperator = 0;
+            int kDriver = 1;
+        }
+
+        public interface Drivetrain {
+            int kLeftTop = -1;
+            int kLeftMiddle = -1;
+            int kLeftBottom = -1;
+            
+            int kRightTop = -1;
+            int kRightMiddle = -1;
+            int kRightBottom = -1;
+
+            int kGearShift = -1;
+        }
     }
 
-    public interface DrivetrainPorts {
-        int kLeftTop = -1;
-        int kLeftMiddle = -1;
-        int kLeftBottom = -1;
-        
-        int kRightTop = -1;
-        int kRightMiddle = -1;
-        int kRightBottom = -1;
+    public interface DrivetrainSettings {
+        double kQuickTurnThreshold = 0.04;
+        double kQuickTurnSpeed = 0.5;
+
+        int kCurrentLimit = 0;
+
+        double kDistancePerRotation = 0;
     }
     
     public interface Alignment {
@@ -38,11 +52,13 @@ public interface Constants {
             int kI = -1;
             int kD = -1;
 
+            double kBangBang = 0.75;
+
             double kInSmoothTime = 0.1;
             double kOutSmoothTime = 0.1;
 
-            double kMaxAngleErr = 3;
-            double kMaxAngleVel = 2;
+            double kMaxAngleErr = 5;
+            double kMaxAngleVel = 5;
         }
 
         public interface Angle {
@@ -50,7 +66,9 @@ public interface Constants {
             int kI = -1;
             int kD = -1;
 
-            double kInSmoothTime = 0.05;
+            double kBangBang = 0.75;
+
+            double kInSmoothTime = 0.00;
             double kOutSmoothTime = 0.05;
         }
 

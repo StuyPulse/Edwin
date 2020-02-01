@@ -18,7 +18,7 @@ package com.stuypulse.robot;
 public interface Constants {
 
     /*********************************************************************************************
-     * Drivetrain Motor Ports
+     * Drivetrain Ports
      *********************************************************************************************/
     //Left Side Motors
     int DRIVETRAIN_LEFT_TOP_MOTOR_PORT = -1;
@@ -28,7 +28,12 @@ public interface Constants {
     int DRIVETRAIN_RIGHT_TOP_MOTOR_PORT = -1;
     int DRIVETRAIN_RIGHT_MIDDLE_MOTOR_PORT = -1;
     int DRIVETRAIN_RIGHT_BOTTOM_MOTOR_PORT = -1;
-    
+    //Sensors
+    int DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A = -1;
+    int DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B = -1;
+    int DRIVETRAIN_LEFT_ENCODER_CHANNEL_A = -1;
+    int DRIVETRAIN_LEFT_ENCODER_CHANNEL_B = -1;
+
     /*********************************************************************************************
      * Funnel Motor Port
      *********************************************************************************************/
@@ -39,6 +44,17 @@ public interface Constants {
      *********************************************************************************************/
     int CLIMBER_LIFT_MOTOR_PORT = -1;
     int CLIMBER_YOYO_MOTOR_PORT = -1;
+
+    /*********************************************************************************************
+     * Drivetrain Constants
+     *********************************************************************************************/
+    //Motor Constants
+    double WHEEL_DIAMETER = -1;
+    double WHEEL_INCHES_PER_REVOLUTION = WHEEL_DIAMETER * Math.PI;
+
+    //Greyhill Constants
+    double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
+    double GREYHILL_INCHES_PER_PULSE = WHEEL_INCHES_PER_REVOLUTION / GREYHILL_PULSES_PER_REVOLUTION;
 
     /*********************************************************************************************
      * Funnel Constants

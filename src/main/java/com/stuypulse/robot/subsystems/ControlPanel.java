@@ -26,5 +26,9 @@ public class ControlPanel extends SubsystemBase {
     public Color getColor() {
        return cs.getRawDetectedColor();
     }
+
+    public void stop() {
+        motor.set(0);
+    }
 }
 

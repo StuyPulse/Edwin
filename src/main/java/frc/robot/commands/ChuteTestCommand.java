@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chute;
 
@@ -34,8 +32,8 @@ public class ChuteTestCommand extends CommandBase {
         return true;
     }
 
-    @Override void end(boolea interrupted) {
-        
+    @Override 
+    public void end(boolean interrupted) {
     }
 
 }

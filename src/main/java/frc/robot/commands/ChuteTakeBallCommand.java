@@ -1,18 +1,13 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chute;
 
-/**
- * An example command that uses an example subsystem.
- */
 public class ChuteTakeBallCommand extends CommandBase {
     private Chute m_chute;
     private final int targetBalls;
 
-    public ChuteTakeBallCommand(Chute subsystem, int balls /* lol xd */) {
+    public ChuteTakeBallCommand(Chute subsystem, int balls) {
         m_chute = subsystem;
         targetBalls = balls;
 

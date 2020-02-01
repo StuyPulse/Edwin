@@ -1,9 +1,12 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.utils.NEOEncoder;
+import frc.robot.utils.NeoEncoder;
 
 public class Chute extends SubsystemBase {
 
@@ -23,9 +26,11 @@ public class Chute extends SubsystemBase {
 
     private Chute() {
         liftMotor = new CANSparkMax(Constants.CHUTE_LIFT_MOTOR_PORT, MotorType.kBrushless);
-        feederMotor = new CANSparkMax(Constants.CHUTE_SPEED_MOTOR_PORT, MotorType.kBrushless);
+        feederMotor = new CANSparkMax(Constants.CHUTE_FEEDER_MOTOR_PORT, MotorType.kBrushless);
 
-        liftEncoder = new NEOEncoder(new CANEncoder(liftMotor, SensorType.kEncoder, Constants.CHUTE_TICKS_PER_REVOLUTION));
+        feederMotor.follow(liftMotor);
+
+        liftEncoder = new NeoEncoder(new CANEncoder(liftMotor));
     }
 
     public void liftUp() {
@@ -45,11 +50,15 @@ public class Chute extends SubsystemBase {
     }
 
     public int getRotations() {
-        return (int) (getPosition() / Constants.CHUTE_TICKS_PER_REVOLUTION);
+        return (int) (getTicks() / Constants.CHUTE_TICKS_PER_REVOLUTION);
+    }
+
+    private double getRawRotations() {
+        return getTicks() / Constants.CHUTE_TICKS_PER_REVOLUTION;
     }
 
     public double getDistance() {
-        return getRotations() * Constants.CHUTE_RADIUS * 2 * Math.PI;
+        return getRawRotations() * Constants.CHUTE_RADIUS * 2 * Math.PI;
     }
 
 

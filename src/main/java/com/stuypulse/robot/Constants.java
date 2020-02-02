@@ -132,4 +132,10 @@ public interface Constants {
     //TODO: Test speeds
     double CLIMB_UP_SPEED = 0.5;
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
+
+     /*********************************************************************************************
+     * Intake Motor Ports
+     *********************************************************************************************/
+    int INTAKE_MOTOR_PORT = -1;
+    int INTAKE_SOLENOID_PORT = -1;
 }

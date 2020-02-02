@@ -8,7 +8,7 @@ import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
-public class RawAlignmentCommand extends DriveInstructions {
+public class AlignmentCommand extends DriveInstructions {
 
     // Controllers for Alignment
     private Controller mSpeed;
@@ -25,7 +25,7 @@ public class RawAlignmentCommand extends DriveInstructions {
      * @param speed      controller used to align distance
      * @param angle      controller used to align the angle
      */
-    public RawAlignmentCommand(Drivetrain drivetrain, double distance, Controller speed, Controller angle) {
+    public AlignmentCommand(Drivetrain drivetrain, double distance, Controller speed, Controller angle) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
@@ -47,12 +47,9 @@ public class RawAlignmentCommand extends DriveInstructions {
      * @return gets the difference from distance of robot and target distance
      */
     public final double getSpeedError() {
+        // TODO: have CV replace this command
         double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.kPitch;
-
-        // Get the height of the goal reletive to the limelight
         double goal_height = Alignment.Measurements.kGoalHeight - Alignment.Measurements.Limelight.kHeight;
-
-        // Get the distance of the the target from the limelight using geometry
         double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
                 - Alignment.Measurements.Limelight.kDistance;
 
@@ -64,9 +61,21 @@ public class RawAlignmentCommand extends DriveInstructions {
      * @return gets the angle of the target in the limelight
      */
     public final double getAngleError() {
+        // TODO: have CV replace this command
         return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.kYaw;
     }
 
+    // Get the Speed Controller
+    public Controller getSpeedController() {
+        return mSpeed;
+    }
+
+    // Get the Angle controller
+    public Controller getAngleController() {
+        return mAngle;
+    }
+
+    // Update the speed if the angle is aligned
     public double getSpeed() {
         if ( // Check if the angle is aligned before moving forward
         mAngle.getError() < Alignment.Speed.kMaxAngleErr && mAngle.getVelocity() < Alignment.Speed.kMaxAngleVel) {
@@ -76,15 +85,8 @@ public class RawAlignmentCommand extends DriveInstructions {
         }
     }
 
+    // Update angle 
     public double getAngle() {
         return mAngle.update(getAngleError());
-    }
-
-    public Controller getSpeedController() {
-        return mSpeed;
-    }
-
-    public Controller getAngleController() {
-        return mAngle;
     }
 }

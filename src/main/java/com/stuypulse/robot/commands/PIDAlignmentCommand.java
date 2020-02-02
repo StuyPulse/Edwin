@@ -8,7 +8,7 @@ import com.stuypulse.stuylib.control.PIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class PIDAlignmentCommand extends RawAlignmentCommand {
+public class PIDAlignmentCommand extends AlignmentCommand {
 
     private static Controller getNewSpeedController() {
         PIDController speed = new PIDController(-1, -1, -1);

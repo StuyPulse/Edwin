@@ -7,6 +7,8 @@
 
 package com.stuypulse.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -16,6 +18,27 @@ package com.stuypulse.robot;
  * constants are needed, to reduce verbosity.
  */
 public interface Constants {
+
+    /**
+     * Lets us turn feet and inches into just feet for measurements
+     * @param feet feet
+     * @param inches inches
+     * @return value in feet
+     */
+    private static double toFeet(int feet, double inches) {
+        return ((double) feet) + (inches / 12.0);
+    }
+
+    /**
+     * Allow us to initialize a value on smart dashboard while putting it in robot map
+     * @param key name of value on smart dashboard
+     * @param value value you want it to be set to
+     * @return the double you passed to it
+     */
+    private static double onSmartDashboard(String key, double value) {
+        SmartDashboard.putNumber(key, value);
+        return value;
+    }
 
     public interface Ports {
 
@@ -48,13 +71,13 @@ public interface Constants {
     
     public interface Alignment {
         public interface Speed {
-            int kP = -1;
-            int kI = -1;
-            int kD = -1;
+            double kP = onSmartDashboard("SpeedP", -1);
+            double kI = onSmartDashboard("SpeedI", -1);
+            double kD = onSmartDashboard("SpeedD", -1);
 
             double kBangBang = 0.75;
 
-            double kInSmoothTime = 0.1;
+            double kInSmoothTime = 0.0;
             double kOutSmoothTime = 0.1;
 
             double kMaxAngleErr = 5;
@@ -62,9 +85,9 @@ public interface Constants {
         }
 
         public interface Angle {
-            int kP = -1;
-            int kI = -1;
-            int kD = -1;
+            double kP = onSmartDashboard("AngleP", -1);
+            double kI = onSmartDashboard("AngleI", -1);
+            double kD = onSmartDashboard("AngleD", -1);
 
             double kBangBang = 0.75;
 
@@ -73,10 +96,6 @@ public interface Constants {
         }
 
         public interface Measurements {
-
-            private static double toFeet(int feet, double inches) {
-                return ((double) feet) + (inches / 12.0);
-            }
 
             double kGoalHeight = toFeet(7, 6);
 

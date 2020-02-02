@@ -9,7 +9,7 @@ import com.stuypulse.stuylib.control.PIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SpeedPIDCalculatorCommand extends RawAlignmentCommand {
+public class SpeedPIDCalculatorCommand extends AlignmentCommand {
 
     private static Controller getNewSpeedController() {
         return new PIDCalculator(Alignment.Speed.kBangBang);

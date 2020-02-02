@@ -9,7 +9,7 @@ import com.stuypulse.stuylib.control.PIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AnglePIDCalculatorCommand extends RawAlignmentCommand {
+public class AnglePIDCalculatorCommand extends AlignmentCommand {
 
     private static Controller getNewSpeedController() {
         PIDController speed = new PIDController(-1, -1, -1);

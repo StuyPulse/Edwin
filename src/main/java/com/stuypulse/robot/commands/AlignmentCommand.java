@@ -10,12 +10,17 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 public class AlignmentCommand extends DriveInstructions {
 
+    public interface Aligner {
+        public double getSpeedError();
+        public double getAngleError();
+    }
+
     // Controllers for Alignment
     private Controller mSpeed;
     private Controller mAngle;
 
     // Distance that the command will try to align with
-    private double mTargetDistance;
+    private Aligner mAligner;
 
     /**
      * This creates a command that aligns the robot
@@ -25,7 +30,7 @@ public class AlignmentCommand extends DriveInstructions {
      * @param speed      controller used to align distance
      * @param angle      controller used to align the angle
      */
-    public AlignmentCommand(Drivetrain drivetrain, double distance, Controller speed, Controller angle) {
+    public AlignmentCommand(Drivetrain drivetrain, Aligner aligner, Controller speed, Controller angle) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
@@ -40,29 +45,7 @@ public class AlignmentCommand extends DriveInstructions {
         mAngle.setOutputFilter(new LowPassFilter(Alignment.Angle.kOutSmoothTime));
 
         // Target distance for the Alignment Command
-        mTargetDistance = distance;
-    }
-
-    /**
-     * @return gets the difference from distance of robot and target distance
-     */
-    public final double getSpeedError() {
-        // TODO: have CV replace this command
-        double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.kPitch;
-        double goal_height = Alignment.Measurements.kGoalHeight - Alignment.Measurements.Limelight.kHeight;
-        double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
-                - Alignment.Measurements.Limelight.kDistance;
-
-        // Return the error from the target distance
-        return goal_dist - mTargetDistance;
-    }
-
-    /**
-     * @return gets the angle of the target in the limelight
-     */
-    public final double getAngleError() {
-        // TODO: have CV replace this command
-        return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.kYaw;
+        mAligner = aligner;
     }
 
     // Get the Speed Controller
@@ -79,7 +62,7 @@ public class AlignmentCommand extends DriveInstructions {
     public double getSpeed() {
         if ( // Check if the angle is aligned before moving forward
         mAngle.getError() < Alignment.Speed.kMaxAngleErr && mAngle.getVelocity() < Alignment.Speed.kMaxAngleVel) {
-            return mSpeed.update(getSpeedError());
+            return mSpeed.update(mAligner.getSpeedError());
         } else {
             return 0.0;
         }
@@ -87,6 +70,6 @@ public class AlignmentCommand extends DriveInstructions {
 
     // Update angle 
     public double getAngle() {
-        return mAngle.update(getAngleError());
+        return mAngle.update(mAligner.getAngleError());
     }
 }

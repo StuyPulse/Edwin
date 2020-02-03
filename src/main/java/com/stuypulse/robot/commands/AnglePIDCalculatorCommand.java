@@ -26,8 +26,8 @@ public class AnglePIDCalculatorCommand extends AlignmentCommand {
      * @param drivetrain Drivetrain used by command to move
      * @param distance   target distance for robot to drive to
      */
-    public AnglePIDCalculatorCommand(Drivetrain drivetrain, double distance) {
-        super(drivetrain, distance, getNewSpeedController(), getNewAngleController());
+    public AnglePIDCalculatorCommand(Drivetrain drivetrain, AlignmentCommand.Aligner aligner) {
+        super(drivetrain, aligner, getNewSpeedController(), getNewAngleController());
     }
 
     public void execute() {

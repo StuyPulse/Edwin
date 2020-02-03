@@ -32,7 +32,7 @@ public class PIDAlignmentCommand extends AlignmentCommand {
      * @param drivetrain Drivetrain used by command to move
      * @param distance   target distance for robot to drive to
      */
-    public PIDAlignmentCommand(Drivetrain drivetrain, double distance) {
-        super(drivetrain, distance, getNewSpeedController(), getNewAngleController());
+    public PIDAlignmentCommand(Drivetrain drivetrain, AlignmentCommand.Aligner aligner) {
+        super(drivetrain, aligner, getNewSpeedController(), getNewAngleController());
     }
 }

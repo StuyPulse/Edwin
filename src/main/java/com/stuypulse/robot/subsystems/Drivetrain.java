@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -51,6 +52,9 @@ public class Drivetrain extends SubsystemBase {
     private DifferentialDrive mHighGearDrive;
     private DifferentialDrive mLowGearDrive;
 
+    // NAVX for Gyro
+    //private AHRS mNavX;
+
     public Drivetrain() {
         // Add Motors to list
         mLeftMotors = new CANSparkMax[] { 
@@ -85,6 +89,9 @@ public class Drivetrain extends SubsystemBase {
                 makeControllerGroup(getLowGear(mRightMotors)));
 
         mGearShift = new Solenoid(Ports.Drivetrain.kGearShift);
+
+        // Initialize NAVX
+        //mNavX = new AHRS(SPI.Port.kMXP);
     }
 
     /**

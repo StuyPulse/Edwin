@@ -25,4 +25,9 @@ public final class Constants {
     public static final int CHUTE_TICKS_PER_REVOLUTION = -1;
     public static final int CHUTE_RADIUS = -1;
 
+    public static final double CHUTE_TICKS_PER_BALL = -1;
+
+    public static final int CHUTE_LOWER_SENSOR_PORT = -1;
+    public static final int CHUTE_UPPER_SENSOR_PORT = -1;
+
 }

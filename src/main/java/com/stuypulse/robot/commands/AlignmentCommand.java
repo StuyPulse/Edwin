@@ -5,7 +5,6 @@ import com.stuypulse.robot.commands.DriveInstructions;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 public class AlignmentCommand extends DriveInstructions {

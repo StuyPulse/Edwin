@@ -11,7 +11,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.Funnel;
+
+import java.util.ResourceBundle.Control;
+
 import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 
 /**
@@ -25,6 +29,9 @@ public class RobotContainer {
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
+  private final ControlPanel controlpanel = new ControlPanel();
+
+  private final Logitech gamepad;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -53,4 +60,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
+
 }

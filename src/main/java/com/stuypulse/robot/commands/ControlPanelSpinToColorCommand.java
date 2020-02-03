@@ -61,3 +61,4 @@ public class ControlPanelSpinToColorCommand extends CommandBase {
         m_cPanel.stop();
     }
 }
+s

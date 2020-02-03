@@ -45,12 +45,20 @@ public class Climber extends SubsystemBase implements Loggable {
         state = State.DOWN;
     }
 
-    public void moveLeft(double speed) {
-        yoyoMotor.set(speed);
+    public void moveLeft() {
+        yoyoMotor.set(Constants.YOYO_MOVE_LEFT_SPEED);
     }
 
-    public void moveRight(double speed) {
-        yoyoMotor.set(speed);
+    public void moveRight() {
+        yoyoMotor.set(Constants.YOYO_MOVE_RIGHT_SPEED);
+    }
+
+    public void stopClimber() {
+        liftMotor.set(0);
+    }
+
+    public void stopYoyo() {
+        yoyoMotor.set(0);
     }
 
     public boolean logThisIteration() {

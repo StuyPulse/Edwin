@@ -1,7 +1,7 @@
 package com.stuypulse.robot.util;
 
 import java.util.logging.SimpleFormatter;
-import java.io.File;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;

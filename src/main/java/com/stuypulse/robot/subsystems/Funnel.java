@@ -5,13 +5,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.stuypulse.robot.Constants;
 
-public class Funnel extends SubsystemBase {
+import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.MotorStall;
+
+public class Funnel extends SubsystemBase implements MotorStall {
 
     private CANSparkMax motor;
     private CANEncoder encoder;
-    private boolean stalled;
 
     public Funnel() {
         motor = new CANSparkMax(Constants.FUNNEL_MOTOR_PORT, MotorType.kBrushless);
@@ -34,12 +35,21 @@ public class Funnel extends SubsystemBase {
         return encoder.getPosition();
     }
 
-    public boolean isStalled() {
-        return stalled;
+    @Override
+    public void enableStalling() {
+        motor.set(Constants.UNFUNNEL_SPEED);
     }
 
-    public void setStalled(boolean value) {
-        stalled = value;
+    @Override
+    public boolean isStalling() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public double getEncoderApproachStallThreshold() {
+        // TODO Auto-generated method stub
+        return 3.0;
     }
 
 }

@@ -69,7 +69,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Update the speed if the angle is aligned
     public double getSpeed() {
         if ( // Check if the angle is aligned before moving forward
-        mAngle.getError() < Alignment.Angle.kMaxAngleErr && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel) {
+            mAngle.getError() < Alignment.Angle.kMaxAngleErr && 
+            mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel
+        ) {
             return mSpeed.update(mAligner.getSpeedError());
         } else {
             return 0.0;
@@ -83,8 +85,10 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     public boolean isFinished() {
         return ( // Return if everything is aligned
-        mSpeed.getError() < Alignment.Speed.kMaxSpeedErr && mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel
-                && mAngle.getError() < Alignment.Angle.kMaxAngleErr
-                && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel);
+            mSpeed.getError() < Alignment.Speed.kMaxSpeedErr &&
+            mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel && 
+            mAngle.getError() < Alignment.Angle.kMaxAngleErr && 
+            mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel
+        );
     }
 }

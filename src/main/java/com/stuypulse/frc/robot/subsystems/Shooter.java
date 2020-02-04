@@ -3,6 +3,7 @@ package com.stuypulse.frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -35,18 +36,18 @@ public class Shooter extends PIDSubsystem {
     public Shooter() {
         // TODO: implement PID fully
 
-        super(new PIDController(-1, -1, -1));
-        leftShooterMotor = new CANSparkMax(-1, MotorType.kBrushless);
-        rightShooterMotor = new CANSparkMax(-1, MotorType.kBrushless);
-        middleShooterMotor = new CANSparkMax(-1, MotorType.kBrushless);
+        super(new PIDController(Constants.kP, Constants.kI, Constants.kD));
+        leftShooterMotor = new CANSparkMax(Constants.LEFT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
+        rightShooterMotor = new CANSparkMax(Constants.RIGHT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
+        middleShooterMotor = new CANSparkMax(Constants.MIDDLE_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
 
         leftShooterEncoder = new CANEncoder(leftShooterMotor);
         rightShooterEncoder = new CANEncoder(rightShooterMotor);
         middleShooterEncoder = new CANEncoder(middleShooterMotor);
 
-        feederMotor = new CANSparkMax(-1, MotorType.kBrushless);
+        feederMotor = new CANSparkMax(Constants.FEEDER_MOTOR_PORT, MotorType.kBrushless);
 
-        hoodSolenoid = new Solenoid(-1);
+        hoodSolenoid = new Solenoid(Constants.HOOD_SOLENOID_PORT);
 
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
     }

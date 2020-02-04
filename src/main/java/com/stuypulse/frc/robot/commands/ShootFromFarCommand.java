@@ -14,11 +14,11 @@ public class ShootFromFarCommand extends CommandBase {
     @Override
     public void initialize() {
         m_shooter.retractHoodSolenoid();
-        m_shooter.runShooterMotors();
     }
 
     @Override
     public void execute() {
+        m_shooter.runShooterMotors();
         if (m_shooter.getMaxShooterVelocity() > 5500) {
             m_shooter.feed();
         }

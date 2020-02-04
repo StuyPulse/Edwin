@@ -14,11 +14,11 @@ public class ShootFromInitiationLineCommand extends CommandBase {
     @Override
     public void initialize() {
         m_shooter.extendHoodSolenoid();
-        m_shooter.runShooterMotors();
     }
 
     @Override
     public void execute() {
+        m_shooter.runShooterMotors();
         if (m_shooter.getMaxShooterVelocity() > 3900) {
             m_shooter.feed();
         }

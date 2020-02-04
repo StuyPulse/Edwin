@@ -14,18 +14,23 @@ import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+import com.stuypulse.stuylib.input.gamepads.PS4;
 public class RobotContainer {
 
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
+
+  private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
+  private final Logitech operatorGamepad = new Logitech(Constants.OPERATOR_GAMEPAD_PORT);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

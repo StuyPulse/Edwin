@@ -9,7 +9,11 @@ import com.stuypulse.stuylib.control.PIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AnglePIDCalculatorCommand extends AlignmentCommand {
+/**
+ * This class will move the drivetrain and make measurements so that you can
+ * calculate optimal P I and D values for the angle controller.
+ */
+public class DrivetrainPIDAutoAngleCommand extends DrivetrainAlignmentCommand {
 
     private static Controller getNewSpeedController() {
         PIDController speed = new PIDController(-1, -1, -1);
@@ -26,7 +30,7 @@ public class AnglePIDCalculatorCommand extends AlignmentCommand {
      * @param drivetrain Drivetrain used by command to move
      * @param distance   target distance for robot to drive to
      */
-    public AnglePIDCalculatorCommand(Drivetrain drivetrain, AlignmentCommand.Aligner aligner) {
+    public DrivetrainPIDAutoAngleCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
         super(drivetrain, aligner, getNewSpeedController(), getNewAngleController());
     }
 

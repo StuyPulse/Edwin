@@ -8,7 +8,11 @@ import com.stuypulse.stuylib.control.PIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class PIDAlignmentCommand extends AlignmentCommand {
+/**
+ * This command takes in a drivetrain and aligner and moves the drivetrain until
+ * the errors reach zero using PID. The kP kI kD values are from the constants.
+ */
+public class DrivetrainPIDAlignmentCommand extends DrivetrainAlignmentCommand {
 
     private static Controller getNewSpeedController() {
         PIDController speed = new PIDController(-1, -1, -1);
@@ -32,7 +36,7 @@ public class PIDAlignmentCommand extends AlignmentCommand {
      * @param drivetrain Drivetrain used by command to move
      * @param distance   target distance for robot to drive to
      */
-    public PIDAlignmentCommand(Drivetrain drivetrain, AlignmentCommand.Aligner aligner) {
+    public DrivetrainPIDAlignmentCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
         super(drivetrain, aligner, getNewSpeedController(), getNewAngleController());
     }
 }

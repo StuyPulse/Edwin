@@ -1,13 +1,13 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.commands.DriveInstructions;
+import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
-public class AlignmentCommand extends DriveInstructions {
+public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     public interface Aligner {
         public double getSpeedError();
@@ -29,7 +29,7 @@ public class AlignmentCommand extends DriveInstructions {
      * @param speed      controller used to align distance
      * @param angle      controller used to align the angle
      */
-    public AlignmentCommand(Drivetrain drivetrain, Aligner aligner, Controller speed, Controller angle) {
+    public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner, Controller speed, Controller angle) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
@@ -48,12 +48,14 @@ public class AlignmentCommand extends DriveInstructions {
     }
 
     // Get the Speed Controller
-    public Controller getSpeedController() {
+    // Used by sub classes to get information
+    protected Controller getSpeedController() {
         return mSpeed;
     }
 
     // Get the Angle controller
-    public Controller getAngleController() {
+    // Used by sub classes to get information
+    protected Controller getAngleController() {
         return mAngle;
     }
 

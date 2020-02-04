@@ -56,6 +56,11 @@ public interface Constants {
             int kRightMiddle = -1;
             int kRightBottom = -1;
 
+            int kLeftEncoderA = -1;
+            int kLeftEncoderB = -1;
+            int kRightEncoderA = -1;
+            int kRightEncoderB = -1;
+
             int kGearShift = -1;
         }
     }
@@ -64,9 +69,16 @@ public interface Constants {
         double kQuickTurnThreshold = 0.04;
         double kQuickTurnSpeed = 0.5;
 
+        double kRCSpeed = 0.5;
+        double kRCAngle = 0.25;
+
         int kCurrentLimit = 0;
 
-        double kDistancePerRotation = 0;
+        public interface Encoders {
+            double kNEODistancePerRotation = 1.0;
+            double kGreyhillDistancePerPulse = 1.0;
+            
+        }
     }
     
     public interface Alignment {

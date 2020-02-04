@@ -1,7 +1,8 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.commands.DriveInstructions;
+import com.stuypulse.robot.Constants.DrivetrainSettings;
+import com.stuypulse.robot.commands.DrivetrainCommand;
 
 import com.stuypulse.stuylib.input.Gamepad;
 
@@ -11,7 +12,7 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 import com.stuypulse.stuylib.math.SLMath;
 
-public class DriveCommand extends DriveInstructions {
+public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     private Gamepad mGamepad;
 
@@ -21,7 +22,7 @@ public class DriveCommand extends DriveInstructions {
     private IStream mSpeed;
     private IStream mAngle;
 
-    public DriveCommand(Drivetrain drivetrain, Gamepad gamepad) {
+    public DrivetrainDriveCommand(Drivetrain drivetrain, Gamepad gamepad) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
@@ -39,10 +40,16 @@ public class DriveCommand extends DriveInstructions {
         };
 
         // Create an IStream that filters the raw speed from the controller
-        mSpeed = new FilteredIStream(mRawSpeed, (x) -> SLMath.square(x), new LowPassFilter(0.7));
+        mSpeed = new FilteredIStream(mRawSpeed, 
+            (x) -> SLMath.square(x), 
+            new LowPassFilter(DrivetrainSettings.kRCSpeed)
+        );
 
         // Create an IStream that filters the raw angle from the controller
-        mAngle = new FilteredIStream(mRawAngle, (x) -> SLMath.square(x), new LowPassFilter(0.7));
+        mAngle = new FilteredIStream(mRawAngle, 
+            (x) -> SLMath.square(x), 
+            new LowPassFilter(DrivetrainSettings.kRCSpeed)
+        );
     }
 
     // Give the IStream's result for speed when the drivetrain wants it

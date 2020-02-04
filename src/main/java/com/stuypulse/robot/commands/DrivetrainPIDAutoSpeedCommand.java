@@ -9,7 +9,14 @@ import com.stuypulse.stuylib.control.PIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SpeedPIDCalculatorCommand extends AlignmentCommand {
+/**
+ * This class will move the drivetrain and make measurements so that you can
+ * calculate optimal P I and D values for the speed controller.
+ * 
+ * While doing this it will need to have the angle aligned, so make sure that
+ * you tune that first
+ */
+public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
 
     private static Controller getNewSpeedController() {
         return new PIDCalculator(Alignment.Speed.kBangBang);
@@ -29,7 +36,7 @@ public class SpeedPIDCalculatorCommand extends AlignmentCommand {
      * @param drivetrain Drivetrain used by command to move
      * @param distance   target distance for robot to drive to
      */
-    public SpeedPIDCalculatorCommand(Drivetrain drivetrain, AlignmentCommand.Aligner aligner) {
+    public DrivetrainPIDAutoSpeedCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
         super(drivetrain, aligner, getNewSpeedController(), getNewAngleController());
     }
 

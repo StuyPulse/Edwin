@@ -1,18 +1,15 @@
 package com.stuypulse.robot.commands;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.stuypulse.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public abstract class DriveInstructions extends CommandBase {
+public abstract class DrivetrainCommand extends CommandBase {
 
     // Where the drivetrain is stored
     private Drivetrain mDrivetrain;
 
-    public DriveInstructions(Drivetrain drivetrain) {
+    public DrivetrainCommand(Drivetrain drivetrain) {
         // Store the drivetrain
         mDrivetrain = drivetrain;
 

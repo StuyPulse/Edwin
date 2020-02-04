@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -12,6 +13,7 @@ import com.stuypulse.robot.Constants.Ports;
 
 import java.util.Arrays;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -43,8 +45,11 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax[] mRightMotors;
 
     // An encoder for each side of the drive train
-    private CANEncoder mLeftEncoder;
-    private CANEncoder mRightEncoder;
+    private CANEncoder mLeftNEOEncoder;
+    private CANEncoder mRightNEOEncoder;
+
+    private Encoder mLeftGreyhillEncoder;
+    private Encoder mRightGreyhillEncoder;
 
     // DifferentialDrive and Gear Information
     private DrivetrainGear mGear;
@@ -53,7 +58,7 @@ public class Drivetrain extends SubsystemBase {
     private DifferentialDrive mLowGearDrive;
 
     // NAVX for Gyro
-    //private AHRS mNavX;
+    private AHRS mNavX;
 
     public Drivetrain() {
         // Add Motors to list
@@ -70,12 +75,16 @@ public class Drivetrain extends SubsystemBase {
         // Configure Motors
         setInverted(true);
         setSmartCurrentLimit(DrivetrainSettings.kCurrentLimit);
-        setDistancePerRotation(DrivetrainSettings.kDistancePerRotation);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.kNEODistancePerRotation);
+        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.kGreyhillDistancePerPulse);
 
         // Create list of encoders based on motors
-        mLeftEncoder = mLeftMotors[1].getEncoder();
-        mRightEncoder = mRightMotors[1].getEncoder();
+        mLeftNEOEncoder = mLeftMotors[1].getEncoder();
+        mRightNEOEncoder = mRightMotors[1].getEncoder();
 
+        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.kLeftEncoderA, Ports.Drivetrain.kLeftEncoderA);
+        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.kRightEncoderA, Ports.Drivetrain.kRightEncoderA);
+    
         // Set Gear to Low
         mGear = DrivetrainGear.LOW;
 
@@ -91,7 +100,7 @@ public class Drivetrain extends SubsystemBase {
         mGearShift = new Solenoid(Ports.Drivetrain.kGearShift);
 
         // Initialize NAVX
-        //mNavX = new AHRS(SPI.Port.kMXP);
+        mNavX = new AHRS(SPI.Port.kMXP);
     }
 
     /**
@@ -144,35 +153,79 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
+     * @return the navx on the drivetrain used for positioning
+     */
+    public AHRS getNavX() {
+        return mNavX;
+    }
+
+    /**
      * Set the distance that is traveled when one rotation of a motor is complete,
      * this helps improve encoder readings
      * 
      * @param distance distance robot moves in one rotation
      */
-    public void setDistancePerRotation(double distance) {
-        mLeftEncoder.setPositionConversionFactor(distance);
-        mRightEncoder.setPositionConversionFactor(distance);
+    public void setNEODistancePerRotation(double distance) {
+        mLeftNEOEncoder.setPositionConversionFactor(distance);
+        mRightNEOEncoder.setPositionConversionFactor(distance);
     }
 
     /**
      * @return distance left side of drivetrain has moved
      */
-    public double getLeftDistance() {
-        return mLeftEncoder.getPosition();
+    public double getLeftNEODistance() {
+        return mLeftNEOEncoder.getPosition();
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
-    public double getRightDistance() {
-        return mRightEncoder.getPosition();
+    public double getRightNEODistance() {
+        return mRightNEOEncoder.getPosition();
     }
 
     /**
      * @return distance drivetrain has moved
      */
-    public double getDistance() {
-        return (getLeftDistance() + getRightDistance()) / 2.0;
+    public double getNEODistance() {
+        return (getLeftNEODistance() + getRightNEODistance()) / 2.0;
+    }
+
+    /**
+     * Set the distance that is traveled when one rotation of a motor is complete,
+     * this helps improve encoder readings
+     * 
+     * @param distance distance robot moves in one rotation
+     */
+    public void setGreyhillDistancePerPulse(double distance) {
+        mLeftGreyhillEncoder.setDistancePerPulse(distance);
+        mRightGreyhillEncoder.setDistancePerPulse(distance);
+    }
+
+    /**
+     * @return distance left side of drivetrain has moved
+     */
+    public double getLeftGreyhillDistance() {
+        return mLeftGreyhillEncoder.getDistance();
+    }
+
+    /**
+     * @return distance right side of drivetrain has moved
+     */
+    public double getRightGreyhillDistance() {
+        return mRightGreyhillEncoder.getDistance();
+    }
+
+    /**
+     * @return distance drivetrain has moved
+     */
+    public double getGreyhillDistance() {
+        return (getLeftGreyhillDistance() + getRightGreyhillDistance()) / 2.0;
+    }
+
+    public void resetGreyhill() {
+        mLeftGreyhillEncoder.reset();
+        mRightGreyhillEncoder.reset();
     }
 
     /**

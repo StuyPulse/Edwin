@@ -3,11 +3,14 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
-public class OuterGoalAligner implements AlignmentCommand.Aligner {
+/**
+ * The drivetrain goal aligner
+ */
+public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner {
 
     private double mTargetDistance;
 
-    public OuterGoalAligner(double distance) {
+    public DrivetrainGoalAligner(double distance) {
         mTargetDistance = distance;
     }
 

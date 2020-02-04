@@ -38,7 +38,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     // Default driving command that uses gamepad
-    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driver));
+    drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -51,8 +51,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driver.getLeftButton().whenHeld(new PIDAlignmentCommand(drivetrain, new OuterGoalAligner(10)));
-    driver.getTopButton().whenHeld(new PIDAlignmentCommand(drivetrain, new OuterGoalAligner(20)));
+    driver.getLeftButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
+    driver.getTopButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
   }
 
 

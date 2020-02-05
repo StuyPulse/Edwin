@@ -10,18 +10,21 @@ package com.stuypulse.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
- * declared globally (i.e. public static).  Do not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean constants. This class should not be used for any other
+ * purpose. All constants should be declared globally (i.e. public static). Do
+ * not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public interface Constants {
 
     /**
      * Lets us turn feet and inches into just feet for measurements
-     * @param feet feet
+     * 
+     * @param feet   feet
      * @param inches inches
      * @return value in feet
      */
@@ -30,8 +33,10 @@ public interface Constants {
     }
 
     /**
-     * Allow us to initialize a value on smart dashboard while putting it in robot map
-     * @param key name of value on smart dashboard
+     * Allow us to initialize a value on smart dashboard while putting it in robot
+     * map
+     * 
+     * @param key   name of value on smart dashboard
      * @param value value you want it to be set to
      * @return the double you passed to it
      */
@@ -51,7 +56,7 @@ public interface Constants {
             int kLeftTop = -1;
             int kLeftMiddle = -1;
             int kLeftBottom = -1;
-            
+
             int kRightTop = -1;
             int kRightMiddle = -1;
             int kRightBottom = -1;
@@ -66,47 +71,63 @@ public interface Constants {
     }
 
     public interface DrivetrainSettings {
+        // If speed is below this, use quick turn
         double kQuickTurnThreshold = 0.04;
+
+        // How much to slow down quick turn
         double kQuickTurnSpeed = 0.5;
 
+        // Low Pass Filter for Driver Controls
         double kRCSpeed = 0.5;
         double kRCAngle = 0.25;
 
+        // Current Limit for the motors
         int kCurrentLimit = 0;
 
+        // Encoder Constants
         public interface Encoders {
             double kNEODistancePerRotation = 1.0;
             double kGreyhillDistancePerPulse = 1.0;
         }
     }
-    
+
     public interface Alignment {
         public interface Speed {
+            // Preset PID Values
             double kP = onSmartDashboard("SpeedP", -1);
             double kI = onSmartDashboard("SpeedI", -1);
             double kD = onSmartDashboard("SpeedD", -1);
 
+            // Bang Bang speed when measuring PID Values 
+            // [whatever you want, but 0.75 is nice]
             double kBangBang = 0.75;
 
+            // Low Pass Filter Time Constant for controller
             double kInSmoothTime = 0.0;
             double kOutSmoothTime = 0.1;
 
-            double kMaxSpeedErr = 1;
-            double kMaxSpeedVel = 0.5;
+            // What is an acceptable error
+            double kMaxSpeedErr = 0.4;
+            double kMaxSpeedVel = 0.2;
         }
 
         public interface Angle {
+            // Preset PID Values
             double kP = onSmartDashboard("AngleP", -1);
             double kI = onSmartDashboard("AngleI", -1);
             double kD = onSmartDashboard("AngleD", -1);
 
+            // Bang Bang speed when measuring PID Values 
+            // [whatever you want, but 0.75 is nice]
             double kBangBang = 0.75;
 
+            // Low pass Filter Time Constant for controller
             double kInSmoothTime = 0.00;
             double kOutSmoothTime = 0.05;
 
-            double kMaxAngleErr = 2;
-            double kMaxAngleVel = 1;
+            // What is an acceptable erro
+            double kMaxAngleErr = 1.0;
+            double kMaxAngleVel = 0.5;
         }
 
         public interface Measurements {
@@ -136,18 +157,18 @@ public interface Constants {
     /*********************************************************************************************
      * Funnel Constants
      *********************************************************************************************/
-    //TODO: Test speeds
+    // TODO: Test speeds
     double FUNNEL_SPEED = 0.5;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     /*********************************************************************************************
      * Climber Constants
      *********************************************************************************************/
-    //TODO: Test speeds
+    // TODO: Test speeds
     double CLIMB_UP_SPEED = 0.5;
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
 
-     /*********************************************************************************************
+    /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = -1;

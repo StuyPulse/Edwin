@@ -7,10 +7,10 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ControlPanelSpinToColorCommand extends CommandBase {
-    private final ControlPanel m_cPanel;
+    private final ControlPanel cPanel;
     private Color goal;
     public ControlPanelSpinToColorCommand(ControlPanel cPanel) {
-        m_cPanel = cPanel;
+        this.cPanel = cPanel;
         addRequirements(cPanel);
     }
 
@@ -47,18 +47,17 @@ public class ControlPanelSpinToColorCommand extends CommandBase {
         if (goal == null) {
             setTargetColor();
         } else {
-            m_cPanel.turn(Constants.CONTROL_PANEL_TURN_SPEED);
+            cPanel.turn(Constants.CONTROL_PANEL_TURN_SPEED);
         }
     }
     @Override
     public boolean isFinished() {
-        return goal == m_cPanel.getColor();
+        return goal == cPanel.getColor();
     }
 
     @Override
     public void end(boolean interrupted) {
         // code to run when ends
-        m_cPanel.stop();
+        cPanel.stop();
     }
 }
-s

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * An example command that uses an example subsystem.
  */
 public class ControlPanelTurnRevolutionsCommand extends CommandBase {
-    private final ControlPanel m_cPanel;
+    private final ControlPanel cPanel;
     private int times;
     private Color previousColor = null;
     private int colorCount;
@@ -20,17 +20,16 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ControlPanelTurnRevolutionsCommand(ControlPanel subsystem, int times) {
+    public ControlPanelTurnRevolutionsCommand(ControlPanel cPanel, int times) {
         this.times = times;
-        m_cPanel = subsystem;
-        // Use addRequirements() here to declare subsystem dependencies.
+        this.cPanel = cPanel;
         addRequirements(m_cPanel);
     }
 
     @Override
     public void execute() {
-        m_cPanel.turn(1);
-        if (previousColor != null && previousColor != m_cPanel.getColor()) {
+        cPanel.turn(1);
+        if (previousColor != null && previousColor != cPanel.getColor()) {
             colorCount += 1;
         }
 
@@ -38,7 +37,7 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
             rotationsAmount += 1;
             colorCount = 0;
         }
-        previousColor = m_cPanel.getColor();
+        previousColor = cPanel.getColor();
     }
 
     @Override
@@ -48,7 +47,6 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        // code to run wwhen ends
-        m_cPanel.stop();
+        cPanel.stop();
     }
 }

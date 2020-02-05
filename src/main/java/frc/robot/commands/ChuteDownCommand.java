@@ -29,9 +29,9 @@ public class ChuteDownCommand extends CommandBase {
         return chute.getLowerChuteValue();
     }
 
-    @Override
+    /*@Override
     public void end(boolean interrupted) {
         chute.stopChute();
-    }
+    }*/
 
 }

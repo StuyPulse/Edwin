@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.ChuteUpCommand;
 import frc.robot.subsystems.Chute;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -22,7 +23,7 @@ import frc.robot.utils.Logitech;
  */
 public class RobotContainer {
 
-  public final Logitech gamepad = new Logitech(0);
+  public static final Logitech gamepad = new Logitech(0);
   public final Chute chute = new Chute();
 
   /**
@@ -36,7 +37,6 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    SmartDashboard.putNumber("ball_intake", 1);
     // Configure the button bindings
     configureButtonBindings();
 
@@ -49,7 +49,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // gamepad.getDPadUp().whenPressed(new ChuteTakeBallCommand(Chute.getChute(), (int) SmartDashboard.getNumber("ball_intake", 1)));
+
   }
 
 

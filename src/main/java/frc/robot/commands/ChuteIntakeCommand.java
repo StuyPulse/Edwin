@@ -38,4 +38,9 @@ public class ChuteIntakeCommand extends CommandBase {
         return chute.getRotations() != targetBalls;
     }
 
+    /*@Override
+    public void end(boolean interrupted) {
+        chute.stopChute();
+    }*/
+
 }

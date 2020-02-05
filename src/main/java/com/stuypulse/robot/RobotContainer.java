@@ -30,7 +30,8 @@ public class RobotContainer {
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
-
+  private final ControlPanel controlPanel = new ControlPanel();
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */

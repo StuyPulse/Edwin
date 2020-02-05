@@ -1,7 +1,7 @@
-package frc.robot.commands;
+package com.stuypulse.robot.commands;
 
+import com.stuypulse.robot.subsystems.Chute;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Chute;
 
 public class ChuteIntakeCommand extends CommandBase {
 

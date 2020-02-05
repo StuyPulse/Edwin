@@ -1,4 +1,5 @@
-package frc.robot.utils;
+package com.stuypulse.robot.utils;
+/* Import this from stuylib */
 
 import com.revrobotics.CANEncoder;
 

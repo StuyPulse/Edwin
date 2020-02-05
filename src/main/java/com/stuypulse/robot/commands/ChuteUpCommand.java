@@ -1,13 +1,13 @@
-package frc.robot.commands;
+package com.stuypulse.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Chute;
+import com.stuypulse.robot.subsystems.Chute;
 
-public class ChuteDownCommand extends CommandBase {
+public class ChuteUpCommand extends CommandBase {
 
     private Chute chute;
 
-    public ChuteDownCommand(Chute chute) {
+    public ChuteUpCommand(Chute chute) {
         this.chute = chute;
 
         // Use addRequirements() here to declare subsystem dependencies.
@@ -21,17 +21,12 @@ public class ChuteDownCommand extends CommandBase {
 
     @Override
     public void execute() {
-        chute.liftDown();
+        chute.liftUp();
     }
 
     @Override
     public boolean isFinished() {  
-        return chute.getLowerChuteValue();
+        return chute.getUpperChuteValue();
     }
-
-    /*@Override
-    public void end(boolean interrupted) {
-        chute.stopChute();
-    }*/
 
 }

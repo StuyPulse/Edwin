@@ -1,12 +1,12 @@
-package frc.robot.subsystems;
+package com.stuypulse.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.utils.NeoEncoder;
+import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.utils.NeoEncoder;
 
 public class Chute extends SubsystemBase {
 

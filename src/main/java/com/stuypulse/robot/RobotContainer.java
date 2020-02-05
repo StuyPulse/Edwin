@@ -5,15 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package com.stuypulse.robot;
 
-import frc.robot.commands.ChuteUpCommand;
-import frc.robot.subsystems.Chute;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.utils.Logitech;
+import com.stuypulse.robot.subsystems.Funnel;
+import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.robot.subsystems.Chute;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -23,15 +24,11 @@ import frc.robot.utils.Logitech;
  */
 public class RobotContainer {
 
-  public static final Logitech gamepad = new Logitech(0);
-  public final Chute chute = new Chute();
-
-  /**
-   * TODO:
-   * define commands
-   * define subsystems
-   * add more commands
-   */
+  private final Funnel funnel = new Funnel();
+  private final Climber climber = new Climber();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Intake intake = new Intake();
+  private final Chute chute = new Chute();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

@@ -52,7 +52,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
         // Create an IStream that filters the raw angle from the controller
         mAngle = new FilteredIStream(mRawAngle, 
             (x) -> SLMath.square(x), 
-            new LowPassFilter(DrivetrainSettings.kRCSpeed)
+            new LowPassFilter(DrivetrainSettings.kRCAngle)
         );
     }
 

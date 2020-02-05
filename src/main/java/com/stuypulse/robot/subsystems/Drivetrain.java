@@ -82,8 +82,8 @@ public class Drivetrain extends SubsystemBase {
         mLeftNEOEncoder = mLeftMotors[1].getEncoder();
         mRightNEOEncoder = mRightMotors[1].getEncoder();
 
-        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.kLeftEncoderA, Ports.Drivetrain.kLeftEncoderA);
-        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.kRightEncoderA, Ports.Drivetrain.kRightEncoderA);
+        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.kLeftEncoderA, Ports.Drivetrain.kLeftEncoderB);
+        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.kRightEncoderA, Ports.Drivetrain.kRightEncoderB);
     
         // Set Gear to Low
         mGear = DrivetrainGear.LOW;
@@ -157,6 +157,13 @@ public class Drivetrain extends SubsystemBase {
      */
     public AHRS getNavX() {
         return mNavX;
+    }
+
+    /**
+     * @return get the angle of the robot
+     */
+    public double getGyroAngle() {
+        return mNavX.getAngle();
     }
 
     /**

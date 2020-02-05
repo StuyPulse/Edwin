@@ -90,7 +90,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // The Limelight camera shall stay on when aligning
     // Works as a good indicator that things are working
     public void initialize() {
-        Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
+        // Moved to DrivetrainGoalAligner() to reduce LED usage
+        // Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
     }
 
     // Turn limelight off when no longer aligning due to rules

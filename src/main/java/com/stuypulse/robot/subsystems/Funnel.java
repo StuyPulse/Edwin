@@ -37,18 +37,16 @@ public class Funnel extends SubsystemBase implements MotorStall {
 
     @Override
     public void enableStalling() {
-        motor.set(Constants.UNFUNNEL_SPEED);
+        // TODO insert gamepad vibration here;
     }
 
     @Override
     public boolean isStalling() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public double getEncoderApproachStallThreshold() {
-        // TODO Auto-generated method stub
         return 3.0;
     }
 

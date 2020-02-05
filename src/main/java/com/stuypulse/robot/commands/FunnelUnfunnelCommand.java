@@ -10,11 +10,11 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.robot.subsystems.Funnel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
+public class FunnelUnfunnelCommand extends CommandBase {
     
     private final Funnel m_Funnel;
 
-    public FunnelFunnelWithMotorStallingCommand(Funnel funnel) {
+    public FunnelUnfunnelCommand(Funnel funnel) {
         m_Funnel = funnel;
         addRequirements(m_Funnel);
     }
@@ -26,10 +26,7 @@ public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(m_Funnel.isStalling())
-            m_Funnel.enableStalling();
-        else;
-            m_Funnel.funnel();
+        m_Funnel.unfunnel();
     }
 
     @Override

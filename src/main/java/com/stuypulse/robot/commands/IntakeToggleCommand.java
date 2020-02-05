@@ -9,7 +9,6 @@ public class IntakeToggleCommand extends InstantCommand {
 
   public IntakeToggleCommand(Intake intake) {
     this.intake = intake;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.intake);
   }
 

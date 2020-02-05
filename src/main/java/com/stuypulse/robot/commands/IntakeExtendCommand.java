@@ -9,7 +9,6 @@ public class IntakeExtendCommand extends InstantCommand {
 
   public IntakeExtendCommand(Intake intake) {
     this.intake = intake;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.intake);
   }
 

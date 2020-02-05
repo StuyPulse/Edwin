@@ -9,7 +9,6 @@ public class IntakeRetractCommand extends InstantCommand {
 
   public IntakeRetractCommand(Intake intake) {
     this.intake = intake;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.intake);
   }
 

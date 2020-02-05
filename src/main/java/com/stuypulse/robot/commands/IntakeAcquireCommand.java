@@ -9,7 +9,6 @@ public class IntakeAcquireCommand extends CommandBase {
 
   public IntakeAcquireCommand(Intake intake) {
     this.intake = intake;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.intake);
   }
 

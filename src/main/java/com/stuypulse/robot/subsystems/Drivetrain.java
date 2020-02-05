@@ -99,8 +99,8 @@ public class Drivetrain extends SubsystemBase {
         // Configure Motors and Other Things
         setInverted(true);
         setSmartCurrentLimit(DrivetrainSettings.kCurrentLimit);
-        setNEODistancePerRotation(DrivetrainSettings.Encoders.kNEODistancePerRotation);
-        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.kGreyhillDistancePerPulse);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.kWheelCircumference);
+        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.kGreyhillFeetPerPulse);
     }
 
     /**

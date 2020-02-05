@@ -86,17 +86,29 @@ public interface Constants {
 
         // Encoder Constants
         public interface Encoders {
-            double kNEODistancePerRotation = 1.0;
-            double kGreyhillDistancePerPulse = 1.0;
+
+            double kWheelDiameter = 0.5;
+            double kWheelCircumference = kWheelDiameter * Math.PI;
+            
+            // Ratio of the smaller gear to the larger gear
+            double kOuterGearRatio = 24.0 / 60.0;
+
+            // The difference between theoretical and actual distance
+            double kRealYield = 1.3;
+            
+            double kGreyhillPulsesPerRevolution = 256 * 4.0;
+            double kGreyhillFeetPerPulse = ((kWheelCircumference * kOuterGearRatio) / kGreyhillPulsesPerRevolution) * kRealYield;
+
+            double kNEODistancePerRotation = 1.0; // Not Correct
         }
     }
 
     public interface Alignment {
         public interface Speed {
             // Preset PID Values
-            double kP = onSmartDashboard("SpeedP", -1);
-            double kI = onSmartDashboard("SpeedI", -1);
-            double kD = onSmartDashboard("SpeedD", -1);
+            double kP = onSmartDashboard("SpeedP", 0.1);
+            double kI = onSmartDashboard("SpeedI", 0.01);
+            double kD = onSmartDashboard("SpeedD", 0.025);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]
@@ -113,9 +125,9 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            double kP = onSmartDashboard("AngleP", -1);
-            double kI = onSmartDashboard("AngleI", -1);
-            double kD = onSmartDashboard("AngleD", -1);
+            double kP = onSmartDashboard("AngleP", 0.055);
+            double kI = onSmartDashboard("AngleI", 0.01);
+            double kD = onSmartDashboard("AngleD", 0.005);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]

@@ -31,29 +31,37 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
             mDrivetrain = drivetrain;
             mJustTurning = false;
 
-            // mGoalAngle = ???
-            // mGoalDistance = ???
+            mGoalAngle = (mDrivetrain.getGyroAngle() + angle + 360) % 360;
+            mGoalDistance = mDrivetrain.getGreyhillDistance() + distance;
         }
 
         public Aligner(Drivetrain drivetrain, double angle) {
             mDrivetrain = drivetrain;
             mJustTurning = true;
 
-            // mGoalAngle = ???
+            mGoalAngle = (mDrivetrain.getGyroAngle() + angle + 360) % 360;
         }
 
         public double getSpeedError() {
             if (mJustTurning) {
                 return 0.0;
             } else {
-                // TODO: MEASURE CURRENT DISTANCE DRIVEN AND SUBRACT IT FROM GOAL
-                return 0.0;
+                return mGoalDistance - mDrivetrain.getGreyhillDistance();
             }
         }
 
         public double getAngleError() {
-            // TODO: MEASURE CURRENT ANGLE AND SUBRACT IT FROM GOAL
-            return 0.0;
+            double angleError = mGoalAngle - mDrivetrain.getGyroAngle();
+
+            if (angleError > 180) {
+                angleError -= 360;
+            }
+
+            if (angleError < -180) {
+                angleError += 360;
+            }
+
+            return angleError;
         }
     }
 

@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 /**
@@ -81,14 +82,26 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         }
     }
 
-    // Update angle
+    // Update angle based on angle error
     public double getAngle() {
         return mAngle.update(mAligner.getAngleError());
     }
 
+    // The Limelight camera shall stay on when aligning
+    // Works as a good indicator that things are working
+    public void initialize() {
+        Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
+    }
+
+    // Turn limelight off when no longer aligning due to rules
+    public void end(boolean interrupted) {
+        Limelight.setLEDMode(Limelight.LEDMode.FORCE_OFF);
+    }
+
+    // Command is finished if all of the errors are small enough
     public boolean isFinished() {
-        return ( // Return if everything is aligned
-        mSpeed.getError() < Alignment.Speed.kMaxSpeedErr && mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel
+        return (mSpeed.getError() < Alignment.Speed.kMaxSpeedErr 
+                && mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel
                 && mAngle.getError() < Alignment.Angle.kMaxAngleErr
                 && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel);
     }

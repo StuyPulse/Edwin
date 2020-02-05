@@ -1,23 +1,18 @@
 package com.stuypulse.robot.commands;
 
+import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.subsystems.Chute;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ChuteIntakeCommand extends CommandBase {
 
     private Chute chute;
-    private int targetBalls;
+    private static boolean isIntake;
 
     public ChuteIntakeCommand(Chute chute) {
         this.chute = chute;
-        targetBalls = 1;
-
-        // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(chute);
-    }
-    public ChuteIntakeCommand(Chute chute, int balls) {
-        this.chute = chute;
-        targetBalls = balls;
+        isIntake = false;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(chute);
@@ -30,12 +25,23 @@ public class ChuteIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        chute.liftUp();
+        isIntake = RobotContainer.gamepad.getRawDPadDown(); 
+
+        if (!isIntake) {
+            if (chute.getLowerChuteValue()) {
+                chute.liftUp();
+            } else {
+                chute.stopChute();
+            }
+        } else {
+            chute.stopChute();
+        }
+
     }
 
     @Override
     public boolean isFinished() {  
-        return chute.getRotations() != targetBalls;
+        return false;
     }
 
     /*@Override

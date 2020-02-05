@@ -29,4 +29,9 @@ public class ChuteUpCommand extends CommandBase {
         return chute.getUpperChuteValue();
     }
 
+    /*@Override
+    public void end(boolean interrupted) {
+        chute.stopChute();
+    }*/
+
 }

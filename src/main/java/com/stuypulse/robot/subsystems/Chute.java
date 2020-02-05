@@ -11,6 +11,7 @@ import com.stuypulse.robot.utils.NeoEncoder;
 public class Chute extends SubsystemBase {
 
     private CANSparkMax chuteMotor;
+
     private NeoEncoder chuteEncoder;
 
     private DigitalInput lowerChuteSensor;
@@ -32,7 +33,6 @@ public class Chute extends SubsystemBase {
         return upperChuteSensor.get();
     }
 
-
     public void liftUp() {
         chuteMotor.set(Constants.CHUTE_LIFT_UP_SPEED);
     }
@@ -53,17 +53,8 @@ public class Chute extends SubsystemBase {
         chuteEncoder.resetEncoder();
     }
 
-    public int getRotations() {
-        return (int) (getRawRotations());
-    }
-
-    private double getRawRotations() {
-        return getTicks() / Constants.CHUTE_TICKS_PER_BALL;
-    }
-
     public double getDistance() {
-        return getRawRotations() * Constants.CHUTE_RADIUS * 2 * Math.PI;
+        return getTicks() / (Constants.CHUTE_ENCODER_RADIUS * 2 * Math.PI);
     }
-
 
 }

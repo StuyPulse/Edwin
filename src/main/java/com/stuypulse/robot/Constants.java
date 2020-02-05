@@ -67,6 +67,5 @@ public interface Constants {
 	int CHUTE_LOWER_SENSOR_PORT = -1;
 	int CHUTE_UPPER_SENSOR_PORT = -1;
 	double CHUTE_LIFT_UP_SPEED = -1;
-	double CHUTE_TICKS_PER_BALL = -1;
-	double CHUTE_RADIUS = -1;
+    double CHUTE_ENCODER_RADIUS = -1;
 }

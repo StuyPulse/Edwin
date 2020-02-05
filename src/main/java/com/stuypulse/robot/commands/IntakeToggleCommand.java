@@ -1,13 +1,13 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;;
 
-public class IntakeAcquireCommand extends CommandBase {
+public class IntakeToggleCommand extends InstantCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Intake intake;
 
-  public IntakeAcquireCommand(Intake intake) {
+  public IntakeToggleCommand(Intake intake) {
     this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.intake);
@@ -15,21 +15,10 @@ public class IntakeAcquireCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    if(!intake.isExtended())
+    if(intake.isExtended())
+      intake.retract();
+    else {
       intake.extend();
-  }
-
-  @Override
-  public void execute() {
-      intake.acquire();
-  }
-
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
-
-  @Override
-  public void end(boolean interrupted) {
+    }
   }
 }

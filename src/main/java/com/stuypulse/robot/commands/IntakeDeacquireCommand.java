@@ -15,6 +15,7 @@ public class IntakeDeacquireCommand extends CommandBase {
 
   @Override
   public void initialize() {
+    if(!intake.isExtended())
       intake.extend();
   }
 

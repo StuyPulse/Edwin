@@ -8,9 +8,9 @@ import com.stuypulse.robot.subsystems.Drivetrain;
  * get these values, and will do other things like, drive in a straight line
  * while making sure the angle is correct, and turning before driving.
  * 
- * WARNING: It is HIGHLY recommended NOT to combine angle and distance commands
+ * WARNING: It is not recommended to combine angle and distance in one command
  * as turning the robot can lead to bad measurements with distance and
- * visa-versa. It is only included to make code more specific
+ * visa-versa. It is only included to make code more specific.
  */
 public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
 
@@ -19,7 +19,7 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
      * drivetrain a very specific amount. First it turns to the desired angle and
      * then it moves the desired amount.
      */
-    private static class DrivetrainMovementAligner implements DrivetrainAlignmentCommand.Aligner {
+    public static class Aligner implements DrivetrainAlignmentCommand.Aligner {
 
         private Drivetrain mDrivetrain;
 
@@ -27,18 +27,28 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
         private double mGoalDistance;
         private boolean mJustTurning;
 
-        public DrivetrainMovementAligner(Drivetrain drivetrain, double angle, double distance, boolean justTurning) {
+        public Aligner(Drivetrain drivetrain, double angle, double distance) {
             mDrivetrain = drivetrain;
-            mJustTurning = justTurning;
+            mJustTurning = false;
+
+            // mGoalAngle = ???
+            // mGoalDistance = ???
+        }
+
+        public Aligner(Drivetrain drivetrain, double angle) {
+            mDrivetrain = drivetrain;
+            mJustTurning = true;
+
+            // mGoalAngle = ???
         }
 
         public double getSpeedError() {
             if (mJustTurning) {
                 return 0.0;
+            } else {
+                // TODO: MEASURE CURRENT DISTANCE DRIVEN AND SUBRACT IT FROM GOAL
+                return 0.0;
             }
-
-            // TODO: MEASURE CURRENT DISTANCE DRIVEN AND SUBRACT IT FROM GOAL
-            return 0.0;
         }
 
         public double getAngleError() {
@@ -51,11 +61,12 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
      * Creates command that moves drivetrain very specific amounts
      * 
      * @param drivetrain the drivetrain you want to move
-     * @param angle      the angle you want it to turn before moving (DO NOT USE)
+     * @param angle      the angle you want it to turn before moving (this may*
+     *                   affect distance)
      * @param distance   the distance you want it to travel
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle, double distance) {
-        super(drivetrain, new DrivetrainMovementAligner(drivetrain, angle, distance, false));
+        super(drivetrain, new Aligner(drivetrain, angle, distance));
     }
 
     /**
@@ -65,6 +76,6 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
      * @param angle      the angle you want it to turn
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle) {
-        super(drivetrain, new DrivetrainMovementAligner(drivetrain, angle, 0.0, true));
+        super(drivetrain, new Aligner(drivetrain, angle));
     }
 }

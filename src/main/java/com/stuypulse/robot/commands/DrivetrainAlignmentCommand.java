@@ -15,6 +15,11 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
  */
 public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
+    /**
+     * This interface allows you to create classes that instruct the drivetrain to
+     * move based off of error for speed and angle. If you use an aligner to define
+     * your class, you can do things like auto tune.
+     */
     public interface Aligner {
         public double getSpeedError();
 
@@ -69,9 +74,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Update the speed if the angle is aligned
     public double getSpeed() {
         if ( // Check if the angle is aligned before moving forward
-            mAngle.getError() < Alignment.Angle.kMaxAngleErr && 
-            mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel
-        ) {
+        mAngle.getError() < Alignment.Angle.kMaxAngleErr && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel) {
             return mSpeed.update(mAligner.getSpeedError());
         } else {
             return 0.0;
@@ -85,10 +88,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     public boolean isFinished() {
         return ( // Return if everything is aligned
-            mSpeed.getError() < Alignment.Speed.kMaxSpeedErr &&
-            mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel && 
-            mAngle.getError() < Alignment.Angle.kMaxAngleErr && 
-            mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel
-        );
+        mSpeed.getError() < Alignment.Speed.kMaxSpeedErr && mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel
+                && mAngle.getError() < Alignment.Angle.kMaxAngleErr
+                && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel);
     }
 }

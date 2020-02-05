@@ -72,18 +72,12 @@ public class Drivetrain extends SubsystemBase {
                 new CANSparkMax(Ports.Drivetrain.kRightMiddle, MotorType.kBrushless),
                 new CANSparkMax(Ports.Drivetrain.kRightBottom, MotorType.kBrushless) };
 
-        // Configure Motors
-        setInverted(true);
-        setSmartCurrentLimit(DrivetrainSettings.kCurrentLimit);
-        setNEODistancePerRotation(DrivetrainSettings.Encoders.kNEODistancePerRotation);
-        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.kGreyhillDistancePerPulse);
-
         // Create list of encoders based on motors
         mLeftNEOEncoder = mLeftMotors[1].getEncoder();
         mRightNEOEncoder = mRightMotors[1].getEncoder();
 
-        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.kLeftEncoderA, Ports.Drivetrain.kLeftEncoderA);
-        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.kRightEncoderA, Ports.Drivetrain.kRightEncoderA);
+        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.kLeftEncoderA, Ports.Drivetrain.kLeftEncoderB);
+        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.kRightEncoderA, Ports.Drivetrain.kRightEncoderB);
     
         // Set Gear to Low
         mGear = DrivetrainGear.LOW;
@@ -101,6 +95,12 @@ public class Drivetrain extends SubsystemBase {
 
         // Initialize NAVX
         mNavX = new AHRS(SPI.Port.kMXP);
+
+        // Configure Motors and Other Things
+        setInverted(true);
+        setSmartCurrentLimit(DrivetrainSettings.kCurrentLimit);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.kNEODistancePerRotation);
+        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.kGreyhillDistancePerPulse);
     }
 
     /**
@@ -157,6 +157,13 @@ public class Drivetrain extends SubsystemBase {
      */
     public AHRS getNavX() {
         return mNavX;
+    }
+
+    /**
+     * @return get the angle of the robot
+     */
+    public double getGyroAngle() {
+        return mNavX.getAngle();
     }
 
     /**

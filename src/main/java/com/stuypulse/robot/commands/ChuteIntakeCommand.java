@@ -9,10 +9,12 @@ public class ChuteIntakeCommand extends CommandBase {
 
     private Chute chute;
     private static boolean isIntake;
+    private boolean previousValue;
 
     public ChuteIntakeCommand(Chute chute) {
         this.chute = chute;
         isIntake = false;
+        previousValue = false;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(chute);
@@ -25,9 +27,12 @@ public class ChuteIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        isIntake = RobotContainer.gamepad.getRawDPadDown(); 
+        if (previousValue != RobotContainer.gamepad.getRawDPadDown()) {
+            isIntake = !isIntake;
+            previousValue = RobotContainer.gamepad.getRawDPadDown();
+        } 
 
-        if (!isIntake) {
+        if (isIntake) {
             if (chute.getLowerChuteValue()) {
                 chute.liftUp();
             } else {

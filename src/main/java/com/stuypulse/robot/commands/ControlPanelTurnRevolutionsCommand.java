@@ -23,7 +23,7 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
     public ControlPanelTurnRevolutionsCommand(ControlPanel cPanel, int times) {
         this.times = times;
         this.cPanel = cPanel;
-        addRequirements(m_cPanel);
+        addRequirements(cPanel);
     }
 
     @Override

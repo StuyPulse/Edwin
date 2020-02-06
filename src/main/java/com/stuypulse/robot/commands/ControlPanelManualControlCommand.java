@@ -14,7 +14,7 @@ public class ControlPanelManualControlCommand implements Command {
     ControlPanel cPanel;
     //Gamepad gamepad;
 
-    public ControlPanelManualControlCommand(final ControlPanel cPanel) {
+    public ControlPanelManualControlCommand(ControlPanel cPanel) {
         this.cPanel = cPanel;
         //this.gamepad = gamepad;
     }

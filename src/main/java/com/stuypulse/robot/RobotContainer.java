@@ -11,9 +11,15 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.Funnel;
+
+import java.util.ResourceBundle.Control;
+
 import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
+
+import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -26,13 +32,16 @@ public class RobotContainer {
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
-
+  private final ControlPanel controlPanel = new ControlPanel();
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
   }
 
   /**
@@ -54,4 +63,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
+
 }

@@ -7,6 +7,7 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
+import com.stuypulse.stuylib.util.StopWatch;
 
 /**
  * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two
@@ -40,6 +41,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Distance that the command will try to align with
     private Aligner aligner;
 
+    // Used to check timeout of alignment
+    private StopWatch timer;
+
     /**
      * This creates a command that aligns the robot
      * 
@@ -64,6 +68,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Target distance for the Alignment Command
         this.aligner = aligner;
+
+        // Used to check the alignment time.
+        this.timer = new StopWatch();
     }
 
     // Get the Speed Controller
@@ -97,6 +104,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public void initialize() {
         drivetrain.setLowGear();
         aligner.init();
+        timer.reset();
     }
 
     // Turn limelight off when no longer aligning due to rules
@@ -106,6 +114,16 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Command is finished if all of the errors are small enough
     public boolean isFinished() {
+        // Check if the aligner hasn't run for long enoug
+        if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
+            return false;
+        }
+
+        // Time out for aligning
+        if(timer.getTime() > Alignment.MAX_ALIGNMENT_TIME) {
+            return false;
+        }
+
         return (speed.getError() < Alignment.Speed.MAX_SPEED_ERROR 
                 && speed.getVelocity() < Alignment.Speed.MAX_SPEED_VEL
                 && angle.getError() < Alignment.Angle.MAX_ANGLE_ERROR

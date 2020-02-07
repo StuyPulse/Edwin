@@ -41,20 +41,20 @@ public interface Constants {
         }
 
         public interface Drivetrain {
-            int LEFT_TOP = -1;
-            int LEFT_MIDDLE = -1;
-            int LEFT_BOTTOM = -1;
+            int LEFT_TOP = 3;
+            int LEFT_MIDDLE = 4;
+            int LEFT_BOTTOM = 5;
 
-            int RIGHT_TOP = -1;
-            int RIGHT_MIDDLE = -1;
-            int RIGHT_BOTTOM = -1;
+            int RIGHT_TOP = 6;
+            int RIGHT_MIDDLE = 7;
+            int RIGHT_BOTTOM = 8;
 
             int LEFT_ENCODER_A = -1;
             int LEFT_ENCODER_B = -1;
             int RIGHT_ENCODER_A = -1;
             int RIGHT_ENCODER_B = -1;
 
-            int GEAR_SHIFT = -1;
+            int GEAR_SHIFT = 0;
         }
     }
 
@@ -70,7 +70,7 @@ public interface Constants {
         double ANGLE_DEADBAND = 0.1;
 
         double SPEED_FILTER = 0.5;
-        double ANGLE_FILTER = 0.25;
+        double ANGLE_FILTER = 0.15;
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 65;
@@ -95,6 +95,10 @@ public interface Constants {
     }
 
     public interface Alignment {
+
+        double MIN_ALIGNMENT_TIME = 0.75;
+        double MAX_ALIGNMENT_TIME = 7.5;
+        
         public interface Speed {
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.1);
@@ -128,7 +132,7 @@ public interface Constants {
             double IN_SMOOTH_FILTER = 0.00;
             double OUT_SMOOTH_FILTER = 0.05;
 
-            // What is an acceptable erro
+            // What is an acceptable error
             double MAX_ANGLE_ERROR = 1.0;
             double MAX_ANGLE_VEL = 0.5;
         }

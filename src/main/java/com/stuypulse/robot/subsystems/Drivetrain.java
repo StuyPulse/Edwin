@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.stuylib.math.SLMath;
 
 import java.util.Arrays;
 
@@ -209,7 +210,10 @@ public class Drivetrain extends SubsystemBase {
      * @return distance drivetrain has moved
      */
     public double getNEODistance() {
-        return (getLeftNEODistance() + getRightNEODistance()) / 2.0;
+        double left = SLMath.spow(getLeftNEODistance(), 0.5);
+        double right = SLMath.spow(getRightNEODistance(), 0.5);
+        double out = SLMath.spow((left + right) / 2.0, 2.0);
+        return out;
     }
 
     /**
@@ -241,7 +245,10 @@ public class Drivetrain extends SubsystemBase {
      * @return distance drivetrain has moved
      */
     public double getGreyhillDistance() {
-        return (getLeftGreyhillDistance() + getRightGreyhillDistance()) / 2.0;
+        double left = SLMath.spow(getLeftGreyhillDistance(), 0.5);
+        double right = SLMath.spow(getRightGreyhillDistance(), 0.5);
+        double out = SLMath.spow((left + right) / 2.0, 2.0);
+        return out;
     }
 
     public void resetGreyhill() {

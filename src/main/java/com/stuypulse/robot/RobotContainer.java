@@ -21,6 +21,11 @@ import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
 
 import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
+import com.stuypulse.robot.commands.ControlPanelSpinToColorCommand;
+import com.stuypulse.robot.commands.ControlPanelTurnRevolutionsCommand;
+import com.stuypulse.robot.commands.IntakeAcquireCommand;
+import com.stuypulse.robot.commands.IntakeDeacquireCommand;
+import com.stuypulse.robot.commands.IntakeToggleCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -36,7 +41,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final ControlPanel controlPanel = new ControlPanel();
 
-  private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
+  private final PS4 driverGamepad = new PS4(Constants.DRIVER_GAMEPAD_PORT);
   private final Logitech operatorGamepad = new Logitech(Constants.OPERATOR_GAMEPAD_PORT);
 
   
@@ -47,7 +52,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operatorGamepad));
   }
 
   /**
@@ -57,6 +62,13 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    operatorGamepad.getLeftBumper().whileHeld(new ControlPanelSpinToColorCommand(controlPanel));
+    operatorGamepad.getRightBumper().whileHeld(new ControlPanelTurnRevolutionsCommand(controlPanel));
+    
+    operatorGamepad.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
+    operatorGamepad.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
+
+    operatorGamepad.getRightTrigger().whenPressed(new IntakeToggleCommand(intake));
   }
 
 

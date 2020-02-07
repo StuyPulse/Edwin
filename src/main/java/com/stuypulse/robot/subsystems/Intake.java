@@ -29,6 +29,10 @@ public class Intake extends SubsystemBase {
         intakeSolenoid.set(false);
     }
 
+    public void toggle() {
+        intakeSolenoid.set(!intakeSolenoid.get());
+    }
+
     public void acquire() {
         intakeMotor.set(1);
     }

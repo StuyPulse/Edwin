@@ -1,7 +1,6 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.ControlPanel;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -10,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class ControlPanelTurnRevolutionsCommand extends CommandBase {
     private final ControlPanel cPanel;
-    private int times;
     private Color previousColor = null;
     private int colorCount;
     private int rotationsAmount;
@@ -20,8 +18,7 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ControlPanelTurnRevolutionsCommand(ControlPanel cPanel, int times) {
-        this.times = times;
+    public ControlPanelTurnRevolutionsCommand(ControlPanel cPanel) {
         this.cPanel = cPanel;
         addRequirements(cPanel);
     }

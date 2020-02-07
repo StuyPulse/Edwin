@@ -76,17 +76,29 @@ public interface Constants {
 
         // Encoder Constants
         public interface Encoders {
-            double kNEODistancePerRotation = 1.0;
-            double kGreyhillDistancePerPulse = 1.0;
+
+            double kWheelDiameter = 0.5;
+            double kWheelCircumference = kWheelDiameter * Math.PI;
+            
+            // Ratio of the smaller gear to the larger gear
+            double kOuterGearRatio = 24.0 / 60.0;
+
+            // The difference between theoretical and actual distance
+            double kRealYield = 1.3;
+            
+            double kGreyhillPulsesPerRevolution = 256 * 4.0;
+            double kGreyhillFeetPerPulse = ((kWheelCircumference * kOuterGearRatio) / kGreyhillPulsesPerRevolution) * kRealYield;
+
+            double kNEODistancePerRotation = 1.0; // Not Correct
         }
     }
 
     public interface Alignment {
         public interface Speed {
             // Preset PID Values
-            SmartNumber kP = new SmartNumber("SpeedP", -1);
-            SmartNumber kI = new SmartNumber("SpeedI", -1);
-            SmartNumber kD = new SmartNumber("SpeedD", -1);
+            SmartNumber kP = new SmartNumber("SpeedP", 0.1);
+            SmartNumber kI = new SmartNumber("SpeedI", 0.01);
+            SmartNumber kD = new SmartNumber("SpeedD", 0.025);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]
@@ -103,9 +115,9 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber kP = new SmartNumber("SpeedP", -1);
-            SmartNumber kI = new SmartNumber("SpeedI", -1);
-            SmartNumber kD = new SmartNumber("SpeedD", -1);
+            SmartNumber kP = new SmartNumber("AngleP", 0.055);
+            SmartNumber kI = new SmartNumber("AngleI", 0.01);
+            SmartNumber kD = new SmartNumber("AngleD", 0.005);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]

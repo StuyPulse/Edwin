@@ -7,29 +7,28 @@
 
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.MotorStall;
 import com.stuypulse.robot.subsystems.Funnel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
     
-    private final Funnel m_Funnel;
+    private final Funnel funnel;
 
     public FunnelFunnelWithMotorStallingCommand(Funnel funnel) {
-        m_Funnel = funnel;
-        addRequirements(m_Funnel);
+        this.funnel = funnel;
+        addRequirements(funnel);
     }
 
     @Override
     public void initialize() {
-        new Thread(new MotorStall(m_Funnel)).start();
+        funnel.setRunning(true);
     }
 
     @Override
     public void execute() {
-        if(m_Funnel.isStalled())
+        if(funnel.isStalling())
            //TODO : when it stalls, gamepad will vibrate unil not stalled anymore
-        m_Funnel.funnel();
+        funnel.funnel();
     }
 
     @Override
@@ -39,6 +38,7 @@ public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        m_Funnel.stop();
+        funnel.stop();
+        funnel.setRunning(false);
     }
 }

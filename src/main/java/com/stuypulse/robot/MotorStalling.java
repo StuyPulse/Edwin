@@ -7,41 +7,32 @@
 
 package com.stuypulse.robot;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj.Timer;
 
 public class MotorStalling implements Runnable {
 
-    private int counter;   
-    private ArrayList<MotorStall> subsystemArray;
+    private MotorStall[] subsystemArray;
 
-    public MotorStalling(int arraySize) { 
-        subsystemArray = new ArrayList<MotorStall>();
+    public MotorStalling(MotorStall... subsystems) { 
+        subsystemArray = subsystems;
     }
 
-    public void addSubsystem(MotorStall subsystem) {
-        subsystemArray.add(subsystem);
-    }
-
-    public boolean checkStall() {
-        double current_encoder_value;
-        double change_distance;
-        double start_encoder_value = 0;
+    public void checkStall() {
         while(true) {
-            for(int i = 0; i < subsystemArray.size(); i++) {
-                current_encoder_value = Math.abs(subsystemArray.get(i).getEncoderVal());
-                change_distance = Math.abs(current_encoder_value - start_encoder_value);
-                if(change_distance <= subsystemArray.get(i).getEncoderApproachStallThreshold() && true) //TODO : replace true with corresponding gamepad button
-                    counter++;
+            Timer.delay(0.2);
+            for(MotorStall subsystem : subsystemArray) {
+                double start_encoder_value = Math.abs(subsystem.getStartEncoderVal());
+                double current_encoder_value = Math.abs(subsystem.getCurrentEncoderVal());
+                double change_distance = Math.abs(current_encoder_value - start_encoder_value);
+                if (change_distance <= subsystem.getEncoderApproachStallThreshold() && subsystem.isRunning())
+                    subsystem.incrementStallCounter();
                 else {
-                    counter = 0;
-                    return false;
+                    subsystem.resetStallCounter();
+                    subsystem.setStalled(false);
                 }
-                if(counter >= 5)
-                    return true;
-                start_encoder_value = current_encoder_value;
-                Timer.delay(0.2);
+                if(subsystem.getStallCounter() >= 5)
+                    subsystem.setStalled(true);
+                subsystem.setStartEncoderVal(current_encoder_value);
             }
         }
 

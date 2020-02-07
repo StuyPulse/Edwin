@@ -14,7 +14,9 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
 
     public DrivetrainGoalAligner(double distance) {
         this.distance = distance;
-        
+    }
+
+    public void init() {
         // Turn on LEDs for CV
         Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
     }

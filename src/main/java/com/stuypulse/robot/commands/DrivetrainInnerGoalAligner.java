@@ -14,12 +14,11 @@ public class DrivetrainInnerGoalAligner implements DrivetrainAlignmentCommand.Al
 
     private LowPassFilter filter = new LowPassFilter(0.5);
     public DrivetrainInnerGoalAligner() {
-        // Turn on LEDs for CV
-        Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
     }
 
-    public double getSpeedError() {
-        return 0;
+    public void init() {
+        // Turn on LEDs for CV
+        Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
     }
 
     public double getAngleError() {

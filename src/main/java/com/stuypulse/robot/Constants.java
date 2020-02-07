@@ -41,13 +41,13 @@ public interface Constants {
         }
 
         public interface Drivetrain {
-            int LEFT_TOP = -1;
-            int LEFT_MIDDLE = -1;
-            int LEFT_BOTTOM = -1;
+            int LEFT_TOP = 3;
+            int LEFT_MIDDLE = 4;
+            int LEFT_BOTTOM = 5;
 
-            int RIGHT_TOP = -1;
-            int RIGHT_MIDDLE = -1;
-            int RIGHT_BOTTOM = -1;
+            int RIGHT_TOP = 6;
+            int RIGHT_MIDDLE = 7;
+            int RIGHT_BOTTOM = 8;
 
             int LEFT_ENCODER_A = -1;
             int LEFT_ENCODER_B = -1;
@@ -128,7 +128,7 @@ public interface Constants {
             double IN_SMOOTH_FILTER = 0.00;
             double OUT_SMOOTH_FILTER = 0.05;
 
-            // What is an acceptable erro
+            // What is an acceptable error
             double MAX_ANGLE_ERROR = 1.0;
             double MAX_ANGLE_VEL = 0.5;
         }

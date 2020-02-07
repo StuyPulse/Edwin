@@ -37,6 +37,7 @@ public interface Constants {
         public interface Gamepad {
             int kOperator = 0;
             int kDriver = 1;
+            int kDebugger = 2;
         }
 
         public interface Drivetrain {

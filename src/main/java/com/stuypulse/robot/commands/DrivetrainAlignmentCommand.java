@@ -22,10 +22,14 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
      * your class, you can do things like auto tune.
      */
     public interface Aligner {
+        // Called when command initialize is called,
+        // Useful for relative encoder commands
         public default void init() { }
 
+        // The amount of positional error
         public default double getSpeedError() { return 0.0; };
 
+        // The amount of angular error
         public default double getAngleError() { return 0.0; };
     }
 

@@ -145,10 +145,10 @@ public class Drivetrain extends SubsystemBase {
      * @param gear value for gear on robot
      */
     public void setGear(DrivetrainGear gear) {
-        if(gear != mGear) {
+        if(gear.equals(mGear)) {
             mGear = gear;
             stop();
-            mGearShift.set(mGear == DrivetrainGear.HIGH);
+            mGearShift.set(mGear.equals(DrivetrainGear.HIGH));
         }
     }
 

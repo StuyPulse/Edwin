@@ -24,6 +24,8 @@ import com.stuypulse.robot.Constants.Ports;
  */
 public class RobotContainer {
 
+  public final boolean DEBUG = true;
+
   public final Funnel funnel = new Funnel();
   public final Climber climber = new Climber();
   public final Drivetrain drivetrain = new Drivetrain();
@@ -31,6 +33,7 @@ public class RobotContainer {
 
   public final Gamepad driver = new PS4(Ports.Gamepad.kDriver);
   public final Gamepad operator = new PS4(Ports.Gamepad.kOperator);
+  public final Gamepad debug = new PS4(Ports.Gamepad.kDebugger);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -53,6 +56,20 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driver.getLeftButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
+
+    /**
+     * 
+     */
+
+    if(DEBUG) {
+      debug.getLeftButton().whenHeld(new DrivetrainPIDAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      debug.getTopButton().whenHeld(new DrivetrainPIDAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
+
+      debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
+      debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, -2.5));
+      debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
+      debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
+    }
   }
 
 

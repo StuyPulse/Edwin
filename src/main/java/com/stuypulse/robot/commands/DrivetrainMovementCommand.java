@@ -23,23 +23,35 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
 
         private Drivetrain mDrivetrain;
 
+        private double mAngle;
+        private double mDistance;
+        private boolean mJustTurning;
+
         private double mGoalAngle;
         private double mGoalDistance;
-        private boolean mJustTurning;
 
         public Aligner(Drivetrain drivetrain, double angle, double distance) {
             mDrivetrain = drivetrain;
+
+            mAngle = (angle + 360) % 360;
+            mDistance = distance;
             mJustTurning = false;
 
-            mGoalAngle = (mDrivetrain.getGyroAngle() + angle + 360) % 360;
-            mGoalDistance = mDrivetrain.getGreyhillDistance() + distance;
+            init();
         }
 
         public Aligner(Drivetrain drivetrain, double angle) {
-            mDrivetrain = drivetrain;
-            mJustTurning = true;
+            this(drivetrain, angle, 0.0);
 
-            mGoalAngle = (mDrivetrain.getGyroAngle() + angle + 360) % 360;
+            mJustTurning = true;
+        }
+
+        /**
+         * Set goals based on when the command is initialized
+         */
+        public void init() {
+            mGoalAngle = (mDrivetrain.getGyroAngle() + mAngle + 360) % 360;
+            mGoalDistance = mDrivetrain.getGreyhillDistance() + mDistance;
         }
 
         public double getSpeedError() {

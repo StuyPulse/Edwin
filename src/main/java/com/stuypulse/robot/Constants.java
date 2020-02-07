@@ -156,6 +156,12 @@ public interface Constants {
      *********************************************************************************************/
     int CLIMBER_LIFT_MOTOR_PORT = -1;
     int CLIMBER_YOYO_MOTOR_PORT = -1;
+    
+    /*********************************************************************************************
+     * Co1or Wheel Ports
+     *********************************************************************************************/
+    int CONTROL_PANEL_MOTOR_PORT = -1;
+    int CONTROL_SENSOR_PORT = -1;
 
     /*********************************************************************************************
      * Funnel Constants
@@ -170,10 +176,33 @@ public interface Constants {
     // TODO: Test speeds
     double CLIMB_UP_SPEED = 0.5;
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
+    
+     /*********************************************************************************************
+     * Co1or Wheel Constants
+     *********************************************************************************************/
+    double CONTROL_PANEL_TURN_SPEED = 1.0;
+    
+    double CYAN_RED = 0.2;
+    double CYAN_GREEN = 0.56;
+    double CYAN_BLUE = 0.3;
+    
+    double GREEN_RED = 0.25;
+    double GREEN_GREEN = 0.65;
+    double GREEN_BLUE = 0.17;
+
+    double RED_RED = 0.60;
+    double RED_GREEN = 0.35;
+    double RED_BLUE = 0.1;
+
+    double YELLOW_RED = 0.30;
+    double YELLOW_GREEN = 0.50;
+    double YELLOW_BLUE = 0.1;
+
+
 
     /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = -1;
     int INTAKE_SOLENOID_PORT = -1;
-}
+    }

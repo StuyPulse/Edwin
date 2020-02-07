@@ -17,6 +17,10 @@ public class Intake extends SubsystemBase {
         intakeSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
     }
 
+    public boolean isExtended() {
+        return intakeSolenoid.get();
+    }
+
     public void extend() {
         intakeSolenoid.set(true);
     }

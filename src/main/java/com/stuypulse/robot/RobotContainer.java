@@ -16,6 +16,8 @@ import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.Ports;
 
+import java.util.ResourceBundle.Control;
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -26,15 +28,16 @@ public class RobotContainer {
 
   public final boolean DEBUG = true;
 
-  public final Funnel funnel = new Funnel();
-  public final Climber climber = new Climber();
-  public final Drivetrain drivetrain = new Drivetrain();
-  public final Intake intake = new Intake();
+  private final Funnel funnel = new Funnel();
+  private final Climber climber = new Climber();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Intake intake = new Intake();
+  private final ControlPanel controlPanel = new ControlPanel();
 
   public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
   public final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
   public final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
-
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -45,6 +48,8 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
   }
 
   /**
@@ -82,4 +87,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
+
 }

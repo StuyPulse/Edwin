@@ -22,17 +22,19 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
      * your class, you can do things like auto tune.
      */
     public interface Aligner {
-        public double getSpeedError();
+        public default void init() { }
 
-        public double getAngleError();
+        public default double getSpeedError() { return 0.0; };
+
+        public default double getAngleError() { return 0.0; };
     }
 
     // Controllers for Alignment
-    private Controller mSpeed;
-    private Controller mAngle;
+    private Controller speed;
+    private Controller angle;
 
     // Distance that the command will try to align with
-    private Aligner mAligner;
+    private Aligner aligner;
 
     /**
      * This creates a command that aligns the robot
@@ -47,36 +49,36 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         super(drivetrain);
 
         // Initialize PID Controller for Speed
-        mSpeed = speed;
-        mSpeed.setErrorFilter(new LowPassFilter(Alignment.Speed.kInSmoothTime));
-        mSpeed.setOutputFilter(new LowPassFilter(Alignment.Speed.kOutSmoothTime));
+        this.speed = speed;
+        this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.kInSmoothTime));
+        this.speed.setOutputFilter(new LowPassFilter(Alignment.Speed.kOutSmoothTime));
 
         // Initialize PID Controller for Angle
-        mAngle = angle;
-        mAngle.setErrorFilter(new LowPassFilter(Alignment.Angle.kInSmoothTime));
-        mAngle.setOutputFilter(new LowPassFilter(Alignment.Angle.kOutSmoothTime));
+        this.angle = angle;
+        this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.kInSmoothTime));
+        this.angle.setOutputFilter(new LowPassFilter(Alignment.Angle.kOutSmoothTime));
 
         // Target distance for the Alignment Command
-        mAligner = aligner;
+        this.aligner = aligner;
     }
 
     // Get the Speed Controller
     // Used by sub classes to get information
     protected Controller getSpeedController() {
-        return mSpeed;
+        return speed;
     }
 
     // Get the Angle controller
     // Used by sub classes to get information
     protected Controller getAngleController() {
-        return mAngle;
+        return angle;
     }
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
         if ( // Check if the angle is aligned before moving forward
-        mAngle.getError() < Alignment.Angle.kMaxAngleErr && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel) {
-            return mSpeed.update(mAligner.getSpeedError());
+        angle.getError() < Alignment.Angle.kMaxAngleErr && angle.getVelocity() < Alignment.Angle.kMaxAngleVel) {
+            return speed.update(aligner.getSpeedError());
         } else {
             return 0.0;
         }
@@ -84,14 +86,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update angle based on angle error
     public double getAngle() {
-        return mAngle.update(mAligner.getAngleError());
+        return angle.update(aligner.getAngleError());
     }
 
-    // The Limelight camera shall stay on when aligning
-    // Works as a good indicator that things are working
+    // Set the gear and other things when initializing
     public void initialize() {
-        // Moved to DrivetrainGoalAligner() to reduce LED usage
-        // Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
+        drivetrain.setLowGear();
+        aligner.init();
     }
 
     // Turn limelight off when no longer aligning due to rules
@@ -101,9 +102,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Command is finished if all of the errors are small enough
     public boolean isFinished() {
-        return (mSpeed.getError() < Alignment.Speed.kMaxSpeedErr 
-                && mSpeed.getVelocity() < Alignment.Speed.kMaxSpeedVel
-                && mAngle.getError() < Alignment.Angle.kMaxAngleErr
-                && mAngle.getVelocity() < Alignment.Angle.kMaxAngleVel);
+        return (speed.getError() < Alignment.Speed.kMaxSpeedErr 
+                && speed.getVelocity() < Alignment.Speed.kMaxSpeedVel
+                && angle.getError() < Alignment.Angle.kMaxAngleErr
+                && angle.getVelocity() < Alignment.Angle.kMaxAngleVel);
     }
 }

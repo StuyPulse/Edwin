@@ -7,7 +7,7 @@
 
 package com.stuypulse.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -30,19 +30,6 @@ public interface Constants {
      */
     private static double toFeet(int feet, double inches) {
         return ((double) feet) + (inches / 12.0);
-    }
-
-    /**
-     * Allow us to initialize a value on smart dashboard while putting it in robot
-     * map
-     * 
-     * @param key   name of value on smart dashboard
-     * @param value value you want it to be set to
-     * @return the double you passed to it
-     */
-    private static double onSmartDashboard(String key, double value) {
-        SmartDashboard.putNumber(key, value);
-        return value;
     }
 
     public interface Ports {
@@ -77,9 +64,12 @@ public interface Constants {
         // How much to slow down quick turn
         double kQuickTurnSpeed = 0.5;
 
-        // Low Pass Filter for Driver Controls
-        double kRCSpeed = 0.5;
-        double kRCAngle = 0.25;
+        // Low Pass Filter and deadband for Driver Controls
+        double kSpeedDeadband = 0.1;
+        double kAngleDeadband = 0.1;
+
+        double kSpeedFilter = 0.5;
+        double kAngleFilter = 0.25;
 
         // Current Limit for the motors
         int kCurrentLimit = 0;
@@ -94,9 +84,9 @@ public interface Constants {
     public interface Alignment {
         public interface Speed {
             // Preset PID Values
-            double kP = onSmartDashboard("SpeedP", -1);
-            double kI = onSmartDashboard("SpeedI", -1);
-            double kD = onSmartDashboard("SpeedD", -1);
+            SmartNumber kP = new SmartNumber("SpeedP", -1);
+            SmartNumber kI = new SmartNumber("SpeedI", -1);
+            SmartNumber kD = new SmartNumber("SpeedD", -1);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]
@@ -113,9 +103,9 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            double kP = onSmartDashboard("AngleP", -1);
-            double kI = onSmartDashboard("AngleI", -1);
-            double kD = onSmartDashboard("AngleD", -1);
+            SmartNumber kP = new SmartNumber("SpeedP", -1);
+            SmartNumber kI = new SmartNumber("SpeedI", -1);
+            SmartNumber kD = new SmartNumber("SpeedD", -1);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]

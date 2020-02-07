@@ -10,28 +10,26 @@ import com.stuypulse.stuylib.network.limelight.Limelight;
  */
 public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner {
 
-    private double mTargetDistance;
+    private double distance;
 
     public DrivetrainGoalAligner(double distance) {
-        mTargetDistance = distance;
+        this.distance = distance;
         
         // Turn on LEDs for CV
         Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
     }
 
     public double getSpeedError() {
-        // TODO: have CV replace this command
         double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.kPitch;
         double goal_height = Alignment.Measurements.kGoalHeight - Alignment.Measurements.Limelight.kHeight;
         double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
                 - Alignment.Measurements.Limelight.kDistance;
 
         // Return the error from the target distance
-        return goal_dist - mTargetDistance;
+        return goal_dist - distance;
     }
 
     public double getAngleError() {
-        // TODO: have CV replace this command
         return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.kYaw;
     }
 }

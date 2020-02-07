@@ -6,14 +6,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public abstract class DrivetrainLowGearCommand extends CommandBase {
 
-    private Drivetrain mDrivetrain;
+    private Drivetrain drivetrain;
 
     public DrivetrainLowGearCommand(Drivetrain drivetrain) {
-        mDrivetrain = drivetrain;
+        this.drivetrain = drivetrain;
     }
 
     public void initialize() {
-        mDrivetrain.setLowGear();
+        drivetrain.setLowGear();
     }
 
     public boolean isFinished() {

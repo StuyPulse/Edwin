@@ -21,12 +21,12 @@ public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
     private static Controller getNewSpeedController() {
         return new PIDCalculator(Alignment.Speed.kBangBang);
     }
-
+    
     private static Controller getNewAngleController() {
         PIDController angle = new PIDController(-1, -1, -1);
-        angle.setP(SmartDashboard.getNumber("AngleP", Alignment.Angle.kP));
-        angle.setI(SmartDashboard.getNumber("AngleI", Alignment.Angle.kI));
-        angle.setD(SmartDashboard.getNumber("AngleD", Alignment.Angle.kD));
+        angle.setP(Alignment.Angle.kP.doubleValue());
+        angle.setI(Alignment.Angle.kI.doubleValue());
+        angle.setD(Alignment.Angle.kD.doubleValue());
         return angle;
     }
 

@@ -6,14 +6,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public abstract class DrivetrainStopCommand extends CommandBase {
 
-    private Drivetrain mDrivetrain;
+    private Drivetrain drivetrain;
 
     public DrivetrainStopCommand(Drivetrain drivetrain) {
-        mDrivetrain = drivetrain;
+        this.drivetrain = drivetrain;
     }
 
     public void initialize() {
-        mDrivetrain.stop();
+        this.drivetrain.stop();
     }
 
     public boolean isFinished() {

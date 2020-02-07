@@ -45,14 +45,16 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         // Create an IStream that filters the raw speed from the controller
         mSpeed = new FilteredIStream(mRawSpeed, 
+            (x) -> SLMath.deadband(x, DrivetrainSettings.kSpeedDeadband),
             (x) -> SLMath.square(x), 
-            new LowPassFilter(DrivetrainSettings.kRCSpeed)
+            new LowPassFilter(DrivetrainSettings.kSpeedFilter)
         );
 
         // Create an IStream that filters the raw angle from the controller
         mAngle = new FilteredIStream(mRawAngle, 
+            (x) -> SLMath.deadband(x, DrivetrainSettings.kAngleDeadband),
             (x) -> SLMath.square(x), 
-            new LowPassFilter(DrivetrainSettings.kRCAngle)
+            new LowPassFilter(DrivetrainSettings.kAngleFilter)
         );
     }
 

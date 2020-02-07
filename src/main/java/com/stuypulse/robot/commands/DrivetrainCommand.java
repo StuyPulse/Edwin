@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public abstract class DrivetrainCommand extends CommandBase {
 
     // Where the drivetrain is stored
-    private Drivetrain mDrivetrain;
+    protected Drivetrain drivetrain;
 
     public DrivetrainCommand(Drivetrain drivetrain) {
         // Store the drivetrain
-        mDrivetrain = drivetrain;
+        this.drivetrain = drivetrain;
 
         // Add the drivetrain to the list of requirements
-        addRequirements(mDrivetrain);
+        addRequirements(this.drivetrain);
     }
 
     // Override these two functions in other commands
@@ -28,6 +28,6 @@ public abstract class DrivetrainCommand extends CommandBase {
 
     // Update the drivetrain with the new speed and angle
     public void execute() {
-        mDrivetrain.curvatureDrive(this.getSpeed(), this.getAngle());
+        drivetrain.curvatureDrive(this.getSpeed(), this.getAngle());
     }
 }

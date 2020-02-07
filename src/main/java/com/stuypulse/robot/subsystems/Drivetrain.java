@@ -135,21 +135,35 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * Sets drivetrain into high gear
+     * @return current gear the robot is in
      */
-    public void setLowGear() {
-        stop();
-        mGear = DrivetrainGear.LOW;
-        mGearShift.set(false);
+    public DrivetrainGear getGear() {
+        return mGear;
+    }
+
+    /**
+     * @param gear value for gear on robot
+     */
+    public void setGear(DrivetrainGear gear) {
+        if(gear != mGear) {
+            mGear = gear;
+            stop();
+            mGearShift.set(mGear == DrivetrainGear.HIGH);
+        }
     }
 
     /**
      * Sets drivetrain into low gear
      */
+    public void setLowGear() {
+        setGear(DrivetrainGear.LOW);
+    }
+
+    /**
+     * Sets drivetrain into high gear
+     */
     public void setHighGear() {
-        stop();
-        mGear = DrivetrainGear.HIGH;
-        mGearShift.set(true);
+        setGear(DrivetrainGear.HIGH);
     }
 
     /**

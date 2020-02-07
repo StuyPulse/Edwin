@@ -26,9 +26,14 @@ public class Climber extends SubsystemBase implements Loggable {
 
     private CANSparkMax liftMotor;
     private CANSparkMax yoyoMotor;
+<<<<<<< HEAD
 
     private State state;
 
+=======
+    
+    
+>>>>>>> master
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);

@@ -54,7 +54,7 @@ public interface Constants {
             int RIGHT_ENCODER_A = -1;
             int RIGHT_ENCODER_B = -1;
 
-            int GEAR_SHIFT = -1;
+            int GEAR_SHIFT = 0;
         }
     }
 
@@ -70,7 +70,7 @@ public interface Constants {
         double ANGLE_DEADBAND = 0.1;
 
         double SPEED_FILTER = 0.5;
-        double ANGLE_FILTER = 0.25;
+        double ANGLE_FILTER = 0.15;
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 65;

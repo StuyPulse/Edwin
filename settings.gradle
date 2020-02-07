@@ -26,5 +26,6 @@ pluginManagement {
     }
 }
 
-includeBuild '../StuyLib'
-
+if (file("../StuyLib").exists()) {
+    includeBuild '../StuyLib'
+}

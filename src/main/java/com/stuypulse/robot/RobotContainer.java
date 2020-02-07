@@ -18,6 +18,7 @@ import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
 
 import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
@@ -26,6 +27,7 @@ import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+import com.stuypulse.stuylib.input.gamepads.PS4;
 public class RobotContainer {
 
   private final Funnel funnel = new Funnel();
@@ -33,6 +35,10 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
   private final ControlPanel controlPanel = new ControlPanel();
+
+  private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
+  private final Logitech operatorGamepad = new Logitech(Constants.OPERATOR_GAMEPAD_PORT);
+
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

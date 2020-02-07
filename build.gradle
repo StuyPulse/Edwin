@@ -3,6 +3,12 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2020.1.2"
 }
 
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
@@ -50,6 +56,12 @@ dependencies {
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+
+    if (file("../StuyLib").exists()) {
+        implementation('com.stuypulse:StuyLib:1.0.0')
+    } else {
+        compile 'com.github.StuyPulse:StuyLib:2020.1.8.5'
+    }
 
     testImplementation 'junit:junit:4.12'
 

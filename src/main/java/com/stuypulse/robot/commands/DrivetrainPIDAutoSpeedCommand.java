@@ -40,6 +40,12 @@ public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
         super(drivetrain, aligner, getNewSpeedController(), getNewAngleController());
     }
 
+    // This command never really finishes
+    public boolean isFinished() {
+        return false;
+    }
+
+    // Report value to smart dashboard
     public void execute() {
         super.execute();
         SmartDashboard.putString("Calculated Speed PID", getSpeedController().toString());

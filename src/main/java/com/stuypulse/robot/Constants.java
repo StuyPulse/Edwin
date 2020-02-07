@@ -95,6 +95,10 @@ public interface Constants {
     }
 
     public interface Alignment {
+
+        double MIN_ALIGNMENT_TIME = 0.75;
+        double MAX_ALIGNMENT_TIME = 7.5;
+        
         public interface Speed {
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.1);

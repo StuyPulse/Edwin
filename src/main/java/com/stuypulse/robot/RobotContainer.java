@@ -19,7 +19,8 @@ import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
-
+import com.stuypulse.robot.commands.ClimberMoveCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBreakCommand;
 import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -48,6 +49,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
+    
   }
 
   /**
@@ -57,6 +59,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    operatorGamepad.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBreakCommand(climber));
   }
 
 

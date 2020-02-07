@@ -5,16 +5,16 @@ import com.stuypulse.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ClimberClimbDownCommand extends CommandBase {
-    public Climber m_climber;
+    public Climber climber;
 
     public ClimberClimbDownCommand(Climber climber) {
-        m_climber = climber;
-        addRequirements(m_climber);
+        this.climber = climber;
+        addRequirements(climber);
     }
 
     @Override
-    public void initialize() {
-        m_climber.climbDown();
+    public void execute() {
+        climber.climbDown();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ClimberClimbDownCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        m_climber.stopClimber();
+        climber.stopClimber();
     }
 
 }

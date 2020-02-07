@@ -1,53 +1,314 @@
 package com.stuypulse.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.stuypulse.robot.Constants.DrivetrainPorts;
+import com.stuypulse.robot.Constants.DrivetrainSettings;
+import com.stuypulse.robot.Constants.Ports;
+
+import java.util.Arrays;
+
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
 
-    private CANSparkMax mLeftTopMotor;
-    private CANSparkMax mLeftMiddleMotor;
-    private CANSparkMax mLeftBottomMotor;
-    
-    private CANSparkMax mRightTopMotor;
-    private CANSparkMax mRightMiddleMotor;
-    private CANSparkMax mRightBottomMotor;
+    // Enum used to store the state of the gear
+    public static enum DrivetrainGear {
+        HIGH, LOW
+    };
 
-    private SpeedControllerGroup mLeftMotors;
-    private SpeedControllerGroup mRightMotors;
+    // Turn a list of speed controllers into a speed controller group
+    private static SpeedControllerGroup makeControllerGroup(SpeedController... controllers) {
+        return new SpeedControllerGroup(controllers[0], Arrays.copyOfRange(controllers, 1, controllers.length));
+    }
 
-    private DifferentialDrive mDrivetrain;
+    // Take a list of motors and return the ones used in high gear
+    private static CANSparkMax[] getHighGear(CANSparkMax[] motors) {
+        return Arrays.copyOfRange(motors, 0, 2);
+    }
+
+    // Take a list of motors and return the ones used in low gear
+    private static CANSparkMax[] getLowGear(CANSparkMax[] motors) {
+        return motors;
+    }
+
+    // An array of motors on the left and right side of the drive train
+    private CANSparkMax[] mLeftMotors;
+    private CANSparkMax[] mRightMotors;
+
+    // An encoder for each side of the drive train
+    private CANEncoder mLeftNEOEncoder;
+    private CANEncoder mRightNEOEncoder;
+
+    private Encoder mLeftGreyhillEncoder;
+    private Encoder mRightGreyhillEncoder;
+
+    // DifferentialDrive and Gear Information
+    private DrivetrainGear mGear;
+    private Solenoid mGearShift;
+    private DifferentialDrive mHighGearDrive;
+    private DifferentialDrive mLowGearDrive;
+
+    // NAVX for Gyro
+    private AHRS mNavX;
 
     public Drivetrain() {
-        mLeftTopMotor = new CANSparkMax(DrivetrainPorts.kLeftTop, MotorType.kBrushless);
-        mLeftMiddleMotor = new CANSparkMax(DrivetrainPorts.kLeftMiddle, MotorType.kBrushless);
-        mLeftBottomMotor = new CANSparkMax(DrivetrainPorts.kLeftBottom, MotorType.kBrushless);
+        // Add Motors to list
+        mLeftMotors = new CANSparkMax[] { 
+                new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.LEFT_MIDDLE, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless) };
 
-        mRightTopMotor = new CANSparkMax(DrivetrainPorts.kRightTop, MotorType.kBrushless);
-        mRightMiddleMotor = new CANSparkMax(DrivetrainPorts.kRightMiddle, MotorType.kBrushless);
-        mRightBottomMotor = new CANSparkMax(DrivetrainPorts.kRightBottom, MotorType.kBrushless);
+        mRightMotors = new CANSparkMax[] { 
+                new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.RIGHT_MIDDLE, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless) };
 
-        mLeftMotors = new SpeedControllerGroup(mLeftTopMotor, mLeftMiddleMotor, mLeftBottomMotor);
-        mRightMotors = new SpeedControllerGroup(mRightTopMotor, mRightMiddleMotor, mRightBottomMotor);
+        // Create list of encoders based on motors
+        mLeftNEOEncoder = mLeftMotors[1].getEncoder();
+        mRightNEOEncoder = mRightMotors[1].getEncoder();
 
-        mDrivetrain = new DifferentialDrive(mLeftMotors, mRightMotors);
+        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B);
+        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B);
+    
+        // Set Gear to Low
+        mGear = DrivetrainGear.LOW;
+
+        // Create DifferentialDrive for different gears
+        mHighGearDrive = new DifferentialDrive(
+                makeControllerGroup(getHighGear(mLeftMotors)),
+                makeControllerGroup(getHighGear(mRightMotors)));
+
+        mLowGearDrive = new DifferentialDrive(
+                makeControllerGroup(getLowGear(mLeftMotors)),
+                makeControllerGroup(getLowGear(mRightMotors)));
+
+        mGearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
+
+        // Initialize NAVX
+        mNavX = new AHRS(SPI.Port.kMXP);
+
+        // Configure Motors and Other Things
+        setInverted(true);
+        setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
+        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
     }
 
+    /**
+     * Set the smart current limit of all the motors
+     * 
+     * @param limit smart current limit
+     */
+    public void setSmartCurrentLimit(int limit) {
+        for (CANSparkMax motor : mLeftMotors) {
+            motor.setSmartCurrentLimit(limit);
+        }
+
+        for (CANSparkMax motor : mRightMotors) {
+            motor.setSmartCurrentLimit(limit);
+        }
+
+    }
+
+    /**
+     * Set isInverted of all the motors
+     * 
+     * @param inverted desired settings
+     */
+    public void setInverted(boolean inverted) {
+        for (CANSparkMax motor : mLeftMotors) {
+            motor.setInverted(inverted);
+        }
+
+        for (CANSparkMax motor : mRightMotors) {
+            motor.setInverted(inverted);
+        }
+    }
+
+    /**
+     * @return current gear the robot is in
+     */
+    public DrivetrainGear getGear() {
+        return mGear;
+    }
+
+    /**
+     * @param gear value for gear on robot
+     */
+    public void setGear(DrivetrainGear gear) {
+        if(gear.equals(mGear)) {
+            mGear = gear;
+            stop();
+            mGearShift.set(mGear.equals(DrivetrainGear.HIGH));
+        }
+    }
+
+    /**
+     * Sets drivetrain into low gear
+     */
+    public void setLowGear() {
+        setGear(DrivetrainGear.LOW);
+    }
+
+    /**
+     * Sets drivetrain into high gear
+     */
+    public void setHighGear() {
+        setGear(DrivetrainGear.HIGH);
+    }
+
+    /**
+     * @return the navx on the drivetrain used for positioning
+     */
+    public AHRS getNavX() {
+        return mNavX;
+    }
+
+    /**
+     * @return get the angle of the robot
+     */
+    public double getGyroAngle() {
+        return mNavX.getAngle();
+    }
+
+    /**
+     * Set the distance that is traveled when one rotation of a motor is complete,
+     * this helps improve encoder readings
+     * 
+     * @param distance distance robot moves in one rotation
+     */
+    public void setNEODistancePerRotation(double distance) {
+        mLeftNEOEncoder.setPositionConversionFactor(distance);
+        mRightNEOEncoder.setPositionConversionFactor(distance);
+    }
+
+    /**
+     * @return distance left side of drivetrain has moved
+     */
+    public double getLeftNEODistance() {
+        return mLeftNEOEncoder.getPosition();
+    }
+
+    /**
+     * @return distance right side of drivetrain has moved
+     */
+    public double getRightNEODistance() {
+        return mRightNEOEncoder.getPosition();
+    }
+
+    /**
+     * @return distance drivetrain has moved
+     */
+    public double getNEODistance() {
+        return (getLeftNEODistance() + getRightNEODistance()) / 2.0;
+    }
+
+    /**
+     * Set the distance that is traveled when one rotation of a motor is complete,
+     * this helps improve encoder readings
+     * 
+     * @param distance distance robot moves in one rotation
+     */
+    public void setGreyhillDistancePerPulse(double distance) {
+        mLeftGreyhillEncoder.setDistancePerPulse(distance);
+        mRightGreyhillEncoder.setDistancePerPulse(distance);
+    }
+
+    /**
+     * @return distance left side of drivetrain has moved
+     */
+    public double getLeftGreyhillDistance() {
+        return mLeftGreyhillEncoder.getDistance();
+    }
+
+    /**
+     * @return distance right side of drivetrain has moved
+     */
+    public double getRightGreyhillDistance() {
+        return mRightGreyhillEncoder.getDistance();
+    }
+
+    /**
+     * @return distance drivetrain has moved
+     */
+    public double getGreyhillDistance() {
+        return (getLeftGreyhillDistance() + getRightGreyhillDistance()) / 2.0;
+    }
+
+    public void resetGreyhill() {
+        mLeftGreyhillEncoder.reset();
+        mRightGreyhillEncoder.reset();
+    }
+
+    /**
+     * @return DifferentialDrive class based on current gear
+     */
+    public DifferentialDrive getCurrentDrive() {
+        if (mGear == DrivetrainGear.HIGH) {
+            return mHighGearDrive;
+        } else {
+            return mLowGearDrive;
+        }
+    }
+
+    /**
+     * Stops drivetrain from moving
+     */
+    public void stop() {
+        tankDrive(0, 0);
+    }
+
+    /**
+     * Drives using tank drive
+     * 
+     * @param left  speed of left side
+     * @param right speed of right side
+     */
     public void tankDrive(double left, double right) {
-        mDrivetrain.tankDrive(left, right);
+        getCurrentDrive().tankDrive(left, right, false);
     }
 
+    /**
+     * Drives using arcade drive
+     * 
+     * @param speed    speed of drive train
+     * @param rotation amount that it is turning
+     */
     public void arcadeDrive(double speed, double rotation) {
-        mDrivetrain.arcadeDrive(speed, rotation, false);
+        getCurrentDrive().arcadeDrive(speed, rotation, false);
     }
 
+    /**
+     * Drives using curvature drive algorithm
+     * 
+     * @param speed     speed of robot
+     * @param rotation  amount that it turns
+     * @param quickturn overrides constant curvature
+     */
     public void curvatureDrive(double speed, double rotation, boolean quickturn) {
-        mDrivetrain.curvatureDrive(speed, rotation, quickturn);
+        getCurrentDrive().curvatureDrive(speed, rotation, quickturn);
     }
 
+    /**
+     * Drives using curvature drive algorithm with automatic quick turn
+     * 
+     * @param speed    speed of robot
+     * @param rotation amount that it turns
+     */
+    public void curvatureDrive(double speed, double rotation) {
+        if (speed < DrivetrainSettings.QUICKTURN_THRESHOLD) {
+            curvatureDrive(speed, rotation * DrivetrainSettings.QUICKTURN_SPEED, true);
+        } else {
+            curvatureDrive(speed, rotation, false);
+        }
+    }
 }

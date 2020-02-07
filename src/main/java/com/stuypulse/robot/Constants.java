@@ -7,66 +7,141 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.stuylib.network.SmartNumber;
+
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
- * declared globally (i.e. public static).  Do not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean constants. This class should not be used for any other
+ * purpose. All constants should be declared globally (i.e. public static). Do
+ * not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public interface Constants {
 
-    public interface ControllerPorts {
-        int kOperator = 0;
-        int kDriver = 1;
+    /**
+     * Lets us turn feet and inches into just feet for measurements
+     * 
+     * @param feet   feet
+     * @param inches inches
+     * @return value in feet
+     */
+    private static double toFeet(int feet, double inches) {
+        return ((double) feet) + (inches / 12.0);
     }
 
-    public interface DrivetrainPorts {
-        int kLeftTop = -1;
-        int kLeftMiddle = -1;
-        int kLeftBottom = -1;
-        
-        int kRightTop = -1;
-        int kRightMiddle = -1;
-        int kRightBottom = -1;
+    public interface Ports {
+
+        public interface Gamepad {
+            int OPERATOR = 0;
+            int DRIVER = 1;
+            int DEBUGGER = 2;
+        }
+
+        public interface Drivetrain {
+            int LEFT_TOP = -1;
+            int LEFT_MIDDLE = -1;
+            int LEFT_BOTTOM = -1;
+
+            int RIGHT_TOP = -1;
+            int RIGHT_MIDDLE = -1;
+            int RIGHT_BOTTOM = -1;
+
+            int LEFT_ENCODER_A = -1;
+            int LEFT_ENCODER_B = -1;
+            int RIGHT_ENCODER_A = -1;
+            int RIGHT_ENCODER_B = -1;
+
+            int GEAR_SHIFT = -1;
+        }
     }
-    
+
+    public interface DrivetrainSettings {
+        // If speed is below this, use quick turn
+        double QUICKTURN_THRESHOLD = 0.04;
+
+        // How much to slow down quick turn
+        double QUICKTURN_SPEED = 0.5;
+
+        // Low Pass Filter and deadband for Driver Controls
+        double SPEED_DEADBAND = 0.1;
+        double ANGLE_DEADBAND = 0.1;
+
+        double SPEED_FILTER = 0.5;
+        double ANGLE_FILTER = 0.25;
+
+        // Current Limit for the motors
+        int CURRENT_LIMIT = 65;
+
+        // Encoder Constants
+        public interface Encoders {
+
+            double WHEEL_DIAMETER = 0.5;
+            double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+            
+            // Ratio of the smaller gear to the larger gear
+            double OUTER_GEAR_RATIO = 24.0 / 60.0;
+
+            // The difference between theoretical and actual distance
+            double REAL_YIELD = 1.3;
+            
+            double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
+            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
+
+            double NEO_DISTANCE_PER_ROTATION = 1.0; // Not Correct
+        }
+    }
+
     public interface Alignment {
         public interface Speed {
-            int kP = -1;
-            int kI = -1;
-            int kD = -1;
+            // Preset PID Values
+            SmartNumber P = new SmartNumber("SpeedP", 0.1);
+            SmartNumber I = new SmartNumber("SpeedI", 0.01);
+            SmartNumber D = new SmartNumber("SpeedD", 0.025);
 
-            double kInSmoothTime = 0.1;
-            double kOutSmoothTime = 0.1;
+            // Bang Bang speed when measuring PID Values 
+            // [whatever you want, but 0.75 is nice]
+            double BANGBANG_SPEED = 0.75;
 
-            double kMaxAngleErr = 3;
-            double kMaxAngleVel = 2;
+            // Low Pass Filter Time Constant for controller
+            double IN_SMOOTH_FILTER = 0.0;
+            double OUT_SMOOTH_FILTER = 0.1;
+
+            // What is an acceptable error
+            double MAX_SPEED_ERROR = 0.4;
+            double MAX_SPEED_VEL = 0.2;
         }
 
         public interface Angle {
-            int kP = -1;
-            int kI = -1;
-            int kD = -1;
+            // Preset PID Values
+            SmartNumber P = new SmartNumber("AngleP", 0.055);
+            SmartNumber I = new SmartNumber("AngleI", 0.01);
+            SmartNumber D = new SmartNumber("AngleD", 0.005);
 
-            double kInSmoothTime = 0.05;
-            double kOutSmoothTime = 0.05;
+            // Bang Bang speed when measuring PID Values 
+            // [whatever you want, but 0.75 is nice]
+            double BANGBANG_SPEED = 0.75;
+
+            // Low pass Filter Time Constant for controller
+            double IN_SMOOTH_FILTER = 0.00;
+            double OUT_SMOOTH_FILTER = 0.05;
+
+            // What is an acceptable erro
+            double MAX_ANGLE_ERROR = 1.0;
+            double MAX_ANGLE_VEL = 0.5;
         }
 
         public interface Measurements {
 
-            private static double toFeet(int feet, double inches) {
-                return ((double) feet) + (inches / 12.0);
-            }
-
-            double kGoalHeight = toFeet(7, 6);
+            double GOAL_HEIGHT = toFeet(7, 6);
 
             public interface Limelight {
-                double kHeight = toFeet(2, 7);
-                double kDistance = toFeet(0, 0);
-                double kPitch = 17.3;
-                double kYaw = 0.0;
+                double HEIGHT = toFeet(2, 7);
+                double DISTANCE = toFeet(0, 0);
+                double PITCH = 17.3;
+                double YAW = 0.0;
             }
         }
     }
@@ -81,18 +156,53 @@ public interface Constants {
      *********************************************************************************************/
     int CLIMBER_LIFT_MOTOR_PORT = -1;
     int CLIMBER_YOYO_MOTOR_PORT = -1;
+    
+    /*********************************************************************************************
+     * Co1or Wheel Ports
+     *********************************************************************************************/
+    int CONTROL_PANEL_MOTOR_PORT = -1;
+    int CONTROL_SENSOR_PORT = -1;
 
     /*********************************************************************************************
      * Funnel Constants
      *********************************************************************************************/
-    //TODO: Test speeds
+    // TODO: Test speeds
     double FUNNEL_SPEED = 0.5;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     /*********************************************************************************************
      * Climber Constants
      *********************************************************************************************/
-    //TODO: Test speeds
+    // TODO: Test speeds
     double CLIMB_UP_SPEED = 0.5;
     double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
-}
+    
+     /*********************************************************************************************
+     * Co1or Wheel Constants
+     *********************************************************************************************/
+    double CONTROL_PANEL_TURN_SPEED = 1.0;
+    
+    double CYAN_RED = 0.2;
+    double CYAN_GREEN = 0.56;
+    double CYAN_BLUE = 0.3;
+    
+    double GREEN_RED = 0.25;
+    double GREEN_GREEN = 0.65;
+    double GREEN_BLUE = 0.17;
+
+    double RED_RED = 0.60;
+    double RED_GREEN = 0.35;
+    double RED_BLUE = 0.1;
+
+    double YELLOW_RED = 0.30;
+    double YELLOW_GREEN = 0.50;
+    double YELLOW_BLUE = 0.1;
+
+
+
+    /*********************************************************************************************
+     * Intake Motor Ports
+     *********************************************************************************************/
+    int INTAKE_MOTOR_PORT = -1;
+    int INTAKE_SOLENOID_PORT = -1;
+    }

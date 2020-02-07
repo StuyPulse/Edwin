@@ -8,13 +8,15 @@
 package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import com.stuypulse.robot.subsystems.Funnel;
-import com.stuypulse.robot.subsystems.Climber;
-import com.stuypulse.robot.subsystems.Drivetrain;
-
-import com.stuypulse.robot.Constants.ControllerPorts;
-
+import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.commands.*;
+
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.*;
+
+import com.stuypulse.robot.Constants.Ports;
+
+import java.util.ResourceBundle.Control;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -24,23 +26,30 @@ import com.stuypulse.robot.commands.*;
  */
 public class RobotContainer {
 
-  public final Funnel funnel = new Funnel();
-  public final Climber climber = new Climber();
-  public final Drivetrain drivetrain = new Drivetrain();
+  public final boolean DEBUG = true;
 
-  public final Gamepad driver = new PS4(ControllerPorts.kDriver);
-  public final Gamepad operator = new PS4(ControllerPorts.kOperator);
+  private final Funnel funnel = new Funnel();
+  private final Climber climber = new Climber();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Intake intake = new Intake();
+  private final ControlPanel controlPanel = new ControlPanel();
 
+  public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+  public final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
+  public final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
     // Default driving command that uses gamepad
-    drivetrain.setDefaultCommand(new DriveCommand(drivetrain, driver));
+    drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
 
     // Configure the button bindings
     configureButtonBindings();
+
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
   }
 
   /**
@@ -50,8 +59,22 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driver.getLeftButton().whenHeld(new AlignmentCommand(drivetrain, 10));
-    driver.getTopButton().whenHeld(new AlignmentCommand(drivetrain, 20));
+    driver.getLeftButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
+    driver.getTopButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
+
+    /**
+     * 
+     */
+
+    if(DEBUG) {
+      debug.getLeftButton().whenHeld(new DrivetrainPIDAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      debug.getTopButton().whenHeld(new DrivetrainPIDAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
+
+      debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
+      debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, -2.5));
+      debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
+      debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
+    }
   }
 
 
@@ -64,4 +87,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
+
 }

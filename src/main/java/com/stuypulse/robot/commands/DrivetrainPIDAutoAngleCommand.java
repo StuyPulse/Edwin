@@ -21,7 +21,7 @@ public class DrivetrainPIDAutoAngleCommand extends DrivetrainAlignmentCommand {
     }
 
     private static Controller getNewAngleController() {
-        return new PIDCalculator(Alignment.Angle.kBangBang);
+        return new PIDCalculator(Alignment.Angle.BANGBANG_SPEED);
     }
 
     /**

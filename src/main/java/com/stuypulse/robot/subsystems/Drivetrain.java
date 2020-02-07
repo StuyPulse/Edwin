@@ -63,21 +63,21 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         // Add Motors to list
         mLeftMotors = new CANSparkMax[] { 
-                new CANSparkMax(Ports.Drivetrain.kLeftTop, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.kLeftMiddle, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.kLeftBottom, MotorType.kBrushless) };
+                new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.LEFT_MIDDLE, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless) };
 
         mRightMotors = new CANSparkMax[] { 
-                new CANSparkMax(Ports.Drivetrain.kRightTop, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.kRightMiddle, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.kRightBottom, MotorType.kBrushless) };
+                new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.RIGHT_MIDDLE, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless) };
 
         // Create list of encoders based on motors
         mLeftNEOEncoder = mLeftMotors[1].getEncoder();
         mRightNEOEncoder = mRightMotors[1].getEncoder();
 
-        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.kLeftEncoderA, Ports.Drivetrain.kLeftEncoderB);
-        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.kRightEncoderA, Ports.Drivetrain.kRightEncoderB);
+        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B);
+        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B);
     
         // Set Gear to Low
         mGear = DrivetrainGear.LOW;
@@ -91,16 +91,16 @@ public class Drivetrain extends SubsystemBase {
                 makeControllerGroup(getLowGear(mLeftMotors)),
                 makeControllerGroup(getLowGear(mRightMotors)));
 
-        mGearShift = new Solenoid(Ports.Drivetrain.kGearShift);
+        mGearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
         mNavX = new AHRS(SPI.Port.kMXP);
 
         // Configure Motors and Other Things
         setInverted(true);
-        setSmartCurrentLimit(DrivetrainSettings.kCurrentLimit);
-        setNEODistancePerRotation(DrivetrainSettings.Encoders.kWheelCircumference);
-        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.kGreyhillFeetPerPulse);
+        setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
+        setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
     }
 
     /**
@@ -305,8 +305,8 @@ public class Drivetrain extends SubsystemBase {
      * @param rotation amount that it turns
      */
     public void curvatureDrive(double speed, double rotation) {
-        if (speed < DrivetrainSettings.kQuickTurnThreshold) {
-            curvatureDrive(speed, rotation * DrivetrainSettings.kQuickTurnSpeed, true);
+        if (speed < DrivetrainSettings.QUICKTURN_THRESHOLD) {
+            curvatureDrive(speed, rotation * DrivetrainSettings.QUICKTURN_SPEED, true);
         } else {
             curvatureDrive(speed, rotation, false);
         }

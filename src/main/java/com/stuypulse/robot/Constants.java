@@ -35,113 +35,113 @@ public interface Constants {
     public interface Ports {
 
         public interface Gamepad {
-            int kOperator = 0;
-            int kDriver = 1;
-            int kDebugger = 2;
+            int OPERATOR = 0;
+            int DRIVER = 1;
+            int DEBUGGER = 2;
         }
 
         public interface Drivetrain {
-            int kLeftTop = -1;
-            int kLeftMiddle = -1;
-            int kLeftBottom = -1;
+            int LEFT_TOP = -1;
+            int LEFT_MIDDLE = -1;
+            int LEFT_BOTTOM = -1;
 
-            int kRightTop = -1;
-            int kRightMiddle = -1;
-            int kRightBottom = -1;
+            int RIGHT_TOP = -1;
+            int RIGHT_MIDDLE = -1;
+            int RIGHT_BOTTOM = -1;
 
-            int kLeftEncoderA = -1;
-            int kLeftEncoderB = -1;
-            int kRightEncoderA = -1;
-            int kRightEncoderB = -1;
+            int LEFT_ENCODER_A = -1;
+            int LEFT_ENCODER_B = -1;
+            int RIGHT_ENCODER_A = -1;
+            int RIGHT_ENCODER_B = -1;
 
-            int kGearShift = -1;
+            int GEAR_SHIFT = -1;
         }
     }
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        double kQuickTurnThreshold = 0.04;
+        double QUICKTURN_THRESHOLD = 0.04;
 
         // How much to slow down quick turn
-        double kQuickTurnSpeed = 0.5;
+        double QUICKTURN_SPEED = 0.5;
 
         // Low Pass Filter and deadband for Driver Controls
-        double kSpeedDeadband = 0.1;
-        double kAngleDeadband = 0.1;
+        double SPEED_DEADBAND = 0.1;
+        double ANGLE_DEADBAND = 0.1;
 
-        double kSpeedFilter = 0.5;
-        double kAngleFilter = 0.25;
+        double SPEED_FILTER = 0.5;
+        double ANGLE_FILTER = 0.25;
 
         // Current Limit for the motors
-        int kCurrentLimit = 0;
+        int CURRENT_LIMIT = 65;
 
         // Encoder Constants
         public interface Encoders {
 
-            double kWheelDiameter = 0.5;
-            double kWheelCircumference = kWheelDiameter * Math.PI;
+            double WHEEL_DIAMETER = 0.5;
+            double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
             
             // Ratio of the smaller gear to the larger gear
-            double kOuterGearRatio = 24.0 / 60.0;
+            double OUTER_GEAR_RATIO = 24.0 / 60.0;
 
             // The difference between theoretical and actual distance
-            double kRealYield = 1.3;
+            double REAL_YIELD = 1.3;
             
-            double kGreyhillPulsesPerRevolution = 256 * 4.0;
-            double kGreyhillFeetPerPulse = ((kWheelCircumference * kOuterGearRatio) / kGreyhillPulsesPerRevolution) * kRealYield;
+            double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
+            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
 
-            double kNEODistancePerRotation = 1.0; // Not Correct
+            double NEO_DISTANCE_PER_ROTATION = 1.0; // Not Correct
         }
     }
 
     public interface Alignment {
         public interface Speed {
             // Preset PID Values
-            SmartNumber kP = new SmartNumber("SpeedP", 0.1);
-            SmartNumber kI = new SmartNumber("SpeedI", 0.01);
-            SmartNumber kD = new SmartNumber("SpeedD", 0.025);
+            SmartNumber P = new SmartNumber("SpeedP", 0.1);
+            SmartNumber I = new SmartNumber("SpeedI", 0.01);
+            SmartNumber D = new SmartNumber("SpeedD", 0.025);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]
-            double kBangBang = 0.75;
+            double BANGBANG_SPEED = 0.75;
 
             // Low Pass Filter Time Constant for controller
-            double kInSmoothTime = 0.0;
-            double kOutSmoothTime = 0.1;
+            double IN_SMOOTH_FILTER = 0.0;
+            double OUT_SMOOTH_FILTER = 0.1;
 
             // What is an acceptable error
-            double kMaxSpeedErr = 0.4;
-            double kMaxSpeedVel = 0.2;
+            double MAX_SPEED_ERROR = 0.4;
+            double MAX_SPEED_VEL = 0.2;
         }
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber kP = new SmartNumber("AngleP", 0.055);
-            SmartNumber kI = new SmartNumber("AngleI", 0.01);
-            SmartNumber kD = new SmartNumber("AngleD", 0.005);
+            SmartNumber P = new SmartNumber("AngleP", 0.055);
+            SmartNumber I = new SmartNumber("AngleI", 0.01);
+            SmartNumber D = new SmartNumber("AngleD", 0.005);
 
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.75 is nice]
-            double kBangBang = 0.75;
+            double BANGBANG_SPEED = 0.75;
 
             // Low pass Filter Time Constant for controller
-            double kInSmoothTime = 0.00;
-            double kOutSmoothTime = 0.05;
+            double IN_SMOOTH_FILTER = 0.00;
+            double OUT_SMOOTH_FILTER = 0.05;
 
             // What is an acceptable erro
-            double kMaxAngleErr = 1.0;
-            double kMaxAngleVel = 0.5;
+            double MAX_ANGLE_ERROR = 1.0;
+            double MAX_ANGLE_VEL = 0.5;
         }
 
         public interface Measurements {
 
-            double kGoalHeight = toFeet(7, 6);
+            double GOAL_HEIGHT = toFeet(7, 6);
 
             public interface Limelight {
-                double kHeight = toFeet(2, 7);
-                double kDistance = toFeet(0, 0);
-                double kPitch = 17.3;
-                double kYaw = 0.0;
+                double HEIGHT = toFeet(2, 7);
+                double DISTANCE = toFeet(0, 0);
+                double PITCH = 17.3;
+                double YAW = 0.0;
             }
         }
     }

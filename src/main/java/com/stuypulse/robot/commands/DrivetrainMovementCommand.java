@@ -21,21 +21,21 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
      */
     public static class Aligner implements DrivetrainAlignmentCommand.Aligner {
 
-        private Drivetrain mDrivetrain;
+        private Drivetrain drivetrain;
 
-        private double mAngle;
-        private double mDistance;
-        private boolean mJustTurning;
+        private double angle;
+        private double distance;
+        private boolean justTurning;
 
-        private double mGoalAngle;
-        private double mGoalDistance;
+        private double goalAngle;
+        private double goalDistance;
 
         public Aligner(Drivetrain drivetrain, double angle, double distance) {
-            mDrivetrain = drivetrain;
+            this.drivetrain = drivetrain;
 
-            mAngle = (angle + 360) % 360;
-            mDistance = distance;
-            mJustTurning = false;
+            this.angle = (angle + 360) % 360;
+            this.distance = distance;
+            this.justTurning = false;
 
             init();
         }
@@ -43,27 +43,27 @@ public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
         public Aligner(Drivetrain drivetrain, double angle) {
             this(drivetrain, angle, 0.0);
 
-            mJustTurning = true;
+            this.justTurning = true;
         }
 
         /**
          * Set goals based on when the command is initialized
          */
         public void init() {
-            mGoalAngle = (mDrivetrain.getGyroAngle() + mAngle + 360) % 360;
-            mGoalDistance = mDrivetrain.getGreyhillDistance() + mDistance;
+            goalAngle = (drivetrain.getGyroAngle() + angle + 360) % 360;
+            goalDistance = drivetrain.getGreyhillDistance() + distance;
         }
 
         public double getSpeedError() {
-            if (mJustTurning) {
+            if (justTurning) {
                 return 0.0;
             } else {
-                return mGoalDistance - mDrivetrain.getGreyhillDistance();
+                return goalDistance - drivetrain.getGreyhillDistance();
             }
         }
 
         public double getAngleError() {
-            double angleError = mGoalAngle - mDrivetrain.getGyroAngle();
+            double angleError = goalAngle - drivetrain.getGyroAngle();
 
             if (angleError > 180) {
                 angleError -= 360;

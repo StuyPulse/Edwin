@@ -14,17 +14,17 @@ public class DrivetrainPIDAlignmentCommand extends DrivetrainAlignmentCommand {
 
     private static Controller getNewSpeedController() {
         PIDController speed = new PIDController(-1, -1, -1);
-        speed.setP(Alignment.Speed.kP.doubleValue());
-        speed.setI(Alignment.Speed.kI.doubleValue());
-        speed.setD(Alignment.Speed.kD.doubleValue());
+        speed.setP(Alignment.Speed.P.doubleValue());
+        speed.setI(Alignment.Speed.I.doubleValue());
+        speed.setD(Alignment.Speed.D.doubleValue());
         return speed;
     }
 
     private static Controller getNewAngleController() {
         PIDController angle = new PIDController(-1, -1, -1);
-        angle.setP(Alignment.Angle.kP.doubleValue());
-        angle.setI(Alignment.Angle.kI.doubleValue());
-        angle.setD(Alignment.Angle.kD.doubleValue());
+        angle.setP(Alignment.Angle.P.doubleValue());
+        angle.setI(Alignment.Angle.I.doubleValue());
+        angle.setD(Alignment.Angle.D.doubleValue());
         return angle;
     }
 

@@ -20,16 +20,16 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
     }
 
     public double getSpeedError() {
-        double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.kPitch;
-        double goal_height = Alignment.Measurements.kGoalHeight - Alignment.Measurements.Limelight.kHeight;
+        double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
+        double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
         double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
-                - Alignment.Measurements.Limelight.kDistance;
+                - Alignment.Measurements.Limelight.DISTANCE;
 
         // Return the error from the target distance
         return goal_dist - distance;
     }
 
     public double getAngleError() {
-        return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.kYaw;
+        return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW;
     }
 }

@@ -31,9 +31,9 @@ public class RobotContainer {
   public final Drivetrain drivetrain = new Drivetrain();
   public final Intake intake = new Intake();
 
-  public final Gamepad driver = new PS4(Ports.Gamepad.kDriver);
-  public final Gamepad operator = new PS4(Ports.Gamepad.kOperator);
-  public final Gamepad debug = new PS4(Ports.Gamepad.kDebugger);
+  public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+  public final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
+  public final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

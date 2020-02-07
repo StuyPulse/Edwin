@@ -19,14 +19,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
 
     private static Controller getNewSpeedController() {
-        return new PIDCalculator(Alignment.Speed.kBangBang);
+        return new PIDCalculator(Alignment.Speed.BANGBANG_SPEED);
     }
-    
+
     private static Controller getNewAngleController() {
         PIDController angle = new PIDController(-1, -1, -1);
-        angle.setP(Alignment.Angle.kP.doubleValue());
-        angle.setI(Alignment.Angle.kI.doubleValue());
-        angle.setD(Alignment.Angle.kD.doubleValue());
+        angle.setP(Alignment.Angle.P.doubleValue());
+        angle.setI(Alignment.Angle.I.doubleValue());
+        angle.setD(Alignment.Angle.D.doubleValue());
         return angle;
     }
 

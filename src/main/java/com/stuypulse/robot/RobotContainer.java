@@ -12,9 +12,6 @@ import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
 
-import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.gamepads.*;
-
 import com.stuypulse.robot.Constants.ControllerPorts;
 
 import com.stuypulse.robot.commands.*;

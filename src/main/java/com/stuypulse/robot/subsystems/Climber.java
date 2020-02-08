@@ -13,13 +13,11 @@ public class Climber extends SubsystemBase {
     private CANSparkMax yoyoMotor;
 
     private Solenoid liftSolenoid;
-    private Solenoid yoyoSolenoid;
 
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);
         liftSolenoid = new Solenoid(Constants.CLIMBER_LIFT_SOLENOID_CHANNEL);
-        yoyoSolenoid = new Solenoid(Constants.CLIMBER_YOYO_SOLENOID_CHANNEL);
     }
 
     public void climbUp() {
@@ -46,11 +44,15 @@ public class Climber extends SubsystemBase {
         liftSolenoid.set(!liftSolenoid.get());
     }
 
-    public void enableYoyoBrake() {
-        yoyoSolenoid.set(true);
+    public void enableLiftBrake() {
+        if (!liftSolenoid.get()) {
+            liftSolenoid.set(true);
+        }
     }
 
-    public void disableYoyoBrake() {
-        yoyoSolenoid.set(false);
+    public void releaseLiftBrake() {
+        if (liftSolenoid.get()) {
+            liftSolenoid.set(false);
+        }
     }
 }

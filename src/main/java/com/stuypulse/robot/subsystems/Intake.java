@@ -23,11 +23,15 @@ public class Intake extends SubsystemBase {
     }
 
     public void extend() {
-        intakeSolenoid.set(true);
+        if (!intakeSolenoid.get()) {
+            intakeSolenoid.set(true);
+        }
     }
 
     public void retract() {
-        intakeSolenoid.set(false);
+        if (intakeSolenoid.get()) {
+            intakeSolenoid.set(false);
+        }
     }
 
     public void acquire() {

@@ -21,18 +21,19 @@ public class ClimberMoveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (Math.abs(gamepad.getLeftY()) < Math.abs(gamepad.getLeftX())) {
+        if (Math.abs(gamepad.getLeftX()) > Math.abs(gamepad.getLeftY())) {
             climber.moveYoyo(gamepad.getLeftX());
         } else {
             if (gamepad.getLeftY() > Constants.CLIMBER_MOVE_DEADBAND) {
-                climber.climbUp();
-                climber.disableYoyoBrake();
+                climber.releaseLiftBrake();
                 intake.retract();
+                climber.climbUp();
             } else if (gamepad.getLeftY() < -Constants.CLIMBER_MOVE_DEADBAND) {
+                climber.releaseLiftBrake();
                 climber.climbDown();
-                climber.disableYoyoBrake();
             } else {
                 climber.stopClimber();
+                climber.enableLiftBrake();
             }
         }
     }
@@ -45,6 +46,7 @@ public class ClimberMoveCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         climber.stopClimber();
+        climber.enableLiftBrake();
     }
 
 }

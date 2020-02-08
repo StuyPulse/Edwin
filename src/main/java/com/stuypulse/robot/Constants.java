@@ -50,12 +50,11 @@ public interface Constants {
      * Climber Motor Channels
      *********************************************************************************************/
     int CLIMBER_LIFT_SOLENOID_CHANNEL = -1;
-    int CLIMBER_YOYO_SOLENOID_CHANNEL = -1;
 
     /*********************************************************************************************
      * Climber Motor Constants
      *********************************************************************************************/
-    double CLIMBER_MOVE_DEADBAND = 0.5;
+    double CLIMBER_MOVE_DEADBAND = 0.25;
 
     /*********************************************************************************************
      * Funnel Constants

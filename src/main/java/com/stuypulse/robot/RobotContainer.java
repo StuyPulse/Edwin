@@ -62,8 +62,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorGamepad.getLeftBumper().whileHeld(new ControlPanelSpinToColorCommand(controlPanel));
-    operatorGamepad.getRightBumper().whileHeld(new ControlPanelTurnRevolutionsCommand(controlPanel));
+    operatorGamepad.getLeftBumper().whenPressed(new ControlPanelSpinToColorCommand(controlPanel));
+    operatorGamepad.getRightBumper().whenPressed(new ControlPanelTurnRevolutionsCommand(controlPanel));
     
     operatorGamepad.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
     operatorGamepad.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));

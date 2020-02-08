@@ -35,8 +35,8 @@ public class RobotContainer {
   private final ControlPanel controlPanel = new ControlPanel();
 
   private final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
-  private final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
-  private final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
+  private final Gamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
+  private final Gamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

@@ -35,8 +35,8 @@ public interface Constants {
     public interface Ports {
 
         public interface Gamepad {
-            int OPERATOR = 0;
-            int DRIVER = 1;
+            int DRIVER = 0;
+            int OPERATOR = 1;
             int DEBUGGER = 2;
         }
 

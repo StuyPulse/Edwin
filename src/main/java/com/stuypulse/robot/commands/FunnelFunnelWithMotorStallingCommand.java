@@ -7,15 +7,20 @@
 
 package com.stuypulse.robot.commands;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.subsystems.Funnel;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
     
     private final Funnel funnel;
+    private final Logitech operatorGamepad;
 
-    public FunnelFunnelWithMotorStallingCommand(Funnel funnel) {
+    public FunnelFunnelWithMotorStallingCommand(Funnel funnel, Logitech operatorGamepad) {
         this.funnel = funnel;
+        this.operatorGamepad = operatorGamepad;
         addRequirements(funnel);
     }
 
@@ -27,8 +32,9 @@ public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
     @Override
     public void execute() {
         if(funnel.isStalling())
-           //TODO : when it stalls, gamepad will vibrate unil not stalled anymore
-        funnel.funnel();
+            operatorGamepad.setRumble(1);
+        else
+            funnel.funnel();
     }
 
     @Override

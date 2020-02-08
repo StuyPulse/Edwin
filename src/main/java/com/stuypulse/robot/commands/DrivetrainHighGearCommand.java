@@ -4,7 +4,7 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public abstract class DrivetrainHighGearCommand extends CommandBase {
+public class DrivetrainHighGearCommand extends CommandBase {
 
     private Drivetrain drivetrain;
 

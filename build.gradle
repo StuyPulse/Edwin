@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2020.1.2"
+    id "edu.wpi.first.GradleRIO" version "2020.2.2"
 }
 
 allprojects {
@@ -57,6 +57,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
+    // TODO: Composite builds cause errors with linting right now
     if (file("../StuyLib").exists()) {
         implementation('com.stuypulse:StuyLib:1.0.0')
     } else {

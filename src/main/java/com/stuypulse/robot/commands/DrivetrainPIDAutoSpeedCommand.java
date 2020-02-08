@@ -7,8 +7,6 @@ import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 /**
  * This class will move the drivetrain and make measurements so that you can
  * calculate optimal P I and D values for the speed controller.
@@ -18,11 +16,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
 
-    private static Controller getNewSpeedController() {
+    public static Controller getNewSpeedController() {
         return new PIDCalculator(Alignment.Speed.BANGBANG_SPEED);
     }
 
-    private static Controller getNewAngleController() {
+    public static Controller getNewAngleController() {
         PIDController angle = new PIDController(-1, -1, -1);
         angle.setP(Alignment.Angle.P.doubleValue());
         angle.setI(Alignment.Angle.I.doubleValue());
@@ -48,6 +46,17 @@ public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
     // Report value to smart dashboard
     public void execute() {
         super.execute();
-        SmartDashboard.putString("Calculated Speed PID", getSpeedController().toString());
+
+        if (getSpeedController() instanceof PIDCalculator) {
+            PIDController calulated = ((PIDCalculator) getSpeedController()).getPIDController(
+                    Alignment.AUTOTUNE_P.doubleValue(), 
+                    Alignment.AUTOTUNE_I.doubleValue(),
+                    Alignment.AUTOTUNE_D.doubleValue()
+                );
+            
+            Alignment.Speed.P.set(calulated.getP());
+            Alignment.Speed.I.set(calulated.getI());
+            Alignment.Speed.D.set(calulated.getD());
+        }
     }
 }

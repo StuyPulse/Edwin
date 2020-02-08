@@ -6,9 +6,6 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 /**
  * This class will move the drivetrain and make measurements so that you can
  * calculate optimal P I and D values for the angle controller.
@@ -42,6 +39,17 @@ public class DrivetrainPIDAutoAngleCommand extends DrivetrainAlignmentCommand {
     // Report value to smart dashboard
     public void execute() {
         super.execute();
-        SmartDashboard.putString("Calculated Angle PID", getAngleController().toString());
+        
+        if (getAngleController() instanceof PIDCalculator) {
+            PIDController calulated = ((PIDCalculator) getAngleController()).getPIDController(
+                    Alignment.AUTOTUNE_P.doubleValue(), 
+                    Alignment.AUTOTUNE_I.doubleValue(),
+                    Alignment.AUTOTUNE_D.doubleValue()
+                );
+            
+            Alignment.Angle.P.set(calulated.getP());
+            Alignment.Angle.I.set(calulated.getI());
+            Alignment.Angle.D.set(calulated.getD());
+        }
     }
 }

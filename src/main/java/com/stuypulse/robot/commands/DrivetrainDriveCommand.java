@@ -18,40 +18,40 @@ import com.stuypulse.stuylib.math.SLMath;
  */
 public class DrivetrainDriveCommand extends DrivetrainCommand {
 
-    private Gamepad mGamepad;
+    private Gamepad gamepad;
 
-    private IStream mRawSpeed;
-    private IStream mRawAngle;
+    private IStream rawSpeed;
+    private IStream rawAngle;
 
-    private IStream mSpeed;
-    private IStream mAngle;
+    private IStream speed;
+    private IStream angle;
 
     public DrivetrainDriveCommand(Drivetrain drivetrain, Gamepad gamepad) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
         // Store the gamepad
-        mGamepad = gamepad;
+        this.gamepad = gamepad;
 
         // Create an IStream that gets the speed from the controller
-        mRawSpeed = () -> {
-            return mGamepad.getRawRightTriggerAxis() - mGamepad.getRawLeftTriggerAxis();
+        this.rawSpeed = () -> {
+            return this.gamepad.getRawRightTriggerAxis() - this.gamepad.getRawLeftTriggerAxis();
         };
 
         // Create an IStream that gets the angle from the controller
-        mRawAngle = () -> {
-            return mGamepad.getLeftX();
+        this.rawAngle = () -> {
+            return this.gamepad.getLeftX();
         };
 
         // Create an IStream that filters the raw speed from the controller
-        mSpeed = new FilteredIStream(mRawSpeed, 
+        this.speed = new FilteredIStream(this.rawSpeed, 
             (x) -> SLMath.deadband(x, DrivetrainSettings.SPEED_DEADBAND),
             (x) -> SLMath.square(x), 
             new LowPassFilter(DrivetrainSettings.SPEED_FILTER)
         );
 
         // Create an IStream that filters the raw angle from the controller
-        mAngle = new FilteredIStream(mRawAngle, 
+        this.angle = new FilteredIStream(this.rawAngle, 
             (x) -> SLMath.deadband(x, DrivetrainSettings.ANGLE_DEADBAND),
             (x) -> SLMath.square(x), 
             new LowPassFilter(DrivetrainSettings.ANGLE_FILTER)
@@ -60,11 +60,11 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     // Give the IStream's result for speed when the drivetrain wants it
     public double getSpeed() {
-        return mSpeed.get();
+        return speed.get();
     }
 
     // Give the IStream's result for angle when the drivetrain wants it
     public double getAngle() {
-        return mAngle.get();
+        return angle.get();
     }
 }

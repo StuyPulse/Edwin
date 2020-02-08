@@ -85,12 +85,12 @@ public interface Constants {
             double OUTER_GEAR_RATIO = 24.0 / 60.0;
 
             // The difference between theoretical and actual distance
-            double REAL_YIELD = 1.3;
+            SmartNumber REAL_YIELD = new SmartNumber("Greyhill Yeild", 1.3);
             
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
-            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
+            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD.doubleValue();
 
-            double NEO_DISTANCE_PER_ROTATION = 1.0; // Not Correct
+            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // Not Correct (gear ratio)
         }
     }
 
@@ -99,6 +99,10 @@ public interface Constants {
         double MIN_ALIGNMENT_TIME = 0.25;
         double MAX_ALIGNMENT_TIME = 7.5;
         
+        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.6);
+        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 1.2);
+        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 3.0 / 40.0);
+
         public interface Speed {
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.1);
@@ -106,16 +110,16 @@ public interface Constants {
             SmartNumber D = new SmartNumber("SpeedD", 0.025);
 
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.75 is nice]
-            double BANGBANG_SPEED = 0.75;
+            // [whatever you want, but 0.63 is nice]
+            double BANGBANG_SPEED = 0.63;
 
             // Low Pass Filter Time Constant for controller
-            double IN_SMOOTH_FILTER = 0.0;
-            double OUT_SMOOTH_FILTER = 0.1;
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.05);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(0, 2);
-            double MAX_SPEED_VEL = toFeet(0, 3);
+            double MAX_SPEED_ERROR = toFeet(0, 4.0);
+            double MAX_SPEED_VEL = toFeet(0, 2.0);
         }
 
         public interface Angle {
@@ -125,16 +129,16 @@ public interface Constants {
             SmartNumber D = new SmartNumber("AngleD", 0.005);
 
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.75 is nice]
-            double BANGBANG_SPEED = 0.75;
+            // [whatever you want, but 0.63 is nice]
+            double BANGBANG_SPEED = 0.63;
 
             // Low pass Filter Time Constant for controller
-            double IN_SMOOTH_FILTER = 0.00;
-            double OUT_SMOOTH_FILTER = 0.05;
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.05);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 2.0;
-            double MAX_ANGLE_VEL = 0.5;
+            double MAX_ANGLE_ERROR = 5.0;
+            double MAX_ANGLE_VEL = 2.5;
         }
 
         public interface Measurements {

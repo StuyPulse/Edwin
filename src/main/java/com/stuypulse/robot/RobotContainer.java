@@ -26,7 +26,7 @@ import java.util.ResourceBundle.Control;
  */
 public class RobotContainer {
 
-  public final boolean DEBUG = true;
+  private final boolean DEBUG = true;
 
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
@@ -34,9 +34,9 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final ControlPanel controlPanel = new ControlPanel();
 
-  public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
-  public final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
-  public final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
+  private final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+  private final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
+  private final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -67,9 +67,14 @@ public class RobotContainer {
      */
 
     if(DEBUG) {
-      debug.getLeftButton().whenHeld(new DrivetrainPIDAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
-      debug.getTopButton().whenHeld(new DrivetrainPIDAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      // Auto alignment for angle and speed and update pid values
+      debug.getLeftButton().toggleWhenPressed(new DrivetrainPIDAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      debug.getTopButton().toggleWhenPressed(new DrivetrainPIDAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
 
+      // Steal driving abilities from the driver
+      debug.getBottomButton().toggleWhenPressed(new DrivetrainDriveCommand(drivetrain, debug));
+
+      // DPad controls for 90 degree turns and 2.5 ft steps
       debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
       debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, -2.5));
       debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));

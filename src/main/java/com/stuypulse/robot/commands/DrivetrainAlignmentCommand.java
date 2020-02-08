@@ -58,13 +58,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Initialize PID Controller for Speed
         this.speed = speed;
-        this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER));
-        this.speed.setOutputFilter(new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER));
+        this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER.doubleValue()));
+        this.speed.setOutputFilter(new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue()));
 
         // Initialize PID Controller for Angle
         this.angle = angle;
-        this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER));
-        this.angle.setOutputFilter(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER));
+        this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
+        this.angle.setOutputFilter(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue()));
 
         // Target distance for the Alignment Command
         this.aligner = aligner;
@@ -87,8 +87,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
-        if ( // Check if the angle is aligned before moving forward
-        angle.getError() < Alignment.Angle.MAX_ANGLE_ERROR && angle.getVelocity() < Alignment.Angle.MAX_ANGLE_VEL) {
+        if (angle.getError() < Alignment.Angle.MAX_ANGLE_ERROR 
+        && angle.getVelocity() < Alignment.Angle.MAX_ANGLE_VEL) {
             return speed.update(aligner.getSpeedError());
         } else {
             return 0.0;

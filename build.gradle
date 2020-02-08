@@ -3,12 +3,6 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2020.1.2"
 }
 
-allprojects {
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
-}
-
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
@@ -53,15 +47,10 @@ dependencies {
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
+
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-
-    if (file("../StuyLib").exists()) {
-        implementation('com.stuypulse:StuyLib:1.8.9')
-    } else {
-        compile 'com.github.StuyPulse:StuyLib:2020.1.8.5'
-    }
 
     testImplementation 'junit:junit:4.12'
 
@@ -77,5 +66,3 @@ jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
-
-

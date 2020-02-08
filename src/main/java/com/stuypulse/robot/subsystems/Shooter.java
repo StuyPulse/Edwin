@@ -3,7 +3,7 @@ package com.stuypulse.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
-import com.stuypulse.util.NEOEncoder;
+import com.stuypulse.robot.util.NEOEncoder;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Solenoid;

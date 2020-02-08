@@ -1,4 +1,4 @@
-package com.stuypulse.util;
+package com.stuypulse.robot.util;
 
 import com.revrobotics.CANEncoder;
 

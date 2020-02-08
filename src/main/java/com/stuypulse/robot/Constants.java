@@ -214,4 +214,12 @@ public interface Constants {
      * ShootThreeDriveForwardAutonCommand
      *********************************************************************************************/
     int DISTANCE_FROM_START_TO_GOAL = 10;
+
+    /*********************************************************************************************
+     * ShootSixAcquireTreeAutonCommand
+     *********************************************************************************************/
+    double ANGLE_FROM_START_TO_TRENCH = 37.7;
+    double DISTANCE_FROM_START_TO_TRENCH = 109.4;
+    double DISTANCE_FROM_BALL_TO_BALL = 36;
+    double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
 }

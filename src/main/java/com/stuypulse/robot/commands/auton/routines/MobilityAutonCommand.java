@@ -1,15 +1,14 @@
 package com.stuypulse.robot.commands.auton.routines;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import com.stuypulse.robot.commands.DrivetrainDriveCommand;
+
+import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.stuylib.input.Gamepad;
 
 public class MobilityAutonCommand extends SequentialCommandGroup {
-    private final Drivetrain drivetrain = new Drivetrain();
-    private final Gamepad gamepad = new Gamepad();
-    public MobilityAutonCommand() {
+    public MobilityAutonCommand(Drivetrain drivetrain) {
         //Constructors
-        addCommands(new DrivetrainDriveCommand(drivetrain,gamepad));
+        addCommands(new DrivetrainMovementCommand(drivetrain, 0,Constants.DISTANCE_FROM_START_TO_GOAL));
     }
 
 

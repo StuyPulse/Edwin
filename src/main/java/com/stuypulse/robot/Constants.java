@@ -46,10 +46,9 @@ public interface Constants {
     int CLIMBER_LIFT_MOTOR_PORT = -1;
     int CLIMBER_YOYO_MOTOR_PORT = -1;
 
-     /*********************************************************************************************
-     * Climber Motor Channels
-     *********************************************************************************************/
     int CLIMBER_LIFT_SOLENOID_CHANNEL = -1;
+
+    int CLIMBER_LIMIT_SWITCH_CHANNEL = -1;
 
     /*********************************************************************************************
      * Climber Motor Constants

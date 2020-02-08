@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
 
+import com.stuypulse.stuylib.util.TankDriveEncoder;
+
 import java.util.Arrays;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -48,8 +50,7 @@ public class Drivetrain extends SubsystemBase {
     private CANEncoder lNEO;
     private CANEncoder rNEO;
 
-    private Encoder lGreyhill;
-    private Encoder rGreyHill;
+    private TankDriveEncoder greyhills;
 
     // DifferentialDrive and Gear Information
     private Gear gear;
@@ -78,8 +79,10 @@ public class Drivetrain extends SubsystemBase {
         lNEO = lMotors[1].getEncoder();
         rNEO = rMotors[1].getEncoder();
 
-        lGreyhill = new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B);
-        rGreyHill = new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B);
+        greyhills = new TankDriveEncoder(
+            new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B), 
+            new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B)
+        );
 
         // Create DifferentialDrive for different gears
         highGearDrive = new DifferentialDrive(
@@ -233,46 +236,36 @@ public class Drivetrain extends SubsystemBase {
      * @param distance distance robot moves in one rotation
      */
     public void setGreyhillDistancePerPulse(double distance) {
-        lGreyhill.setDistancePerPulse(distance);
-        rGreyHill.setDistancePerPulse(distance);
+        greyhills.getLeftEncoder().setDistancePerPulse(distance);
+        greyhills.getRightEncoder().setDistancePerPulse(distance);
     }
 
     /**
      * @return distance left side of drivetrain has moved
      */
     public double getLeftGreyhillDistance() {
-        return lGreyhill.getDistance();
+        return greyhills.getLeftDistance();
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
     public double getRightGreyhillDistance() {
-        return rGreyHill.getDistance();
+        return greyhills.getRightDistance();
     }
 
     /**
      * @return distance drivetrain has moved
      */
     public double getGreyhillDistance() {
-        double left = getLeftGreyhillDistance();
-        double right = getRightGreyhillDistance();
-
-        // Check for failing encoders
-        if(Math.abs(left) < 0.01) {
-            return right;
-        }
-
-        if(Math.abs(right) < 0.01) {
-            return left;
-        }
-
-        return (left + right) / 2.0;
+        return greyhills.getDistance();
     }
 
+    /**
+     * Resets the greyhills distance
+     */
     public void resetGreyhill() {
-        lGreyhill.reset();
-        rGreyHill.reset();
+        greyhills.reset();
     }
 
     /**

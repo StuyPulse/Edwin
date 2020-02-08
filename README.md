@@ -1,9 +1,9 @@
-# fantastic-spork
+# Edwin
 FRC Robot Code for the 2020 Season
 Testing Status: Robot currently doesn't exist
 
-## Getting fantastic-spork to work with StuyLib
-Just make sure that you have StuyLib and fantastic-spork in the same folder!
+## Getting Edwin to work with StuyLib
+Just make sure that you have StuyLib and Edwin in the same folder, or ensure internet connecetivity!
 
 ## Subsystems
 - Drivetrain (same as last year)

@@ -11,21 +11,24 @@ public class ShootFromTrenchCommand extends CommandBase {
 
     public ShootFromTrenchCommand(Shooter shooter) {
         m_shooter = shooter;
-        targetVelocity = Constants.SHOOT_FROM_INITATION_LINE_RPM;
+        addRequirements(m_shooter);
+
+        targetVelocity = Constants.SHOOT_FROM_INITATION_LINE_RPM; // targetVelocity is 4900 RPM
     }
 
     @Override
     public void initialize() {
-        m_shooter.extendHoodSolenoid();
+        m_shooter.extendHoodSolenoid(); // solenoid is fired for this mode
     }
 
     @Override
     public void execute() {
-        m_shooter.startShooter(targetVelocity);
+        m_shooter.runShooter(targetVelocity); 
 
-        if (m_shooter.getCurrentShooterVelocity() > targetVelocity) {
-            m_shooter.startFeeder();
+        if (m_shooter.getCurrentShooterVelocityInRPM() > targetVelocity) {
+            m_shooter.runFeeder();
         } 
+        // if the shooter RPM reaches the target velocity, the feeder motor runs
     }
 
     @Override

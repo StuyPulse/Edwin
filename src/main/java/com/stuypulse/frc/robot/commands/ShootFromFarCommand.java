@@ -11,21 +11,24 @@ public class ShootFromFarCommand extends CommandBase {
 
     public ShootFromFarCommand(Shooter shooter) {
         m_shooter = shooter;
-        targetVelocity = Constants.SHOOT_FROM_FAR_RPM;
+        addRequirements(m_shooter);
+
+        targetVelocity = Constants.SHOOT_FROM_FAR_RPM; // targetVelocity is 5500 RPM
     }
 
     @Override
     public void initialize() {
-        m_shooter.retractHoodSolenoid();
+        m_shooter.retractHoodSolenoid(); // solenoid is retracted for this mode
     }
 
     @Override
     public void execute() {
-        m_shooter.startShooter(targetVelocity);
+        m_shooter.runShooter(targetVelocity);
 
-        if (m_shooter.getCurrentShooterVelocity() > targetVelocity) {
-            m_shooter.startFeeder();
+        if (m_shooter.getCurrentShooterVelocityInRPM() > targetVelocity) {
+            m_shooter.runFeeder();
         } 
+        // if the shooter RPM reaches the target velocity, the feeder motor runs
     }
 
     @Override

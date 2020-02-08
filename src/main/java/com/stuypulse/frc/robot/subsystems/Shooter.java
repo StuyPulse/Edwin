@@ -12,26 +12,27 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
 
-    //Shooter Motors
+    // Shooter Motors
+    // note: engineering wants to change to 2 motors to free up a spot on the pdp
     private CANSparkMax leftShooterMotor;
     private CANSparkMax rightShooterMotor;
     private CANSparkMax middleShooterMotor;
 
-    //Shooter Encoders
+    // Shooter Encoders
     private NEOEncoder leftShooterEncoder;
     private NEOEncoder rightShooterEncoder; 
     private NEOEncoder middleShooterEncoder;
 
-    //Feeder Motor
+    // Feeder Motor
     private CANSparkMax feederMotor;
 
-    //Hood Solenoid
+    // Hood Solenoid
     private Solenoid hoodSolenoid;
 
-    //SpeedControllerGroup
+    // SpeedControllerGroup
     private SpeedControllerGroup shooterMotors; 
 
-    //PIDController
+    // PIDController
     private PIDController shooterController;
 
     public Shooter() {
@@ -39,7 +40,7 @@ public class Shooter extends SubsystemBase {
         rightShooterMotor = new CANSparkMax(Constants.RIGHT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
         middleShooterMotor = new CANSparkMax(Constants.MIDDLE_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
 
-        leftShooterMotor.setInverted(true);
+        leftShooterMotor.setInverted(true); //engineering said that the left motor is inverted
 
         leftShooterEncoder = new NEOEncoder(leftShooterMotor.getEncoder());
         rightShooterEncoder = new NEOEncoder(rightShooterMotor.getEncoder());
@@ -55,30 +56,42 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getError(double targetVelocity) {
-        return targetVelocity - getCurrentShooterVelocity();
+        return targetVelocity - getCurrentShooterVelocityInRPM();
+        // the erorr is calculated by subtracting the target velocity by the current velocity.
     }
     
     public double getRawMaxShooterVelocity() {
         return Math.max(leftShooterEncoder.getVelocity(), Math.max(middleShooterEncoder.getVelocity(), rightShooterEncoder.getVelocity())); 
+        // gets the max raw velocity of the shooter motors
     }
 
-    public double getCurrentShooterVelocity() {
+    public double getCurrentShooterVelocityInRPM() {
         return getRawMaxShooterVelocity() * Constants.SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER;
+        // returns the velocity of the shooter motors IN RPM by multiplying by the empirical factor. (TODO)
     }
 
     public double getScaledVelocity(double targetVelocity) {
-        return (shooterController.calculate(getError(targetVelocity), 0)); // / Constants.SHOOTER_MAX_VELOCITY
+        return (shooterController.calculate(getError(targetVelocity), 0)) / Constants.SHOOTER_MAX_RPM;
+        // converts the output of the PID loop to the NEOEncoder unit (-1.0 to 1.0) by
+        // dividing the PIDOutput by the maximum RPM possible of the CANSparkMax motor.
+        // Sam said that this is already taken in account by the P value.
+
+        // the calculate method takes in a (double measuremnt, double setpoint) where 
+        // the measurement is the error and the setpoint is the target RPM.
+        // we want the error to be 0, which means the targetVelocity has been reached.
     }
 
-    public void startShooter(double targetVelocity) {
+    public void runShooter(double targetVelocity) {
         shooterMotors.set(getScaledVelocity(targetVelocity));
+        // PID input = targetVeloctiy
+        // sets the encoder to the scaled velocity output of the PID loop.
     }
 
     public void stopShooter() {
         shooterMotors.set(0.0);
     }
 
-    public void startFeeder() {
+    public void runFeeder() {
         feederMotor.set(1.0);
     }
 
@@ -88,6 +101,8 @@ public class Shooter extends SubsystemBase {
 
     public void vomit() {
         feederMotor.set(-1.0);
+        // reverse feeder motor in case of jams
+        // method name taken from DEStiny
     }
 
     public void extendHoodSolenoid() {
@@ -100,7 +115,6 @@ public class Shooter extends SubsystemBase {
 
     public void setDefaultSolenoidPosition() {
         hoodSolenoid.set(true);
+        // default position of the solenoid is fired
     }
-
-
 }

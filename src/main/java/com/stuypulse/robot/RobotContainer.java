@@ -11,17 +11,25 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.Funnel;
+
+import java.util.ResourceBundle.Control;
+
 import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Chute;
 
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+
+import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+import com.stuypulse.stuylib.input.gamepads.PS4;
 public class RobotContainer {
 
   private final Funnel funnel = new Funnel();
@@ -30,7 +38,12 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Chute chute = new Chute();
 
+  private final ControlPanel controlPanel = new ControlPanel();
 
+  private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
+  private final Logitech operatorGamepad = new Logitech(Constants.OPERATOR_GAMEPAD_PORT);
+
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -38,6 +51,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
   }
 
   /**
@@ -60,4 +74,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
+
 }

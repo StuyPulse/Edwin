@@ -25,3 +25,7 @@ pluginManagement {
         }
     }
 }
+
+if (file("../StuyLib").exists()) {
+    includeBuild '../StuyLib'
+}

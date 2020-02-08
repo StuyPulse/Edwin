@@ -57,8 +57,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    // TODO: Composite builds cause errors with linting right now
-    if (file("../StuyLib").exists() && false) {
+    if (file("../StuyLib").exists()) {
         implementation('com.stuypulse:StuyLib:1.0.0')
     } else {
         compile 'com.github.StuyPulse:StuyLib:2020.1.8.9'

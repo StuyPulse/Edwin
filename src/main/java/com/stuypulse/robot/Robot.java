@@ -7,8 +7,6 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.util.FRCLogger;
-
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;

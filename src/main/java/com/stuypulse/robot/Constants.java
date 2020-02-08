@@ -41,18 +41,18 @@ public interface Constants {
         }
 
         public interface Drivetrain {
-            int LEFT_TOP = 3;
-            int LEFT_MIDDLE = 4;
-            int LEFT_BOTTOM = 5;
+            int LEFT_TOP = 15;
+            int LEFT_MIDDLE = 14;
+            int LEFT_BOTTOM = 13;
 
-            int RIGHT_TOP = 6;
-            int RIGHT_MIDDLE = 7;
-            int RIGHT_BOTTOM = 8;
+            int RIGHT_TOP = 2;
+            int RIGHT_MIDDLE = 1;
+            int RIGHT_BOTTOM = 0;
 
-            int LEFT_ENCODER_A = -1;
-            int LEFT_ENCODER_B = -1;
-            int RIGHT_ENCODER_A = -1;
-            int RIGHT_ENCODER_B = -1;
+            int LEFT_ENCODER_A = -1; // TODO: find value
+            int LEFT_ENCODER_B = -1; // TODO: find value
+            int RIGHT_ENCODER_A = -1; // TODO: find value
+            int RIGHT_ENCODER_B = -1; // TODO: find value
 
             int GEAR_SHIFT = 0;
         }
@@ -60,20 +60,20 @@ public interface Constants {
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        double QUICKTURN_THRESHOLD = 0.04;
+        double QUICKTURN_THRESHOLD = 0.04; 
 
         // How much to slow down quick turn
-        double QUICKTURN_SPEED = 0.5;
+        double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
 
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;
 
-        double SPEED_FILTER = 0.5;
-        double ANGLE_FILTER = 0.15;
+        double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
+        double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
 
         // Current Limit for the motors
-        int CURRENT_LIMIT = 65;
+        int CURRENT_LIMIT = 40; // TODO: ask about this
 
         // Encoder Constants
         public interface Encoders {
@@ -90,65 +90,67 @@ public interface Constants {
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
             double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD.doubleValue();
 
-            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // Not Correct (gear ratio)
+            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // TODO: Calculate if Important
         }
     }
 
     public interface Alignment {
 
+        // TODO: find better values for this
         double MIN_ALIGNMENT_TIME = 0.25;
         double MAX_ALIGNMENT_TIME = 7.5;
         
+        // TODO: test (0.6, 1.2, 3.0/40.0) for PID, or (0.8, 0.0, 0.1) for PD if it works better
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.6);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 1.2);
         SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 3.0 / 40.0);
 
         public interface Speed {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.1);
-            SmartNumber I = new SmartNumber("SpeedI", 0.01);
-            SmartNumber D = new SmartNumber("SpeedD", 0.025);
+            SmartNumber P = new SmartNumber("SpeedP", 0.1);   // TODO: find value 
+            SmartNumber I = new SmartNumber("SpeedI", 0.01);  // TODO: find value 
+            SmartNumber D = new SmartNumber("SpeedD", 0.025); // TODO: find value 
 
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.63 is nice]
-            double BANGBANG_SPEED = 0.63;
+            // [whatever you want, but 0.7 is nice]
+            double BANGBANG_SPEED = 0.7;
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.05);
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(0, 4.0);
-            double MAX_SPEED_VEL = toFeet(0, 2.0);
+            double MAX_SPEED_ERROR = toFeet(0, 4.0); // TODO: discuss value
+            double MAX_SPEED_VEL = toFeet(0, 2.0); // TODO: discuss value
         }
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0.055);
-            SmartNumber I = new SmartNumber("AngleI", 0.01);
-            SmartNumber D = new SmartNumber("AngleD", 0.005);
+            SmartNumber P = new SmartNumber("AngleP", 0.055); // TODO: find value 
+            SmartNumber I = new SmartNumber("AngleI", 0.01);  // TODO: find value 
+            SmartNumber D = new SmartNumber("AngleD", 0.005); // TODO: find value 
 
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.63 is nice]
-            double BANGBANG_SPEED = 0.63;
+            // [whatever you want, but 0.7 is nice]
+            double BANGBANG_SPEED = 0.7;
 
             // Low pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.05);
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 5.0;
-            double MAX_ANGLE_VEL = 2.5;
+            double MAX_ANGLE_ERROR = 5.0; // TODO: discuss value
+            double MAX_ANGLE_VEL = 2.5; // TODO: discuss value
         }
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6);
+            double GOAL_HEIGHT = toFeet(7, 6); // TODO: measure on feild
 
             public interface Limelight {
-                double HEIGHT = toFeet(2, 7);
+                double HEIGHT = toFeet(2, 7); // TODO: calculate on robot
                 double DISTANCE = toFeet(0, 0);
-                double PITCH = 17.3;
+                double PITCH = 17.3; // TODO: calculate on robot
                 double YAW = 0.0;
             }
         }

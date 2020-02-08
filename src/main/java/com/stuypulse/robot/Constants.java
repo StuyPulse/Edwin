@@ -222,4 +222,12 @@ public interface Constants {
     double DISTANCE_FROM_START_TO_TRENCH = 109.4;
     double DISTANCE_FROM_BALL_TO_BALL = 36;
     double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
+
+    /*********************************************************************************************
+     * ShootSixAcquireTreeAutonCommand
+     *********************************************************************************************/
+    double ANGLE_FROM_TRENCH_TO_RDVS = -1;
+    double DISTANCE_FROM_TRENCH_TO_RDVS = -1;
+    double ANGLE_FROM_RDVS_TO_GOAL = -1;
+
 }

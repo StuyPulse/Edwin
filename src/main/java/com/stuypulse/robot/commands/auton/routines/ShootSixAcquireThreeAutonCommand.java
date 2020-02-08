@@ -14,7 +14,7 @@ public class ShootSixAcquireThreeAutonCommand extends SequentialCommandGroup {
         //Add shoot 3
         addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH));
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, -Constants.DISTANCE_FROM_START_TO_TRENCH));
+        addCommands(new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_TO_TRENCH));
         for (int i = 0; i < 3; i ++) {
             addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_BALL_TO_BALL));
            }

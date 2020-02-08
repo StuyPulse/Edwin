@@ -20,7 +20,6 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
-import com.stuypulse.robot.commands.ClimberMoveCommand;
 import com.stuypulse.robot.commands.ClimberToggleLiftBreakCommand;
 import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
@@ -60,7 +59,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     operatorGamepad.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBreakCommand(climber));
-    new ButtonWrapper(() -> (Math.abs(operatorGamepad.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberMoveCommand(climber, intake, operatorGamepad));
+    //TODO: finish OI
+    //new ButtonWrapper(() -> (Math.abs(operatorGamepad.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberMoveCommand(climber, intake, operatorGamepad));
   }
 
 

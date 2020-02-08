@@ -5,11 +5,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.util.FRCLogger.Loggable;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class Drivetrain extends SubsystemBase implements Loggable {
+public class Drivetrain extends SubsystemBase {
 
     //LEFT SIDE MOTORS
     private CANSparkMax leftTopMotor;
@@ -56,38 +55,6 @@ public class Drivetrain extends SubsystemBase implements Loggable {
 
     public void curvatureDrive(double speed, double rotation, boolean quickturn) {
         drivetrain.curvatureDrive(speed, rotation, quickturn);
-    }
-
-    public String getLogData() {
-
-        return 
-        "Left side speed: " + 
-        Double.toString(
-            (
-                leftTopMotor.getEncoder().getVelocity() + 
-                leftMiddleMotor.getEncoder().getVelocity() + 
-                leftBottomMotor.getEncoder().getVelocity()
-            ) / 3
-        ) + 
-        "\n" +
-        "Right side speed: " + 
-        Double.toString(
-            (
-                rightTopMotor.getEncoder().getVelocity() + 
-                rightMiddleMotor.getEncoder().getVelocity() + 
-                rightBottomMotor.getEncoder().getVelocity()
-            ) / 3
-        ) + 
-        "\n" + 
-        "Left side currents, top to bottom:\n" + 
-        Double.toString(leftTopMotor.getOutputCurrent()) + "\n" +
-        Double.toString(leftMiddleMotor.getOutputCurrent()) + "\n" +
-        Double.toString(leftBottomMotor.getOutputCurrent()) + "\n" +
-        "Right side currents, top to bottom:\n" + 
-        Double.toString(rightTopMotor.getOutputCurrent()) + "\n" +
-        Double.toString(rightMiddleMotor.getOutputCurrent()) + "\n" +
-        Double.toString(rightBottomMotor.getOutputCurrent()); 
-
     }
 
 }

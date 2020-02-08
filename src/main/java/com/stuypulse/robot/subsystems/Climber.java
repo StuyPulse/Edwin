@@ -1,6 +1,7 @@
 package com.stuypulse.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -24,14 +25,16 @@ public class Climber extends SubsystemBase {
         limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
     }
 
-    public void climbUp() {
-        liftMotor.set(Constants.CLIMB_UP_SPEED);
+    public void setNeutralMode(IdleMode mode) {
+        liftMotor.setIdleMode(mode);
     }
 
-    public void climbDown() {
-        if (!isAtBottom()) {
-            liftMotor.set(Constants.CLIMB_DOWN_SPEED);
-        }
+    public void moveLiftDown() {
+        moveLift(Constants.MOVE_LIFT_DOWN_SPEED);
+    }
+
+    public void moveLift(double speed) {
+        liftMotor.set(speed);
     }
 
     public void moveYoyo(double speed) {
@@ -39,7 +42,7 @@ public class Climber extends SubsystemBase {
     }
 
     public void stopClimber() {
-        liftMotor.set(0);
+        liftMotor.stopMotor();
     }
 
     public void stopYoyo() {

@@ -66,10 +66,7 @@ public interface Constants {
      * Climber Constants
      *********************************************************************************************/
     //TODO: Test speeds
-    double CLIMB_UP_SPEED = 0.5;
-    double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
-    double YOYO_MOVE_RIGHT_SPEED = 0.5;
-    double YOYO_MOVE_LEFT_SPEED = -YOYO_MOVE_RIGHT_SPEED;
+    double MOVE_LIFT_DOWN_SPEED = 0.5;
 
      /*********************************************************************************************
      * Intake Motor Ports

@@ -13,6 +13,11 @@ public class ShooterStopCommand extends CommandBase {
 
     @Override
     public void execute() {
-        m_shooter.stopShooterMotors();
+        m_shooter.stopShooter();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }

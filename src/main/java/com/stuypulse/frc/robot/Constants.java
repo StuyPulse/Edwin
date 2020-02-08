@@ -35,10 +35,22 @@ public interface Constants {
     int HOOD_SOLENOID_PORT = -1;
 
     /*********************************************************************************************
-     * PID values
+     * PID 
      *********************************************************************************************/
-    double kP = -1;
-    double kI = -1;
-    double kD = -1;
-    
+    double SHOOTER_SHOOT_KP = 0;
+    double SHOOTER_SHOOT_KI = 0;
+    double SHOOTER_SHOOT_KD = 0;
+
+    /*********************************************************************************************
+     * Shooter Constants
+     *********************************************************************************************/
+    double SHOOTER_WHEEL_DIAMTER = 4;
+    double SHOOTER_WHEEL_CIRCUMFERENCE = Math.PI * SHOOTER_WHEEL_DIAMTER;
+    double SHOOTER_VELOCITY_RAW_MULTIPLIER = SHOOTER_WHEEL_CIRCUMFERENCE / 60;
+    double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = SHOOTER_VELOCITY_RAW_MULTIPLIER;
+
+    double SHOOTER_MAX_RPM = 16500;
+    double SHOOT_FROM_INITATION_LINE_RPM = 3900;
+    double SHOOT_FROM_TRENCH_RPM = 4900;
+    double SHOOT_FROM_FAR_RPM = 5500;
 }

@@ -24,14 +24,14 @@ public class MotorStalling implements Runnable {
                 double start_encoder_value = Math.abs(subsystem.getStartEncoderVal());
                 double current_encoder_value = Math.abs(subsystem.getCurrentEncoderVal());
                 double change_distance = Math.abs(current_encoder_value - start_encoder_value);
+                if(subsystem.getStallCounter() >= 5)
+                    subsystem.setStalled(true);
                 if (change_distance <= subsystem.getEncoderApproachStallThreshold() && subsystem.isRunning())
                     subsystem.incrementStallCounter();
                 else {
                     subsystem.resetStallCounter();
                     subsystem.setStalled(false);
                 }
-                if(subsystem.getStallCounter() >= 5)
-                    subsystem.setStalled(true);
                 subsystem.setStartEncoderVal(current_encoder_value);
             }
         }

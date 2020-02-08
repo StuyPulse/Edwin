@@ -2,6 +2,9 @@
 FRC Robot Code for the 2020 Season
 Testing Status: Robot currently doesn't exist
 
+## Getting fantastic-spork to work with StuyLib
+Just make sure that you have StuyLib and fantastic-spork in the same folder!
+
 ## Subsystems
 - Drivetrain (same as last year)
   - 6 sparks -- use all 6 when in high gear, use 4 when in low gear

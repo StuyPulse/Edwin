@@ -10,24 +10,54 @@ package com.stuypulse.frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+<<<<<<< HEAD:src/main/java/com/stuypulse/frc/robot/RobotContainer.java
 import com.stuypulse.frc.robot.subsystems.Shooter;
 
+=======
+import com.stuypulse.robot.subsystems.Funnel;
+
+import java.util.ResourceBundle.Control;
+
+import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+
+import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
+>>>>>>> master:src/main/java/com/stuypulse/robot/RobotContainer.java
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+import com.stuypulse.stuylib.input.gamepads.PS4;
 public class RobotContainer {
+<<<<<<< HEAD:src/main/java/com/stuypulse/frc/robot/RobotContainer.java
   // The robot's subsystems and commands are defined here...
   private final Shooter shooter = new Shooter();
+=======
 
+  private final Funnel funnel = new Funnel();
+  private final Climber climber = new Climber();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Intake intake = new Intake();
+  private final ControlPanel controlPanel = new ControlPanel();
+>>>>>>> master:src/main/java/com/stuypulse/robot/RobotContainer.java
+
+  private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
+  private final Logitech operatorGamepad = new Logitech(Constants.OPERATOR_GAMEPAD_PORT);
+
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
   }
 
   /**
@@ -49,4 +79,9 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
+<<<<<<< HEAD:src/main/java/com/stuypulse/frc/robot/RobotContainer.java
 }
+=======
+
+}
+>>>>>>> master:src/main/java/com/stuypulse/robot/RobotContainer.java

@@ -10,7 +10,6 @@ public class ChuteUpCommand extends CommandBase {
     public ChuteUpCommand(Chute chute) {
         this.chute = chute;
 
-        // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(chute);
     }
 
@@ -29,9 +28,9 @@ public class ChuteUpCommand extends CommandBase {
         return chute.getUpperChuteValue();
     }
 
-    /*@Override
+    @Override
     public void end(boolean interrupted) {
         chute.stopChute();
-    }*/
+    }
 
 }

@@ -10,7 +10,6 @@ public class ChuteDownCommand extends CommandBase {
     public ChuteDownCommand(Chute chute) {
         this.chute = chute;
 
-        // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(chute);
     }
 
@@ -29,9 +28,9 @@ public class ChuteDownCommand extends CommandBase {
         return chute.getLowerChuteValue();
     }
 
-    /*@Override
+    @Override
     public void end(boolean interrupted) {
         chute.stopChute();
-    }*/
+    }
 
 }

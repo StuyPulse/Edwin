@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
@@ -65,6 +66,41 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.angle = angle;
         this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
         this.angle.setOutputFilter(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue()));
+
+        // Target distance for the Alignment Command
+        this.aligner = aligner;
+
+        // Used to check the alignment time.
+        this.timer = new StopWatch();
+    }
+
+    /**
+     * This creates a command that aligns the robot
+     * 
+     * @param drivetrain Drivetrain used by command to move
+     * @param distance   target distance for robot to drive to
+     */
+    public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner) {
+        // Pass Drivetrain to the super class
+        super(drivetrain);
+
+        // Initialize PID Controller for Speed
+        PIDController speed = new PIDController();
+        speed.setP(Alignment.Speed.P.doubleValue());
+        speed.setI(Alignment.Speed.I.doubleValue());
+        speed.setD(Alignment.Speed.D.doubleValue());
+        speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER.doubleValue()));
+        speed.setOutputFilter(new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue()));
+        this.speed = speed;
+
+        // Initialize PID Controller for Angle
+        PIDController angle = new PIDController();
+        angle.setP(Alignment.Angle.P.doubleValue());
+        angle.setI(Alignment.Angle.I.doubleValue());
+        angle.setD(Alignment.Angle.D.doubleValue());
+        angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
+        angle.setOutputFilter(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue()));
+        this.angle = angle;
 
         // Target distance for the Alignment Command
         this.aligner = aligner;

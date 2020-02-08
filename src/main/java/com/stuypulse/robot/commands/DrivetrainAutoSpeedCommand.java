@@ -14,19 +14,7 @@ import com.stuypulse.stuylib.control.PIDController;
  * While doing this it will need to have the angle aligned, so make sure that
  * you tune that first
  */
-public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
-
-    public static Controller getNewSpeedController() {
-        return new PIDCalculator(Alignment.Speed.BANGBANG_SPEED);
-    }
-
-    public static Controller getNewAngleController() {
-        PIDController angle = new PIDController(-1, -1, -1);
-        angle.setP(Alignment.Angle.P.doubleValue());
-        angle.setI(Alignment.Angle.I.doubleValue());
-        angle.setD(Alignment.Angle.D.doubleValue());
-        return angle;
-    }
+public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
 
     /**
      * This creates a command that aligns the robot
@@ -34,8 +22,8 @@ public class DrivetrainPIDAutoSpeedCommand extends DrivetrainAlignmentCommand {
      * @param drivetrain Drivetrain used by command to move
      * @param distance   target distance for robot to drive to
      */
-    public DrivetrainPIDAutoSpeedCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
-        super(drivetrain, aligner, getNewSpeedController(), getNewAngleController());
+    public DrivetrainAutoSpeedCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
+        super(drivetrain, aligner, new PIDCalculator(Alignment.Speed.BANGBANG_SPEED), new PIDController(Alignment.Angle.P.doubleValue(), Alignment.Angle.I.doubleValue(), Alignment.Angle.D.doubleValue()));
     }
 
     // This command never really finishes

@@ -12,7 +12,7 @@ import com.stuypulse.robot.subsystems.Drivetrain;
  * as turning the robot can lead to bad measurements with distance and
  * visa-versa. It is only included to make code more specific.
  */
-public class DrivetrainMovementCommand extends DrivetrainPIDAlignmentCommand {
+public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 
     /**
      * This aligner uses encoders and the navx on the drivetrain to move the

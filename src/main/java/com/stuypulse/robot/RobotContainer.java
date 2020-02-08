@@ -59,8 +59,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driver.getLeftButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
-    driver.getTopButton().whenHeld(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
+    driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
+    driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
 
     /**
      * 
@@ -68,8 +68,8 @@ public class RobotContainer {
 
     if(DEBUG) {
       // Auto alignment for angle and speed and update pid values
-      debug.getLeftButton().toggleWhenPressed(new DrivetrainPIDAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
-      debug.getTopButton().toggleWhenPressed(new DrivetrainPIDAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      debug.getLeftButton().toggleWhenPressed(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      debug.getTopButton().toggleWhenPressed(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
 
       // Steal driving abilities from the driver
       debug.getBottomButton().toggleWhenPressed(new DrivetrainDriveCommand(drivetrain, debug));

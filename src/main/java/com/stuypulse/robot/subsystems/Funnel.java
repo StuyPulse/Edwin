@@ -7,7 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.MotorStall;
+import com.stuypulse.robot.util.MotorStall;
 
 public class Funnel extends SubsystemBase implements MotorStall {
 

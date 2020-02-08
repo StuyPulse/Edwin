@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.stuypulse.robot;
+package com.stuypulse.robot.util;
 
 import edu.wpi.first.wpilibj.Timer;
 

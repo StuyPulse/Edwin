@@ -1,5 +1,5 @@
   
-package com.stuypulse.robot;
+package com.stuypulse.robot.util;
 
 public interface MotorStall {
     public boolean isStalling();

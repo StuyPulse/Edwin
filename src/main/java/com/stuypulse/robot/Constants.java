@@ -96,7 +96,7 @@ public interface Constants {
 
     public interface Alignment {
 
-        double MIN_ALIGNMENT_TIME = 0.75;
+        double MIN_ALIGNMENT_TIME = 0.25;
         double MAX_ALIGNMENT_TIME = 7.5;
         
         public interface Speed {
@@ -114,8 +114,8 @@ public interface Constants {
             double OUT_SMOOTH_FILTER = 0.1;
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = 0.4;
-            double MAX_SPEED_VEL = 0.2;
+            double MAX_SPEED_ERROR = toFeet(0, 2);
+            double MAX_SPEED_VEL = toFeet(0, 3);
         }
 
         public interface Angle {
@@ -133,7 +133,7 @@ public interface Constants {
             double OUT_SMOOTH_FILTER = 0.05;
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 1.0;
+            double MAX_ANGLE_ERROR = 2.0;
             double MAX_ANGLE_VEL = 0.5;
         }
 

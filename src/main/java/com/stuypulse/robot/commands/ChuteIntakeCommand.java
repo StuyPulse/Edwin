@@ -1,22 +1,20 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.subsystems.Chute;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * Constantly checks if the chute's lower sensor is touching a ball.
+ * If it is touching a ball, it will move it up as long as there is enough space. 
+ * It is toggleable by a gamepad button.
+ */
 public class ChuteIntakeCommand extends CommandBase {
 
     private Chute chute;
-    private static boolean isIntake;
-    private boolean previousValue;
 
     public ChuteIntakeCommand(Chute chute) {
         this.chute = chute;
-        isIntake = false;
-        previousValue = false;
-
-        // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(chute);
     }
 
@@ -26,22 +24,14 @@ public class ChuteIntakeCommand extends CommandBase {
     }
 
     @Override
-    public void execute() {
-        if (previousValue != RobotContainer.gamepad.getRawDPadDown()) {
-            isIntake = !isIntake;
-            previousValue = RobotContainer.gamepad.getRawDPadDown();
-        } 
-
-        if (isIntake) {
-            if (chute.getLowerChuteValue()) {
-                chute.liftUp();
-            } else {
-                chute.stopChute();
-            }
+    public void execute() { 
+        // Make go all the way to funnel if Shooter is shooting
+        if (!chute.getUpperChuteValue() && chute.getLowerChuteValue()) {
+            chute.liftUp();
         } else {
             chute.stopChute();
         }
-
+        
     }
 
     @Override
@@ -49,9 +39,10 @@ public class ChuteIntakeCommand extends CommandBase {
         return false;
     }
 
-    /*@Override
+    // Just in case command shuts off
+    @Override
     public void end(boolean interrupted) {
         chute.stopChute();
-    }*/
+    }
 
 }

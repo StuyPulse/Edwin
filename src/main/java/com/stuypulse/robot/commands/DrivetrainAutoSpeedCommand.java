@@ -3,7 +3,6 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.Constants.Alignment;
 
-import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 

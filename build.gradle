@@ -60,7 +60,7 @@ dependencies {
     if (file("../StuyLib").exists()) {
         implementation('com.stuypulse:StuyLib:1.0.0')
     } else {
-        compile 'com.github.StuyPulse:StuyLib:2020.1.8.9'
+        compile 'com.github.StuyPulse:StuyLib:2020.1.8.10'
     }
 
     testImplementation 'junit:junit:4.12'

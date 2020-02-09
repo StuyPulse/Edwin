@@ -7,6 +7,7 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 /**
@@ -111,6 +112,11 @@ public interface Constants {
             SmartNumber I = new SmartNumber("SpeedI", 0.01);  // TODO: find value 
             SmartNumber D = new SmartNumber("SpeedD", 0.025); // TODO: find value 
 
+            // Get PID Controller
+            public static PIDController getPID() {
+                return new PIDController(P.get(), I.get(), D.get());
+            }
+
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.7 is nice]
             double BANGBANG_SPEED = 0.7;
@@ -130,6 +136,11 @@ public interface Constants {
             SmartNumber I = new SmartNumber("AngleI", 0.01);  // TODO: find value 
             SmartNumber D = new SmartNumber("AngleD", 0.005); // TODO: find value 
 
+            // Get PID Controller
+            public static PIDController getPID() {
+                return new PIDController(P.get(), I.get(), D.get());
+            }
+            
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.7 is nice]
             double BANGBANG_SPEED = 0.7;

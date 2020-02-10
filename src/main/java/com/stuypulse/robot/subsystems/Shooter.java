@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Shooter extends SubsystemBase {
 
     // Shooter Motors
-    // note: engineering wants to change to 2 motors to free up a spot on the pdp
     private CANSparkMax leftShooterMotor;
     private CANSparkMax rightShooterMotor;
     private CANSparkMax middleShooterMotor;
@@ -47,7 +46,7 @@ public class Shooter extends SubsystemBase {
         rightShooterMotor = new CANSparkMax(Constants.RIGHT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
         middleShooterMotor = new CANSparkMax(Constants.MIDDLE_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
 
-        leftShooterMotor.setInverted(true); //engineering said that the left motor is inverted
+        leftShooterMotor.setInverted(true); 
 
         leftShooterEncoder = new CANEncoder(leftShooterMotor);
         rightShooterEncoder = new CANEncoder(rightShooterMotor);
@@ -67,7 +66,6 @@ public class Shooter extends SubsystemBase {
 
     public double getError() {
         return targetVelocity.doubleValue() - getCurrentShooterVelocityInRPM();
-        // the erorr is calculated by subtracting the target velocity by the current velocity.
     }
     
     public double getRawMedianShooterVelocity() {
@@ -94,11 +92,9 @@ public class Shooter extends SubsystemBase {
         double speed = getRawMedianShooterVelocity() * Constants.SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER;
         currentVelocity.set(speed);
         return speed;
-        // returns the velocity of the shooter motors IN RPM by multiplying by the empirical factor. (TODO)
     }
 
-
-    public double getScaledVelocity() {
+    public double getShooterVelocityInRPM() {
         return (shooterController.calculate(getError(), 0));
         // converts the output of the PID loop to the NEOEncoder unit (-1.0 to 1.0) by
         // dividing the PIDOutput by the maximum RPM possible of the CANSparkMax motor.
@@ -110,9 +106,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void runShooter() {
-        shooterMotors.set(getScaledVelocity());
-        // PID input = targetVeloctiy
-        // sets the encoder to the scaled velocity output of the PID loop.
+        shooterMotors.set(getShooterVelocityInRPM());
     }
 
     public void reverseShooter() {
@@ -145,6 +139,5 @@ public class Shooter extends SubsystemBase {
 
     public void setDefaultSolenoidPosition() {
         retractHoodSolenoid();
-        // default position of the solenoid is fired
     }
 }

@@ -7,33 +7,26 @@
 
 package com.stuypulse.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import com.stuypulse.robot.subsystems.Funnel;
+import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.commands.*;
+
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.*;
+
+import com.stuypulse.robot.Constants.Ports;
 
 import java.util.ResourceBundle.Control;
 
-import com.stuypulse.robot.subsystems.Climber;
-import com.stuypulse.robot.subsystems.ControlPanel;
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.subsystems.Chimney;
-
-import com.stuypulse.stuylib.input.gamepads.Logitech;
-import com.stuypulse.robot.commands.ChimneyDownCommand;
-import com.stuypulse.robot.commands.ChimneyStopCommand;
-import com.stuypulse.robot.commands.ChimneyUpCommand;
-import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-import com.stuypulse.stuylib.input.gamepads.PS4;
-
 public class RobotContainer {
+
+  private final boolean DEBUG = true;
 
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
@@ -43,13 +36,18 @@ public class RobotContainer {
 
   private final ControlPanel controlPanel = new ControlPanel();
 
-  private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
-  private final Logitech operatorGamepad = new Logitech.XMode(Constants.OPERATOR_GAMEPAD_PORT);
-
+  private final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+  private final Gamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
+  private final Gamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    // Default driving command that uses gamepad
+    drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -64,9 +62,30 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorGamepad.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
-    operatorGamepad.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
-    operatorGamepad.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+    operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+    operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
+    operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+    driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
+    driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
+
+    /**
+     * 
+     */
+
+    if(DEBUG) {
+      // Auto alignment for angle and speed and update pid values
+      debug.getLeftButton().toggleWhenPressed(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      debug.getTopButton().toggleWhenPressed(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
+
+      // Steal driving abilities from the driver
+      debug.getBottomButton().toggleWhenPressed(new DrivetrainDriveCommand(drivetrain, debug));
+
+      // DPad controls for 90 degree turns and 2.5 ft steps
+      debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
+      debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, -2.5));
+      debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
+      debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
+    }
   }
 
   /**

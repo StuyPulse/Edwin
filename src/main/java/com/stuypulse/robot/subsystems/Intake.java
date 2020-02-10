@@ -9,35 +9,49 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class Intake extends SubsystemBase {
-    private CANSparkMax intakeMotor;
-    private Solenoid intakeSolenoid;
-  
+    
+    private CANSparkMax motor;
+    private Solenoid solenoid;
+    
+    private boolean extended;
+
     public Intake() {
-        intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-        intakeSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
+        motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
+        solenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
     }
 
     public boolean isExtended() {
-        return intakeSolenoid.get();
+        return solenoid.get();
     }
 
     public void extend() {
-        intakeSolenoid.set(true);
+        if(!extended) {
+            solenoid.set(true);
+            extended = true;
+        }
     }
 
     public void retract() {
-        intakeSolenoid.set(false);
+        if(extended) {
+            solenoid.set(false);
+            extended = false;
+        }
     }
-
     public void acquire() {
-        intakeMotor.set(1);
+        setMotor(1);
     }
 
     public void deacquire() {
-        intakeMotor.set(-1);
+        setMotor(-1);
+    }
+
+    public void stop() {
+        setMotor(0);
     }
 
     public void setMotor(double speed) {
-        intakeMotor.set(speed);
+        motor.set(speed);
     }
+
+
 }

@@ -113,15 +113,16 @@ public interface Constants {
     /*********************************************************************************************
      * Shooter PID 
      *********************************************************************************************/
-    double SHOOTER_SHOOT_KP = 0;
-    double SHOOTER_SHOOT_KI = 0;
-    double SHOOTER_SHOOT_KD = 0;
+    //TODO: Test PID Constants
+    double SHOOTER_SHOOT_P = 0;
+    double SHOOTER_SHOOT_I = 0;
+    double SHOOTER_SHOOT_D = 0;
 
     /*********************************************************************************************
      * Shooter Constants
      *********************************************************************************************/
-    double SHOOTER_WHEEL_DIAMTER = 4;
-    double SHOOTER_WHEEL_CIRCUMFERENCE = Math.PI * SHOOTER_WHEEL_DIAMTER;
+    double SHOOTER_WHEEL_DIAMETER = 4;
+    double SHOOTER_WHEEL_CIRCUMFERENCE = Math.PI * SHOOTER_WHEEL_DIAMETER;
     double SHOOTER_VELOCITY_RAW_MULTIPLIER = SHOOTER_WHEEL_CIRCUMFERENCE / 60;
     double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = SHOOTER_VELOCITY_RAW_MULTIPLIER; // TODO
 

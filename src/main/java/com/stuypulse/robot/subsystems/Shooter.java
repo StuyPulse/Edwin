@@ -52,7 +52,7 @@ public class Shooter extends SubsystemBase {
 
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
-        shooterController = new PIDController(Constants.SHOOTER_SHOOT_KP, Constants.SHOOTER_SHOOT_KI, Constants.SHOOTER_SHOOT_KD);
+        shooterController = new PIDController(Constants.SHOOTER_SHOOT_P, Constants.SHOOTER_SHOOT_I, Constants.SHOOTER_SHOOT_D);
     }
 
     public double getError(double targetVelocity) {

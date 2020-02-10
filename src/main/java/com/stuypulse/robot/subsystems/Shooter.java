@@ -96,13 +96,6 @@ public class Shooter extends SubsystemBase {
 
     public double getShooterVelocityInRPM() {
         return (shooterController.calculate(getError(), 0));
-        // converts the output of the PID loop to the NEOEncoder unit (-1.0 to 1.0) by
-        // dividing the PIDOutput by the maximum RPM possible of the CANSparkMax motor.
-        // Sam said that this is already taken in account by the P value.
-
-        // the calculate method takes in a (double measurement, double setpoint) where 
-        // the measurement is the error and the setpoint is the target RPM.
-        // we want the error to be 0, which means the targetVelocity has been reached.
     }
 
     public void runShooter() {

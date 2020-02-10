@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.util.FRCLogger.Loggable;
+import com.stuypulse.stuylib.file.FRCLogger.Loggable;
 
 public class Climber extends SubsystemBase implements Loggable {
     private enum State {
@@ -26,7 +26,6 @@ public class Climber extends SubsystemBase implements Loggable {
 
     private CANSparkMax liftMotor;
     private CANSparkMax yoyoMotor;
-
     private State state;
 
     public Climber() {

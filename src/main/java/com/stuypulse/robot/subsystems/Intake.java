@@ -37,6 +37,10 @@ public class Intake extends SubsystemBase implements Loggable {
         state = State.NONE;
     }
 
+    public boolean isExtended() {
+        return intakeSolenoid.get();
+    }
+
     public void extend() {
         intakeSolenoid.set(true);
         state = State.EXTEND;

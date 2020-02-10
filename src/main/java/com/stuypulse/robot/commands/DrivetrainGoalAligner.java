@@ -28,10 +28,10 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
                 - Alignment.Measurements.Limelight.DISTANCE;
 
         // Return the error from the target distance
-        return goal_dist - distance;
+        return 0 - (goal_dist - distance);
     }
 
     public double getAngleError() {
-        return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW;
+        return 0 - (Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW);
     }
 }

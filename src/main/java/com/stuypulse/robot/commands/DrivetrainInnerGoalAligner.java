@@ -23,6 +23,6 @@ public class DrivetrainInnerGoalAligner implements DrivetrainAlignmentCommand.Al
 
     public double getAngleError() {
         // TODO: have CV replace this command
-        return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW + filter.get(CVFuncs.txOffset());
+        return 0- (Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW + filter.get(CVFuncs.txOffset()));
     }
 }

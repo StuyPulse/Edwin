@@ -34,7 +34,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Take a list of motors and return the ones used in high gear
     private static CANSparkMax[] getHighGear(CANSparkMax[] motors) {
-        return Arrays.copyOfRange(motors, 0, 2);
+        return motors;
     }
 
     // Take a list of motors and return the ones used in low gear
@@ -43,12 +43,12 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // An array of motors on the left and right side of the drive train
-    private CANSparkMax[] lMotors;
-    private CANSparkMax[] rMotors;
+    private CANSparkMax[] leftMotors;
+    private CANSparkMax[] rightMotors;
 
     // An encoder for each side of the drive train
-    private CANEncoder lNEO;
-    private CANEncoder rNEO;
+    private CANEncoder leftNEO;
+    private CANEncoder rightNEO;
 
     private TankDriveEncoder greyhills;
 
@@ -63,21 +63,19 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         // Add Motors to list
-        lMotors = new CANSparkMax[] { 
+        leftMotors = new CANSparkMax[] { 
             new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
-            new CANSparkMax(Ports.Drivetrain.LEFT_MIDDLE, MotorType.kBrushless),
             new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless) 
         };
 
-        rMotors = new CANSparkMax[] { 
+        rightMotors = new CANSparkMax[] { 
             new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
-            new CANSparkMax(Ports.Drivetrain.RIGHT_MIDDLE, MotorType.kBrushless),
             new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless) 
         };
 
         // Create list of encoders based on motors
-        lNEO = lMotors[1].getEncoder();
-        rNEO = rMotors[1].getEncoder();
+        leftNEO = leftMotors[1].getEncoder();
+        rightNEO = rightMotors[1].getEncoder();
 
         greyhills = new TankDriveEncoder(
             new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B), 
@@ -86,13 +84,13 @@ public class Drivetrain extends SubsystemBase {
 
         // Create DifferentialDrive for different gears
         highGearDrive = new DifferentialDrive(
-            makeControllerGroup(getHighGear(lMotors)),
-            makeControllerGroup(getHighGear(rMotors))
+            makeControllerGroup(getHighGear(leftMotors)),
+            makeControllerGroup(getHighGear(rightMotors))
         );
 
         lowGearDrive = new DifferentialDrive(
-            makeControllerGroup(getLowGear(lMotors)),
-            makeControllerGroup(getLowGear(rMotors))
+            makeControllerGroup(getLowGear(leftMotors)),
+            makeControllerGroup(getLowGear(rightMotors))
         );
 
         gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
@@ -114,11 +112,11 @@ public class Drivetrain extends SubsystemBase {
      * @param limit smart current limit
      */
     public void setSmartCurrentLimit(int limit) {
-        for (CANSparkMax motor : lMotors) {
+        for (CANSparkMax motor : leftMotors) {
             motor.setSmartCurrentLimit(limit);
         }
 
-        for (CANSparkMax motor : rMotors) {
+        for (CANSparkMax motor : rightMotors) {
             motor.setSmartCurrentLimit(limit);
         }
 
@@ -130,11 +128,11 @@ public class Drivetrain extends SubsystemBase {
      * @param inverted desired settings
      */
     public void setInverted(boolean inverted) {
-        for (CANSparkMax motor : lMotors) {
+        for (CANSparkMax motor : leftMotors) {
             motor.setInverted(inverted);
         }
 
-        for (CANSparkMax motor : rMotors) {
+        for (CANSparkMax motor : rightMotors) {
             motor.setInverted(inverted);
         }
     }
@@ -150,10 +148,10 @@ public class Drivetrain extends SubsystemBase {
      * @param gear value for gear on robot
      */
     public void setGear(Gear gear) {
-        if (gear.equals(gear)) {
+        if (this.gear != gear) {
             this.gear = gear;
             stop();
-            gearShift.set(gear.equals(Gear.HIGH));
+            gearShift.set(this.gear == Gear.HIGH);
         }
     }
 
@@ -192,22 +190,22 @@ public class Drivetrain extends SubsystemBase {
      * @param distance distance robot moves in one rotation
      */
     public void setNEODistancePerRotation(double distance) {
-        lNEO.setPositionConversionFactor(distance);
-        rNEO.setPositionConversionFactor(distance);
+        leftNEO.setPositionConversionFactor(distance);
+        rightNEO.setPositionConversionFactor(distance);
     }
 
     /**
      * @return distance left side of drivetrain has moved
      */
     public double getLeftNEODistance() {
-        return lNEO.getPosition();
+        return leftNEO.getPosition();
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
     public double getRightNEODistance() {
-        return rNEO.getPosition();
+        return rightNEO.getPosition();
     }
 
     /**
@@ -217,16 +215,7 @@ public class Drivetrain extends SubsystemBase {
         double left = getLeftNEODistance();
         double right = getRightNEODistance();
 
-        // Check for failing encoders
-        if(Math.abs(left) < 0.01) {
-            return right;
-        }
-
-        if(Math.abs(right) < 0.01) {
-            return left;
-        }
-
-        return (left + right) / 2.0;
+        return Math.max(left, right);
     }
 
     /**

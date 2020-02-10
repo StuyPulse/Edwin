@@ -42,11 +42,9 @@ public interface Constants {
 
         public interface Drivetrain {
             int LEFT_TOP = 15;
-            int LEFT_MIDDLE = 14;
             int LEFT_BOTTOM = 13;
 
             int RIGHT_TOP = 2;
-            int RIGHT_MIDDLE = 1;
             int RIGHT_BOTTOM = 0;
 
             int LEFT_ENCODER_A = -1; // TODO: find value

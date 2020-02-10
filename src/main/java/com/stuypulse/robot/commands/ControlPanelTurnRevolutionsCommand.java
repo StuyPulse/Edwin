@@ -1,7 +1,6 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.ControlPanel;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

@@ -68,6 +68,9 @@ public interface Constants {
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;
 
+        double SPEED_POWER = 1.0;
+        double ANGLE_POWER = 1.0;
+
         double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
 

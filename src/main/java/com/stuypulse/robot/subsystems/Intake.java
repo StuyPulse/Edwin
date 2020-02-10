@@ -3,7 +3,7 @@ package com.stuypulse.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.util.FRCLogger.Loggable;
+import com.stuypulse.stuylib.file.FRCLogger.Loggable;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;

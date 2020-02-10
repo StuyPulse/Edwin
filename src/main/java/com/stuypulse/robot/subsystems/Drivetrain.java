@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.util.FRCLogger.Loggable;
+import com.stuypulse.stuylib.file.FRCLogger.Loggable;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 

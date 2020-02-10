@@ -1,7 +1,5 @@
 package com.stuypulse.robot.commands;
 
-import java.util.Set;
-
 import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.stuylib.input.Gamepad;
 
@@ -9,19 +7,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ControlPanelManualControlCommand extends CommandBase {
 
-    ControlPanel cPanel;
-    Gamepad gamepad;
+    private final ControlPanel controlPanel;
+    private final Gamepad gamepad;
 
-    public ControlPanelManualControlCommand(ControlPanel cPanel, Gamepad gamepad) {
-        this.cPanel = cPanel;
+    public ControlPanelManualControlCommand(ControlPanel controlPanel, Gamepad gamepad) {
+        this.controlPanel = controlPanel;
         this.gamepad = gamepad;
 
-        addRequirements(cPanel);
+        addRequirements(controlPanel);
     }
 
     @Override
     public void execute() {
-        cPanel.turn(gamepad.getRightX());
+        controlPanel.turn(gamepad.getRightX());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        controlPanel.stop();
     }
 
 }

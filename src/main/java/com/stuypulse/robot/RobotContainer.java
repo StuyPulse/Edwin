@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.Funnel;
 
-import java.util.ResourceBundle.Control;
-
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
@@ -30,14 +28,16 @@ import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 import com.stuypulse.stuylib.input.gamepads.PS4;
 public class RobotContainer {
 
+  //Subsystems
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
   private final ControlPanel controlPanel = new ControlPanel();
 
-  private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
-  private final Logitech operatorGamepad = new Logitech(Constants.OPERATOR_GAMEPAD_PORT);
+  //Gamepads
+  private final PS4 driverGamepad = new PS4(Constants.DRIVER_GAMEPAD_PORT);
+  private final Logitech.XMode operatorGamepad = new Logitech.XMode(Constants.OPERATOR_GAMEPAD_PORT);
 
   
   /**

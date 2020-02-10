@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2020.1.2"
+    id "edu.wpi.first.GradleRIO" version "2020.2.2"
 }
 
 allprojects {
@@ -13,6 +13,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 def ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main"
+final String STUYLIB_VERSION = '2020.1.8.5'
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
@@ -58,9 +59,11 @@ dependencies {
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
     if (file("../StuyLib").exists()) {
+        System.out.println("BUILDING WITH COMPOSITE BUILD")
         implementation('com.stuypulse:StuyLib:1.0.0')
     } else {
-        compile 'com.github.StuyPulse:StuyLib:2020.1.8.5'
+        System.out.println("BUILDING WITH JITPACK")
+        compile 'com.github.StuyPulse:StuyLib:' + STUYLIB_VERSION;
     }
 
     testImplementation 'junit:junit:4.12'

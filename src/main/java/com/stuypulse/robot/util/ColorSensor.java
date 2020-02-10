@@ -37,7 +37,7 @@ public class ColorSensor {
           } else if (detectedColor == Constants.YELLOW_TARGET) {
             return "Yellow";
           } else {
-            return "Unnown";
+            return "Unknown";
           }
     }
 }

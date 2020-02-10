@@ -3,7 +3,7 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.robot.subsystems.ControlPanel;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import com.stuypulse.robot.util.Constants;
+import com.stuypulse.robot.Constants;
 
 public class ControlPanelTurnRevolutionsCommand extends CommandBase {
     private final ControlPanel controlPanel;
@@ -28,7 +28,7 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
             colorCount += 0.125;
         }
 
-        if (colorCount == 1) {
+        if (Math.abs(colorCount - 1) < 0.01) {
             rotationsAmount += 1;
             colorCount = 0;
         }
@@ -37,7 +37,8 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-            return rotationsAmount == 3.5;
+        //stop at 3 1/2 or 3 5/8
+            return rotationsAmount >= 3.5;
     }
 
     @Override

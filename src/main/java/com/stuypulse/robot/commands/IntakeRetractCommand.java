@@ -14,6 +14,6 @@ public class IntakeRetractCommand extends InstantCommand {
 
   @Override
   public void initialize() {
-      intake.extend();
+      intake.retract();
   }
 }

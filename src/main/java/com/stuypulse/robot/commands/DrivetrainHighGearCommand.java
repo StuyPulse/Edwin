@@ -15,5 +15,4 @@ public class DrivetrainHighGearCommand extends InstantCommand {
     public void initialize() {
         this.drivetrain.setHighGear();
     }
-
 }

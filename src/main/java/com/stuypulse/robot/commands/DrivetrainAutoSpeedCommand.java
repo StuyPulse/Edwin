@@ -3,7 +3,6 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.Constants.Alignment;
 
-import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 
@@ -23,7 +22,7 @@ public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
      * @param distance   target distance for robot to drive to
      */
     public DrivetrainAutoSpeedCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
-        super(drivetrain, aligner, new PIDCalculator(Alignment.Speed.BANGBANG_SPEED), new PIDController(Alignment.Angle.P.doubleValue(), Alignment.Angle.I.doubleValue(), Alignment.Angle.D.doubleValue()));
+        super(drivetrain, aligner, new PIDCalculator(Alignment.Speed.BANGBANG_SPEED), Alignment.Angle.getPID());
     }
 
     // This command never really finishes

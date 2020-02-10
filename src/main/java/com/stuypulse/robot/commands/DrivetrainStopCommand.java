@@ -2,9 +2,9 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Drivetrain;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class DrivetrainStopCommand extends CommandBase {
+public class DrivetrainStopCommand extends InstantCommand {
 
     private Drivetrain drivetrain;
 
@@ -15,9 +15,4 @@ public class DrivetrainStopCommand extends CommandBase {
     public void initialize() {
         this.drivetrain.stop();
     }
-
-    public boolean isFinished() {
-        return true;
-    }
-
 }

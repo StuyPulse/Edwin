@@ -42,11 +42,11 @@ public interface Constants {
         }
 
         public interface Drivetrain {
-            int LEFT_TOP = 15;
-            int LEFT_BOTTOM = 13;
+            int LEFT_TOP = 7;
+            int LEFT_BOTTOM = 6;
 
-            int RIGHT_TOP = 2;
-            int RIGHT_BOTTOM = 0;
+            int RIGHT_TOP = 4;
+            int RIGHT_BOTTOM = 3;
 
             int LEFT_ENCODER_A = -1; // TODO: find value
             int LEFT_ENCODER_B = -1; // TODO: find value
@@ -71,6 +71,9 @@ public interface Constants {
         double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
 
+        int SPEED_ORDER = 1; // TODO: Go Over This With Driver
+        int ANGLE_ORDER = 1; // TODO: Go Over This With Driver
+        
         // Current Limit for the motors
         int CURRENT_LIMIT = 40; // TODO: ask about this
 

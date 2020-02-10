@@ -8,8 +8,7 @@ import com.stuypulse.stuylib.input.Gamepad;
 
 import com.stuypulse.stuylib.streams.IStream;
 import com.stuypulse.stuylib.streams.FilteredIStream;
-import com.stuypulse.stuylib.streams.filters.LowPassFilter;
-
+import com.stuypulse.stuylib.streams.filters.OrderedLowPassFilter;
 import com.stuypulse.stuylib.math.SLMath;
 
 /**
@@ -47,19 +46,26 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
         this.speed = new FilteredIStream(this.rawSpeed, 
             (x) -> SLMath.deadband(x, DrivetrainSettings.SPEED_DEADBAND),
             (x) -> SLMath.square(x), 
-            new LowPassFilter(DrivetrainSettings.SPEED_FILTER)
+            new OrderedLowPassFilter(DrivetrainSettings.SPEED_FILTER, DrivetrainSettings.SPEED_ORDER)
         );
 
         // Create an IStream that filters the raw angle from the controller
         this.angle = new FilteredIStream(this.rawAngle, 
             (x) -> SLMath.deadband(x, DrivetrainSettings.ANGLE_DEADBAND),
             (x) -> SLMath.square(x), 
-            new LowPassFilter(DrivetrainSettings.ANGLE_FILTER)
+            new OrderedLowPassFilter(DrivetrainSettings.ANGLE_FILTER, DrivetrainSettings.ANGLE_ORDER)
         );
     }
 
     // Give the IStream's result for speed when the drivetrain wants it
     public double getSpeed() {
+
+        if(gamepad.getRawBottomButton()) {
+            drivetrain.setLowGear();
+        } else {
+            drivetrain.setHighGear();
+        }
+
         return speed.get();
     }
 

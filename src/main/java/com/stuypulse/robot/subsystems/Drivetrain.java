@@ -150,7 +150,7 @@ public class Drivetrain extends SubsystemBase {
     public void setGear(Gear gear) {
         if (this.gear != gear) {
             this.gear = gear;
-            stop();
+            // stop();
             gearShift.set(this.gear == Gear.HIGH);
         }
     }

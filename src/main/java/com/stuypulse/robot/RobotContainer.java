@@ -18,10 +18,12 @@ import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.subsystems.Chute;
+import com.stuypulse.robot.subsystems.Chimney;
 
 import com.stuypulse.stuylib.input.gamepads.Logitech;
-
+import com.stuypulse.robot.commands.ChimneyDownCommand;
+import com.stuypulse.robot.commands.ChimneyStopCommand;
+import com.stuypulse.robot.commands.ChimneyUpCommand;
 import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -30,20 +32,20 @@ import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 import com.stuypulse.stuylib.input.gamepads.PS4;
+
 public class RobotContainer {
 
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
-  private final Chute chute = new Chute();
+  private final Chimney chimney = new Chimney();
 
   private final ControlPanel controlPanel = new ControlPanel();
 
   private final PS4 driverGampead = new PS4(Constants.DRIVER_GAMEPAD_PORT);
-  private final Logitech operatorGamepad = new Logitech(Constants.OPERATOR_GAMEPAD_PORT);
+  private final Logitech operatorGamepad = new Logitech.XMode(Constants.OPERATOR_GAMEPAD_PORT);
 
-  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -51,6 +53,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
   }
 
@@ -61,9 +64,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    operatorGamepad.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+    operatorGamepad.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
+    operatorGamepad.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

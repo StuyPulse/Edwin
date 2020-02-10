@@ -20,7 +20,11 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
-import com.stuypulse.robot.commands.ClimberToggleLiftBreakCommand;
+import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
+import com.stuypulse.robot.commands.ClimberSetNeutralModeCommand;
+import com.stuypulse.robot.commands.ClimberSetupCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
 import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -58,9 +62,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorGamepad.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBreakCommand(climber));
-    //TODO: finish OI
-    //new ButtonWrapper(() -> (Math.abs(operatorGamepad.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberMoveCommand(climber, intake, operatorGamepad));
+    operatorGamepad.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    
+    new ButtonWrapper(() -> (Math.abs(operatorGamepad.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operatorGamepad.getLeftMag()) < -Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberRobotClimbCommand(climber));
   }
 
 

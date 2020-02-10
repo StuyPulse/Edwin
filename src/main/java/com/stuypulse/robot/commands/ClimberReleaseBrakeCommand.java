@@ -10,6 +10,8 @@ public class ClimberReleaseBrakeCommand extends InstantCommand {
 
     public ClimberReleaseBrakeCommand(Climber climber) {
         this.climber = climber;
+
+        addRequirements(climber);
     }
 
     @Override

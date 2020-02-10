@@ -12,6 +12,8 @@ public class ClimberSetNeutralModeCommand extends InstantCommand {
 
     public ClimberSetNeutralModeCommand(Climber climber, IdleMode mode) {
         this.climber = climber;
+
+        addRequirements(climber);
     }
 
     @Override

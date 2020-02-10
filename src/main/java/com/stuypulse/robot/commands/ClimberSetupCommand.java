@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands;
 
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Intake;
 
@@ -19,11 +20,8 @@ public class ClimberSetupCommand extends SequentialCommandGroup {
         addCommands(
             new IntakeRetractCommand(intake),
             new ClimberReleaseBrakeCommand(climber),
-            new WaitCommand(0.1),
+            new WaitCommand(Constants.CLIMBER_SETUP_WAIT_TIME),
             new ClimberSetNeutralModeCommand(climber, IdleMode.kCoast)
         );
     }
 }
-
-// move down command
-// check limit switch and move motor

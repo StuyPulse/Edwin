@@ -33,6 +33,10 @@ public class Climber extends SubsystemBase {
         moveLift(Constants.MOVE_LIFT_DOWN_SPEED);
     }
 
+    public void moveLiftUp() {
+        moveLift(Constants.MOVE_LIFT_UP_SPEED);
+    }
+
     public void moveLift(double speed) {
         liftMotor.set(speed);
     }
@@ -46,7 +50,7 @@ public class Climber extends SubsystemBase {
     }
 
     public void stopYoyo() {
-        yoyoMotor.set(0);
+        yoyoMotor.stopMotor();
     }
 
     public void toggleLiftBrake() {

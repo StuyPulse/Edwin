@@ -1,5 +1,6 @@
 package com.stuypulse.robot.commands;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.stuylib.input.Gamepad;
 
@@ -13,11 +14,13 @@ public class ClimberMoveYoyoCommand extends CommandBase{
     public ClimberMoveYoyoCommand(Climber climber, Gamepad gamepad) {
         this.climber = climber;
         this.gamepad = gamepad;
+        
+        addRequirements(climber);
     }
 
     @Override
     public void execute() {
-        climber.moveYoyo(gamepad.getLeftX());
+        climber.moveYoyo(Math.cbrt(gamepad.getLeftX() * Constants.CLIMBER_SCALE));
     }
 
     @Override

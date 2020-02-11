@@ -15,9 +15,13 @@ public class ClimberRobotClimbCommand extends CommandBase {
         addRequirements(climber);
     }
 
+    @Override 
+    public void initialize() {
+        climber.setNeutralMode(IdleMode.kBrake);
+    }
+
     @Override
     public void execute() {
-        climber.setNeutralMode(IdleMode.kBrake);
         climber.moveLiftDown();
         climber.releaseLiftBrake();
     }

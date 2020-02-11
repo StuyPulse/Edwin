@@ -244,16 +244,16 @@ public interface Constants {
     int INTAKE_SOLENOID_PORT = -1;
 
     /*********************************************************************************************
-     * Chute Motor & Sensor Ports
+     * CHIMNEY Motor & Sensor Ports
      *********************************************************************************************/
-	int CHUTE_LIFT_MOTOR_PORT = -1;
-	int CHUTE_LOWER_SENSOR_PORT = -1;
-    int CHUTE_UPPER_SENSOR_PORT = -1;
+	int CHIMNEY_LIFT_MOTOR_PORT = -1;
+	int CHIMNEY_LOWER_SENSOR_PORT = -1;
+    int CHIMNEY_UPPER_SENSOR_PORT = -1;
     
     /*********************************************************************************************
-     * Chute Constants
+     * CHIMNEY Constants
      *********************************************************************************************/
-	double CHUTE_LIFT_UP_SPEED = -1;
-    double CHUTE_ENCODER_RADIUS = -1;
-	double CHUTE_BALL_PER_ROTATIONS = -1;
+	double CHIMNEY_LIFT_UP_SPEED = -1;
+    double CHIMNEY_ENCODER_RADIUS = -1;
+	double CHIMNEY_BALL_PER_ROTATIONS = -1;
 }

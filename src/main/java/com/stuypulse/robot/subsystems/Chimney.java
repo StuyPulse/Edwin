@@ -17,10 +17,10 @@ public class Chimney extends SubsystemBase {
     private DigitalInput upperSensor;
 
     public Chimney() {
-        motor = new CANSparkMax(Constants.CHUTE_LIFT_MOTOR_PORT, MotorType.kBrushless);
+        motor = new CANSparkMax(Constants.CHIMNEY_LIFT_MOTOR_PORT, MotorType.kBrushless);
 
-        lowerSensor = new DigitalInput(Constants.CHUTE_LOWER_SENSOR_PORT);
-        upperSensor = new DigitalInput(Constants.CHUTE_UPPER_SENSOR_PORT);
+        lowerSensor = new DigitalInput(Constants.CHIMNEY_LOWER_SENSOR_PORT);
+        upperSensor = new DigitalInput(Constants.CHIMNEY_UPPER_SENSOR_PORT);
     }
 
     // IR SENSOR VALUES
@@ -33,11 +33,11 @@ public class Chimney extends SubsystemBase {
 
     // MOVE THE MOTORS
     public void liftUp() {
-        motor.set(Constants.CHUTE_LIFT_UP_SPEED);
+        motor.set(Constants.CHIMNEY_LIFT_UP_SPEED);
     }
 
     public void liftDown() {
-        motor.set(-Constants.CHUTE_LIFT_UP_SPEED);
+        motor.set(-Constants.CHIMNEY_LIFT_UP_SPEED);
     }
 
     public void stop() {

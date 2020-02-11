@@ -36,6 +36,11 @@ public interface Constants {
         return ((double) feet) + (inches / 12.0);
     }
 
+    public interface Pneumatics {
+        int ANALOG_PRESSURE_SWITCH_PORT = 0;
+        int ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5;
+    }
+
     public interface Ports {
 
         public interface Gamepad {

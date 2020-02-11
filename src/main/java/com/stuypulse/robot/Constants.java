@@ -252,11 +252,4 @@ public interface Constants {
     double YELLOW_GREEN = 0.50;
     double YELLOW_BLUE = 0.1;
 
-
-
-    /*********************************************************************************************
-     * Intake Motor Ports
-     *********************************************************************************************/
-    int INTAKE_MOTOR_PORT = -1;
-    int INTAKE_SOLENOID_PORT = -1;
     }

@@ -7,6 +7,9 @@
 
 package com.stuypulse.robot;
 
+import edu.wpi.first.wpilibj.util.Color;
+import com.revrobotics.ColorMatch;
+
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -187,6 +190,13 @@ public interface Constants {
      *********************************************************************************************/
     int CONTROL_PANEL_MOTOR_PORT = -1;
     int CONTROL_SENSOR_PORT = -1;
+
+    Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
+    Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
+    Color RED_TARGET = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
+    Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
+
+    double COLOR_SENSOR_SPEED = 1;
 
     /*********************************************************************************************
      * Funnel Constants

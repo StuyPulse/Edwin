@@ -20,7 +20,7 @@ public class ClimberMoveYoyoCommand extends CommandBase{
 
     @Override
     public void execute() {
-        climber.moveYoyo(Math.cbrt(gamepad.getLeftX() * Constants.CLIMBER_SCALE));
+        climber.moveYoyo(Math.pow(gamepad.getLeftX() * Constants.CLIMBER_SCALE, (1/3)));
     }
 
     @Override

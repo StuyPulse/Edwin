@@ -9,6 +9,7 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.commands.*;
 
 import com.stuypulse.robot.subsystems.Climber;
@@ -16,6 +17,7 @@ import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
 import com.stuypulse.stuylib.input.gamepads.PS4;
 
@@ -36,7 +38,6 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
   private final ControlPanel controlPanel = new ControlPanel();
-
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);

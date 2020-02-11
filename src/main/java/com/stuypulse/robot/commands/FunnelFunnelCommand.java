@@ -12,21 +12,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FunnelFunnelCommand extends CommandBase {
     
-    private final Funnel m_Funnel;
+    private final Funnel funnel;
 
     public FunnelFunnelCommand(Funnel funnel) {
-        m_Funnel = funnel;
-        addRequirements(m_Funnel);
-    }
-
-    @Override
-    public void initialize() {
-        new Thread().start();
+        this.funnel = funnel;
+        addRequirements(funnel);
     }
 
     @Override
     public void execute() {
-        m_Funnel.funnel();
+        funnel.funnel();
     }
 
     @Override
@@ -36,6 +31,6 @@ public class FunnelFunnelCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        m_Funnel.stop();
+        funnel.stop();
     }
 }

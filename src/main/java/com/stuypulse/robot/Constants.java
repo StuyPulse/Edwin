@@ -123,7 +123,6 @@ public interface Constants {
             public static PIDController getPID() {
                 return new PIDController(P.get(), I.get(), D.get());
             }
-
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.7 is nice]
             double BANGBANG_SPEED = 0.7;

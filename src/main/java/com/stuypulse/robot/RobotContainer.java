@@ -52,7 +52,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
-    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
+    
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
   }
 

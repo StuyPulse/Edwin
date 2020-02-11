@@ -7,6 +7,9 @@
 
 package com.stuypulse.robot;
 
+import edu.wpi.first.wpilibj.util.Color;
+import com.revrobotics.ColorMatch;
+
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -74,6 +77,9 @@ public interface Constants {
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;
+
+        double SPEED_POWER = 1.0;
+        double ANGLE_POWER = 1.0;
 
         double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
@@ -195,6 +201,13 @@ public interface Constants {
      * Climber Motor Constants
      *********************************************************************************************/
     double CLIMBER_MOVE_DEADBAND = 0.25;
+
+    Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
+    Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
+    Color RED_TARGET = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
+    Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
+
+    double COLOR_SENSOR_SPEED = 1;
 
     /*********************************************************************************************
      * Funnel Constants

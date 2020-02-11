@@ -7,12 +7,18 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.MotorStall;
+import com.stuypulse.robot.util.MotorStall;
 
 public class Funnel extends SubsystemBase implements MotorStall {
 
-    private CANSparkMax motor;
-    private CANEncoder encoder;
+    private final CANSparkMax motor;
+    private final CANEncoder encoder;
+
+    private boolean isStalled;
+    private double startEncoderVal;
+    private int stallCounter;
+
+    private boolean isRunning;
 
     public Funnel() {
         motor = new CANSparkMax(Constants.FUNNEL_MOTOR_PORT, MotorType.kBrushless);
@@ -31,23 +37,59 @@ public class Funnel extends SubsystemBase implements MotorStall {
         motor.set(0);
     }
 
-    public double getEncoderVal() {
-        return encoder.getPosition();
-    }
-
     @Override
-    public void enableStalling() {
-        // TODO insert gamepad vibration here;
+    public void setStalled(boolean value) {
+        isStalled = value;
     }
 
     @Override
     public boolean isStalling() {
-        return false;
+        return isStalled;
     }
 
     @Override
     public double getEncoderApproachStallThreshold() {
-        return 3.0;
+        return Constants.FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD;
+    }
+
+    @Override
+    public void setStartEncoderVal(double val) {
+        startEncoderVal = val;
+    }
+
+    @Override
+    public double getStartEncoderVal() {
+        return startEncoderVal;
+    }
+
+    @Override
+    public double getCurrentEncoderVal() {
+        return encoder.getPosition();
+    }
+
+    @Override
+    public int getStallCounter() {
+        return stallCounter;
+    }
+
+    @Override
+    public void incrementStallCounter() {
+        stallCounter++;
+    }
+
+    @Override
+    public void resetStallCounter() {
+        stallCounter = 0;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public void setRunning(boolean val) {
+        isRunning = val;
     }
 
 }

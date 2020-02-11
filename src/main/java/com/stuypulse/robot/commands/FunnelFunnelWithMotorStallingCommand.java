@@ -8,28 +8,31 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Funnel;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
     
-    private final Funnel m_Funnel;
+    private final Funnel funnel;
+    private final Logitech operatorGamepad;
 
-    public FunnelFunnelWithMotorStallingCommand(Funnel funnel) {
-        m_Funnel = funnel;
-        addRequirements(m_Funnel);
+    public FunnelFunnelWithMotorStallingCommand(Funnel funnel, Logitech operatorGamepad) {
+        this.funnel = funnel;
+        this.operatorGamepad = operatorGamepad;
+        addRequirements(funnel);
     }
 
     @Override
     public void initialize() {
-        new Thread().start();
+        funnel.setRunning(true);
     }
 
     @Override
     public void execute() {
-        if(m_Funnel.isStalling())
-            m_Funnel.enableStalling();
-        else;
-            m_Funnel.funnel();
+        if(funnel.isStalling())
+            operatorGamepad.setRumble(1);
+        funnel.funnel();
     }
 
     @Override
@@ -39,6 +42,7 @@ public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        m_Funnel.stop();
+        funnel.stop();
+        funnel.setRunning(false);
     }
 }

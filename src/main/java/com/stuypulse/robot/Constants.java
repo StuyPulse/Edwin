@@ -9,6 +9,7 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatch;
+
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -69,6 +70,9 @@ public interface Constants {
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;
+
+        double SPEED_POWER = 1.0;
+        double ANGLE_POWER = 1.0;
 
         double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver

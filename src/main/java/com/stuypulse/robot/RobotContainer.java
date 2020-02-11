@@ -9,14 +9,13 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.commands.*;
 
 import com.stuypulse.stuylib.input.*;
 import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.Ports;
-
-import java.util.ResourceBundle.Control;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -50,6 +49,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
+
+    new Thread(new MotorStalling(funnel)).start();
   }
 
   /**

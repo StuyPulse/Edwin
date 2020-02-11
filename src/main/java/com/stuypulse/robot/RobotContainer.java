@@ -10,6 +10,7 @@ package com.stuypulse.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.commands.*;
 
 import com.stuypulse.robot.subsystems.Climber;
@@ -20,7 +21,6 @@ import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
 import com.stuypulse.stuylib.input.gamepads.PS4;
-
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -55,6 +55,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
+
+    new Thread(new MotorStalling(funnel)).start();
   }
 
   /**

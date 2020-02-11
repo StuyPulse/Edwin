@@ -230,4 +230,22 @@ public interface Constants {
     double DISTANCE_FROM_TRENCH_TO_RDVS = -1;
     double ANGLE_FROM_RDVS_TO_GOAL = -1;
 
+
+    /*********************************************************************************************
+     * SixBallThreeRdvsAutonCommand
+     *********************************************************************************************/
+
+    double DISTANCE_FROM_START_TO_RDVS = -1;
+    double ANGLE_FROM_RDVS_TO_BALL = -1;
+    double DISTANCE_FOR_THREE_BALLS_IN_RDVS = -1;
+
+
+    /*********************************************************************************************
+     * SixBallFiveRdvsAutonCommand
+     *********************************************************************************************/
+    
+    double ANGLE_FROM_THREE_BALL_TO_TWO_BALL_IN_RDVS = -1;
+    double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL_IN_RDVS = -1;
+    double ANGLE_FROM_TWO_BALL_TO_GOAL = -1;
+
 }

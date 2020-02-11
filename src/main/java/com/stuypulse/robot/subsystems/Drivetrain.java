@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
@@ -57,6 +60,7 @@ public class Drivetrain extends SubsystemBase {
     private Solenoid gearShift;
     private DifferentialDrive highGearDrive;
     private DifferentialDrive lowGearDrive;
+    private DifferentialDriveOdometry odometry; 
 
     // NAVX for Gyro
     private AHRS navx;
@@ -93,6 +97,10 @@ public class Drivetrain extends SubsystemBase {
             makeControllerGroup(getLowGear(rightMotors))
         );
 
+        odometry = new DifferentialDriveOdometry(
+            Rotation2d.fromDegrees(getGyroAngleCounterClockwise())
+        );
+
         gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
@@ -104,6 +112,15 @@ public class Drivetrain extends SubsystemBase {
         setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
         setLowGear();
+    }
+
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+        odometry.update(
+            Rotation2d.fromDegrees(getGyroAngleCounterClockwise()), 
+            getLeftGreyhillDistance(), getRightGreyhillDistance()
+        );
     }
 
     /**
@@ -177,10 +194,24 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * @return get the angle of the robot
+     * @return get the angle of the robot clockwise
      */
-    public double getGyroAngle() {
+    public double getGyroAngleClockwise() {
         return navx.getAngle();
+    }
+
+    /**
+     * @return get the angle of the robot counterclockwise
+     */
+    public double getGyroAngleCounterClockwise() {
+        return Math.IEEEremainder(navx.getAngle(), 360);
+    }
+
+    /**
+     * reset gyro yaw angle to zero 
+     */
+    public void resetGyroAngle() {
+        navx.reset();
     }
 
     /**
@@ -318,5 +349,27 @@ public class Drivetrain extends SubsystemBase {
         } else {
             curvatureDrive(speed, rotation, false);
         }
+    }
+
+    /**
+     * @return position according to the odometer 
+     */
+    public Pose2d getPose() {
+        // bad naming: returns back given units 
+        return odometry.getPoseMeters(); 
+    }
+    
+    /**
+     * @param pose the position to set the odometer to 
+     */
+    public void setOdometer(Pose2d pose) {
+        odometry.resetPosition(pose, Rotation2d.fromDegrees(getGyroAngleCounterClockwise())); 
+    }
+    
+    /**
+     * set odometer to zero 
+     */
+    public void resetOdometer() {
+        setOdometer(new Pose2d());
     }
 }

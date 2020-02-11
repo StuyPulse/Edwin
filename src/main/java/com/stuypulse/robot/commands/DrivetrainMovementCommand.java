@@ -50,7 +50,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
          * Set goals based on when the command is initialized
          */
         public void init() {
-            goalAngle = (drivetrain.getGyroAngle() + angle + 360) % 360;
+            goalAngle = (drivetrain.getGyroAngleClockwise() + angle + 360) % 360;
             goalDistance = drivetrain.getGreyhillDistance() + distance;
         }
 
@@ -63,7 +63,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
         }
 
         public double getAngleError() {
-            double angleError = goalAngle - drivetrain.getGyroAngle();
+            double angleError = goalAngle - drivetrain.getGyroAngleClockwise();
 
             if (angleError > 180) {
                 angleError -= 360;

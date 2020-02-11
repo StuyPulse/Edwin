@@ -7,6 +7,8 @@
 
 package com.stuypulse.robot;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatch;
 import com.stuypulse.stuylib.control.PIDController;
@@ -168,6 +170,28 @@ public interface Constants {
                 double YAW = 0.0;
             }
         }
+    }
+
+    public interface MotionProfile {
+        // TODO: put exact value
+        double WIDTH = 2; // in feet
+        DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(WIDTH);
+
+        // TODO: find values that work with feet 
+        double kRamseteB = 2;
+        double kRamseteZeta = 0.7;
+
+        // TODO: calculate
+        double ks = 0.0; 
+        double kv = 0.0; 
+        double ka = 0.0;
+        SimpleMotorFeedforward MOTOR_FEEDFORWARD = new SimpleMotorFeedforward(ks, kv, ka); 
+    
+        //TODO: calculate
+        double kp = 0.0; 
+        double ki = 0.0; 
+        double kd = 0.0;
+        PIDController PID_CONTROLLER = new PIDController(kp, ki, kd); 
     }
 
     /*********************************************************************************************

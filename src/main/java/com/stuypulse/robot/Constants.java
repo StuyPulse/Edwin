@@ -25,13 +25,6 @@ import com.stuypulse.stuylib.network.SmartNumber;
  */
 public interface Constants {
 
-<<<<<<< HEAD
-      /*********************************************************************************************
-     * Gamepad Ports
-     *********************************************************************************************/
-    int DRIVER_GAMEPAD_PORT = 0;
-    int OPERATOR_GAMEPAD_PORT = 1;
-=======
     /**
      * Lets us turn feet and inches into just feet for measurements
      * 
@@ -180,7 +173,6 @@ public interface Constants {
             }
         }
     }
->>>>>>> master
 
     /*********************************************************************************************
      * Funnel Motor Port
@@ -221,19 +213,12 @@ public interface Constants {
     /*********************************************************************************************
      * Climber Constants
      *********************************************************************************************/
-<<<<<<< HEAD
     //TODO: Test speeds
     double MOVE_LIFT_UP_SPEED = 0.5;
     double MOVE_LIFT_DOWN_SPEED = -0.5;
     double CLIMBER_SETUP_WAIT_TIME = 0.1;
     double CLIMBER_SCALE = 0.5;
 
-=======
-    // TODO: Test speeds
-    double CLIMB_UP_SPEED = 0.5;
-    double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
-    
->>>>>>> master
      /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/
@@ -267,9 +252,6 @@ public interface Constants {
     double YELLOW_GREEN = 0.50;
     double YELLOW_BLUE = 0.1;
 
-<<<<<<< HEAD
-}
-=======
 
 
     /*********************************************************************************************
@@ -278,4 +260,3 @@ public interface Constants {
     int INTAKE_MOTOR_PORT = -1;
     int INTAKE_SOLENOID_PORT = -1;
     }
->>>>>>> master

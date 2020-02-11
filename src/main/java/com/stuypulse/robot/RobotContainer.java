@@ -15,7 +15,9 @@ import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.ControlPanel;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
+import com.stuypulse.stuylib.input.gamepads.PS4;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,6 +27,8 @@ import com.stuypulse.stuylib.input.gamepads.Logitech;
  */
 public class RobotContainer {
 
+  private final boolean DEBUG = true;
+
   //Subsystems
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
@@ -33,8 +37,9 @@ public class RobotContainer {
   private final ControlPanel controlPanel = new ControlPanel();
 
   //Gamepads
-  private final PS4 driverGamepad = new PS4(Constants.DRIVER_GAMEPAD_PORT);
-  private final Logitech.XMode operatorGamepad = new Logitech.XMode(Constants.OPERATOR_GAMEPAD_PORT);
+  private final PS4 driver = new PS4(Constants.Ports.Gamepad.DRIVER);
+  private final Gamepad operator = new Logitech.XMode(Constants.Ports.Gamepad.OPERATOR);
+  private final Gamepad debug = new Logitech.XMode(Constants.Ports.Gamepad.DEBUGGER);
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

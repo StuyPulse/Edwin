@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.commands.*;
 
-import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.*;
 import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.Ports;

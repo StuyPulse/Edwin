@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.commands.*;
 
-import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.*;
 import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.Ports;
@@ -36,9 +36,9 @@ public class RobotContainer {
 
   private final ControlPanel controlPanel = new ControlPanel();
 
-  private final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
-  private final Gamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
-  private final Gamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+  private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
+  private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
+  private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -53,6 +53,7 @@ public class RobotContainer {
 
     chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel));
+    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
   }
 
   /**

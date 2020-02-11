@@ -1,38 +1,30 @@
 package com.stuypulse.robot.commands;
 
-import java.util.Set;
-
 import com.stuypulse.robot.subsystems.ControlPanel;
-//import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.Gamepad;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class ControlPanelManualControlCommand implements Command {
+public class ControlPanelManualControlCommand extends CommandBase {
 
-    ControlPanel cPanel;
-    //Gamepad gamepad;
+    private final ControlPanel controlPanel;
+    private final Gamepad gamepad;
 
-    public ControlPanelManualControlCommand(ControlPanel cPanel) {
-        this.cPanel = cPanel;
-        //this.gamepad = gamepad;
+    public ControlPanelManualControlCommand(ControlPanel controlPanel, Gamepad gamepad) {
+        this.controlPanel = controlPanel;
+        this.gamepad = gamepad;
+
+        addRequirements(controlPanel);
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        //cPanel.turn(gamepad.getRightY());
-        Command.super.execute();
+        controlPanel.turn(gamepad.getRightX());
     }
 
     @Override
-    public Set<Subsystem> getRequirements() {
-        // TODO Auto-generated method stub
-        return null;
+    public void end(boolean interrupted) {
+        controlPanel.stop();
     }
-
-
-
 
 }

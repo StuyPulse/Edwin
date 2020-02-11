@@ -37,6 +37,11 @@ public class Intake extends SubsystemBase {
             extended = false;
         }
     }
+
+    public void toggle() {
+        solenoid.set(!solenoid.get());
+    }
+
     public void acquire() {
         setMotor(1);
     }

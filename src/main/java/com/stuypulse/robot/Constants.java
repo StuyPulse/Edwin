@@ -7,6 +7,9 @@
 
 package com.stuypulse.robot;
 
+import edu.wpi.first.wpilibj.util.Color;
+import com.revrobotics.ColorMatch;
+
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -31,6 +34,11 @@ public interface Constants {
      */
     private static double toFeet(int feet, double inches) {
         return ((double) feet) + (inches / 12.0);
+    }
+
+    public interface Pneumatics {
+        int ANALOG_PRESSURE_SWITCH_PORT = 0;
+        int ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5;
     }
 
     public interface Ports {
@@ -67,6 +75,9 @@ public interface Constants {
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;
+
+        double SPEED_POWER = 1.0;
+        double ANGLE_POWER = 1.0;
 
         double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
@@ -117,7 +128,6 @@ public interface Constants {
             public static PIDController getPID() {
                 return new PIDController(P.get(), I.get(), D.get());
             }
-
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.7 is nice]
             double BANGBANG_SPEED = 0.7;
@@ -185,10 +195,17 @@ public interface Constants {
     int CONTROL_PANEL_MOTOR_PORT = -1;
     int CONTROL_SENSOR_PORT = -1;
 
+    Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
+    Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
+    Color RED_TARGET = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
+    Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
+
+    double COLOR_SENSOR_SPEED = 1;
+
     /*********************************************************************************************
      * Funnel Constants
      *********************************************************************************************/
-    // TODO: Test
+    //TODO: Test
     double FUNNEL_SPEED = 0.5;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
@@ -222,11 +239,27 @@ public interface Constants {
     double YELLOW_GREEN = 0.50;
     double YELLOW_BLUE = 0.1;
 
+
+
     /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = -1;
     int INTAKE_SOLENOID_PORT = -1;
+
+    /*********************************************************************************************
+     * CHIMNEY Motor & Sensor Ports
+     *********************************************************************************************/
+	int CHIMNEY_LIFT_MOTOR_PORT = -1;
+	int CHIMNEY_LOWER_SENSOR_PORT = -1;
+    int CHIMNEY_UPPER_SENSOR_PORT = -1;
+    
+    /*********************************************************************************************
+     * CHIMNEY Constants
+     *********************************************************************************************/
+	double CHIMNEY_LIFT_UP_SPEED = -1;
+    double CHIMNEY_ENCODER_RADIUS = -1;
+    double CHIMNEY_BALL_PER_ROTATIONS = -1;
     
     /*********************************************************************************************
      * Shooter Motor Ports
@@ -270,4 +303,5 @@ public interface Constants {
     double SHOOT_FROM_FAR_RPM = 5500;
 
     double SHOOTER_TOLERANCE = 100;
+
 }

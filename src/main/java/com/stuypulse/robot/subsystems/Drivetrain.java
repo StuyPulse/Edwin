@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
-
 import com.stuypulse.stuylib.util.TankDriveEncoder;
 
 import java.util.Arrays;

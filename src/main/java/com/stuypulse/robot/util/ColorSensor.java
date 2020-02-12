@@ -10,38 +10,33 @@ import com.stuypulse.robot.Constants;
 
 public class ColorSensor {
 
-    private ColorSensorV3 m_colorSensor;
-    private ColorMatch m_colorMatcher;
-
-    private static final Color kCyanTarget = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
-    private static final Color kGreenTarget = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
-    private static final Color kRedTarget = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
-    private static final Color kYellowTarget = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
+    private ColorSensorV3 colorSensor;
+    private ColorMatch colorMatcher;
 
     public ColorSensor() {
-        m_colorSensor = new ColorSensorV3(Port.kOnboard);
-        m_colorMatcher = new ColorMatch();
+        colorSensor = new ColorSensorV3(Port.kOnboard);
+        colorMatcher = new ColorMatch();
 
-        m_colorMatcher.addColorMatch(kCyanTarget);
-        m_colorMatcher.addColorMatch(kGreenTarget);
-        m_colorMatcher.addColorMatch(kRedTarget);
-        m_colorMatcher.addColorMatch(kYellowTarget);
+        colorMatcher.addColorMatch(Constants.CYAN_TARGET);
+        colorMatcher.addColorMatch(Constants.GREEN_TARGET);
+        colorMatcher.addColorMatch(Constants.RED_TARGET);
+        colorMatcher.addColorMatch(Constants.YELLOW_TARGET);
     }
 
     public Color getRawDetectedColor() {
-        return m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).color;
+        return colorMatcher.matchClosestColor(colorSensor.getColor()).color;
     }
 
     public String getDetectedColor() {
         Color detectedColor = getRawDetectedColor();
 
-        if (detectedColor == kCyanTarget) {
+        if (detectedColor == Constants.CYAN_TARGET) {
             return "Cyan";
-          } else if (detectedColor == kRedTarget) {
+          } else if (detectedColor == Constants.RED_TARGET) {
             return "Red";
-          } else if (detectedColor == kGreenTarget) {
+          } else if (detectedColor == Constants.GREEN_TARGET) {
             return "Green";
-          } else if (detectedColor == kYellowTarget) {
+          } else if (detectedColor == Constants.YELLOW_TARGET) {
             return "Yellow";
           } else {
             return "Unknown";

@@ -10,11 +10,11 @@ import com.stuypulse.robot.util.ColorSensor;
 
 public class ControlPanel extends SubsystemBase {
     private CANSparkMax motor;
-    private ColorSensor cs;
+    private ColorSensor sensor;
 
     public ControlPanel() {
         
-        cs = new ColorSensor();
+        sensor = new ColorSensor();
         motor = new CANSparkMax(Constants.CONTROL_PANEL_MOTOR_PORT, MotorType.kBrushless);
     
     }
@@ -24,10 +24,10 @@ public class ControlPanel extends SubsystemBase {
     }
 
     public Color getColor() {
-       return cs.getRawDetectedColor();
+       return sensor.getRawDetectedColor();
     }
 
     public void stop() {
-        motor.set(0);
+        motor.stopMotor();
     }
 }

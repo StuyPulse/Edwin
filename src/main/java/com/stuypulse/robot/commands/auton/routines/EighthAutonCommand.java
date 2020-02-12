@@ -10133,6 +10133,6 @@ public class EighthAutonCommand extends SequentialCommandGroup {
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS));
         addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_THREE_BALL_TO_TWO_BALL, Constants.DISTANCE_FROM_THREE_BALL_TO_TWO_BALL));
         addCommands(new DrivetrainMovementCommand(drivetrain, 180));
-        addCommands(new DrivetrainPIDAlignment(drivetrain, new DrivetrainGoalAligner(20 )));
+        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
     }
 }

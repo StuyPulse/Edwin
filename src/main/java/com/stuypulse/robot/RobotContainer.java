@@ -9,18 +9,16 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.commands.*;
+
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.*;
+
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.commands.*;
 
-import com.stuypulse.robot.subsystems.Climber;
-import com.stuypulse.robot.subsystems.ControlPanel;
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.WPIGamepad;
-import com.stuypulse.stuylib.input.gamepads.Logitech;
-import com.stuypulse.stuylib.input.gamepads.PS4;
+import java.util.ResourceBundle.Control;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -41,9 +39,9 @@ public class RobotContainer {
 
   private final ControlPanel controlPanel = new ControlPanel();
 
-  private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
-  private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
-  private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+  private final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+  private final Gamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
+  private final Gamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

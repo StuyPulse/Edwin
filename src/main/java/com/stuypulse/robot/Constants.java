@@ -9,7 +9,6 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatch;
-
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -238,9 +237,9 @@ public interface Constants {
     double YELLOW_RED = 0.30;
     double YELLOW_GREEN = 0.50;
     double YELLOW_BLUE = 0.1;
-
-
-
+  
+  
+  
     /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/

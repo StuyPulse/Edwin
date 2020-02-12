@@ -8,7 +8,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,9 +33,6 @@ public class Shooter extends SubsystemBase {
     // SpeedControllerGroup
     private SpeedControllerGroup shooterMotors; 
 
-    // PIDController
-    private PIDController shooterController;
-
     // SmartNumbers for SmartDashboard
     private SmartNumber targetVelocity;
     private SmartNumber currentVelocity;
@@ -58,14 +54,8 @@ public class Shooter extends SubsystemBase {
 
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
-        shooterController = new PIDController(Constants.SHOOTER_SHOOT_P, Constants.SHOOTER_SHOOT_I, Constants.SHOOTER_SHOOT_D);
-
         targetVelocity = new SmartNumber("Shooter Target Vel", 69420);
         currentVelocity = new SmartNumber("Shooter Current Vel", -1);
-    }
-
-    public double getError() {
-        return targetVelocity.doubleValue() - getCurrentShooterVelocityInRPM();
     }
     
     public double getRawMedianShooterVelocity() {
@@ -94,12 +84,20 @@ public class Shooter extends SubsystemBase {
         return speed;
     }
 
-    public double getShooterVelocityInRPM() {
-        return (shooterController.calculate(getError(), 0));
+    public void setShooterSpeed(double speed) {
+        shooterMotors.set(speed);
     }
 
-    public void runShooter() {
-        shooterMotors.set(getShooterVelocityInRPM());
+    public void setFeederSpeed(double speed) {
+        feederMotor.set(speed);
+    }
+
+    public void setTargetVelocity(double targetVelocity) {
+        this.targetVelocity.set(targetVelocity);
+    }
+
+    public double getTargetVelocity() {
+        return this.targetVelocity.get();
     }
 
     public void reverseShooter() {
@@ -107,7 +105,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void stopShooter() {
-        shooterMotors.set(0.0);
+        shooterMotors.stopMotor();
     }
 
     public void runFeeder() {
@@ -119,7 +117,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void stopFeeder() {
-        feederMotor.stopMotor();;
+        feederMotor.stopMotor();
     }
     
     public void extendHoodSolenoid() {

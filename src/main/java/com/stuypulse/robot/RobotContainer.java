@@ -38,7 +38,6 @@ public class RobotContainer {
 
   private final PS4 driverGampead = new PS4(Constants.Ports.Gamepad.DRIVER);
   private final Logitech operatorGamepad = new Logitech(Constants.Ports.Gamepad.OPERATOR);
-
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

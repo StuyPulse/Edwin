@@ -250,9 +250,9 @@ public interface Constants {
      * Shooter PID 
      *********************************************************************************************/
     //TODO: Test PID onstants
-    double SHOOTER_SHOOT_P = 0;
-    double SHOOTER_SHOOT_I = 0;
-    double SHOOTER_SHOOT_D = 0;
+    SmartNumber SHOOTER_SHOOT_P = new SmartNumber("Shooter P", 0);
+    SmartNumber SHOOTER_SHOOT_I = new SmartNumber("Shooter I", 0);
+    SmartNumber SHOOTER_SHOOT_D = new SmartNumber("Shooter D", 0);
 
     /*********************************************************************************************
      * Shooter Constants
@@ -268,4 +268,6 @@ public interface Constants {
     double SHOOT_FROM_INITATION_LINE_RPM = 3900;
     double SHOOT_FROM_TRENCH_RPM = 4900;
     double SHOOT_FROM_FAR_RPM = 5500;
+
+    double SHOOTER_TOLERANCE = 100;
 }

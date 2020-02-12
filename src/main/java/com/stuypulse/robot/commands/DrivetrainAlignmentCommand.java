@@ -97,12 +97,10 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
-        if (angle.getError() < Alignment.Angle.MAX_ANGLE_ERROR 
-        && angle.getVelocity() < Alignment.Angle.MAX_ANGLE_VEL) {
-            return speed.update(aligner.getSpeedError());
-        } else {
-            return 0.0;
-        }
+        double mul = (Alignment.Angle.MAX_ANGLE_ERROR - angle.getError());
+        mul /= Alignment.Angle.MAX_ANGLE_ERROR;
+        mul = Math.max(mul, 0.0);
+        return speed.update(aligner.getSpeedError()) * mul;
     }
 
     // Update angle based on angle error

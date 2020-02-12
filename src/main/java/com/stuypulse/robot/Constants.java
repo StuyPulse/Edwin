@@ -199,6 +199,7 @@ public interface Constants {
     Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
 
     double COLOR_SENSOR_SPEED = 1;
+    double CLIMBER_EXPONENT = 1/3;
 
     /*********************************************************************************************
      * Funnel Constants
@@ -264,4 +265,5 @@ public interface Constants {
 	double CHIMNEY_LIFT_UP_SPEED = -1;
     double CHIMNEY_ENCODER_RADIUS = -1;
 	double CHIMNEY_BALL_PER_ROTATIONS = -1;
+
 }

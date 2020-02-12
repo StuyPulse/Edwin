@@ -119,6 +119,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return angle.update(error);
     }
 
+    public boolean useCurvatureDrive() {
+        // Aligning doesn't need to use curvature drive
+        // Arcade drive is better for non humans
+        return false;
+    }
+
     // Set the gear and other things when initializing
     public void initialize() {
         drivetrain.setLowGear();

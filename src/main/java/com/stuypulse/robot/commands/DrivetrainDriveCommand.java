@@ -73,4 +73,9 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     public double getAngle() {
         return angle.get();
     }
+
+    // Humans need curvature drive because they're st00p1d
+    public boolean useCurvatureDrive() {
+        return true;
+    }
 }

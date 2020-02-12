@@ -67,6 +67,10 @@ public interface Constants {
         // How much to slow down quick turn
         double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
 
+        // Cool Rumble
+        boolean COOL_RUMBLE = true;
+        double COOL_RUMBLE_MAG = 1;
+
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;

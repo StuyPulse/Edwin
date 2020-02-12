@@ -66,7 +66,13 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
             drivetrain.setHighGear();
         }
 
-        return speed.get();
+        double s = speed.get();
+
+        if(DrivetrainSettings.COOL_RUMBLE) {
+            gamepad.setRumble(Math.abs(s) * DrivetrainSettings.COOL_RUMBLE_MAG);
+        }
+
+        return s;
     }
 
     // Give the IStream's result for angle when the drivetrain wants it

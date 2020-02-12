@@ -139,7 +139,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Command is finished if all of the errors are small enough
     public boolean isFinished() {
-        // Check if the aligner hasn't run for long enoug
+        // Check if the aligner hasn't run for long enough
         if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
             return false;
         }

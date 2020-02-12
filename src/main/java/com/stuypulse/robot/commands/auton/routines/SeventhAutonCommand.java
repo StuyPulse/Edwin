@@ -12,20 +12,21 @@ import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.Constants;
 
 
-public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
-    public SixBallThreeRdvsAutonCommand(Drivetrain drivetrain) {
-        //Do 3
-        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.DISTANCE_FROM_START_TO_GOAL)));
+public class SeventhAutonCommand extends SequentialCommandGroup {
+    public SeventhAutonCommand(Drivetrain drivetrain, Intake intake) {
+        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)));
+        
         // TODO: Add shoot 3
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, 12));
-        addCommands(new DrivetrainStopCommand(drivetrain));
 
         //Move forward
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_RDVS));
-        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_BALL));
-        addCommands(new IntakeAcquireCommand(new Intake()));
+        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_THREE_BALL));
+        addCommands(new IntakeAcquireCommand(intake));
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS));
+        addCommands(new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_RDVS_TO_THREE_BALL));
         addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.DISTANCE_FROM_START_TO_RDVS)));
+        addCommands(new DrivetrainStopCommand(drivetrain));
         //Shoot 3  
     }
 }

@@ -211,9 +211,14 @@ public interface Constants {
     int INTAKE_SOLENOID_PORT = -1;
     
     /*********************************************************************************************
-     * ShootThreeDriveForwardAutonCommand
+     * Movement Auton Command
      *********************************************************************************************/
-    int DISTANCE_FROM_START_TO_GOAL = 10;
+    int DISTANCE_TO_MOVE_AT_START = 5;
+
+    /*********************************************************************************************
+     * Shoot Three (At Start) Auton Command
+     *********************************************************************************************/
+    int SHOOT_FROM_START_TO_GOAL = 10;
 
     /*********************************************************************************************
      * ShootSixAcquireTreeAutonCommand
@@ -226,8 +231,10 @@ public interface Constants {
     /*********************************************************************************************
      * ShootSixAcquireTreeAutonCommand
      *********************************************************************************************/
-    double ANGLE_FROM_TRENCH_TO_RDVS = -1;
-    double DISTANCE_FROM_TRENCH_TO_RDVS = -1;
+    double ANGLE_FROM_TRENCH_TO_RDVS = 54.12;
+    double DISTANCE_FROM_TRENCH_TO_RDVS = 109.85;
+    double ANGLE_FROM_RDVS_TO_TWO_BALL = -1;
+    double DISTANCE_BETWEEN_TWO_BALL = 16.57;
     double ANGLE_FROM_RDVS_TO_GOAL = -1;
 
 
@@ -235,8 +242,8 @@ public interface Constants {
      * SixBallThreeRdvsAutonCommand
      *********************************************************************************************/
 
-    double DISTANCE_FROM_START_TO_RDVS = -1;
-    double ANGLE_FROM_RDVS_TO_BALL = -1;
+    double DISTANCE_FROM_START_TO_RDVS = 107.83;
+    double ANGLE_FROM_RDVS_TO_THREE_BALL = -1;
     double DISTANCE_FOR_THREE_BALLS_IN_RDVS = -1;
 
 
@@ -244,8 +251,7 @@ public interface Constants {
      * SixBallFiveRdvsAutonCommand
      *********************************************************************************************/
     
-    double ANGLE_FROM_THREE_BALL_TO_TWO_BALL_IN_RDVS = -1;
-    double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL_IN_RDVS = -1;
-    double ANGLE_FROM_TWO_BALL_TO_GOAL = -1;
+    double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
+    double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = -1;
 
 }

@@ -7,6 +7,7 @@ import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainPIDAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
+import com.stuypulse.robot.commands.DrivetrainAlignmentCommand.Aligner;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.Constants;
@@ -10118,30 +10119,20 @@ and that as FREE AND INDEPENDENT STATES, they have full Power to levy War, concl
 And for the support of this Declaration, with a firm Reliance on the Protection of divine Providence, we mutually
 pledge to each other our Lives, our fortunes, and our sacred Honor.
  */
-public class SixBallFiveRdvsAutonCommand extends SequentialCommandGroup {
-    public SixBallFiveRdvsAutonCommand(Drivetrain drivertrain, Intake intaker) {
-        //Do 3
-        addCommands(new DrivetrainPIDAlignmentCommand(drivertrain, new DrivetrainGoalAligner(Constants.DISTANCE_FROM_START_TO_GOAL)));
+public class EighthAutonCommand extends SequentialCommandGroup {
+    public EighthAutonCommand(Drivetrain drivetrain, Intake intake) {
+        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)));
+        
         // TODO: Add shoot 3
-        addCommands(new DrivetrainMovementCommand(drivertrain, 0, 12));
-        addCommands(new DrivetrainStopCommand(drivertrain));
+        addCommands(new DrivetrainMovementCommand(drivetrain, 0, 12));
 
         //Move forward
-        addCommands(new DrivetrainMovementCommand(drivertrain, 0, Constants.DISTANCE_FROM_START_TO_RDVS));
-        addCommands(new DrivetrainMovementCommand(drivertrain, Constants.ANGLE_FROM_RDVS_TO_BALL));
-        addCommands(new IntakeAcquireCommand(intaker));
-        addCommands(new DrivetrainMovementCommand(drivertrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS));
-        //Get 2 more balls
-        addCommands(new DrivetrainMovementCommand(drivertrain, Constants.ANGLE_FROM_THREE_BALL_TO_TWO_BALL_IN_RDVS));
-        addCommands(new DrivetrainMovementCommand(drivertrain, 0, Constants.DISTANCE_FROM_THREE_BALL_TO_TWO_BALL_IN_RDVS));
-        addCommands(new DrivetrainMovementCommand(drivertrain, -Constants.ANGLE_FROM_THREE_BALL_TO_TWO_BALL_IN_RDVS));
-        addCommands(new DrivetrainMovementCommand(drivertrain, 0, Constants.DISTANCE_FROM_BALL_TO_BALL));
-        addCommands(new DrivetrainMovementCommand(drivertrain, Constants.DISTANCE_FROM_START_TO_RDVS));
-        addCommands(new DrivetrainPIDAlignmentCommand(drivertrain, new DrivetrainGoalAligner(Constants.DISTANCE_FROM_START_TO_GOAL)));
-        
-        
-        
-        addCommands(new DrivetrainPIDAlignmentCommand(drivertrain, new DrivetrainGoalAligner(Constants.DISTANCE_FROM_START_TO_RDVS)));
-        //Shoot 3  
+        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_RDVS));
+        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_THREE_BALL));
+        addCommands(new IntakeAcquireCommand(intake));
+        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS));
+        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_THREE_BALL_TO_TWO_BALL, Constants.DISTANCE_FROM_THREE_BALL_TO_TWO_BALL));
+        addCommands(new DrivetrainMovementCommand(drivetrain, 180));
+        addCommands(new DrivetrainPIDAlignment(drivetrain, new DrivetrainGoalAligner(20 )));
     }
 }

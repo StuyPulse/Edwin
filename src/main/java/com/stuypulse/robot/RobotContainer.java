@@ -9,6 +9,8 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.commands.*;
 
 import com.stuypulse.stuylib.input.*;
@@ -28,10 +30,13 @@ public class RobotContainer {
 
   private final boolean DEBUG = true;
 
+  //Subsystems
   private final Funnel funnel = new Funnel();
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Intake intake = new Intake();
+  private final Chimney chimney = new Chimney();
+
   private final ControlPanel controlPanel = new ControlPanel();
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
@@ -49,7 +54,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
+    
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
+
+    new Thread(new MotorStalling(funnel)).start();
   }
 
   /**
@@ -59,6 +68,9 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+    operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
+    operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
     driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
 
@@ -81,7 +93,6 @@ public class RobotContainer {
       debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
     }
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

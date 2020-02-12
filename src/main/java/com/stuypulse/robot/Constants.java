@@ -36,6 +36,11 @@ public interface Constants {
         return ((double) feet) + (inches / 12.0);
     }
 
+    public interface Pneumatics {
+        int ANALOG_PRESSURE_SWITCH_PORT = 0;
+        int ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5;
+    }
+
     public interface Ports {
 
         public interface Gamepad {
@@ -123,7 +128,6 @@ public interface Constants {
             public static PIDController getPID() {
                 return new PIDController(P.get(), I.get(), D.get());
             }
-
             // Bang Bang speed when measuring PID Values 
             // [whatever you want, but 0.7 is nice]
             double BANGBANG_SPEED = 0.7;
@@ -242,4 +246,18 @@ public interface Constants {
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = -1;
     int INTAKE_SOLENOID_PORT = -1;
-    }
+
+    /*********************************************************************************************
+     * CHIMNEY Motor & Sensor Ports
+     *********************************************************************************************/
+	int CHIMNEY_LIFT_MOTOR_PORT = -1;
+	int CHIMNEY_LOWER_SENSOR_PORT = -1;
+    int CHIMNEY_UPPER_SENSOR_PORT = -1;
+    
+    /*********************************************************************************************
+     * CHIMNEY Constants
+     *********************************************************************************************/
+	double CHIMNEY_LIFT_UP_SPEED = -1;
+    double CHIMNEY_ENCODER_RADIUS = -1;
+	double CHIMNEY_BALL_PER_ROTATIONS = -1;
+}

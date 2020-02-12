@@ -34,7 +34,7 @@ public class Funnel extends SubsystemBase implements MotorStall {
     }
 
     public void stop() {
-        motor.set(0);
+        motor.stopMotor();
     }
 
     @Override

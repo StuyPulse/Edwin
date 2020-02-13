@@ -68,6 +68,34 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
     }
 
     /**
+     * This command lets you drive forward x amount of feet
+     */
+    public static class DriveCommand extends DrivetrainMovementCommand {
+
+        /**
+         * @param drivetrain drivetrain used to move
+         * @param distance number of feet used to turn
+         */
+		public DriveCommand(Drivetrain drivetrain, double distance) {
+			super(drivetrain, 0, distance);
+		}
+    }
+
+    /**
+     * This command lets you turn a certain angle
+     */
+    public static class TurnCommand extends DrivetrainMovementCommand {
+
+        /**
+         * @param drivetrain drivetrain used to turn
+         * @param angle angle that you want to turn
+         */
+		public TurnCommand(Drivetrain drivetrain, double angle) {
+			super(drivetrain, angle);
+		}
+    }
+
+    /**
      * Creates command that moves drivetrain very specific amounts
      * 
      * @param drivetrain the drivetrain you want to move

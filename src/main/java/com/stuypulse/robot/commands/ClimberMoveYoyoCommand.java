@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ClimberMoveYoyoCommand extends CommandBase{
 
-    Climber climber;
-    Gamepad gamepad;
+    private final Climber climber;
+    private final Gamepad gamepad;
 
     public ClimberMoveYoyoCommand(Climber climber, Gamepad gamepad) {
         this.climber = climber;

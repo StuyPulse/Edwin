@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;;
 
 public class IntakeToggleCommand extends InstantCommand {
   
-    Intake intake;
+    private final Intake intake;
   
     public IntakeToggleCommand(Intake intake) {
         this.intake = intake;

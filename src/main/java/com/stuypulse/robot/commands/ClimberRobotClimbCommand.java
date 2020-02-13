@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ClimberRobotClimbCommand extends CommandBase {
 
-    Climber climber;
+    private final Climber climber;
 
     public ClimberRobotClimbCommand(Climber climber) {
         this.climber = climber;

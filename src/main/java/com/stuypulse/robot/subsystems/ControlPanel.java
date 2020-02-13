@@ -31,4 +31,3 @@ public class ControlPanel extends SubsystemBase {
         motor.stopMotor();
     }
 }
-

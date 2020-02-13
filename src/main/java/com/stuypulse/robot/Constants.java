@@ -9,7 +9,6 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatch;
-
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -271,8 +270,78 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	double CHIMNEY_LIFT_UP_SPEED = -1;
+	    double CHIMNEY_LIFT_UP_SPEED = -1;
     double CHIMNEY_ENCODER_RADIUS = -1;
-	double CHIMNEY_BALL_PER_ROTATIONS = -1;
+      double CHIMNEY_BALL_PER_ROTATIONS = -1;
+    
+    /*********************************************************************************************
+     * Shooter Motor Ports
+     *********************************************************************************************/
+    int LEFT_SHOOTER_MOTOR_PORT = -1;
+    int RIGHT_SHOOTER_MOTOR_PORT = -1;
+    int MIDDLE_SHOOTER_MOTOR_PORT = -1;
+    
+    /*********************************************************************************************
+     * Feeder 
+     *********************************************************************************************/
+    int FEEDER_MOTOR_PORT = -1;
+    double FEEDER_SPEED = 1.0;
 
+    /*********************************************************************************************
+     * Hood Solenoid Port
+     *********************************************************************************************/
+    int HOOD_SOLENOID_PORT = -1;
+
+
+    /*********************************************************************************************
+     * Shooter Constants
+     *********************************************************************************************/
+    double SHOOTER_WHEEL_DIAMETER = 4;
+    double SHOOTER_WHEEL_CIRCUMFERENCE = Math.PI * SHOOTER_WHEEL_DIAMETER;
+    double SHOOTER_VELOCITY_RAW_MULTIPLIER = SHOOTER_WHEEL_CIRCUMFERENCE / 60;
+
+    //TODO: Find empirical multiplier
+    double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
+
+    double SHOOTER_MAX_RPM = 5600;
+    double SHOOT_FROM_INITATION_LINE_RPM = 3900;
+    double SHOOT_FROM_TRENCH_RPM = 4900;
+    double SHOOT_FROM_FAR_RPM = 5500;
+
+    double SHOOTER_TOLERANCE = 100;
+
+    double SHOOTER_BANGBANG_SPEED = 0.5;
+
+    /*********************************************************************************************
+     * Shooter PID 
+     *********************************************************************************************/
+    //TODO: Test PID onstants
+    SmartNumber SHOOTER_P = new SmartNumber("Shooter P", 0);
+    SmartNumber SHOOTER_I = new SmartNumber("Shooter I", 0);
+    SmartNumber SHOOTER_D = new SmartNumber("Shooter D", 0);
+    SmartNumber SHOOTER_FF = new SmartNumber("Shooter FF", 1.0 / SHOOTER_MAX_RPM);
+
+    /*********************************************************************************************
+     * Feeder Constants
+     *********************************************************************************************/
+    double FEEDER_WHEEL_DIAMETER = 4;
+    double FEEDER_WHEEL_CIRCUMFERENCE = Math.PI * FEEDER_WHEEL_DIAMETER;
+    double FEEDER_VELOCITY_RAW_MULTIPLIER = FEEDER_WHEEL_CIRCUMFERENCE / 60;
+
+    //TODO: Find empirical multiplier
+    double FEEDER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
+
+    double FEEDER_MAX_RPM = 5600;
+    double FEEDER_SPEED_MUL = 0.5;
+
+    double FEEDER_BANGBANG_SPEED = 0.3;
+
+    /*********************************************************************************************
+     * Feeder PID 
+     *********************************************************************************************/
+    //TODO: Test PID onstants
+    SmartNumber FEEDER_P = new SmartNumber("Feeder P", 0);
+    SmartNumber FEEDER_I = new SmartNumber("Feeder I", 0);
+    SmartNumber FEEDER_D = new SmartNumber("Feeder D", 0);
+    SmartNumber FEEDER_FF = new SmartNumber("Feeder FF", 1.0 / FEEDER_MAX_RPM);
 }

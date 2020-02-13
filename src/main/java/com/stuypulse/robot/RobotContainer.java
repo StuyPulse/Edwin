@@ -8,6 +8,12 @@
 package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
+import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.commands.*;
+import com.stuypulse.stuylib.control.PIDCalculator;
+import com.stuypulse.stuylib.input.*;
+import com.stuypulse.stuylib.input.gamepads.*;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.util.MotorStalling;
 
@@ -24,14 +30,16 @@ import com.stuypulse.stuylib.input.gamepads.*;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
 
   private final boolean DEBUG = true;
+
 
   //Subsystems
   private final Chimney chimney = new Chimney();
@@ -40,13 +48,14 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Funnel funnel = new Funnel();
   private final Intake intake = new Intake();
+  private final Shooter shooter = new Shooter();
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
   private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
-  
+
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
@@ -57,17 +66,19 @@ public class RobotContainer {
     configureButtonBindings();
 
     chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
-    
+
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
+
+    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, operator));
 
     new Thread(new MotorStalling(funnel)).start();
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
 
@@ -87,9 +98,10 @@ public class RobotContainer {
      * 
      */
 
-    if(DEBUG) {
+    if (DEBUG) {
       // Auto alignment for angle and speed and update pid values
-      debug.getLeftButton().toggleWhenPressed(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
+      debug.getLeftButton()
+          .toggleWhenPressed(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
       debug.getTopButton().toggleWhenPressed(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
 
       // Steal driving abilities from the driver
@@ -100,6 +112,9 @@ public class RobotContainer {
       debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, -2.5));
       debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
       debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
+
+      debug.getRightButton().toggleWhenPressed(new ShooterDefaultCommand(shooter, debug,
+          new PIDCalculator(Constants.SHOOTER_BANGBANG_SPEED), new PIDCalculator(Constants.FEEDER_BANGBANG_SPEED)));
     }
   }
 

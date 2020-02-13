@@ -8,17 +8,18 @@
 package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.util.MotorStalling;
-import com.stuypulse.robot.commands.*;
-
-import com.stuypulse.stuylib.input.*;
-import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.Ports;
 
 import java.util.ResourceBundle.Control;
+
+import com.stuypulse.robot.commands.*;
+import com.stuypulse.robot.subsystems.*;
+
+import com.stuypulse.stuylib.input.*;
+import com.stuypulse.stuylib.input.gamepads.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -31,13 +32,12 @@ public class RobotContainer {
   private final boolean DEBUG = true;
 
   //Subsystems
-  private final Funnel funnel = new Funnel();
-  private final Climber climber = new Climber();
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Intake intake = new Intake();
   private final Chimney chimney = new Chimney();
-
+  private final Climber climber = new Climber();
   private final ControlPanel controlPanel = new ControlPanel();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Funnel funnel = new Funnel();
+  private final Intake intake = new Intake();
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
@@ -68,9 +68,16 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) < -Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberRobotClimbCommand(climber));
+    
     operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
     operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
     operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+
     driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
 

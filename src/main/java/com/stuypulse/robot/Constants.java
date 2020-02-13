@@ -278,13 +278,6 @@ public interface Constants {
      *********************************************************************************************/
     int HOOD_SOLENOID_PORT = -1;
 
-    /*********************************************************************************************
-     * Shooter PID 
-     *********************************************************************************************/
-    //TODO: Test PID onstants
-    SmartNumber SHOOTER_SHOOT_P = new SmartNumber("Shooter P", 0);
-    SmartNumber SHOOTER_SHOOT_I = new SmartNumber("Shooter I", 0);
-    SmartNumber SHOOTER_SHOOT_D = new SmartNumber("Shooter D", 0);
 
     /*********************************************************************************************
      * Shooter Constants
@@ -294,13 +287,47 @@ public interface Constants {
     double SHOOTER_VELOCITY_RAW_MULTIPLIER = SHOOTER_WHEEL_CIRCUMFERENCE / 60;
 
     //TODO: Find empirical multiplier
-    double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = -1; 
+    double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
 
-    double SHOOTER_MAX_RPM = 16500;
+    double SHOOTER_MAX_RPM = 5600;
     double SHOOT_FROM_INITATION_LINE_RPM = 3900;
     double SHOOT_FROM_TRENCH_RPM = 4900;
     double SHOOT_FROM_FAR_RPM = 5500;
 
     double SHOOTER_TOLERANCE = 100;
 
+    double SHOOTER_BANGBANG_SPEED = 0.5;
+
+    /*********************************************************************************************
+     * Shooter PID 
+     *********************************************************************************************/
+    //TODO: Test PID onstants
+    SmartNumber SHOOTER_P = new SmartNumber("Shooter P", 0);
+    SmartNumber SHOOTER_I = new SmartNumber("Shooter I", 0);
+    SmartNumber SHOOTER_D = new SmartNumber("Shooter D", 0);
+    SmartNumber SHOOTER_FF = new SmartNumber("Shooter FF", 1.0 / SHOOTER_MAX_RPM);
+
+    /*********************************************************************************************
+     * Feeder Constants
+     *********************************************************************************************/
+    double FEEDER_WHEEL_DIAMETER = 4;
+    double FEEDER_WHEEL_CIRCUMFERENCE = Math.PI * FEEDER_WHEEL_DIAMETER;
+    double FEEDER_VELOCITY_RAW_MULTIPLIER = FEEDER_WHEEL_CIRCUMFERENCE / 60;
+
+    //TODO: Find empirical multiplier
+    double FEEDER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
+
+    double FEEDER_MAX_RPM = 5600;
+    double FEEDER_SPEED_MUL = 0.5;
+
+    double FEEDER_BANGBANG_SPEED = 0.3;
+
+    /*********************************************************************************************
+     * Feeder PID 
+     *********************************************************************************************/
+    //TODO: Test PID onstants
+    SmartNumber FEEDER_P = new SmartNumber("Feeder P", 0);
+    SmartNumber FEEDER_I = new SmartNumber("Feeder I", 0);
+    SmartNumber FEEDER_D = new SmartNumber("Feeder D", 0);
+    SmartNumber FEEDER_FF = new SmartNumber("Feeder FF", 1.0 / FEEDER_MAX_RPM);
 }

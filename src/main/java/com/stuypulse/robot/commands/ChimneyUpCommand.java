@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ChimneyUpCommand extends CommandBase {
 
-    Chimney chimney;
+    private final Chimney chimney;
 
     public ChimneyUpCommand(Chimney chimney) {
         this.chimney = chimney;

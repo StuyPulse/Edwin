@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ControlPanelSpinToColorCommand extends CommandBase {
+
     private final ControlPanel controlPanel;
     private Color goal;
     public ControlPanelSpinToColorCommand(ControlPanel controlPanel) {
@@ -17,7 +18,6 @@ public class ControlPanelSpinToColorCommand extends CommandBase {
     private void setTargetColor() {
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if(gameData != null && gameData.length() > 0) {
-
             switch (gameData.charAt(0)) {
                 case 'B' :
                     goal = Color.kRed;
@@ -42,10 +42,18 @@ public class ControlPanelSpinToColorCommand extends CommandBase {
     public void execute() {
         if (goal == null) {
             setTargetColor();
-        } else {
+        } 
+        else if((controlPanel.getColor() == Color.kRed && goal == Color.kYellow) ||
+                (controlPanel.getColor() == Color.kGreen && goal == Color.kRed) ||
+                (controlPanel.getColor() == Color.kBlue && goal == Color.kGreen) ||
+                (controlPanel.getColor() == Color.kYellow && goal == Color.kBlue)) {
+                controlPanel.turn(-Constants.CONTROL_PANEL_TURN_SPEED);
+            }
+        else {    
             controlPanel.turn(Constants.CONTROL_PANEL_TURN_SPEED);
         }
     }
+    
     @Override
     public boolean isFinished() {
         return goal == controlPanel.getColor();

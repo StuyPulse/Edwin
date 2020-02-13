@@ -4,7 +4,7 @@ import com.stuypulse.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.InstantCommand;;
 
 public class IntakeRetractCommand extends InstantCommand {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+
   private final Intake intake;
 
   public IntakeRetractCommand(Intake intake) {

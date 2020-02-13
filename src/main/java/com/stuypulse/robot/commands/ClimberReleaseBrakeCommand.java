@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class ClimberReleaseBrakeCommand extends InstantCommand {
 
-    Climber climber;
+    private final Climber climber;
 
     public ClimberReleaseBrakeCommand(Climber climber) {
         this.climber = climber;

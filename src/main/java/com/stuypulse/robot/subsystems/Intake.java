@@ -12,29 +12,21 @@ public class Intake extends SubsystemBase {
     
     private CANSparkMax motor;
     private Solenoid solenoid;
-    
-    private boolean extended;
 
     public Intake() {
         motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
         solenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
     }
 
-    public boolean isExtended() {
-        return solenoid.get();
-    }
-
     public void extend() {
-        if(!extended) {
+        if(!solenoid.get()) {
             solenoid.set(true);
-            extended = true;
         }
     }
 
     public void retract() {
-        if(extended) {
+        if(solenoid.get()) {
             solenoid.set(false);
-            extended = false;
         }
     }
 

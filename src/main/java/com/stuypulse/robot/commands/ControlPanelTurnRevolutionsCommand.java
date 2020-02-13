@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.stuypulse.robot.Constants;
 
 public class ControlPanelTurnRevolutionsCommand extends CommandBase {
+
     private final ControlPanel controlPanel;
+    
     private Color previousColor = null;
     private double colorCount;
     private double rotationsAmount;

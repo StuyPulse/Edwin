@@ -6,9 +6,9 @@ import com.stuypulse.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class ClimberSetNeutralModeCommand extends InstantCommand {
-    
-    Climber climber;
-    IdleMode mode;
+
+    private final Climber climber;
+    private IdleMode mode;
 
     public ClimberSetNeutralModeCommand(Climber climber, IdleMode mode) {
         this.climber = climber;

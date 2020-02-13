@@ -47,15 +47,15 @@ public class RobotContainer {
 
   private final boolean DEBUG = true;
 
-  // Subsystems
-  private final Funnel funnel = new Funnel();
-  private final Climber climber = new Climber();
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Intake intake = new Intake();
-  private final Chimney chimney = new Chimney();
-  private final Shooter shooter = new Shooter();
 
+  //Subsystems
+  private final Chimney chimney = new Chimney();
+  private final Climber climber = new Climber();
   private final ControlPanel controlPanel = new ControlPanel();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Funnel funnel = new Funnel();
+  private final Intake intake = new Intake();
+  private final Shooter shooter = new Shooter();
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);

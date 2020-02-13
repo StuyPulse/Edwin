@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ChimneyAutomaticCommand extends CommandBase {
 
-    Chimney chimney;
-    Gamepad gamepad;
+    private final Chimney chimney;
+    private final Gamepad gamepad;
 
     public ChimneyAutomaticCommand(Chimney chimney, Gamepad gamepad) {
         this.chimney = chimney;

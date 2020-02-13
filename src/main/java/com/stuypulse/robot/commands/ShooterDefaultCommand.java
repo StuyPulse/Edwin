@@ -121,9 +121,4 @@ public class ShooterDefaultCommand extends CommandBase {
     public boolean isFinished() {
         return false;
     }
-
-    @Override
-    public void end(boolean interrupted) {
-        // Shits not fucked
-    }
 }

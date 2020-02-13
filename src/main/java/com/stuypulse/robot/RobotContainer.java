@@ -21,6 +21,8 @@ import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.stuylib.input.*;
 import com.stuypulse.stuylib.input.gamepads.*;
 
+import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}

@@ -18,7 +18,23 @@ import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.commands.*;
 
+import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
+import com.stuypulse.robot.commands.ClimberSetNeutralModeCommand;
+import com.stuypulse.robot.commands.ClimberSetupCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
+import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 import java.util.ResourceBundle.Control;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.WPIGamepad;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+import com.stuypulse.stuylib.input.gamepads.PS4;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -72,9 +88,16 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) < -Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberRobotClimbCommand(climber));
+    
     operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
     operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
     operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+
     driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
 

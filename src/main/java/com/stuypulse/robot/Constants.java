@@ -187,12 +187,15 @@ public interface Constants {
      *********************************************************************************************/
     int CLIMBER_LIFT_MOTOR_PORT = -1;
     int CLIMBER_YOYO_MOTOR_PORT = -1;
-    
+
+    int CLIMBER_LIFT_SOLENOID_CHANNEL = -1;
+
+    int CLIMBER_LIMIT_SWITCH_CHANNEL = -1;
+
     /*********************************************************************************************
-     * Co1or Wheel Ports
+     * Climber Motor Constants
      *********************************************************************************************/
-    int CONTROL_PANEL_MOTOR_PORT = -1;
-    int CONTROL_SENSOR_PORT = -1;
+    double CLIMBER_MOVE_DEADBAND = 0.25;
 
     Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
     Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
@@ -200,6 +203,7 @@ public interface Constants {
     Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
 
     double COLOR_SENSOR_SPEED = 1;
+    double CLIMBER_EXPONENT = 1/3;
 
     /*********************************************************************************************
      * Funnel Constants
@@ -213,11 +217,19 @@ public interface Constants {
     /*********************************************************************************************
      * Climber Constants
      *********************************************************************************************/
-    // TODO: Test speeds
-    double CLIMB_UP_SPEED = 0.5;
-    double CLIMB_DOWN_SPEED = -CLIMB_UP_SPEED;
-    
-     /*********************************************************************************************
+    //TODO: Test speeds
+    double MOVE_LIFT_UP_SPEED = 0.5;
+    double MOVE_LIFT_DOWN_SPEED = -0.5;
+    double CLIMBER_SETUP_WAIT_TIME = 0.1;
+    double CLIMBER_SCALE = 0.5;
+
+    /*********************************************************************************************
+     * Co1or Wheel Ports
+     *********************************************************************************************/
+    int CONTROL_PANEL_MOTOR_PORT = -1;
+    int CONTROL_SENSOR_PORT = -1;
+
+    /*********************************************************************************************
      * Co1or Wheel Constants
      *********************************************************************************************/
     double CONTROL_PANEL_TURN_SPEED = 1.0;
@@ -237,9 +249,7 @@ public interface Constants {
     double YELLOW_RED = 0.30;
     double YELLOW_GREEN = 0.50;
     double YELLOW_BLUE = 0.1;
-  
-  
-  
+
     /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/
@@ -256,9 +266,9 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	double CHIMNEY_LIFT_UP_SPEED = -1;
+	    double CHIMNEY_LIFT_UP_SPEED = -1;
     double CHIMNEY_ENCODER_RADIUS = -1;
-    double CHIMNEY_BALL_PER_ROTATIONS = -1;
+      double CHIMNEY_BALL_PER_ROTATIONS = -1;
     
     /*********************************************************************************************
      * Shooter Motor Ports

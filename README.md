@@ -7,7 +7,7 @@ Just make sure that you have StuyLib and Edwin in the same folder, or ensure int
 
 ## Subsystems
 - Drivetrain (same as last year)
-  - 6 sparks -- use all 6 when in high gear, use 4 when in low gear
+  - 4 sparks -- use all 4 in both high and low gear
   - 1 solenoid to gear shift
 - Climber
   - 2 sparks -- one to climb up/down, one to move left/right (yoyo)

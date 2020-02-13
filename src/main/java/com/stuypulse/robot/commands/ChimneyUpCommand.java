@@ -1,14 +1,13 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Chimney;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ChimneyDownCommand extends CommandBase {
+public class ChimneyUpCommand extends CommandBase {
 
     private final Chimney chimney;
 
-    public ChimneyDownCommand(Chimney chimney) {
+    public ChimneyUpCommand(Chimney chimney) {
         this.chimney = chimney;
         
         addRequirements(chimney);
@@ -16,7 +15,7 @@ public class ChimneyDownCommand extends CommandBase {
 
     @Override
     public void execute() {
-        chimney.liftDown();
+        chimney.liftUp();
     }
 
     @Override

@@ -9,14 +9,27 @@ package com.stuypulse.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.commands.*;
 
-import com.stuypulse.stuylib.input.*;
-import com.stuypulse.stuylib.input.gamepads.*;
-
-import com.stuypulse.robot.Constants.Ports;
-
+import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
+import com.stuypulse.robot.commands.ClimberSetNeutralModeCommand;
+import com.stuypulse.robot.commands.ClimberSetupCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
+import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
 import java.util.ResourceBundle.Control;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.WPIGamepad;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+import com.stuypulse.stuylib.input.gamepads.PS4;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -28,6 +41,8 @@ public class RobotContainer {
 
   private final boolean DEBUG = true;
 
+  //Subsystems
+  private final Chimney chimney = new Chimney();
   private final Climber climber = new Climber();
   private final ControlPanel controlPanel = new ControlPanel();
   private final Drivetrain drivetrain = new Drivetrain();
@@ -49,7 +64,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
+    
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
+
+    new Thread(new MotorStalling(funnel)).start();
   }
 
   /**
@@ -59,6 +78,16 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) < -Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberRobotClimbCommand(climber));
+    
+    operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+    operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
+    operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+
     driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
 
@@ -81,7 +110,6 @@ public class RobotContainer {
       debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
     }
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

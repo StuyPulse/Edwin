@@ -115,6 +115,9 @@ public class ShooterDefaultCommand extends CommandBase {
         // If using AutoPID, report its values
         updateAutoPID();
 
+        // Update shooter and feeder with controller
+        updateShooter();
+        updateFeeder();
     }
 
     @Override

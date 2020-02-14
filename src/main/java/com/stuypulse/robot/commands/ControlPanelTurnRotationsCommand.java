@@ -11,8 +11,7 @@ public class ControlPanelTurnRotationsCommand extends CommandBase {
     
     private Color previousColor = null;
     private double colorCount;
-    private double rotationsAmount;
-
+    
     /**
      * Creates a new ExampleCommand.
      *
@@ -25,7 +24,7 @@ public class ControlPanelTurnRotationsCommand extends CommandBase {
 
     @Override
     public void execute() {
-        controlPanel.turn(Constants.COLOR_SENSOR_SPEED);
+        controlPanel.turn(Constants.CONTROL_PANEL_TURN_SPEED);
         if (previousColor != null && previousColor != controlPanel.getColor()) { 
             /**
              * checks if a previous color exists and that it is not the same as the curent color
@@ -34,22 +33,13 @@ public class ControlPanelTurnRotationsCommand extends CommandBase {
               */
             colorCount += 0.125;
         }
-
-        if (colorCount >= 0.5) {
-            /**
-             * if colorCount >= 1, which means that all 8 colors have been passed, increment rotationsAmount
-             * which keeps track of the number of rotations
-             */
-            rotationsAmount += 0.5;
-            colorCount = 0;
-        }
         previousColor = controlPanel.getColor();
     }
 
     @Override
     public boolean isFinished() {
         //stop once 3 rotations are met, 3.5 to be safe
-            return rotationsAmount >= 3.5;
+            return colorCount >= 3.5;
     }
 
     @Override

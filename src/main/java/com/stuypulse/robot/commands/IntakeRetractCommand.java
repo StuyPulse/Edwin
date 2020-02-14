@@ -9,7 +9,7 @@ public class IntakeRetractCommand extends InstantCommand {
 
   public IntakeRetractCommand(Intake intake) {
     this.intake = intake;
-    addRequirements(this.intake);
+    addRequirements(intake);
   }
 
   @Override

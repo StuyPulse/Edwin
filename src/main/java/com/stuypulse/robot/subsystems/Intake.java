@@ -6,10 +6,10 @@ import com.stuypulse.robot.Constants;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import com.stuypulse.robot.Constants;
 
 public class Intake extends SubsystemBase {
-    
+
     private CANSparkMax motor;
     private Solenoid solenoid;
 
@@ -35,11 +35,11 @@ public class Intake extends SubsystemBase {
     }
 
     public void acquire() {
-        setMotor(1);
+        setMotor(Constants.INTAKE_MOTOR_SPEED);
     }
 
     public void deacquire() {
-        setMotor(-1);
+        setMotor(-Constants.INTAKE_MOTOR_SPEED);
     }
 
     public void stop() {

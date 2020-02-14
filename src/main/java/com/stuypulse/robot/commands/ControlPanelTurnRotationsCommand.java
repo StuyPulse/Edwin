@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.stuypulse.robot.Constants;
 
-public class ControlPanelTurnRevolutionsCommand extends CommandBase {
+public class ControlPanelTurnRotationsCommand extends CommandBase {
 
     private final ControlPanel controlPanel;
     
@@ -18,7 +18,7 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ControlPanelTurnRevolutionsCommand(ControlPanel controlPanel) {
+    public ControlPanelTurnRotationsCommand(ControlPanel controlPanel) {
         this.controlPanel = controlPanel;
         addRequirements(controlPanel);
     }
@@ -26,12 +26,21 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
     @Override
     public void execute() {
         controlPanel.turn(Constants.COLOR_SENSOR_SPEED);
-        if (previousColor != null && previousColor != controlPanel.getColor()) {
+        if (previousColor != null && previousColor != controlPanel.getColor()) { 
+            /**
+             * checks if a previous color exists and that it is not the same as the curent color
+             * if so, increment colorCount, which keeps track of the number of colors passed so far.
+             * 0.125 is equivalent to one color
+              */
             colorCount += 0.125;
         }
 
-        if (Math.abs(colorCount - 1) < 0.01) {
-            rotationsAmount += 1;
+        if (colorCount >= 0.5) {
+            /**
+             * if colorCount >= 1, which means that all 8 colors have been passed, increment rotationsAmount
+             * which keeps track of the number of rotations
+             */
+            rotationsAmount += 0.5;
             colorCount = 0;
         }
         previousColor = controlPanel.getColor();
@@ -39,7 +48,7 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        //stop at 3 1/2 or 3 5/8
+        //stop once 3 rotations are met, 3.5 to be safe
             return rotationsAmount >= 3.5;
     }
 

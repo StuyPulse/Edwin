@@ -24,10 +24,10 @@ public class Chimney extends SubsystemBase {
     }
 
     // IR SENSOR VALUES
-    public boolean getLowerChuteValue() {
+    public boolean getLowerChimneyValue() {
         return lowerSensor.get();
     }
-    public boolean getUpperChuteValue() {
+    public boolean getUpperChimneyValue() {
         return upperSensor.get();
     }
 

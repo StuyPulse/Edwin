@@ -11,11 +11,13 @@ import com.stuypulse.robot.Constants;
 
 public class ShootThreeAutonCommand extends SequentialCommandGroup {
     public ShootThreeAutonCommand(Drivetrain drivetrain) {
-        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)));
+        addCommands(
+            new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
         
         // TODO: Add shoot 3
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, 12));
-        addCommands(new DrivetrainStopCommand(drivetrain));
+            new DrivetrainMovementCommand(drivetrain, 0, 12),
+            new DrivetrainStopCommand(drivetrain)
+        );
     }
     
 }

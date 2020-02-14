@@ -15,24 +15,25 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class EightBallThreeTrenchTwoRdvsAutonCommand extends SequentialCommandGroup {
     public EightBallThreeTrenchTwoRdvsAutonCommand(Drivetrain drivetrain) {
-        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)));
-        //Add shoot 3
-        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH));
-        addCommands(new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_TO_TRENCH));
-        addCommands(new IntakeAcquireCommand(new Intake()));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_BALL_TO_BALL));
+        addCommands(
+            new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
+            new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH),
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH),
+            new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_TO_TRENCH),
+            new IntakeAcquireCommand(new Intake()),
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_BALL_TO_BALL),
 
-        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_TRENCH_TO_RDVS));
-        addCommands(new IntakeAcquireCommand(new Intake()));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_TRENCH_TO_RDVS));
-        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_TWO_BALL));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_BETWEEN_TWO_BALL));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 90));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL));
-        addCommands(new DrivetrainMovementCommand(drivetrain, 80)); //estimate
-        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
-        //shoot
-        addCommands(new DrivetrainStopCommand(drivetrain));
+            new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_TRENCH_TO_RDVS),
+            new IntakeAcquireCommand(new Intake()),
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_TRENCH_TO_RDVS),
+            new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_TWO_BALL),
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_BETWEEN_TWO_BALL),
+            new DrivetrainMovementCommand(drivetrain, 90),
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL),
+            new DrivetrainMovementCommand(drivetrain, 80), //estimate
+            new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)),
+            //shoot
+            new DrivetrainStopCommand(drivetrain)
+        );
     }
 }

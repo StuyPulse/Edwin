@@ -10,9 +10,10 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 public class MobilityAutonCommand extends SequentialCommandGroup {
     public MobilityAutonCommand(Drivetrain drivetrain) {
         //Constructors
-        addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_TO_MOVE_AT_START));
-        addCommands(new DrivetrainStopCommand(drivetrain));
-
+        addCommands(
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_TO_MOVE_AT_START),
+            new DrivetrainStopCommand(drivetrain)
+        );
         //TODO: DONEEE
     }
 

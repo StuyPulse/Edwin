@@ -3,12 +3,13 @@ package com.stuypulse.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.util.BrownoutProtection;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class Intake extends SubsystemBase {
+public class Intake extends SubsystemBase implements BrownoutProtection{
     
     private CANSparkMax motor;
     private Solenoid solenoid;
@@ -58,5 +59,14 @@ public class Intake extends SubsystemBase {
         motor.set(speed);
     }
 
+    @Override
+    public void enableBrownout() {
+        motor.setSmartCurrentLimit(Constants.CURRENT_LIMIT); 
+    }
+
+    @Override
+    public void disableBrownout() {
+        motor.setSmartCurrentLimit(0);
+    }
 
 }

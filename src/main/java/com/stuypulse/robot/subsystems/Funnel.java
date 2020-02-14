@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.util.MotorStall;
 
-public class Funnel extends SubsystemBase implements MotorStall {
+public class Funnel extends SubsystemBase implements MotorStall, BrownoutProtection {
 
     private final CANSparkMax motor;
     private final CANEncoder encoder;
@@ -92,4 +92,14 @@ public class Funnel extends SubsystemBase implements MotorStall {
         isRunning = val;
     }
 
+    @Override
+    public void enableBrownout() {
+        motor.setSmartCurrentLimit(Constants.CURRENT_LIMIT); 
+    }
+
+    @Override
+    public void disableBrownout() {
+        motor.setSmartCurrentLimit(0);
+    }
+    
 }

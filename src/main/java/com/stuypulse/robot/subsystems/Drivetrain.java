@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.util.BrownoutProtection;
 import com.stuypulse.stuylib.util.TankDriveEncoder;
 
 import java.util.Arrays;
@@ -19,7 +21,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class Drivetrain extends SubsystemBase {
+public class Drivetrain extends SubsystemBase implements BrownoutProtection {
 
     // Enum used to store the state of the gear
     public static enum Gear {
@@ -317,5 +319,21 @@ public class Drivetrain extends SubsystemBase {
         } else {
             curvatureDrive(speed, rotation, false);
         }
+    }
+
+    @Override
+    public void enableBrownout() {
+        for(int i = 0; i < leftMotors.length; i++)
+            leftMotors[i].setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+        for(int i = 0; i < rightMotors.length; i++)
+            rightMotors[i].setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+    }
+
+    @Override
+    public void disableBrownout() {
+        for(int i = 0; i < leftMotors.length; i++)
+            leftMotors[i].setSmartCurrentLimit(0);
+        for(int i = 0; i < rightMotors.length; i++)
+            rightMotors[i].setSmartCurrentLimit(0);
     }
 }

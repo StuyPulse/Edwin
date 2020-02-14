@@ -6,9 +6,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.util.BrownoutProtection;
 import com.stuypulse.robot.util.ColorSensor;
 
-public class ControlPanel extends SubsystemBase {
+public class ControlPanel extends SubsystemBase implements BrownoutProtection {
     private CANSparkMax motor;
     private ColorSensor sensor;
 
@@ -30,5 +31,16 @@ public class ControlPanel extends SubsystemBase {
     public void stop() {
         motor.stopMotor();
     }
+
+    @Override
+    public void enableBrownout() {
+        motor.setSmartCurrentLimit(Constants.CURRENT_LIMIT); 
+    }
+
+    @Override
+    public void disableBrownout() {
+        motor.setSmartCurrentLimit(0);
+    }
+    
 }
 

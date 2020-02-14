@@ -259,5 +259,12 @@ public interface Constants {
      *********************************************************************************************/
 	double CHIMNEY_LIFT_UP_SPEED = -1;
     double CHIMNEY_ENCODER_RADIUS = -1;
-	double CHIMNEY_BALL_PER_ROTATIONS = -1;
+    double CHIMNEY_BALL_PER_ROTATIONS = -1;
+    
+    /*********************************************************************************************
+     * Brownout Constants
+     *********************************************************************************************/
+    //TODO: test!
+     int CURRENT_LIMIT = -1;
+
 }

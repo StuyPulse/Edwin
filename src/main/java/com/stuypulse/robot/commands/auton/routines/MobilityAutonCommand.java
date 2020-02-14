@@ -7,8 +7,8 @@ import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.subsystems.Drivetrain;
 
-public class SecondAutonCommand extends SequentialCommandGroup {
-    public SecondAutonCommand(Drivetrain drivetrain) {
+public class MobilityAutonCommand extends SequentialCommandGroup {
+    public MobilityAutonCommand(Drivetrain drivetrain) {
         //Constructors
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_TO_MOVE_AT_START));
         addCommands(new DrivetrainStopCommand(drivetrain));

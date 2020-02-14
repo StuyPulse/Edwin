@@ -10119,8 +10119,8 @@ and that as FREE AND INDEPENDENT STATES, they have full Power to levy War, concl
 And for the support of this Declaration, with a firm Reliance on the Protection of divine Providence, we mutually
 pledge to each other our Lives, our fortunes, and our sacred Honor.
  */
-public class EighthAutonCommand extends SequentialCommandGroup {
-    public EighthAutonCommand(Drivetrain drivetrain, Intake intake) {
+public class EightBallFiveRdvsAutonCommand extends SequentialCommandGroup {
+    public EightBallFiveRdvsAutonCommand(Drivetrain drivetrain, Intake intake) {
         addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)));
         
         // TODO: Add shoot 3
@@ -10128,7 +10128,7 @@ public class EighthAutonCommand extends SequentialCommandGroup {
 
         //Move forward
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_RDVS));
-        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_THREE_BALL));
+        addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_POINT_TO_THREE_BALL));
         addCommands(new IntakeAcquireCommand(intake));
         addCommands(new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS));
         addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_THREE_BALL_TO_TWO_BALL, Constants.DISTANCE_FROM_THREE_BALL_TO_TWO_BALL));

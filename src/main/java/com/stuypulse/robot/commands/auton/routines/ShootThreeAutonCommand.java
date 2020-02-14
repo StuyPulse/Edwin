@@ -9,8 +9,8 @@ import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.Constants;
 
-public class ThirdAutonCommand extends SequentialCommandGroup {
-    public ThirdAutonCommand(Drivetrain drivetrain) {
+public class ShootThreeAutonCommand extends SequentialCommandGroup {
+    public ShootThreeAutonCommand(Drivetrain drivetrain) {
         addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)));
         
         // TODO: Add shoot 3

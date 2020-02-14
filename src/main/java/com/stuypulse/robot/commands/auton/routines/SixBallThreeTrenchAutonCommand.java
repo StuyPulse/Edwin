@@ -11,8 +11,8 @@ import com.stuypulse.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class FourthAutonCommand extends SequentialCommandGroup {
-    public FourthAutonCommand(Drivetrain drivetrain) {
+public class SixBallThreeTrenchAutonCommand extends SequentialCommandGroup {
+    public SixBallThreeTrenchAutonCommand(Drivetrain drivetrain) {
         addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)));
         //Add shoot 3
         addCommands(new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH));

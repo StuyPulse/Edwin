@@ -11,29 +11,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.commands.*;
 import com.stuypulse.stuylib.control.PIDCalculator;
-import com.stuypulse.stuylib.input.*;
-import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.util.MotorStalling;
-import com.stuypulse.robot.commands.*;
 
 import com.stuypulse.robot.subsystems.Climber;
-import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Woof;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
 import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
-import com.stuypulse.robot.commands.ClimberSetNeutralModeCommand;
 import com.stuypulse.robot.commands.ClimberSetupCommand;
 import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
-import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
-import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
-import java.util.ResourceBundle.Control;
-import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.robot.commands.WoofManualControlCommand;
 import com.stuypulse.stuylib.input.WPIGamepad;
-import com.stuypulse.stuylib.input.gamepads.Logitech;
 import com.stuypulse.stuylib.input.gamepads.PS4;
 
 /**
@@ -51,7 +43,7 @@ public class RobotContainer {
   //Subsystems
   private final Chimney chimney = new Chimney();
   private final Climber climber = new Climber();
-  private final ControlPanel controlPanel = new ControlPanel();
+  private final Woof woof = new Woof();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Funnel funnel = new Funnel();
   private final Intake intake = new Intake();
@@ -74,7 +66,7 @@ public class RobotContainer {
 
     chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
-    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
+    woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
 
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, operator));
 

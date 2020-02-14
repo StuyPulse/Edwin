@@ -1,13 +1,13 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Woof;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.stuypulse.robot.Constants;
 
-public class ControlPanelTurnRevolutionsCommand extends CommandBase {
+public class WoofTurnRevolutionsCommand extends CommandBase {
 
-    private final ControlPanel controlPanel;
+    private final Woof woof;
     
     private Color previousColor = null;
     private double colorCount;
@@ -18,15 +18,15 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ControlPanelTurnRevolutionsCommand(ControlPanel controlPanel) {
-        this.controlPanel = controlPanel;
-        addRequirements(controlPanel);
+    public WoofTurnRevolutionsCommand(Woof woof) {
+        this.woof = woof;
+        addRequirements(woof);
     }
 
     @Override
     public void execute() {
-        controlPanel.turn(Constants.COLOR_SENSOR_SPEED);
-        if (previousColor != null && previousColor != controlPanel.getColor()) {
+        woof.turn(Constants.COLOR_SENSOR_SPEED);
+        if (previousColor != null && previousColor != woof.getColor()) {
             colorCount += 0.125;
         }
 
@@ -34,7 +34,7 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
             rotationsAmount += 1;
             colorCount = 0;
         }
-        previousColor = controlPanel.getColor();
+        previousColor = woof.getColor();
     }
 
     @Override
@@ -45,6 +45,6 @@ public class ControlPanelTurnRevolutionsCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        controlPanel.stop();
+        woof.stop();
     }
 }

@@ -224,15 +224,15 @@ public interface Constants {
     double CLIMBER_SCALE = 0.5;
 
     /*********************************************************************************************
-     * Co1or Wheel Ports
+     * Woof Ports
      *********************************************************************************************/
-    int CONTROL_PANEL_MOTOR_PORT = -1;
-    int CONTROL_SENSOR_PORT = -1;
+    int WOOF_MOTOR_PORT = -1;
+    int WOOF_SENSOR_PORT = -1;
 
     /*********************************************************************************************
      * Co1or Wheel Constants
      *********************************************************************************************/
-    double CONTROL_PANEL_TURN_SPEED = 1.0;
+    double WOOF_TURN_SPEED = 1.0;
     
     double CYAN_RED = 0.2;
     double CYAN_GREEN = 0.56;

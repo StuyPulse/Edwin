@@ -2,9 +2,9 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ReverseShooterCommand extends InstantCommand {
+public class ReverseShooterCommand extends CommandBase {
     public Shooter shooter;
 
     public ReverseShooterCommand(Shooter shooter) {  
@@ -12,7 +12,7 @@ public class ReverseShooterCommand extends InstantCommand {
     }
 
     @Override
-    protected void initialize() {
+    public void execute() {
         shooter.reverseShooter();
     }
 }

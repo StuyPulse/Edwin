@@ -180,15 +180,16 @@ public interface Constants {
     /*********************************************************************************************
      * Funnel Motor Port
      *********************************************************************************************/
-    int FUNNEL_MOTOR_PORT = -1;
+    int FUNNEL_MOTOR_PORT = 9;
 
     /*********************************************************************************************
      * Climber Motor Ports
      *********************************************************************************************/
-    int CLIMBER_LIFT_MOTOR_PORT = -1;
-    int CLIMBER_YOYO_MOTOR_PORT = -1;
+    int CLIMBER_LIFT_MOTOR_PORT = 15;
+    int CLIMBER_YOYO_MOTOR_PORT = 17;
 
-    int CLIMBER_LIFT_SOLENOID_CHANNEL = -1;
+    int CLIMBER_LIFT_SOLENOID_CHANNEL = 2;
+    int CLIMBER_YOYO_SOLENOID_CHANNEL = 3;
 
     int CLIMBER_LIMIT_SWITCH_CHANNEL = -1;
 
@@ -220,7 +221,7 @@ public interface Constants {
     /*********************************************************************************************
      * Control Panel Ports
      *********************************************************************************************/
-    int CONTROL_PANEL_MOTOR_PORT = -1;
+    int CONTROL_PANEL_MOTOR_PORT = 16;
     int CONTROL_SENSOR_PORT = -1;
 
     /*********************************************************************************************
@@ -253,7 +254,8 @@ public interface Constants {
      * Intake Motor Ports
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = -1;
-    int INTAKE_SOLENOID_PORT = -1;
+    int INTAKE_SOLENOID_PORT_A = 6;
+    int INTAKE_SOLENOID_PORT_B = 7;
 
     /*********************************************************************************************
      * Intake Constants
@@ -263,7 +265,7 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Motor & Sensor Ports
      *********************************************************************************************/
-	int CHIMNEY_LIFT_MOTOR_PORT = -1;
+	int CHIMNEY_LIFT_MOTOR_PORT = 8;
 	int CHIMNEY_LOWER_SENSOR_PORT = -1;
     int CHIMNEY_UPPER_SENSOR_PORT = -1;
     
@@ -277,20 +279,20 @@ public interface Constants {
     /*********************************************************************************************
      * Shooter Motor Ports
      *********************************************************************************************/
-    int LEFT_SHOOTER_MOTOR_PORT = -1;
-    int RIGHT_SHOOTER_MOTOR_PORT = -1;
-    int MIDDLE_SHOOTER_MOTOR_PORT = -1;
+    int LEFT_SHOOTER_MOTOR_PORT = 12;
+    int MIDDLE_SHOOTER_MOTOR_PORT = 13;
+    int RIGHT_SHOOTER_MOTOR_PORT = 14;
     
     /*********************************************************************************************
      * Feeder 
      *********************************************************************************************/
-    int FEEDER_MOTOR_PORT = -1;
+    int FEEDER_MOTOR_PORT = 11;
     double FEEDER_SPEED = 1.0;
 
     /*********************************************************************************************
      * Hood Solenoid Port
      *********************************************************************************************/
-    int HOOD_SOLENOID_PORT = -1;
+    int HOOD_SOLENOID_PORT = 1;
 
 
     /*********************************************************************************************

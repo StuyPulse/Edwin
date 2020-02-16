@@ -14,29 +14,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
 
+    public enum Mode {
+        NONE, INITIATION_LINE, TRENCH, FAR
+    };
+
     // Motors
-    private CANSparkMax leftShooterMotor;
-    private CANSparkMax rightShooterMotor;
-    private CANSparkMax middleShooterMotor;
-    private CANSparkMax feederMotor;
+    private final CANSparkMax leftShooterMotor;
+    private final CANSparkMax rightShooterMotor;
+    private final CANSparkMax middleShooterMotor;
+    private final CANSparkMax feederMotor;
 
     // Encoders
-    private CANEncoder leftShooterEncoder;
-    private CANEncoder rightShooterEncoder;
-    private CANEncoder middleShooterEncoder;
+    private final CANEncoder leftShooterEncoder;
+    private final CANEncoder rightShooterEncoder;
+    private final CANEncoder middleShooterEncoder;
     private CANEncoder feederEncoder;
 
     // Hood Solenoid
-    private Solenoid hoodSolenoid;
+    private final Solenoid hoodSolenoid;
 
     // SpeedControllerGroup
-    private SpeedControllerGroup shooterMotors;
+    private final SpeedControllerGroup shooterMotors;
 
     // SmartNumbers for SmartDashboard
-    private SmartNumber targetShooterVelocity;
-    private SmartNumber currentShooterVelocity;
+    private final SmartNumber targetShooterVelocity;
+    private final SmartNumber currentShooterVelocity;
 
-    private SmartNumber currentFeederVelocity;
+    private final SmartNumber currentFeederVelocity;
+
+    private Mode mode = Mode.NONE;
 
     public Shooter() {
         leftShooterMotor = new CANSparkMax(Constants.LEFT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
@@ -62,11 +68,8 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getRawMedianShooterVelocity() {
-        double[] speeds = { 
-            leftShooterEncoder.getVelocity(), 
-            middleShooterEncoder.getVelocity(),
-            rightShooterEncoder.getVelocity() 
-        };
+        final double[] speeds = { leftShooterEncoder.getVelocity(), middleShooterEncoder.getVelocity(),
+                rightShooterEncoder.getVelocity() };
 
         Arrays.sort(speeds);
 
@@ -84,7 +87,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getCurrentShooterVelocityInRPM() {
-        double speed = getRawMedianShooterVelocity() * Constants.SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER;
+        final double speed = getRawMedianShooterVelocity() * Constants.SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER;
         currentShooterVelocity.set(speed);
         return speed;
     }
@@ -94,7 +97,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getCurrentFeederVelocityInRPM() {
-        double speed = getRawFeederVelocity() * Constants.FEEDER_VELOCITY_EMPIRICAL_MULTIPLER;
+        final double speed = getRawFeederVelocity() * Constants.FEEDER_VELOCITY_EMPIRICAL_MULTIPLER;
         currentFeederVelocity.set(speed);
         return speed;
     }
@@ -145,5 +148,17 @@ public class Shooter extends SubsystemBase {
 
     public void setDefaultSolenoidPosition() {
         retractHoodSolenoid();
+    }
+
+    public void setShooterMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    public Mode getShooterMode() {
+        return mode;
+    }
+
+    public boolean isAtTargetVelocity() {
+        return (Math.abs(getTargetVelocity() - getCurrentShooterVelocityInRPM()) <= Constants.SHOOTER_TOLERANCE);
     }
 }

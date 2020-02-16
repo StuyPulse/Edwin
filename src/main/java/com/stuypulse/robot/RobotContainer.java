@@ -9,7 +9,6 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
-import com.stuypulse.robot.commands.ChimneyStopCommand;
 import com.stuypulse.robot.commands.ChimneyUpCommand;
 import com.stuypulse.robot.commands.ClimberMoveYoyoCommand;
 import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
@@ -40,6 +39,7 @@ import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.Woof;
+import com.stuypulse.robot.subsystems.Shooter.Mode;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.input.WPIGamepad;
@@ -120,9 +120,9 @@ public class RobotContainer {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
-    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM));
-    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM));
-    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM));
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM, Mode.FAR));
+    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM, Mode.INITIATION_LINE));
+    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM, Mode.TRENCH));
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
     operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 

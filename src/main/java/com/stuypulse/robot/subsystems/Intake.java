@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,9 +14,13 @@ public class Intake extends SubsystemBase {
     private CANSparkMax motor;
     private DoubleSolenoid solenoid;
 
+    private DigitalInput sensor;
+
     public Intake() {
         motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
         solenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_A, Constants.INTAKE_SOLENOID_PORT_B);
+
+        sensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
     }
 
     public void extend() {
@@ -54,5 +59,8 @@ public class Intake extends SubsystemBase {
         motor.set(speed);
     }
 
+    public boolean isBallDetected() {
+        return sensor.get();
+    }
 
 }

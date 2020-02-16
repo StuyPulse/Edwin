@@ -255,11 +255,12 @@ public interface Constants {
     Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
 
     /*********************************************************************************************
-     * Intake Motor Ports
+     * Intake Ports
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = 18;
     int INTAKE_SOLENOID_PORT_A = 6;
     int INTAKE_SOLENOID_PORT_B = 7;
+    int INTAKE_SENSOR_PORT = 4;
 
     /*********************************************************************************************
      * Intake Constants

@@ -55,10 +55,10 @@ public interface Constants {
             int RIGHT_TOP = 4;
             int RIGHT_BOTTOM = 3;
 
-            int LEFT_ENCODER_A = -1; // TODO: find value
-            int LEFT_ENCODER_B = -1; // TODO: find value
-            int RIGHT_ENCODER_A = -1; // TODO: find value
-            int RIGHT_ENCODER_B = -1; // TODO: find value
+            int LEFT_ENCODER_A = 0;
+            int LEFT_ENCODER_B = 1;
+            int RIGHT_ENCODER_A = 2;
+            int RIGHT_ENCODER_B = 3;
 
             int GEAR_SHIFT = 0;
         }
@@ -85,8 +85,8 @@ public interface Constants {
         double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
 
-        int SPEED_ORDER = 1; // TODO: Go Over This With Driver
-        int ANGLE_ORDER = 1; // TODO: Go Over This With Driver
+        int SPEED_ORDER = 1;
+        int ANGLE_ORDER = 2;
         
         // Current Limit for the motors
         int CURRENT_LIMIT = 40; // TODO: ask about this
@@ -170,7 +170,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6); // TODO: measure on feild
+            double GOAL_HEIGHT = toFeet(7, 8.5); // TODO: measure on feild
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 7); // TODO: calculate on robot

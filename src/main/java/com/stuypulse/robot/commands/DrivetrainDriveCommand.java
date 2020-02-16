@@ -31,6 +31,10 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         // Store the gamepad
         this.gamepad = gamepad;
+    }
+
+    public void initialize() {
+        super.initialize();
 
         // Create an IStream that gets the speed from the controller
         this.rawSpeed = () -> {

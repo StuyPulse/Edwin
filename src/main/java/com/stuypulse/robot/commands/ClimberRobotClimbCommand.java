@@ -26,4 +26,9 @@ public class ClimberRobotClimbCommand extends CommandBase {
         climber.releaseLiftBrake();
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        climber.enableLiftBrake();
+    }
+
 }

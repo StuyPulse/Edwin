@@ -26,14 +26,18 @@ public abstract class DrivetrainCommand extends CommandBase {
 
     public abstract double getAngle();
 
+    public abstract Drivetrain.Gear getGear();
+
     public abstract boolean useCurvatureDrive();
 
     // Update the drivetrain with the new speed and angle
     public void execute() {
+        drivetrain.setGear(this.getGear());
+
         if(useCurvatureDrive()) {
-            drivetrain.arcadeDrive(this.getSpeed(), this.getAngle());
-        } else {
             drivetrain.curvatureDrive(this.getSpeed(), this.getAngle());
+        } else {
+            drivetrain.arcadeDrive(this.getSpeed(), this.getAngle());
         }
     }
 }

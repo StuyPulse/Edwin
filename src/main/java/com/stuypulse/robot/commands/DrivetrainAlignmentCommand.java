@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
@@ -97,10 +98,23 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
-        double mul = (Alignment.Angle.MAX_ANGLE_ERROR - angle.getError());
-        mul /= Alignment.Angle.MAX_ANGLE_ERROR;
-        mul = Math.max(mul, 0.0);
-        return speed.update(aligner.getSpeedError()) * mul;
+        double angleError = Math.abs(aligner.getAngleError());
+        double speedError = aligner.getSpeedError();
+        double out = 0;
+
+        if(angleError < Alignment.Angle.MAX_ANGLE_ERROR) {
+            out = speed.update(speedError);
+        } else {
+            angleError -= Alignment.Angle.MAX_ANGLE_ERROR;
+            angleError = Alignment.Angle.MAX_ANGLE_ERROR - angleError;
+            angleError = Math.max(angleError, 0.0);
+
+            out = SLMath.limit(speed.update(speedError), -1, 1);
+            out *= (Alignment.Angle.MAX_ANGLE_ERROR - angleError);
+            out /= Alignment.Angle.MAX_ANGLE_ERROR;
+        }
+
+        return out;
     }
 
     // Update angle based on angle error
@@ -119,6 +133,11 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return angle.update(error);
     }
 
+    // Alignment must use low gear
+    public Drivetrain.Gear getGear() {
+        return Drivetrain.Gear.LOW;
+    }
+
     public boolean useCurvatureDrive() {
         // Aligning doesn't need to use curvature drive
         // Arcade drive is better for non humans
@@ -127,7 +146,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Set the gear and other things when initializing
     public void initialize() {
-        drivetrain.setLowGear();
         aligner.init();
         timer.reset();
     }

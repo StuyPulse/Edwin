@@ -9,7 +9,7 @@ public class IntakeToggleCommand extends InstantCommand {
   
     public IntakeToggleCommand(Intake intake) {
         this.intake = intake;
-        addRequirements(this.intake);
+        addRequirements(intake);
     }
   
     @Override

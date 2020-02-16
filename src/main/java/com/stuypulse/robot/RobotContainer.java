@@ -44,7 +44,7 @@ public class RobotContainer {
   //Subsystems
   private final Chimney chimney = new Chimney();
   private final Climber climber = new Climber();
-  private final ControlPanel controlPanel = new ControlPanel();
+  private final Woof woof = new Woof();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Funnel funnel = new Funnel();
   private final Intake intake = new Intake();
@@ -67,7 +67,7 @@ public class RobotContainer {
 
     chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
-    controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
+    woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
 
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, operator));
 
@@ -83,13 +83,25 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-    
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberSetupCommand(climber, intake));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) < -Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberRobotClimbCommand(climber));
-    
-    operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() <= -Math.abs(operator.getLeftX()))).whileHeld(new ClimberRobotClimbCommand(climber));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX()) >= Math.abs(operator.getLeftY()))).whileHeld(new ClimberMoveYoyoCommand(climber, operator));
+
+    operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
+    operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
     operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
     operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+
+    operator.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
+    operator.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
+
+    operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
+    operator.getRightBumper().whenPressed(new WoofTurnRotationsCommand(woof));
+
+    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+
+    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
+    operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 
     driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));

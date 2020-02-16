@@ -9,7 +9,7 @@ public class IntakeExtendCommand extends InstantCommand {
 
   public IntakeExtendCommand(Intake intake) {
     this.intake = intake;
-    addRequirements(this.intake);
+    addRequirements(intake);
   }
 
   @Override

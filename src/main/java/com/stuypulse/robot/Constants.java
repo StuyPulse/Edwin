@@ -180,15 +180,16 @@ public interface Constants {
     /*********************************************************************************************
      * Funnel Motor Port
      *********************************************************************************************/
-    int FUNNEL_MOTOR_PORT = -1;
+    int FUNNEL_MOTOR_PORT = 9;
 
     /*********************************************************************************************
      * Climber Motor Ports
      *********************************************************************************************/
-    int CLIMBER_LIFT_MOTOR_PORT = -1;
-    int CLIMBER_YOYO_MOTOR_PORT = -1;
+    int CLIMBER_LIFT_MOTOR_PORT = 15;
+    int CLIMBER_YOYO_MOTOR_PORT = 17;
 
-    int CLIMBER_LIFT_SOLENOID_CHANNEL = -1;
+    int CLIMBER_LIFT_SOLENOID_CHANNEL = 2;
+    int CLIMBER_YOYO_SOLENOID_CHANNEL = 3;
 
     int CLIMBER_LIMIT_SWITCH_CHANNEL = -1;
 
@@ -197,12 +198,6 @@ public interface Constants {
      *********************************************************************************************/
     double CLIMBER_MOVE_DEADBAND = 0.25;
 
-    Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
-    Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
-    Color RED_TARGET = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
-    Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
-
-    double COLOR_SENSOR_SPEED = 1;
     double CLIMBER_EXPONENT = 1/3;
 
     /*********************************************************************************************
@@ -224,13 +219,13 @@ public interface Constants {
     double CLIMBER_SCALE = 0.5;
 
     /*********************************************************************************************
-     * Co1or Wheel Ports
+     * Control Panel Ports
      *********************************************************************************************/
-    int CONTROL_PANEL_MOTOR_PORT = -1;
+    int CONTROL_PANEL_MOTOR_PORT = 16;
     int CONTROL_SENSOR_PORT = -1;
 
     /*********************************************************************************************
-     * Co1or Wheel Constants
+     * Control Panel Constants
      *********************************************************************************************/
     double CONTROL_PANEL_TURN_SPEED = 1.0;
     
@@ -249,17 +244,28 @@ public interface Constants {
     double YELLOW_RED = 0.30;
     double YELLOW_GREEN = 0.50;
     double YELLOW_BLUE = 0.1;
+    
+    Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
+    Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
+    Color RED_TARGET = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
+    Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
 
     /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/
-    int INTAKE_MOTOR_PORT = -1;
-    int INTAKE_SOLENOID_PORT = -1;
+    int INTAKE_MOTOR_PORT = 18;
+    int INTAKE_SOLENOID_PORT_A = 6;
+    int INTAKE_SOLENOID_PORT_B = 7;
+
+    /*********************************************************************************************
+     * Intake Constants
+     *********************************************************************************************/    
+    double INTAKE_MOTOR_SPEED = 1.0;
 
     /*********************************************************************************************
      * CHIMNEY Motor & Sensor Ports
      *********************************************************************************************/
-	int CHIMNEY_LIFT_MOTOR_PORT = -1;
+	int CHIMNEY_LIFT_MOTOR_PORT = 8;
 	int CHIMNEY_LOWER_SENSOR_PORT = -1;
     int CHIMNEY_UPPER_SENSOR_PORT = -1;
     
@@ -273,20 +279,20 @@ public interface Constants {
     /*********************************************************************************************
      * Shooter Motor Ports
      *********************************************************************************************/
-    int LEFT_SHOOTER_MOTOR_PORT = -1;
-    int RIGHT_SHOOTER_MOTOR_PORT = -1;
-    int MIDDLE_SHOOTER_MOTOR_PORT = -1;
+    int LEFT_SHOOTER_MOTOR_PORT = 12;
+    int MIDDLE_SHOOTER_MOTOR_PORT = 13;
+    int RIGHT_SHOOTER_MOTOR_PORT = 14;
     
     /*********************************************************************************************
      * Feeder 
      *********************************************************************************************/
-    int FEEDER_MOTOR_PORT = -1;
+    int FEEDER_MOTOR_PORT = 11;
     double FEEDER_SPEED = 1.0;
 
     /*********************************************************************************************
      * Hood Solenoid Port
      *********************************************************************************************/
-    int HOOD_SOLENOID_PORT = -1;
+    int HOOD_SOLENOID_PORT = 1;
 
 
     /*********************************************************************************************

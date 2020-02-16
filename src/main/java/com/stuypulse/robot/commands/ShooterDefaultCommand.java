@@ -16,7 +16,7 @@ public class ShooterDefaultCommand extends CommandBase {
     public Controller feedController;
 
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad, Controller shootController,
-            Controller feedController) {
+        Controller feedController) {
         this.shooter = shooter;
         this.gamepad = gamepad;
         this.shootController = shootController;

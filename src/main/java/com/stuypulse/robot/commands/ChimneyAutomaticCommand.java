@@ -22,7 +22,7 @@ public class ChimneyAutomaticCommand extends CommandBase {
         if (gamepad.getRawDPadDown()) {
             chimney.liftUp();
         } else {
-            if (!chimney.getUpperChuteValue() && chimney.getLowerChuteValue()) {
+            if (!chimney.getUpperChimneyValue() && chimney.getLowerChimneyValue()) {
                 chimney.liftUp();
             } else {
                 chimney.stop();

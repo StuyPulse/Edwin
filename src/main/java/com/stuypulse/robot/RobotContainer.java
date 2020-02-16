@@ -24,12 +24,7 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
-import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
-import com.stuypulse.robot.commands.ClimberSetNeutralModeCommand;
-import com.stuypulse.robot.commands.ClimberSetupCommand;
-import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
-import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
-import com.stuypulse.robot.commands.ControlPanelManualControlCommand;
+
 import java.util.ResourceBundle.Control;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.WPIGamepad;
@@ -72,8 +67,6 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
-
     controlPanel.setDefaultCommand(new ControlPanelManualControlCommand(controlPanel, operator));
 
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, operator));
@@ -90,13 +83,25 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-    
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) > Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberSetupCommand(climber, intake));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) < -Constants.CLIMBER_MOVE_DEADBAND)).whileHeld(new ClimberRobotClimbCommand(climber));
-    
-    operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() <= -Math.abs(operator.getLeftX()))).whileHeld(new ClimberRobotClimbCommand(climber));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX()) >= Math.abs(operator.getLeftY()))).whileHeld(new ClimberMoveYoyoCommand(climber, operator));
+
+    operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
+    operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
     operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
     operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+
+    operator.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
+    operator.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
+
+    operator.getLeftBumper().whenPressed(new ControlPanelSpinToColorCommand(controlPanel));
+    operator.getRightBumper().whenPressed(new ControlPanelTurnRotationsCommand(controlPanel));
+
+    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+
+    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
+    operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 
     driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));

@@ -9,7 +9,7 @@ public class IntakeAcquireCommand extends CommandBase {
 
   public IntakeAcquireCommand(Intake intake) {
     this.intake = intake;
-    addRequirements(this.intake);
+    addRequirements(intake);
   }
 
   @Override

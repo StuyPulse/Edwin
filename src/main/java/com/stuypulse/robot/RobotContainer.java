@@ -101,6 +101,9 @@ public class RobotContainer {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM));
+    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM));
+    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM));
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
     operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 

@@ -270,8 +270,8 @@ public interface Constants {
      * CHIMNEY Motor & Sensor Ports
      *********************************************************************************************/
   	int CHIMNEY_LIFT_MOTOR_PORT = 8;
-	  int CHIMNEY_LOWER_SENSOR_PORT = -1;
-    int CHIMNEY_UPPER_SENSOR_PORT = -1;
+	  int CHIMNEY_LOWER_SENSOR_PORT = 5;
+    int CHIMNEY_UPPER_SENSOR_PORT = 6;
     
     /*********************************************************************************************
      * CHIMNEY Constants

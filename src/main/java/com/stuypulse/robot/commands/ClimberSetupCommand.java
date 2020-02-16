@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class ClimberSetupCommand extends SequentialCommandGroup {
 
-    Climber climber;
+    private final Climber climber;
 
     public ClimberSetupCommand(Climber climber, Intake intake) {
 

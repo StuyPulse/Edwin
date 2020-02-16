@@ -36,7 +36,6 @@ public class Shooter extends SubsystemBase {
     private SmartNumber targetShooterVelocity;
     private SmartNumber currentShooterVelocity;
 
-    private SmartNumber targetFeederVelocity;
     private SmartNumber currentFeederVelocity;
 
     public Shooter() {
@@ -59,7 +58,6 @@ public class Shooter extends SubsystemBase {
         targetShooterVelocity = new SmartNumber("Shooter Target Vel", 69420);
         currentShooterVelocity = new SmartNumber("Shooter Current Vel", -1);
 
-        targetFeederVelocity = new SmartNumber("Feeder Target Vel", 69420);
         currentFeederVelocity = new SmartNumber("Feeder Current Vel", -1);
     }
 

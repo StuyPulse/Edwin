@@ -219,15 +219,15 @@ public interface Constants {
     double CLIMBER_SCALE = 0.5;
 
     /*********************************************************************************************
-     * Control Panel Ports
+     * Woof Ports
      *********************************************************************************************/
-    int CONTROL_PANEL_MOTOR_PORT = 16;
-    int CONTROL_SENSOR_PORT = -1;
+    int WOOF_MOTOR_PORT = 16;
+    int WOOF_SENSOR_PORT = -1;
 
     /*********************************************************************************************
      * Control Panel Constants
      *********************************************************************************************/
-    double CONTROL_PANEL_TURN_SPEED = 1.0;
+    double WOOF_TURN_SPEED = 1.0;
     
     double CYAN_RED = 0.2;
     double CYAN_GREEN = 0.56;
@@ -265,16 +265,16 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Motor & Sensor Ports
      *********************************************************************************************/
-	int CHIMNEY_LIFT_MOTOR_PORT = 8;
-	int CHIMNEY_LOWER_SENSOR_PORT = -1;
+  	int CHIMNEY_LIFT_MOTOR_PORT = 8;
+	  int CHIMNEY_LOWER_SENSOR_PORT = -1;
     int CHIMNEY_UPPER_SENSOR_PORT = -1;
     
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	    double CHIMNEY_LIFT_UP_SPEED = -1;
+	  double CHIMNEY_LIFT_UP_SPEED = -1;
     double CHIMNEY_ENCODER_RADIUS = -1;
-      double CHIMNEY_BALL_PER_ROTATIONS = -1;
+    double CHIMNEY_BALL_PER_ROTATIONS = -1;
     
     /*********************************************************************************************
      * Shooter Motor Ports

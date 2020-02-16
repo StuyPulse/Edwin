@@ -1,18 +1,18 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Woof;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ControlPanelSpinToColorCommand extends CommandBase {
+public class WoofSpinToColorCommand extends CommandBase {
 
-    private final ControlPanel controlPanel;
+    private final Woof woof;
     private Color goal;
-    public ControlPanelSpinToColorCommand(ControlPanel controlPanel) {
-        this.controlPanel = controlPanel;
-        addRequirements(controlPanel);
+    public WoofSpinToColorCommand(Woof woof) {
+        this.woof = woof;
+        addRequirements(woof);
     }
 
     private void setTargetColor() {
@@ -43,25 +43,25 @@ public class ControlPanelSpinToColorCommand extends CommandBase {
         if (goal == null) {
             setTargetColor();
         } 
-        else if((controlPanel.getColor() == Color.kRed && goal == Color.kYellow) ||
-                (controlPanel.getColor() == Color.kGreen && goal == Color.kRed) ||
-                (controlPanel.getColor() == Color.kBlue && goal == Color.kGreen) ||
-                (controlPanel.getColor() == Color.kYellow && goal == Color.kBlue)) {
-                controlPanel.turn(-Constants.CONTROL_PANEL_TURN_SPEED);
+        else if((woof.getColor() == Color.kRed && goal == Color.kYellow) ||
+                (woof.getColor() == Color.kGreen && goal == Color.kRed) ||
+                (woof.getColor() == Color.kBlue && goal == Color.kGreen) ||
+                (woof.getColor() == Color.kYellow && goal == Color.kBlue)) {
+                woof.turn(-Constants.WOOF_TURN_SPEED);
             }
         else {    
-            controlPanel.turn(Constants.CONTROL_PANEL_TURN_SPEED);
+            woof.turn(Constants.WOOF_TURN_SPEED);
         }
     }
     
     @Override
     public boolean isFinished() {
-        return goal == controlPanel.getColor();
+        return goal == woof.getColor();
     }
 
     @Override
     public void end(boolean interrupted) {
         // code to run when ends
-        controlPanel.stop();
+        woof.stop();
     }
 }

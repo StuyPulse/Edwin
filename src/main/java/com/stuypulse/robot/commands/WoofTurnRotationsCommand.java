@@ -1,13 +1,13 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Woof;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.stuypulse.robot.Constants;
 
-public class ControlPanelTurnRotationsCommand extends CommandBase {
+public class WoofTurnRotationsCommand extends CommandBase {
 
-    private final ControlPanel controlPanel;
+    private final Woof controlPanel;
     
     private Color previousColor = null;
     private double colorCount;
@@ -17,14 +17,14 @@ public class ControlPanelTurnRotationsCommand extends CommandBase {
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ControlPanelTurnRotationsCommand(ControlPanel controlPanel) {
+    public WoofTurnRotationsCommand(Woof controlPanel) {
         this.controlPanel = controlPanel;
         addRequirements(controlPanel);
     }
 
     @Override
     public void execute() {
-        controlPanel.turn(Constants.CONTROL_PANEL_TURN_SPEED);
+        controlPanel.turn(Constants.WOOF_TURN_SPEED);
         if (previousColor != null && previousColor != controlPanel.getColor()) { 
             /**
              * checks if a previous color exists and that it is not the same as the curent color

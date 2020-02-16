@@ -55,10 +55,10 @@ public interface Constants {
             int RIGHT_TOP = 4;
             int RIGHT_BOTTOM = 3;
 
-            int LEFT_ENCODER_A = -1; // TODO: find value
-            int LEFT_ENCODER_B = -1; // TODO: find value
-            int RIGHT_ENCODER_A = -1; // TODO: find value
-            int RIGHT_ENCODER_B = -1; // TODO: find value
+            int LEFT_ENCODER_A = 0;
+            int LEFT_ENCODER_B = 1;
+            int RIGHT_ENCODER_A = 2;
+            int RIGHT_ENCODER_B = 3;
 
             int GEAR_SHIFT = 0;
         }
@@ -71,6 +71,10 @@ public interface Constants {
         // How much to slow down quick turn
         double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
 
+        // Cool Rumble
+        boolean COOL_RUMBLE = true;
+        double COOL_RUMBLE_MAG = 1;
+
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;
@@ -81,8 +85,8 @@ public interface Constants {
         double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
 
-        int SPEED_ORDER = 1; // TODO: Go Over This With Driver
-        int ANGLE_ORDER = 1; // TODO: Go Over This With Driver
+        int SPEED_ORDER = 1;
+        int ANGLE_ORDER = 2;
         
         // Current Limit for the motors
         int CURRENT_LIMIT = 40; // TODO: ask about this
@@ -136,8 +140,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(0, 4.0); // TODO: discuss value
-            double MAX_SPEED_VEL = toFeet(0, 2.0); // TODO: discuss value
+            double MAX_SPEED_ERROR = toFeet(0, 5.0); // TODO: discuss value
+            double MAX_SPEED_VEL = toFeet(0, 3.0); // TODO: discuss value
         }
 
         public interface Angle {
@@ -160,13 +164,13 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 5.0; // TODO: discuss value
-            double MAX_ANGLE_VEL = 2.5; // TODO: discuss value
+            double MAX_ANGLE_ERROR = 5.0;
+            double MAX_ANGLE_VEL = 3.0;
         }
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6); // TODO: measure on feild
+            double GOAL_HEIGHT = toFeet(7, 8.5); // TODO: measure on feild
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 7); // TODO: calculate on robot
@@ -312,7 +316,7 @@ public interface Constants {
 
     double SHOOTER_TOLERANCE = 100;
 
-    double SHOOTER_BANGBANG_SPEED = 0.5;
+    double SHOOTER_BANGBANG_SPEED = 0.25;
 
     /*********************************************************************************************
      * Shooter PID 
@@ -336,7 +340,7 @@ public interface Constants {
     double FEEDER_MAX_RPM = 5600;
     double FEEDER_SPEED_MUL = 0.5;
 
-    double FEEDER_BANGBANG_SPEED = 0.3;
+    double FEEDER_BANGBANG_SPEED = 0.25;
 
     /*********************************************************************************************
      * Feeder PID 

@@ -33,7 +33,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
         public Aligner(Drivetrain drivetrain, double angle, double distance) {
             this.drivetrain = drivetrain;
 
-            this.angle = (angle + 360) % 360;
+            this.angle = angle;
             this.distance = distance;
             this.justTurning = false;
 
@@ -50,7 +50,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
          * Set goals based on when the command is initialized
          */
         public void init() {
-            goalAngle = (drivetrain.getGyroAngle() + angle + 360) % 360;
+            goalAngle = drivetrain.getGyroAngle() + angle;
             goalDistance = drivetrain.getGreyhillDistance() + distance;
         }
 
@@ -63,18 +63,36 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
         }
 
         public double getAngleError() {
-            double angleError = goalAngle - drivetrain.getGyroAngle();
-
-            if (angleError > 180) {
-                angleError -= 360;
-            }
-
-            if (angleError < -180) {
-                angleError += 360;
-            }
-
-            return angleError;
+            return goalAngle - drivetrain.getGyroAngle();
         }
+    }
+
+    /**
+     * This command lets you drive forward x amount of feet
+     */
+    public static class DriveCommand extends DrivetrainMovementCommand {
+
+        /**
+         * @param drivetrain drivetrain used to move
+         * @param distance number of feet used to turn
+         */
+		public DriveCommand(Drivetrain drivetrain, double distance) {
+			super(drivetrain, 0, distance);
+		}
+    }
+
+    /**
+     * This command lets you turn a certain angle
+     */
+    public static class TurnCommand extends DrivetrainMovementCommand {
+
+        /**
+         * @param drivetrain drivetrain used to turn
+         * @param angle angle that you want to turn
+         */
+		public TurnCommand(Drivetrain drivetrain, double angle) {
+			super(drivetrain, angle);
+		}
     }
 
     /**

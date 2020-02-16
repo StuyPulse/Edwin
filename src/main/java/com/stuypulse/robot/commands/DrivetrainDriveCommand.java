@@ -31,6 +31,10 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         // Store the gamepad
         this.gamepad = gamepad;
+    }
+
+    public void initialize() {
+        super.initialize();
 
         // Create an IStream that gets the speed from the controller
         this.rawSpeed = () -> {
@@ -60,17 +64,31 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     // Give the IStream's result for speed when the drivetrain wants it
     public double getSpeed() {
 
-        if(gamepad.getRawBottomButton()) {
-            drivetrain.setLowGear();
-        } else {
-            drivetrain.setHighGear();
+        double s = speed.get();
+
+        if(DrivetrainSettings.COOL_RUMBLE) {
+            gamepad.setRumble(Math.abs(s) * DrivetrainSettings.COOL_RUMBLE_MAG);
         }
 
-        return speed.get();
+        return s;
     }
 
     // Give the IStream's result for angle when the drivetrain wants it
     public double getAngle() {
         return angle.get();
+    }
+
+    // If the drivetrain goes into high or low gear
+    public Drivetrain.Gear getGear() {
+        if(gamepad.getRawBottomButton()) {
+            return Drivetrain.Gear.LOW;
+        } else {
+            return Drivetrain.Gear.HIGH;
+        }
+    }
+
+    // Humans need curvature drive because they're st00p1d
+    public boolean useCurvatureDrive() {
+        return true;
     }
 }

@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
@@ -97,22 +98,54 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
-        if (angle.getError() < Alignment.Angle.MAX_ANGLE_ERROR 
-        && angle.getVelocity() < Alignment.Angle.MAX_ANGLE_VEL) {
-            return speed.update(aligner.getSpeedError());
+        double angleError = Math.abs(aligner.getAngleError());
+        double speedError = aligner.getSpeedError();
+        double out = 0;
+
+        if(angleError < Alignment.Angle.MAX_ANGLE_ERROR) {
+            out = speed.update(speedError);
         } else {
-            return 0.0;
+            angleError -= Alignment.Angle.MAX_ANGLE_ERROR;
+            angleError = Alignment.Angle.MAX_ANGLE_ERROR - angleError;
+            angleError = Math.max(angleError, 0.0);
+
+            out = SLMath.limit(speed.update(speedError), -1, 1);
+            out *= (Alignment.Angle.MAX_ANGLE_ERROR - angleError);
+            out /= Alignment.Angle.MAX_ANGLE_ERROR;
         }
+
+        return out;
     }
 
     // Update angle based on angle error
     public double getAngle() {
-        return angle.update(aligner.getAngleError());
+        double error = aligner.getAngleError();
+        error = Math.copySign(Math.abs(error) % 360, error);
+
+        if(error > 180) { 
+            error -= 360;
+        }
+
+        if(error < -180) { 
+            error += 360;
+        }
+    
+        return angle.update(error);
+    }
+
+    // Alignment must use low gear
+    public Drivetrain.Gear getGear() {
+        return Drivetrain.Gear.LOW;
+    }
+
+    public boolean useCurvatureDrive() {
+        // Aligning doesn't need to use curvature drive
+        // Arcade drive is better for non humans
+        return false;
     }
 
     // Set the gear and other things when initializing
     public void initialize() {
-        drivetrain.setLowGear();
         aligner.init();
         timer.reset();
     }
@@ -124,7 +157,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Command is finished if all of the errors are small enough
     public boolean isFinished() {
-        // Check if the aligner hasn't run for long enoug
+        // Check if the aligner hasn't run for long enough
         if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
             return false;
         }

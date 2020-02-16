@@ -170,12 +170,12 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 8.5); // TODO: measure on feild
+            double GOAL_HEIGHT = toFeet(7, 8.5);
 
             public interface Limelight {
-                double HEIGHT = toFeet(2, 7); // TODO: calculate on robot
+                double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
-                double PITCH = 17.3; // TODO: calculate on robot
+                double PITCH = 20;
                 double YAW = 0.0;
             }
         }

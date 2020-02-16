@@ -5,11 +5,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.stuypulse.robot.Constants;
 
 public class Intake extends SubsystemBase {
 

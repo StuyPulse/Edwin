@@ -17,4 +17,9 @@ public class ClimberUnwindWinchCommand extends CommandBase {
     public void execute() {
         climber.moveLiftUp();
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        climber.stopClimber();
+    }
 } 

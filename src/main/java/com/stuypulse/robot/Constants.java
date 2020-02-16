@@ -213,7 +213,7 @@ public interface Constants {
      * Climber Constants
      *********************************************************************************************/
     //TODO: Test speeds
-    double MOVE_LIFT_UP_SPEED = 0.5;
+    double MOVE_LIFT_UP_SPEED = 0.1;
     double MOVE_LIFT_DOWN_SPEED = -0.5;
     double CLIMBER_SETUP_WAIT_TIME = 0.1;
     double CLIMBER_SCALE = 0.5;

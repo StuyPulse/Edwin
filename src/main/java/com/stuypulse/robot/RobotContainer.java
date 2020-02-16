@@ -7,27 +7,49 @@
 
 package com.stuypulse.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-
-import com.stuypulse.robot.subsystems.*;
-import com.stuypulse.robot.commands.*;
-import com.stuypulse.stuylib.control.PIDCalculator;
-import com.stuypulse.stuylib.input.*;
-import com.stuypulse.stuylib.input.gamepads.*;
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.commands.ChimneyDownCommand;
+import com.stuypulse.robot.commands.ChimneyStopCommand;
+import com.stuypulse.robot.commands.ChimneyUpCommand;
+import com.stuypulse.robot.commands.ClimberMoveYoyoCommand;
+import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
+import com.stuypulse.robot.commands.ClimberSetupCommand;
+import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
+import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
+import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
+import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
+import com.stuypulse.robot.commands.DrivetrainDriveCommand;
+import com.stuypulse.robot.commands.DrivetrainGoalAligner;
+import com.stuypulse.robot.commands.DrivetrainMovementCommand;
+import com.stuypulse.robot.commands.FeedBallsCommand;
+import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
+import com.stuypulse.robot.commands.IntakeAcquireCommand;
+import com.stuypulse.robot.commands.IntakeDeacquireCommand;
+import com.stuypulse.robot.commands.IntakeRetractCommand;
+import com.stuypulse.robot.commands.ReverseShooterCommand;
+import com.stuypulse.robot.commands.ShooterControlCommand;
+import com.stuypulse.robot.commands.ShooterDefaultCommand;
+import com.stuypulse.robot.commands.ShooterStopCommand;
+import com.stuypulse.robot.commands.WoofManualControlCommand;
+import com.stuypulse.robot.commands.WoofSpinToColorCommand;
+import com.stuypulse.robot.commands.WoofTurnRotationsCommand;
+import com.stuypulse.robot.subsystems.Chimney;
+import com.stuypulse.robot.subsystems.Climber;
+import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Funnel;
+import com.stuypulse.robot.subsystems.Intake;
+import com.stuypulse.robot.subsystems.Shooter;
+import com.stuypulse.robot.subsystems.Woof;
 import com.stuypulse.robot.util.MotorStalling;
-
-import com.stuypulse.robot.Constants.Ports;
-
-import java.util.ResourceBundle.Control;
-
-import com.stuypulse.robot.commands.*;
-import com.stuypulse.robot.subsystems.*;
-
-import com.stuypulse.stuylib.input.*;
-import com.stuypulse.stuylib.input.gamepads.*;
-
+import com.stuypulse.stuylib.control.PIDCalculator;
+import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
+import com.stuypulse.stuylib.input.gamepads.Logitech;
+import com.stuypulse.stuylib.input.gamepads.PS4;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -100,8 +122,13 @@ public class RobotContainer {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM));
+    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM));
+    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM));
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
     operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
+
+    operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
 
     driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(10)));
     driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));

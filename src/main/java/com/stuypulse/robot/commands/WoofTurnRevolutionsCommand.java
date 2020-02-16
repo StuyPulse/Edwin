@@ -25,7 +25,7 @@ public class WoofTurnRevolutionsCommand extends CommandBase {
 
     @Override
     public void execute() {
-        woof.turn(Constants.COLOR_SENSOR_SPEED);
+        woof.turn(Constants.WOOF_TURN_SPEED);
         if (previousColor != null && previousColor != woof.getColor()) {
             colorCount += 0.125;
         }

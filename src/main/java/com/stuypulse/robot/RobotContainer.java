@@ -96,8 +96,8 @@ public class RobotContainer {
     operator.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
     operator.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
 
-    operator.getLeftBumper().whenPressed(new ControlPanelSpinToColorCommand(controlPanel));
-    operator.getRightBumper().whenPressed(new ControlPanelTurnRotationsCommand(controlPanel));
+    operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
+    operator.getRightBumper().whenPressed(new WoofTurnRotationsCommand(woof));
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 

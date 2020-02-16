@@ -253,7 +253,7 @@ public interface Constants {
     /*********************************************************************************************
      * Intake Motor Ports
      *********************************************************************************************/
-    int INTAKE_MOTOR_PORT = -1;
+    int INTAKE_MOTOR_PORT = 18;
     int INTAKE_SOLENOID_PORT_A = 6;
     int INTAKE_SOLENOID_PORT_B = 7;
 

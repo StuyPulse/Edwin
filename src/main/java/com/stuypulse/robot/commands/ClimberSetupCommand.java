@@ -11,12 +11,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class ClimberSetupCommand extends SequentialCommandGroup {
 
     Climber climber;
-    Intake intake;
 
     public ClimberSetupCommand(Climber climber, Intake intake) {
 
         this.climber = climber;
-        this.intake = intake;
 
         addCommands(
             new IntakeRetractCommand(intake),

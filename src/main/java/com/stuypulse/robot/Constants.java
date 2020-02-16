@@ -140,8 +140,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(0, 4.0); // TODO: discuss value
-            double MAX_SPEED_VEL = toFeet(0, 2.0); // TODO: discuss value
+            double MAX_SPEED_ERROR = toFeet(0, 5.0); // TODO: discuss value
+            double MAX_SPEED_VEL = toFeet(0, 3.0); // TODO: discuss value
         }
 
         public interface Angle {
@@ -164,8 +164,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 5.0; // TODO: discuss value
-            double MAX_ANGLE_VEL = 2.5; // TODO: discuss value
+            double MAX_ANGLE_ERROR = 5.0;
+            double MAX_ANGLE_VEL = 3.0;
         }
 
         public interface Measurements {
@@ -316,7 +316,7 @@ public interface Constants {
 
     double SHOOTER_TOLERANCE = 100;
 
-    double SHOOTER_BANGBANG_SPEED = 0.5;
+    double SHOOTER_BANGBANG_SPEED = 0.25;
 
     /*********************************************************************************************
      * Shooter PID 
@@ -340,7 +340,7 @@ public interface Constants {
     double FEEDER_MAX_RPM = 5600;
     double FEEDER_SPEED_MUL = 0.5;
 
-    double FEEDER_BANGBANG_SPEED = 0.3;
+    double FEEDER_BANGBANG_SPEED = 0.25;
 
     /*********************************************************************************************
      * Feeder PID 

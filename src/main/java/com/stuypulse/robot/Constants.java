@@ -101,10 +101,10 @@ public interface Constants {
             double OUTER_GEAR_RATIO = 24.0 / 60.0;
 
             // The difference between theoretical and actual distance
-            SmartNumber REAL_YIELD = new SmartNumber("Greyhill Yeild", 1.3);
+            double REAL_YIELD = 1.0;
             
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
-            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD.doubleValue();
+            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
 
             double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // TODO: Calculate if Important
         }

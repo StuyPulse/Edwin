@@ -14,7 +14,7 @@ public class ShooterControlCommand extends InstantCommand {
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         shooter.setTargetVelocity(targetVelocity);
     }
 }

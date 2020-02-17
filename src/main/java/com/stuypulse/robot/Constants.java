@@ -333,6 +333,7 @@ public interface Constants {
      * Feeder Constants
      *********************************************************************************************/
     double FEEDER_MAX_RPM = 5600;
+  
     double FEEDER_SPEED_MUL = 1.0;
 
     SmartNumber FEEDER_P = new SmartNumber("Feeder P", 0);

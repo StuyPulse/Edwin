@@ -62,7 +62,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-  private final boolean DEBUG = true;
+  private final boolean DEBUG = false;
 
 
   //Subsystems
@@ -75,7 +75,7 @@ public class RobotContainer {
   // private final Woof woof = new Woof();
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
-  private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
+  private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
   private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
 
   /**
@@ -114,7 +114,7 @@ public class RobotContainer {
     operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
     operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
     operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
-    operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+    // operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
 
     operator.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
     operator.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
@@ -124,13 +124,13 @@ public class RobotContainer {
 
     // operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
-    // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM));
-    // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM));
-    // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM));
-    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 5));
-    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 10));
-    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 15));
-    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM));
+    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM));
+    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM));
+    // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
+    // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
+    // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
+    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter)).whenPressed(new ShooterControlCommand(shooter, 0));
     operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));

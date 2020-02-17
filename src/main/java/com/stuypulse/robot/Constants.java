@@ -327,6 +327,8 @@ public interface Constants {
     double SHOOT_FROM_TRENCH_RPM = 4900.0 * 2 / 3;
     double SHOOT_FROM_FAR_RPM = 5500.0 * 2 / 3;
 
+    double SHOOTER_TOLERANCE = 100;
+
     double SHOOTER_TOLERANCE = 69.420;
 
     SmartNumber SHOOTER_P = new SmartNumber("Shooter P", 0);

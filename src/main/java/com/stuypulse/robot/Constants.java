@@ -35,6 +35,16 @@ public interface Constants {
         return ((double) feet) + (inches / 12.0);
     }
 
+    /**
+     * Lets us turn feet and inches into just feet for measurements
+     * 
+     * @param inches inches
+     * @return value in feet
+     */
+    private static double toFeet(double inches) {
+        return toFeet(0, inches);
+    }
+
     public interface Pneumatics {
         int ANALOG_PRESSURE_SWITCH_PORT = 0;
         int ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5;
@@ -143,8 +153,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(0, 5.0);
-            double MAX_SPEED_VEL = toFeet(0, 3.0);
+            double MAX_SPEED_ERROR = toFeet(5.0);
+            double MAX_SPEED_VEL = toFeet(3.0);
         }
 
         public interface Angle {

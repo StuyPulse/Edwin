@@ -1,7 +1,7 @@
 /* Lime Light Docs: http://docs.limelightvision.io/en/latest/networktables_api.html# */
 /* StuyPulse 694, Stuyvesant Highschool, NY */
 
-package com.stuypulse.robot.util;
+package frc.robot.utl;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -172,7 +172,7 @@ public class Limelight {
 
         double X_SHIFT = SmartDashboard.getNumber("X_SHIFT", 1000);
         if(X_SHIFT > 694) SmartDashboard.putNumber("X_SHIFT", X_ANGLE_SHIFT);
-        return xAngleEntry.getDouble(0) + X_SHIFT;
+        return xAngleEntry.getDouble(0);
     }
 
     // Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)

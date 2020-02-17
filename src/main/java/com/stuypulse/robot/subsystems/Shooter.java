@@ -93,7 +93,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getCurrentShooterVelocityInRPM() {
-        final double speed = getRawMedianShooterVelocity() * Constants.SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER;
+        double speed = getRawMedianShooterVelocity();
         currentShooterVelocity.set(speed);
         return speed;
     }
@@ -103,7 +103,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getCurrentFeederVelocityInRPM() {
-        final double speed = getRawFeederVelocity() * Constants.FEEDER_VELOCITY_EMPIRICAL_MULTIPLER;
+        double speed = getRawFeederVelocity();
         currentFeederVelocity.set(speed);
         return speed;
     }

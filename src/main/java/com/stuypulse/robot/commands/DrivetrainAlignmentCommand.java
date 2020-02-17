@@ -103,7 +103,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         double out = 0;
 
         if(angleError < Alignment.Angle.MAX_ANGLE_ERROR) {
-            out = speed.update(speedError);
+            out = SLMath.limit(speed.update(speedError), -1, 1);
         } else {
             angleError -= Alignment.Angle.MAX_ANGLE_ERROR;
             angleError = Alignment.Angle.MAX_ANGLE_ERROR - angleError;
@@ -130,7 +130,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             error += 360;
         }
     
-        return angle.update(error);
+        return SLMath.limit(angle.update(error), -1, 1);
     }
 
     // Alignment must use low gear

@@ -87,10 +87,12 @@ public class Drivetrain extends SubsystemBase {
             makeControllerGroup(getHighGear(rightMotors))
         );
 
-        lowGearDrive = new DifferentialDrive(
-            makeControllerGroup(getLowGear(leftMotors)),
-            makeControllerGroup(getLowGear(rightMotors))
-        );
+        lowGearDrive = highGearDrive;
+
+        // lowGearDrive = new DifferentialDrive(
+        //     makeControllerGroup(getLowGear(leftMotors)),
+        //     makeControllerGroup(getLowGear(rightMotors))
+        // );
 
         gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
 
@@ -98,7 +100,7 @@ public class Drivetrain extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP);
 
         // Configure Motors and Other Things
-        setInverted(false);
+        setInverted(true);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
@@ -312,7 +314,7 @@ public class Drivetrain extends SubsystemBase {
      * @param rotation amount that it turns
      */
     public void curvatureDrive(double speed, double rotation) {
-        if (speed < DrivetrainSettings.QUICKTURN_THRESHOLD) {
+        if (Math.abs(speed) < DrivetrainSettings.QUICKTURN_THRESHOLD) {
             curvatureDrive(speed, rotation * DrivetrainSettings.QUICKTURN_SPEED, true);
         } else {
             curvatureDrive(speed, rotation, false);

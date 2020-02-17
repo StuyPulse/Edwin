@@ -16,7 +16,7 @@ public class ShooterControlCommand extends InstantCommand {
 
     @Override
     public void initialize() {
-        shooter.setShooterSpeed(targetVelocity);
+        shooter.setTargetVelocity(targetVelocity);
 
         if(targetVelocity == Constants.SHOOT_FROM_TRENCH_RPM || targetVelocity == Constants.SHOOT_FROM_FAR_RPM) {
             shooter.retractHoodSolenoid();

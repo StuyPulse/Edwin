@@ -98,7 +98,7 @@ public class Drivetrain extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP);
 
         // Configure Motors and Other Things
-        setInverted(true);
+        setInverted(false);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);

@@ -39,7 +39,8 @@ import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.Woof;
-import com.stuypulse.robot.subsystems.Shooter.Mode;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
+import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.input.WPIGamepad;
@@ -71,6 +72,8 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Woof woof = new Woof();
+
+  private final LEDController ledController = new LEDController(0, shooter, chimney);
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);
@@ -120,9 +123,9 @@ public class RobotContainer {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
-    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM, Mode.SHOOT_FROM_FAR));
-    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM, Mode.SHOOT_FROM_INITIATION_LINE));
-    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM, Mode.SHOOT_FROM_TRENCH));
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM, ShooterMode.SHOOT_FROM_FAR));
+    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE));
+    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH));
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
     operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 
@@ -153,7 +156,10 @@ public class RobotContainer {
       debug.getRightButton().toggleWhenPressed(new ShooterDefaultCommand(shooter, debug,
           new PIDCalculator(Constants.SHOOTER_BANGBANG_SPEED), new PIDCalculator(Constants.FEEDER_BANGBANG_SPEED)));
     }
-  }
+  } 
+    public LEDController getLEDController() {
+      return ledController;
+    }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

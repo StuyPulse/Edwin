@@ -2,7 +2,8 @@ package com.stuypulse.robot.util;
 
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Shooter;
-import com.stuypulse.robot.subsystems.Shooter.Mode;
+import com.stuypulse.robot.subsystems.Chimney.ChimneyMode;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
@@ -94,16 +95,16 @@ public class LEDController {
         } else if(isAligned) {
             setColor(Color.LIME_FLASH);
             isAligned = false;
-        } else if (chimney.getLowerChimneyValue()) {
+        } else if(chimney.getChimneyMode() == ChimneyMode.ACQUIRED_ONE_CELL) {
             setColor(Color.BLUE_FLASH);
         } else {
             if (!shooter.isAtTargetVelocity()) {
                 setColor(Color.SINE_WAVE);    
-            } else if(shooter.getShooterMode() == Mode.SHOOT_FROM_FAR) {
+            } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
                 setColor(Color.RED_SOLID);
-            } else if(shooter.getShooterMode() == Mode.SHOOT_FROM_INITIATION_LINE) {
+            } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
                 setColor(Color.WHITE_SOLID);
-            } else if(shooter.getShooterMode() == Mode.SHOOT_FROM_TRENCH) {
+            } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
                 setColor(Color.PINK_SOLID);
             } else {
                 setColor(Color.OFF);

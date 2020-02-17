@@ -9,7 +9,7 @@ import com.stuypulse.robot.Constants;
 
 public class Chimney extends SubsystemBase {
 
-    public enum Mode {
+    public enum ChimneyMode {
         NONE,
         ACQUIRED_ONE_CELL,
         HOLDING_MAX_CELLS
@@ -22,7 +22,7 @@ public class Chimney extends SubsystemBase {
     private DigitalInput lowerSensor;
     private DigitalInput upperSensor;
 
-    private Mode mode = Mode.NONE;
+    private ChimneyMode mode = ChimneyMode.NONE;
 
     public Chimney() {
         motor = new CANSparkMax(Constants.CHIMNEY_LIFT_MOTOR_PORT, MotorType.kBrushless);
@@ -52,11 +52,11 @@ public class Chimney extends SubsystemBase {
         motor.stopMotor();
     }
 
-    public void setChimneyMode(Mode mode) {
+    public void setChimneyMode(ChimneyMode mode) {
         this.mode = mode;
     }
 
-    public Mode getChimneyMode() {
+    public ChimneyMode getChimneyMode() {
         return mode;
     }
 

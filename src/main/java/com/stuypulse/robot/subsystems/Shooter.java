@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
 
-    public enum Mode {
+    public enum ShooterMode {
         NONE, 
         SHOOT_FROM_INITIATION_LINE, 
         SHOOT_FROM_TRENCH, 
         SHOOT_FROM_FAR,
         CHARGING_FROM_INITATION_LINE,
         CHARGING_FROM_TRENCH,
-        CHARGING_FROM_FAR
+        CHARGING_FROM_FAR,
     };
 
     // Motors
@@ -48,7 +48,7 @@ public class Shooter extends SubsystemBase {
 
     private final SmartNumber currentFeederVelocity;
 
-    private Mode mode = Mode.NONE;
+    private ShooterMode mode = ShooterMode.NONE;
 
     public Shooter() {
         leftShooterMotor = new CANSparkMax(Constants.LEFT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
@@ -156,11 +156,11 @@ public class Shooter extends SubsystemBase {
         retractHoodSolenoid();
     }
 
-    public void setShooterMode(Mode mode) {
+    public void setShooterMode(ShooterMode mode) {
         this.mode = mode;
     }
 
-    public Mode getShooterMode() {
+    public ShooterMode getShooterMode() {
         return mode;
     }
 

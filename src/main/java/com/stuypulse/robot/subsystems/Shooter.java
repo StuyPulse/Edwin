@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -55,10 +56,14 @@ public class Shooter extends SubsystemBase {
 
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
-        targetShooterVelocity = new SmartNumber("Shooter Target Vel", 69420);
+        targetShooterVelocity = new SmartNumber("Shooter Target Vel", 30);
         currentShooterVelocity = new SmartNumber("Shooter Current Vel", -1);
 
         currentFeederVelocity = new SmartNumber("Feeder Current Vel", -1);
+
+        feederMotor.setIdleMode(IdleMode.kCoast);
+        feederMotor.setInverted(true);
+        feederEncoder = new CANEncoder(feederMotor);
     }
 
     public double getRawMedianShooterVelocity() {

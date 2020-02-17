@@ -329,8 +329,6 @@ public interface Constants {
 
     double SHOOTER_TOLERANCE = 100;
 
-    double SHOOTER_TOLERANCE = 69.420;
-
     SmartNumber SHOOTER_P = new SmartNumber("Shooter P", 0);
     SmartNumber SHOOTER_I = new SmartNumber("Shooter I", 0);
     SmartNumber SHOOTER_D = new SmartNumber("Shooter D", 0);

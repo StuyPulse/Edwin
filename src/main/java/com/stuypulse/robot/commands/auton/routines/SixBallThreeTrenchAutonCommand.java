@@ -8,7 +8,6 @@ import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class SixBallThreeTrenchAutonCommand extends SequentialCommandGroup {

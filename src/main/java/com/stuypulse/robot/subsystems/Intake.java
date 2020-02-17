@@ -4,40 +4,55 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 public class Intake extends SubsystemBase {
-    private CANSparkMax intakeMotor;
-    private Solenoid intakeSolenoid;
-  
-    public Intake() {
-        intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-        intakeSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
-    }
 
-    public boolean isExtended() {
-        return intakeSolenoid.get();
+    private CANSparkMax motor;
+    private DoubleSolenoid solenoid;
+
+    public Intake() {
+        motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
+        solenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_A, Constants.INTAKE_SOLENOID_PORT_B);
     }
 
     public void extend() {
-        intakeSolenoid.set(true);
+        if(solenoid.get() == Value.kReverse) {
+            solenoid.set(Value.kForward);
+        }
     }
 
     public void retract() {
-        intakeSolenoid.set(false);
+        if(solenoid.get() == Value.kForward) {
+            solenoid.set(Value.kReverse);
+        }
+    }
+
+    public void toggle() {
+        if (solenoid.get() == Value.kForward) {
+            retract();
+        } else {
+            extend();
+        }
     }
 
     public void acquire() {
-        intakeMotor.set(1);
+        setMotor(Constants.INTAKE_MOTOR_SPEED);
     }
 
     public void deacquire() {
-        intakeMotor.set(-1);
+        setMotor(-Constants.INTAKE_MOTOR_SPEED);
+    }
+
+    public void stop() {
+        setMotor(0);
     }
 
     public void setMotor(double speed) {
-        intakeMotor.set(speed);
+        motor.set(speed);
     }
+
+
 }

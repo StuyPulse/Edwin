@@ -2,9 +2,9 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Drivetrain;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class DrivetrainHighGearCommand extends CommandBase {
+public class DrivetrainHighGearCommand extends InstantCommand {
 
     private Drivetrain drivetrain;
 
@@ -15,9 +15,4 @@ public class DrivetrainHighGearCommand extends CommandBase {
     public void initialize() {
         this.drivetrain.setHighGear();
     }
-
-    public boolean isFinished() {
-        return true;
-    }
-
 }

@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
+import com.stuypulse.robot.commands.DrivetrainMovementCommand.DriveCommand;
+import com.stuypulse.robot.commands.DrivetrainMovementCommand.TurnCommand;
 import com.stuypulse.robot.commands.DrivetrainPIDAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
@@ -16,7 +18,7 @@ public class EightBallFiveRdvsAutonCommand extends SequentialCommandGroup {
     public EightBallFiveRdvsAutonCommand(Drivetrain drivetrain, Intake intake) {
         addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             // TODO: Add shoot 3
-            new DrivetrainMovementCommand(drivetrain, 0, 12),
+            new DriveCommand(drivetrain, 1),
 
             //Move forward
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_RDVS),

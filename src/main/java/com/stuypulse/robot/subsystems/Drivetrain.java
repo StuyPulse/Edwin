@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.util.TankDriveEncoder;
 
 import java.util.Arrays;
 
@@ -22,7 +22,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Drivetrain extends SubsystemBase {
 
     // Enum used to store the state of the gear
-    public static enum DrivetrainGear {
+    public static enum Gear {
         HIGH, LOW
     };
 
@@ -33,7 +33,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Take a list of motors and return the ones used in high gear
     private static CANSparkMax[] getHighGear(CANSparkMax[] motors) {
-        return Arrays.copyOfRange(motors, 0, 2);
+        return motors;
     }
 
     // Take a list of motors and return the ones used in low gear
@@ -42,66 +42,67 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // An array of motors on the left and right side of the drive train
-    private CANSparkMax[] mLeftMotors;
-    private CANSparkMax[] mRightMotors;
+    private CANSparkMax[] leftMotors;
+    private CANSparkMax[] rightMotors;
 
     // An encoder for each side of the drive train
-    private CANEncoder mLeftNEOEncoder;
-    private CANEncoder mRightNEOEncoder;
+    private CANEncoder leftNEO;
+    private CANEncoder rightNEO;
 
-    private Encoder mLeftGreyhillEncoder;
-    private Encoder mRightGreyhillEncoder;
+    private TankDriveEncoder greyhills;
 
     // DifferentialDrive and Gear Information
-    private DrivetrainGear mGear;
-    private Solenoid mGearShift;
-    private DifferentialDrive mHighGearDrive;
-    private DifferentialDrive mLowGearDrive;
+    private Gear gear;
+    private Solenoid gearShift;
+    private DifferentialDrive highGearDrive;
+    private DifferentialDrive lowGearDrive;
 
     // NAVX for Gyro
-    private AHRS mNavX;
+    private AHRS navx;
 
     public Drivetrain() {
         // Add Motors to list
-        mLeftMotors = new CANSparkMax[] { 
-                new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.LEFT_MIDDLE, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless) };
+        leftMotors = new CANSparkMax[] { 
+            new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
+            new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless) 
+        };
 
-        mRightMotors = new CANSparkMax[] { 
-                new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.RIGHT_MIDDLE, MotorType.kBrushless),
-                new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless) };
+        rightMotors = new CANSparkMax[] { 
+            new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
+            new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless) 
+        };
 
         // Create list of encoders based on motors
-        mLeftNEOEncoder = mLeftMotors[1].getEncoder();
-        mRightNEOEncoder = mRightMotors[1].getEncoder();
+        leftNEO = leftMotors[1].getEncoder();
+        rightNEO = rightMotors[1].getEncoder();
 
-        mLeftGreyhillEncoder = new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B);
-        mRightGreyhillEncoder = new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B);
-    
-        // Set Gear to Low
-        mGear = DrivetrainGear.LOW;
+        greyhills = new TankDriveEncoder(
+            new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B), 
+            new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B)
+        );
 
         // Create DifferentialDrive for different gears
-        mHighGearDrive = new DifferentialDrive(
-                makeControllerGroup(getHighGear(mLeftMotors)),
-                makeControllerGroup(getHighGear(mRightMotors)));
+        highGearDrive = new DifferentialDrive(
+            makeControllerGroup(getHighGear(leftMotors)),
+            makeControllerGroup(getHighGear(rightMotors))
+        );
 
-        mLowGearDrive = new DifferentialDrive(
-                makeControllerGroup(getLowGear(mLeftMotors)),
-                makeControllerGroup(getLowGear(mRightMotors)));
+        lowGearDrive = new DifferentialDrive(
+            makeControllerGroup(getLowGear(leftMotors)),
+            makeControllerGroup(getLowGear(rightMotors))
+        );
 
-        mGearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
+        gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
-        mNavX = new AHRS(SPI.Port.kMXP);
+        navx = new AHRS(SPI.Port.kMXP);
 
         // Configure Motors and Other Things
         setInverted(true);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
+        setLowGear();
     }
 
     /**
@@ -110,11 +111,11 @@ public class Drivetrain extends SubsystemBase {
      * @param limit smart current limit
      */
     public void setSmartCurrentLimit(int limit) {
-        for (CANSparkMax motor : mLeftMotors) {
+        for (CANSparkMax motor : leftMotors) {
             motor.setSmartCurrentLimit(limit);
         }
 
-        for (CANSparkMax motor : mRightMotors) {
+        for (CANSparkMax motor : rightMotors) {
             motor.setSmartCurrentLimit(limit);
         }
 
@@ -126,11 +127,11 @@ public class Drivetrain extends SubsystemBase {
      * @param inverted desired settings
      */
     public void setInverted(boolean inverted) {
-        for (CANSparkMax motor : mLeftMotors) {
+        for (CANSparkMax motor : leftMotors) {
             motor.setInverted(inverted);
         }
 
-        for (CANSparkMax motor : mRightMotors) {
+        for (CANSparkMax motor : rightMotors) {
             motor.setInverted(inverted);
         }
     }
@@ -138,18 +139,18 @@ public class Drivetrain extends SubsystemBase {
     /**
      * @return current gear the robot is in
      */
-    public DrivetrainGear getGear() {
-        return mGear;
+    public Gear getGear() {
+        return gear;
     }
 
     /**
      * @param gear value for gear on robot
      */
-    public void setGear(DrivetrainGear gear) {
-        if(gear.equals(mGear)) {
-            mGear = gear;
-            stop();
-            mGearShift.set(mGear.equals(DrivetrainGear.HIGH));
+    public void setGear(Gear gear) {
+        if (this.gear != gear) {
+            this.gear = gear;
+            // stop();
+            gearShift.set(this.gear == Gear.HIGH);
         }
     }
 
@@ -157,28 +158,28 @@ public class Drivetrain extends SubsystemBase {
      * Sets drivetrain into low gear
      */
     public void setLowGear() {
-        setGear(DrivetrainGear.LOW);
+        setGear(Gear.LOW);
     }
 
     /**
      * Sets drivetrain into high gear
      */
     public void setHighGear() {
-        setGear(DrivetrainGear.HIGH);
+        setGear(Gear.HIGH);
     }
 
     /**
      * @return the navx on the drivetrain used for positioning
      */
     public AHRS getNavX() {
-        return mNavX;
+        return navx;
     }
 
     /**
      * @return get the angle of the robot
      */
     public double getGyroAngle() {
-        return mNavX.getAngle();
+        return navx.getAngle();
     }
 
     /**
@@ -188,32 +189,32 @@ public class Drivetrain extends SubsystemBase {
      * @param distance distance robot moves in one rotation
      */
     public void setNEODistancePerRotation(double distance) {
-        mLeftNEOEncoder.setPositionConversionFactor(distance);
-        mRightNEOEncoder.setPositionConversionFactor(distance);
+        leftNEO.setPositionConversionFactor(distance);
+        rightNEO.setPositionConversionFactor(distance);
     }
 
     /**
      * @return distance left side of drivetrain has moved
      */
     public double getLeftNEODistance() {
-        return mLeftNEOEncoder.getPosition();
+        return leftNEO.getPosition();
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
     public double getRightNEODistance() {
-        return mRightNEOEncoder.getPosition();
+        return rightNEO.getPosition();
     }
 
     /**
      * @return distance drivetrain has moved
      */
     public double getNEODistance() {
-        double left = SLMath.spow(getLeftNEODistance(), 0.5);
-        double right = SLMath.spow(getRightNEODistance(), 0.5);
-        double out = SLMath.spow((left + right) / 2.0, 2.0);
-        return out;
+        double left = getLeftNEODistance();
+        double right = getRightNEODistance();
+
+        return Math.max(left, right);
     }
 
     /**
@@ -223,47 +224,46 @@ public class Drivetrain extends SubsystemBase {
      * @param distance distance robot moves in one rotation
      */
     public void setGreyhillDistancePerPulse(double distance) {
-        mLeftGreyhillEncoder.setDistancePerPulse(distance);
-        mRightGreyhillEncoder.setDistancePerPulse(distance);
+        greyhills.getLeftEncoder().setDistancePerPulse(distance);
+        greyhills.getRightEncoder().setDistancePerPulse(distance);
     }
 
     /**
      * @return distance left side of drivetrain has moved
      */
     public double getLeftGreyhillDistance() {
-        return mLeftGreyhillEncoder.getDistance();
+        return greyhills.getLeftDistance();
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
     public double getRightGreyhillDistance() {
-        return mRightGreyhillEncoder.getDistance();
+        return greyhills.getRightDistance();
     }
 
     /**
      * @return distance drivetrain has moved
      */
     public double getGreyhillDistance() {
-        double left = SLMath.spow(getLeftGreyhillDistance(), 0.5);
-        double right = SLMath.spow(getRightGreyhillDistance(), 0.5);
-        double out = SLMath.spow((left + right) / 2.0, 2.0);
-        return out;
+        return greyhills.getDistance();
     }
 
+    /**
+     * Resets the greyhills distance
+     */
     public void resetGreyhill() {
-        mLeftGreyhillEncoder.reset();
-        mRightGreyhillEncoder.reset();
+        greyhills.reset();
     }
 
     /**
      * @return DifferentialDrive class based on current gear
      */
     public DifferentialDrive getCurrentDrive() {
-        if (mGear == DrivetrainGear.HIGH) {
-            return mHighGearDrive;
+        if (gear == Gear.HIGH) {
+            return highGearDrive;
         } else {
-            return mLowGearDrive;
+            return lowGearDrive;
         }
     }
 

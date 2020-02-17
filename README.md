@@ -1,13 +1,13 @@
-# fantastic-spork
+# Edwin
 FRC Robot Code for the 2020 Season
 Testing Status: Robot currently doesn't exist
 
-## Getting fantastic-spork to work with StuyLib
-Just make sure that you have StuyLib and fantastic-spork in the same folder!
+## Getting Edwin to work with StuyLib
+Just make sure that you have StuyLib and Edwin in the same folder, or ensure internet connecetivity!
 
 ## Subsystems
 - Drivetrain (same as last year)
-  - 6 sparks -- use all 6 when in high gear, use 4 when in low gear
+  - 4 sparks -- use all 4 in both high and low gear
   - 1 solenoid to gear shift
 - Climber
   - 2 sparks -- one to climb up/down, one to move left/right (yoyo)

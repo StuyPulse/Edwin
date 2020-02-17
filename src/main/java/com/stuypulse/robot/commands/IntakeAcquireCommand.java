@@ -4,18 +4,17 @@ import com.stuypulse.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class IntakeAcquireCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  
   private final Intake intake;
 
   public IntakeAcquireCommand(Intake intake) {
     this.intake = intake;
-    addRequirements(this.intake);
+    addRequirements(intake);
   }
 
   @Override
   public void initialize() {
-    if(!intake.isExtended())
-      intake.extend();
+    intake.extend();
   }
 
   @Override
@@ -24,11 +23,7 @@ public class IntakeAcquireCommand extends CommandBase {
   }
 
   @Override
-  public boolean isFinished() {
-    return false;
-  }
-
-  @Override
   public void end(boolean interrupted) {
+    intake.stop();
   }
 }

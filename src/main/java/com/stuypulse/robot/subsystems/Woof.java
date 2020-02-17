@@ -8,14 +8,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.util.ColorSensor;
 
-public class ControlPanel extends SubsystemBase {
+public class Woof extends SubsystemBase {
     private CANSparkMax motor;
-    private ColorSensor cs;
+    private ColorSensor sensor;
 
-    public ControlPanel() {
+    public Woof() {
         
-        cs = new ColorSensor();
-        motor = new CANSparkMax(Constants.CONTROL_PANEL_MOTOR_PORT, MotorType.kBrushless);
+        sensor = new ColorSensor();
+        motor = new CANSparkMax(Constants.WOOF_MOTOR_PORT, MotorType.kBrushless);
     
     }
 
@@ -24,11 +24,10 @@ public class ControlPanel extends SubsystemBase {
     }
 
     public Color getColor() {
-       return cs.getRawDetectedColor();
+       return sensor.getRawDetectedColor();
     }
 
     public void stop() {
-        motor.set(0);
+        motor.stopMotor();
     }
 }
-

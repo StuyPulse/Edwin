@@ -4,20 +4,16 @@ import com.stuypulse.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.InstantCommand;;
 
 public class IntakeToggleCommand extends InstantCommand {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Intake intake;
-
-  public IntakeToggleCommand(Intake intake) {
-    this.intake = intake;
-    addRequirements(this.intake);
-  }
-
-  @Override
-  public void initialize() {
-    if(intake.isExtended())
-      intake.retract();
-    else {
-      intake.extend();
+  
+    private final Intake intake;
+  
+    public IntakeToggleCommand(Intake intake) {
+        this.intake = intake;
+        addRequirements(intake);
     }
-  }
+  
+    @Override
+    public void initialize() {
+        intake.toggle();
+    }
 }

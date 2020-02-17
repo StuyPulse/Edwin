@@ -1,0 +1,20 @@
+package com.stuypulse.robot.commands;
+
+import com.stuypulse.robot.subsystems.Shooter;
+
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+
+public class ShooterControlCommand extends InstantCommand {
+    public Shooter shooter;
+    public double targetVelocity;
+
+    public ShooterControlCommand(Shooter shooter, double targetVelocity) {
+        this.shooter = shooter;
+        this.targetVelocity = targetVelocity;
+    }
+
+    @Override
+    public void initialize() {
+        shooter.setShooterSpeed(targetVelocity);
+    }
+}

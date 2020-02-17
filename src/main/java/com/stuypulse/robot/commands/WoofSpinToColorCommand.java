@@ -1,39 +1,35 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.subsystems.ControlPanel;
+import com.stuypulse.robot.subsystems.Woof;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ControlPanelSpinToColorCommand extends CommandBase {
-    private final ControlPanel cPanel;
-    private Color goal;
-    public ControlPanelSpinToColorCommand(ControlPanel cPanel) {
-        this.cPanel = cPanel;
-        addRequirements(cPanel);
-    }
+public class WoofSpinToColorCommand extends CommandBase {
 
-    @Override
-    public void initialize() {
+    private final Woof woof;
+    private Color goal;
+    public WoofSpinToColorCommand(Woof woof) {
+        this.woof = woof;
+        addRequirements(woof);
     }
 
     private void setTargetColor() {
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if(gameData != null && gameData.length() > 0) {
-
             switch (gameData.charAt(0)) {
                 case 'B' :
-                    goal = Color.kCyan;
-                    break;
-                case 'G' :
-                    goal = Color.kGreen;
-                    break;
-                case 'R' :
                     goal = Color.kRed;
                     break;
-                case 'Y' :
+                case 'G' :
                     goal = Color.kYellow;
+                    break;
+                case 'R' :
+                    goal = Color.kCyan;
+                    break;
+                case 'Y' :
+                    goal = Color.kGreen;
                     break;
                 default :
                     goal = null;
@@ -46,18 +42,26 @@ public class ControlPanelSpinToColorCommand extends CommandBase {
     public void execute() {
         if (goal == null) {
             setTargetColor();
-        } else {
-            cPanel.turn(Constants.CONTROL_PANEL_TURN_SPEED);
+        } 
+        else if((woof.getColor() == Color.kRed && goal == Color.kYellow) ||
+                (woof.getColor() == Color.kGreen && goal == Color.kRed) ||
+                (woof.getColor() == Color.kBlue && goal == Color.kGreen) ||
+                (woof.getColor() == Color.kYellow && goal == Color.kBlue)) {
+                woof.turn(-Constants.WOOF_TURN_SPEED);
+            }
+        else {    
+            woof.turn(Constants.WOOF_TURN_SPEED);
         }
     }
+    
     @Override
     public boolean isFinished() {
-        return goal == cPanel.getColor();
+        return goal == woof.getColor();
     }
 
     @Override
     public void end(boolean interrupted) {
         // code to run when ends
-        cPanel.stop();
+        woof.stop();
     }
 }

@@ -6,7 +6,7 @@ import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand.DriveCommand;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand.TurnCommand;
-import com.stuypulse.robot.commands.DrivetrainPIDAlignmentCommand;
+import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand.Aligner;
@@ -16,7 +16,7 @@ import com.stuypulse.robot.Constants;
 
 public class EightBallFiveRdvsAutonCommand extends SequentialCommandGroup {
     public EightBallFiveRdvsAutonCommand(Drivetrain drivetrain, Intake intake) {
-        addCommands(new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
+        addCommands(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             // TODO: Add shoot 3
             new DriveCommand(drivetrain, 1),
 
@@ -27,7 +27,7 @@ public class EightBallFiveRdvsAutonCommand extends SequentialCommandGroup {
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS),
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_THREE_BALL_TO_TWO_BALL, Constants.DISTANCE_FROM_THREE_BALL_TO_TWO_BALL),
             new DrivetrainMovementCommand(drivetrain, 180),
-            new DrivetrainPIDAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20))
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20))
             );
     }
 }

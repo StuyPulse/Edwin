@@ -31,7 +31,7 @@ public interface Constants {
      * @param inches inches
      * @return value in feet
      */
-    private static double toFeet(int feet, double inches) {
+    public static double toFeet(int feet, double inches) {
         return ((double) feet) + (inches / 12.0);
     }
 
@@ -358,12 +358,12 @@ public interface Constants {
     /*********************************************************************************************
      * Movement Auton Command       
      *********************************************************************************************/
-    int DISTANCE_TO_MOVE_AT_START = 5;
+    double DISTANCE_TO_MOVE_AT_START = 5; //feet
 
     /*********************************************************************************************
      * Shoot Three (At Start) Auton Command
      *********************************************************************************************/
-    int SHOOT_FROM_START_TO_GOAL = 10;
+    double SHOOT_FROM_START_TO_GOAL = 10;
 
     /*********************************************************************************************
      * Shoot at start and take 3 balls from trench

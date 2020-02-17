@@ -19,6 +19,8 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.stuypulse.robot.util.CVFuncs;
+
 public class Drivetrain extends SubsystemBase {
 
     // Enum used to store the state of the gear
@@ -317,5 +319,10 @@ public class Drivetrain extends SubsystemBase {
         } else {
             curvatureDrive(speed, rotation, false);
         }
+    }
+
+    public void cvGetTranslationRotation(){
+        CVFuncs.getTranslation();
+        CVFuncs.getRotation();
     }
 }

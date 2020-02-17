@@ -1,7 +1,8 @@
 /* Lime Light Docs: http://docs.limelightvision.io/en/latest/networktables_api.html# */
 /* StuyPulse 694, Stuyvesant Highschool, NY */
 
-package frc.robot.utl;
+package com.stuypulse.robot.util;
+
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;

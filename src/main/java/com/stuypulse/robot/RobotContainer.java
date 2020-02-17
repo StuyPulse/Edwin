@@ -73,7 +73,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Woof woof = new Woof();
 
-  private final LEDController ledController = new LEDController(0, shooter, chimney);
+  private final LEDController ledController = new LEDController(0, shooter, chimney, drivetrain);
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.XMode(Ports.Gamepad.OPERATOR);

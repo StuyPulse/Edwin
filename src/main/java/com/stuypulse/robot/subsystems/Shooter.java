@@ -15,7 +15,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Shooter extends SubsystemBase {
 
     public enum Mode {
-        NONE, INITIATION_LINE, TRENCH, FAR
+        NONE, 
+        SHOOT_FROM_INITIATION_LINE, 
+        SHOOT_FROM_TRENCH, 
+        SHOOT_FROM_FAR,
+        CHARGING_FROM_INITATION_LINE,
+        CHARGING_FROM_TRENCH,
+        CHARGING_FROM_FAR
     };
 
     // Motors

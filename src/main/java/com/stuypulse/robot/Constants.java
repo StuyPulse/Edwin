@@ -315,10 +315,17 @@ public interface Constants {
     /*********************************************************************************************
      * Shooter Constants
      *********************************************************************************************/
-    double SHOOTER_MAX_RPM = 5600;
-    double SHOOT_FROM_INITATION_LINE_RPM = 3900;
-    double SHOOT_FROM_TRENCH_RPM = 4900;
-    double SHOOT_FROM_FAR_RPM = 5500;
+    double SHOOTER_WHEEL_DIAMETER = 4;
+    double SHOOTER_WHEEL_CIRCUMFERENCE = Math.PI * SHOOTER_WHEEL_DIAMETER;
+    double SHOOTER_VELOCITY_RAW_MULTIPLIER = SHOOTER_WHEEL_CIRCUMFERENCE / 60;
+
+    //TODO: Find empirical multiplier
+    double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
+
+    double SHOOTER_MAX_RPM = 5600.0 * 2 / 3;
+    double SHOOT_FROM_INITATION_LINE_RPM = 3900.0 * 2 / 3;
+    double SHOOT_FROM_TRENCH_RPM = 4900.0 * 2 / 3;
+    double SHOOT_FROM_FAR_RPM = 5500.0 * 2 / 3;
 
     double SHOOTER_TOLERANCE = 69.420;
 

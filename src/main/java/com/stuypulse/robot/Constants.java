@@ -47,7 +47,7 @@ public interface Constants {
 
     public interface Pneumatics {
         int ANALOG_PRESSURE_SWITCH_PORT = 0;
-        int ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5;
+        double ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5.0;
     }
 
     public interface Ports {
@@ -221,7 +221,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     //TODO: Test
-    double FUNNEL_SPEED = 0.5;
+    double FUNNEL_SPEED = 1.0;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
@@ -289,7 +289,7 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	  double CHIMNEY_LIFT_UP_SPEED = -1;
+	double CHIMNEY_LIFT_UP_SPEED = 1;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -1;
     
@@ -334,7 +334,7 @@ public interface Constants {
     SmartNumber SHOOTER_D = new SmartNumber("Shooter D", 0);
     SmartNumber SHOOTER_FF = new SmartNumber("Shooter FF", 1.0 / SHOOTER_MAX_RPM);
 
-    double SHOOTER_BANGBANG_SPEED = 0.25;
+    double SHOOTER_BANGBANG_SPEED = 0.0;
 
     /*********************************************************************************************
      * Feeder Constants
@@ -348,5 +348,5 @@ public interface Constants {
     SmartNumber FEEDER_D = new SmartNumber("Feeder D", 0);
     SmartNumber FEEDER_FF = new SmartNumber("Feeder FF", 1.0 / FEEDER_MAX_RPM);
 
-    double FEEDER_BANGBANG_SPEED = 0.25;
+    double FEEDER_BANGBANG_SPEED = 0.0;
 }

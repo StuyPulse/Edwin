@@ -153,6 +153,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Turn limelight off when no longer aligning due to rules
     public void end(boolean interrupted) {
         Limelight.setLEDMode(Limelight.LEDMode.FORCE_OFF);
+        drivetrain.setIsAligned(true);
     }
 
     // Command is finished if all of the errors are small enough

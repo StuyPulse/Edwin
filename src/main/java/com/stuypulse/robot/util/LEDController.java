@@ -1,6 +1,7 @@
 package com.stuypulse.robot.util;
 
 import com.stuypulse.robot.subsystems.Chimney;
+import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.Chimney.ChimneyMode;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
@@ -14,68 +15,81 @@ public class LEDController {
     private static PWMSparkMax controller;
     private static Shooter shooter;
     private static Chimney chimney;
+    private static Drivetrain drivetrain;
 
-    private static boolean isAligned;
-
-    public LEDController(int port, Shooter shooter, Chimney chimney) {
+    public LEDController(int port, Shooter shooter, Chimney chimney, Drivetrain drivetrain) {
         controller = new PWMSparkMax(port);
         this.shooter = shooter;
         this.chimney = chimney;
+        this.drivetrain = drivetrain;
     }
 
     public static void setValue(double value) {
         controller.set(value);
     }
 
+    public static double getValue() {
+        return controller.get();
+    }
+
     enum Color {
-        ORANGE_SOLID, 
-        PINK_SOLID, 
-        WHITE_SOLID,
-        LIME_SOLID, 
-        YELLOW_SOLID,
-        RED_SOLID, 
-        LIME_FLASH,
-        BLUE_FLASH,
-        WHITE_SHOT,
-        SINE_WAVE,
+        WHITE_SOLID,  // Shoot from initation line
+        PINK_SOLID,   // Shoot from trench
+        RED_SOLID,    // Shoot from far
+        WHITE_PULSE,  // Charging shot from initation line
+        PINK_PULSE,   // Charging shot from trench
+        RED_PULSE,    // Charging shot from far
+        YELLOW_SOLID, // Aligning
+        LIME_FLASH,   // Aligned
+        BLUE_FLASH,   // Ball detected in chute
         OFF
     }
 
     // Switches the color on the thread you call it from
     private static void setColorOnThread(Color color) {
         switch (color) {
-            case ORANGE_SOLID:
-                setValue(0.65);
+            case WHITE_SOLID:
+                setValue(0.93);
                 break;
             case PINK_SOLID:
                 setValue(0.57);
                 break;
-            case WHITE_SOLID:
-                setValue(0.93);
-                break;
-            case LIME_SOLID:
-                setValue(0.73);
-                break;
-            case YELLOW_SOLID:
-                setValue(0.69);
-                break;
             case RED_SOLID:
                 setValue(0.61);
                 break;
-            case LIME_FLASH:
-                setValue(0.73);
-                Timer.delay(0.5);
-                break;
-            case BLUE_FLASH:
-                setValue(0.87);
+            case WHITE_PULSE:
+                setValue(0.93);
                 Timer.delay(0.5);
                 setValue(0.99);
+                Timer.delay(0.1);
                 break;
-            case WHITE_SHOT:
-                setValue(0.13); 
+            case PINK_PULSE:
+                setValue(0.57);
+                Timer.delay(0.5);
+                setValue(0.99);
+                Timer.delay(0.1);
                 break;
-            case SINE_WAVE:
-                setValue(0.55);
+            case RED_PULSE:
+                setValue(0.61);
+                Timer.delay(0.5);
+                setValue(0.99);
+                Timer.delay(0.1);
+            case YELLOW_SOLID:
+                setValue(0.69);
+                break;
+            case LIME_FLASH:
+                if (getValue() != 0.99) {
+                    setValue(0.73);
+                    Timer.delay(0.5);
+                    setValue(0.99); 
+                } 
+                break;
+            case BLUE_FLASH:
+                if (getValue() != 0.99) {
+                    setValue(0.87);
+                    Timer.delay(0.5);
+                    setValue(0.99);
+                } 
                 break;
             case OFF:
                 setValue(0.99);
@@ -91,23 +105,28 @@ public class LEDController {
     public static void controlLEDs() {
         if (Limelight.hasValidTarget()) {
             setColor(Color.YELLOW_SOLID);
-            isAligned = true;
-        } else if(isAligned) {
+        } else if(drivetrain.getIsAligned()) {
             setColor(Color.LIME_FLASH);
-            isAligned = false;
+            drivetrain.setIsAligned(false);
         } else if(chimney.getChimneyMode() == ChimneyMode.ACQUIRED_ONE_CELL) {
             setColor(Color.BLUE_FLASH);
         } else {
-            if (!shooter.isAtTargetVelocity()) {
-                setColor(Color.SINE_WAVE);    
-            } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
-                setColor(Color.RED_SOLID);
-            } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
-                setColor(Color.WHITE_SOLID);
-            } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
-                setColor(Color.PINK_SOLID);
+            if (!shooter.isAtTargetVelocity() && shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
+                setColor(Color.WHITE_PULSE);    
+            } else if(!shooter.isAtTargetVelocity() && shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
+                setColor(Color.PINK_PULSE);
+            } else if(!shooter.isAtTargetVelocity() && shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
+                setColor(Color.RED_PULSE);
             } else {
-                setColor(Color.OFF);
+                if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
+                    setColor(Color.WHITE_SOLID);
+                } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
+                    setColor(Color.PINK_SOLID);
+                } else if(shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
+                    setColor(Color.RED_SOLID);
+                } else {
+                    setColor(Color.OFF);
+                }
             }
         }
     }

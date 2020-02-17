@@ -80,7 +80,7 @@ public interface Constants {
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        double QUICKTURN_THRESHOLD = 0.04; 
+        double QUICKTURN_THRESHOLD = 0.05; 
 
         // How much to slow down quick turn
         double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
@@ -104,6 +104,9 @@ public interface Constants {
         
         // Current Limit for the motors
         int CURRENT_LIMIT = 40; // TODO: ask about this
+
+        // If the motors are inverted
+        boolean IS_INVERTED = false;
 
         // Encoder Constants
         public interface Encoders {

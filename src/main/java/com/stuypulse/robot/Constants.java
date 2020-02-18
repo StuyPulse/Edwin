@@ -114,9 +114,6 @@ public interface Constants {
         // If the motors are inverted
         boolean IS_INVERTED = true;
 
-        // If the motors are inverted
-        boolean IS_INVERTED = false;
-
         // Encoder Constants
         public interface Encoders {
 

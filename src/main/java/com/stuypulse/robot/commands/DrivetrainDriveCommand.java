@@ -10,12 +10,15 @@ import com.stuypulse.stuylib.streams.IStream;
 import com.stuypulse.stuylib.streams.FilteredIStream;
 import com.stuypulse.stuylib.streams.filters.OrderedLowPassFilter;
 import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 /**
  * DrivetrainDriveCommand takes in a drivetrain and a gamepad and feeds the
  * signals to the drivetrain through a DriveCommand
  */
 public class DrivetrainDriveCommand extends DrivetrainCommand {
+
+    private static SmartBoolean filtering = new SmartBoolean("Enable Filtering", true);
 
     private Gamepad gamepad;
 
@@ -66,6 +69,10 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         double s = speed.get();
 
+        if(!filtering.get()) {
+            s = rawSpeed.get();
+        }
+
         if(DrivetrainSettings.COOL_RUMBLE) {
             gamepad.setRumble(Math.abs(s) * DrivetrainSettings.COOL_RUMBLE_MAG);
         }
@@ -75,7 +82,13 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     // Give the IStream's result for angle when the drivetrain wants it
     public double getAngle() {
-        return angle.get();
+        double a = angle.get();
+
+        if(!filtering.get()) {
+            a = rawAngle.get();
+        }
+
+        return a;
     }
 
     // If the drivetrain goes into high or low gear

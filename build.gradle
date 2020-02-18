@@ -66,11 +66,6 @@ dependencies {
         System.out.println("BUILDING WITH JITPACK")
         compile 'com.github.StuyPulse:StuyLib:' + STUYLIB_VERSION;
     }
-
-    testImplementation 'junit:junit:4.12'
-
-    // Enable simulation gui support. Must check the box in vscode to enable support
-    // upon debugging
     simulation wpi.deps.sim.gui(wpi.platforms.desktop, false)
 }
 

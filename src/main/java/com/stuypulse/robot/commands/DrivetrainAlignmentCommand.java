@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
@@ -167,9 +168,26 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             return false;
         }
 
-        return (speed.getError() < Alignment.Speed.MAX_SPEED_ERROR 
-                && speed.getVelocity() < Alignment.Speed.MAX_SPEED_VEL
-                && angle.getError() < Alignment.Angle.MAX_ANGLE_ERROR
-                && angle.getVelocity() < Alignment.Angle.MAX_ANGLE_VEL);
+        return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
+             && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+    }
+
+    public void execute() {
+        super.execute();
+
+        // Update PID controllers with new values
+        if(speed instanceof PIDController) {
+            PIDController s = (PIDController) speed;
+            s.setP(Alignment.Speed.P.doubleValue());
+            s.setI(Alignment.Speed.I.doubleValue());
+            s.setD(Alignment.Speed.D.doubleValue());
+        }
+
+        if(angle instanceof PIDController) {
+            PIDController a = (PIDController) angle;
+            a.setP(Alignment.Angle.P.doubleValue());
+            a.setI(Alignment.Angle.I.doubleValue());
+            a.setD(Alignment.Angle.D.doubleValue());
+        }
     }
 }

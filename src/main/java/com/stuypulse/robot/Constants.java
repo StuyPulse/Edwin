@@ -135,7 +135,6 @@ public interface Constants {
 
     public interface Alignment {
 
-        // TODO: find better values for this
         double MIN_ALIGNMENT_TIME = 0.25;
         double MAX_ALIGNMENT_TIME = 7.5;
         
@@ -145,21 +144,20 @@ public interface Constants {
 
         public interface Speed {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.1);   // TODO: find value 
-            SmartNumber I = new SmartNumber("SpeedI", 0.01);  // TODO: find value 
-            SmartNumber D = new SmartNumber("SpeedD", 0.025); // TODO: find value 
+            SmartNumber P = new SmartNumber("SpeedP", 0); 
+            SmartNumber I = new SmartNumber("SpeedI", 0);
+            SmartNumber D = new SmartNumber("SpeedD", 0);
 
             // Get PID Controller
             public static PIDController getPID() {
                 return new PIDController(P.get(), I.get(), D.get());
             }
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.7 is nice]
-            double BANGBANG_SPEED = 0.7;
+            double BANGBANG_SPEED = 0.25;
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.05);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.1);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.04);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.16);
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(5.0);
@@ -168,9 +166,9 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0.055); // TODO: find value 
-            SmartNumber I = new SmartNumber("AngleI", 0.01);  // TODO: find value 
-            SmartNumber D = new SmartNumber("AngleD", 0.005); // TODO: find value 
+            SmartNumber P = new SmartNumber("AngleP", 0);
+            SmartNumber I = new SmartNumber("AngleI", 0);
+            SmartNumber D = new SmartNumber("AngleD", 0);
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -178,12 +176,11 @@ public interface Constants {
             }
             
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.7 is nice]
-            double BANGBANG_SPEED = 0.7;
+            double BANGBANG_SPEED = 0.3;
 
             // Low pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.05);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.02);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 5.0;
@@ -192,7 +189,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 8.5);
+            double GOAL_HEIGHT = toFeet(7, 6);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);

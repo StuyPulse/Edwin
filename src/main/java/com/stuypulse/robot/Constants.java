@@ -100,7 +100,7 @@ public interface Constants {
         double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
 
         int SPEED_ORDER = 1;
-        int ANGLE_ORDER = 2;
+        int ANGLE_ORDER = 1;
         
         // Current Limit for the motors
         int CURRENT_LIMIT = 40; // TODO: ask about this

@@ -336,4 +336,50 @@ public interface Constants {
 	double CHIMNEY_LIFT_UP_SPEED = 1;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -1;
+    // AUTOS 
+
+    //TODO check all values for correctlynessly
+    /*********************************************************************************************
+     * Movement Auton Command       
+     *********************************************************************************************/
+    int DISTANCE_TO_MOVE_AT_START = 5;
+
+    /*********************************************************************************************
+     * Shoot Three (At Start) Auton Command
+     *********************************************************************************************/
+    int SHOOT_FROM_START_TO_GOAL = 10;
+
+    /*********************************************************************************************
+     * Shoot at start and take 3 balls from trench
+     *********************************************************************************************/
+    double ANGLE_FROM_START_TO_TRENCH = 37.7;
+    double DISTANCE_FROM_START_TO_TRENCH = 109.4;
+    double DISTANCE_FROM_BALL_TO_BALL = 36;
+    double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
+
+    /*********************************************************************************************
+     * Shoot three at start, get 3 balls from trench, and then take 2 balls from rdvs
+     *********************************************************************************************/
+    double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
+    double DISTANCE_FROM_TRENCH_TO_RDVS = 109.85;
+    double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; //estimation between 0 - 54.12
+    double DISTANCE_BETWEEN_TWO_BALL = 16.57;
+    double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = 40; //estimation according to field markings
+
+
+    /*********************************************************************************************
+     * Shoot three at start and get 3 balls from rdvs
+     *********************************************************************************************/
+
+    double DISTANCE_FROM_START_TO_RDVS = 107.83;
+    double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; //estimation from common knowledge
+    double DISTANCE_FOR_THREE_BALLS_IN_RDVS = 36; //estimate. Probably higher
+
+
+    /*********************************************************************************************
+     * Shoot three at start, and then get 5 balls from rdvs
+     *********************************************************************************************/
+    
+    double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
+    double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
 }

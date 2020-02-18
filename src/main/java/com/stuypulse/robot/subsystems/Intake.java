@@ -4,34 +4,36 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
-    private CANSparkMax motor;
-    private DoubleSolenoid solenoid;
+    private final CANSparkMax motor;
+    private final Solenoid solenoid;
 
     public Intake() {
         motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-        solenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_A, Constants.INTAKE_SOLENOID_PORT_B);
+        solenoid = new Solenoid(3);
+
+        motor.setInverted(true);
     }
 
     public void extend() {
-        if(solenoid.get() == Value.kReverse) {
-            solenoid.set(Value.kForward);
+        if (solenoid.get()) {
+            solenoid.set(false);
         }
     }
 
     public void retract() {
-        if(solenoid.get() == Value.kForward) {
-            solenoid.set(Value.kReverse);
+        if (!solenoid.get()) {
+            solenoid.set(true);
         }
     }
 
     public void toggle() {
-        if (solenoid.get() == Value.kForward) {
+        if (solenoid.get()) {
             retract();
         } else {
             extend();
@@ -47,10 +49,10 @@ public class Intake extends SubsystemBase {
     }
 
     public void stop() {
-        setMotor(0);
+        motor.stopMotor();
     }
 
-    public void setMotor(double speed) {
+    public void setMotor(final double speed) {
         motor.set(speed);
     }
 

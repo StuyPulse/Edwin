@@ -35,9 +35,19 @@ public interface Constants {
         return ((double) feet) + (inches / 12.0);
     }
 
+    /**
+     * Lets us turn feet and inches into just feet for measurements
+     * 
+     * @param inches inches
+     * @return value in feet
+     */
+    private static double toFeet(double inches) {
+        return toFeet(0, inches);
+    }
+
     public interface Pneumatics {
         int ANALOG_PRESSURE_SWITCH_PORT = 0;
-        int ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5;
+        double ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5.0;
     }
 
     public interface Ports {
@@ -61,6 +71,10 @@ public interface Constants {
             int RIGHT_ENCODER_B = 3;
 
             int GEAR_SHIFT = 0;
+        }
+
+        public interface Shooter {
+
         }
     }
 
@@ -101,12 +115,12 @@ public interface Constants {
             double OUTER_GEAR_RATIO = 24.0 / 60.0;
 
             // The difference between theoretical and actual distance
-            SmartNumber REAL_YIELD = new SmartNumber("Greyhill Yeild", 1.3);
+            double REAL_YIELD = 1.0;
             
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
-            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD.doubleValue();
+            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
 
-            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // TODO: Calculate if Important
+            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE;
         }
     }
 
@@ -116,7 +130,6 @@ public interface Constants {
         double MIN_ALIGNMENT_TIME = 0.25;
         double MAX_ALIGNMENT_TIME = 7.5;
         
-        // TODO: test (0.6, 1.2, 3.0/40.0) for PID, or (0.8, 0.0, 0.1) for PD if it works better
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.6);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 1.2);
         SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 3.0 / 40.0);
@@ -140,8 +153,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.1);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(0, 5.0); // TODO: discuss value
-            double MAX_SPEED_VEL = toFeet(0, 3.0); // TODO: discuss value
+            double MAX_SPEED_ERROR = toFeet(5.0);
+            double MAX_SPEED_VEL = toFeet(3.0);
         }
 
         public interface Angle {
@@ -170,12 +183,12 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 8.5); // TODO: measure on feild
+            double GOAL_HEIGHT = toFeet(7, 8.5);
 
             public interface Limelight {
-                double HEIGHT = toFeet(2, 7); // TODO: calculate on robot
+                double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
-                double PITCH = 17.3; // TODO: calculate on robot
+                double PITCH = 20;
                 double YAW = 0.0;
             }
         }
@@ -208,7 +221,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     //TODO: Test
-    double FUNNEL_SPEED = 0.5;
+    double FUNNEL_SPEED = 1.0;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
@@ -270,13 +283,13 @@ public interface Constants {
      * CHIMNEY Motor & Sensor Ports
      *********************************************************************************************/
   	int CHIMNEY_LIFT_MOTOR_PORT = 8;
-	  int CHIMNEY_LOWER_SENSOR_PORT = -1;
-    int CHIMNEY_UPPER_SENSOR_PORT = -1;
+	  int CHIMNEY_LOWER_SENSOR_PORT = 5;
+    int CHIMNEY_UPPER_SENSOR_PORT = 6;
     
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	  double CHIMNEY_LIFT_UP_SPEED = -1;
+	double CHIMNEY_LIFT_UP_SPEED = 1;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -1;
     
@@ -309,48 +322,33 @@ public interface Constants {
     //TODO: Find empirical multiplier
     double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
 
-    double SHOOTER_MAX_RPM = 5600;
-    double SHOOT_FROM_INITATION_LINE_RPM = 3900;
-    double SHOOT_FROM_TRENCH_RPM = 4900;
-    double SHOOT_FROM_FAR_RPM = 5500;
+    double SHOOTER_MAX_RPM = 5600.0 * 2 / 3;
+    double SHOOT_FROM_INITATION_LINE_RPM = 3900.0 * 2 / 3;
+    double SHOOT_FROM_TRENCH_RPM = 4900.0 * 2 / 3;
+    double SHOOT_FROM_FAR_RPM = 5500.0 * 2 / 3;
 
     double SHOOTER_TOLERANCE = 100;
 
-    double SHOOTER_BANGBANG_SPEED = 0.25;
-
-    /*********************************************************************************************
-     * Shooter PID 
-     *********************************************************************************************/
-    //TODO: Test PID onstants
     SmartNumber SHOOTER_P = new SmartNumber("Shooter P", 0);
     SmartNumber SHOOTER_I = new SmartNumber("Shooter I", 0);
     SmartNumber SHOOTER_D = new SmartNumber("Shooter D", 0);
     SmartNumber SHOOTER_FF = new SmartNumber("Shooter FF", 1.0 / SHOOTER_MAX_RPM);
 
+    double SHOOTER_BANGBANG_SPEED = 0.0;
+
     /*********************************************************************************************
      * Feeder Constants
      *********************************************************************************************/
-    double FEEDER_WHEEL_DIAMETER = 4;
-    double FEEDER_WHEEL_CIRCUMFERENCE = Math.PI * FEEDER_WHEEL_DIAMETER;
-    double FEEDER_VELOCITY_RAW_MULTIPLIER = FEEDER_WHEEL_CIRCUMFERENCE / 60;
-
-    //TODO: Find empirical multiplier
-    double FEEDER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
-
     double FEEDER_MAX_RPM = 5600;
-    double FEEDER_SPEED_MUL = 0.5;
+  
+    double FEEDER_SPEED_MUL = 1.0;
 
-    double FEEDER_BANGBANG_SPEED = 0.25;
-
-    /*********************************************************************************************
-     * Feeder PID 
-     *********************************************************************************************/
-    //TODO: Test PID onstants
     SmartNumber FEEDER_P = new SmartNumber("Feeder P", 0);
     SmartNumber FEEDER_I = new SmartNumber("Feeder I", 0);
     SmartNumber FEEDER_D = new SmartNumber("Feeder D", 0);
     SmartNumber FEEDER_FF = new SmartNumber("Feeder FF", 1.0 / FEEDER_MAX_RPM);
 
+    double FEEDER_BANGBANG_SPEED = 0.0;
 
     // AUTOS 
 
@@ -398,4 +396,5 @@ public interface Constants {
     
     double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
     double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
+
 }

@@ -21,10 +21,15 @@ public class ShooterDefaultCommand extends CommandBase {
         this.gamepad = gamepad;
         this.shootController = shootController;
         this.feedController = feedController;
+
+        addRequirements(this.shooter);
+
     }
 
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad) {
         this(shooter, gamepad, new PIDController(), new PIDController());
+
+        addRequirements(this.shooter);
     }
 
     public void updatePID() {

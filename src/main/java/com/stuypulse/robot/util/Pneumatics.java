@@ -24,7 +24,7 @@ public class Pneumatics {
     }
 
     public double getPressure() {
-        return 250.0 * (Constants.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY / pressureGauge.getValue()) - 25.0;
+        return 250.0 * (pressureGauge.getValue() / Constants.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY) - 25.0;
     }
 
 }

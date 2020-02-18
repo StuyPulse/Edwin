@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
@@ -36,17 +37,17 @@ public class ShooterDefaultCommand extends CommandBase {
         if (shootController instanceof PIDController) {
             PIDController controller = (PIDController) shootController;
 
-            controller.setP(Constants.SHOOTER_P.get());
-            controller.setI(Constants.SHOOTER_I.get());
-            controller.setD(Constants.SHOOTER_D.get());
+            controller.setP(Shooting.Shooter.P.get());
+            controller.setI(Shooting.Shooter.I.get());
+            controller.setD(Shooting.Shooter.D.get());
         }
 
         if (feedController instanceof PIDController) {
             PIDController controller = (PIDController) feedController;
 
-            controller.setP(Constants.FEEDER_P.get());
-            controller.setI(Constants.FEEDER_I.get());
-            controller.setD(Constants.FEEDER_D.get());
+            controller.setP(Shooting.Feeder.P.get());
+            controller.setI(Shooting.Feeder.I.get());
+            controller.setD(Shooting.Feeder.D.get());
         }
     }
 
@@ -56,9 +57,9 @@ public class ShooterDefaultCommand extends CommandBase {
             PIDCalculator calculator = (PIDCalculator) shootController;
             PIDController controller = (PIDController) calculator.getPIController();
 
-            Constants.SHOOTER_P.set(controller.getP());
-            Constants.SHOOTER_I.set(controller.getI());
-            Constants.SHOOTER_D.set(controller.getD());
+            Shooting.Shooter.P.set(controller.getP());
+            Shooting.Shooter.I.set(controller.getI());
+            Shooting.Shooter.D.set(controller.getD());
         }
 
         if (feedController instanceof PIDCalculator) {
@@ -66,9 +67,9 @@ public class ShooterDefaultCommand extends CommandBase {
             PIDCalculator calculator = (PIDCalculator) feedController;
             PIDController controller = (PIDController) calculator.getPIController();
 
-            Constants.FEEDER_P.set(controller.getP());
-            Constants.FEEDER_I.set(controller.getI());
-            Constants.FEEDER_D.set(controller.getD());
+            Shooting.Feeder.P.set(controller.getP());
+            Shooting.Feeder.I.set(controller.getI());
+            Shooting.Feeder.D.set(controller.getD());
         }
     }
 
@@ -82,30 +83,32 @@ public class ShooterDefaultCommand extends CommandBase {
 
         // Speed to set the motor plus feed forward
         double output = shootController.update(error);
-        output += target * Constants.SHOOTER_FF.get();
+        output += target * Shooting.Shooter.FF.get();
 
         // Set the shooter to that
         shooter.setShooterSpeed(output);
 
-        double rumbleMag = Math.abs(speed - target);
-        rumbleMag = Constants.SHOOTER_TOLERANCE - rumbleMag;
-        rumbleMag = Math.max(error, 0.0);
-        rumbleMag /= Constants.SHOOTER_TOLERANCE;
+        if(gamepad != null) {
+            double rumbleMag = Math.abs(speed - target);
+            rumbleMag = Shooting.TOLERANCE - rumbleMag;
+            rumbleMag = Math.max(error, 0.0);
+            rumbleMag /= Shooting.TOLERANCE;
 
-        gamepad.setRumble(rumbleMag);
+            gamepad.setRumble(rumbleMag);
+        }
     }
 
     public void updateFeeder() {
         // Target speed to go at
         double speed = shooter.getCurrentFeederVelocityInRPM();
-        double target = shooter.getTargetVelocity() * Constants.FEEDER_SPEED_MUL;
+        double target = shooter.getTargetVelocity() * Shooting.Feeder.SPEED_MUL;
 
         // The error from current speed to target
         double error = target - speed;
 
         // Speed to set the motor plus feed forward
         double output = shootController.update(error);
-        output += target * Constants.FEEDER_FF.get();
+        output += target * Shooting.Feeder.FF.get();
 
         // Set the shooter to that
         shooter.setFeederSpeed(output);

@@ -31,16 +31,6 @@ public class Drivetrain extends SubsystemBase {
         return new SpeedControllerGroup(controllers[0], Arrays.copyOfRange(controllers, 1, controllers.length));
     }
 
-    // Take a list of motors and return the ones used in high gear
-    private static CANSparkMax[] getHighGear(CANSparkMax[] motors) {
-        return motors;
-    }
-
-    // Take a list of motors and return the ones used in low gear
-    private static CANSparkMax[] getLowGear(CANSparkMax[] motors) {
-        return motors;
-    }
-
     // An array of motors on the left and right side of the drive train
     private CANSparkMax[] leftMotors;
     private CANSparkMax[] rightMotors;
@@ -83,8 +73,8 @@ public class Drivetrain extends SubsystemBase {
 
         // Create DifferentialDrive for different gears
         highGearDrive = new DifferentialDrive(
-            makeControllerGroup(getHighGear(leftMotors)),
-            makeControllerGroup(getHighGear(rightMotors))
+            makeControllerGroup(leftMotors),
+            makeControllerGroup(rightMotors)
         );
 
         lowGearDrive = highGearDrive;
@@ -100,7 +90,7 @@ public class Drivetrain extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP);
 
         // Configure Motors and Other Things
-        setInverted(true);
+        setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);

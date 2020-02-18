@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -18,10 +19,10 @@ public class ShooterControlCommand extends InstantCommand {
     public void initialize() {
         shooter.setTargetVelocity(targetVelocity);
 
-        if(targetVelocity == Constants.SHOOT_FROM_TRENCH_RPM || targetVelocity == Constants.SHOOT_FROM_FAR_RPM) {
+        if(targetVelocity == Shooting.TRENCH_RPM || targetVelocity == Shooting.FAR_RPM) {
             shooter.retractHoodSolenoid();
         }
-        if(targetVelocity == Constants.SHOOT_FROM_INITATION_LINE_RPM) {
+        if(targetVelocity == Shooting.INITATION_LINE_RPM) {
             shooter.extendHoodSolenoid();
         }
     }

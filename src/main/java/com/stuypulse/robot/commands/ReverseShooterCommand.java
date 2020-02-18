@@ -13,7 +13,7 @@ public class ReverseShooterCommand extends CommandBase {
 
     @Override
     public void execute() {
-        shooter.reverseShooter();
+        shooter.setShooterSpeed(-1);
     }
 
     @Override

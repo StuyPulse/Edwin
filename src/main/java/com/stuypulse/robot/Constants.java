@@ -73,14 +73,20 @@ public interface Constants {
             int GEAR_SHIFT = 0;
         }
 
-        public interface Shooter {
+        int HOOD_SOLENOID = 1;
 
+        public interface Shooter {
+            int LEFT = 12;
+            int MIDDLE = 13;
+            int RIGHT = 14;
+            
+            int FEEDER = 11;
         }
     }
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        double QUICKTURN_THRESHOLD = 0.04; 
+        double QUICKTURN_THRESHOLD = 0.05; 
 
         // How much to slow down quick turn
         double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
@@ -96,14 +102,17 @@ public interface Constants {
         double SPEED_POWER = 1.0;
         double ANGLE_POWER = 1.0;
 
-        double SPEED_FILTER = 0.5;  // TODO: Go Over This With Driver
-        double ANGLE_FILTER = 0.15; // TODO: Go Over This With Driver
+        double SPEED_FILTER = 0.5; 
+        double ANGLE_FILTER = 0.15;
 
         int SPEED_ORDER = 1;
-        int ANGLE_ORDER = 2;
+        int ANGLE_ORDER = 1;
         
         // Current Limit for the motors
-        int CURRENT_LIMIT = 40; // TODO: ask about this
+        int CURRENT_LIMIT = 40; 
+
+        // If the motors are inverted
+        boolean IS_INVERTED = true;
 
         // Encoder Constants
         public interface Encoders {
@@ -191,6 +200,41 @@ public interface Constants {
                 double PITCH = 20;
                 double YAW = 0.0;
             }
+        }
+    }
+
+    public interface Shooting {
+
+        double GEAR = 2.0 / 3.0; 
+    
+        double INITATION_LINE_RPM = 3900.0 * GEAR;
+        double TRENCH_RPM = 4900.0 * GEAR;
+        double FAR_RPM = 5500.0 * GEAR;
+
+        double TOLERANCE = 100;
+
+        public interface Shooter {
+            double MAX_RPM = 5600.0 * GEAR;
+        
+            SmartNumber P = new SmartNumber("Shooter P", 0);
+            SmartNumber I = new SmartNumber("Shooter I", 0);
+            SmartNumber D = new SmartNumber("Shooter D", 0);
+            SmartNumber FF = new SmartNumber("Shooter FF", 1.0 / MAX_RPM);
+        
+            double BANGBANG_SPEED = 0.25;
+        }
+    
+        public interface Feeder {
+            double SPEED_MUL = 1.0;
+
+            double MAX_RPM = 5600.0 * GEAR;
+        
+            SmartNumber P = new SmartNumber("Feeder P", 0);
+            SmartNumber I = new SmartNumber("Feeder I", 0);
+            SmartNumber D = new SmartNumber("Feeder D", 0);
+            SmartNumber FF = new SmartNumber("Feeder FF", 1.0 / MAX_RPM);
+        
+            double BANGBANG_SPEED = 0.25;
         }
     }
 
@@ -292,61 +336,4 @@ public interface Constants {
 	double CHIMNEY_LIFT_UP_SPEED = 1;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -1;
-    
-    /*********************************************************************************************
-     * Shooter Motor Ports
-     *********************************************************************************************/
-    int LEFT_SHOOTER_MOTOR_PORT = 12;
-    int MIDDLE_SHOOTER_MOTOR_PORT = 13;
-    int RIGHT_SHOOTER_MOTOR_PORT = 14;
-    
-    /*********************************************************************************************
-     * Feeder 
-     *********************************************************************************************/
-    int FEEDER_MOTOR_PORT = 11;
-    double FEEDER_SPEED = 1.0;
-
-    /*********************************************************************************************
-     * Hood Solenoid Port
-     *********************************************************************************************/
-    int HOOD_SOLENOID_PORT = 1;
-
-
-    /*********************************************************************************************
-     * Shooter Constants
-     *********************************************************************************************/
-    double SHOOTER_WHEEL_DIAMETER = 4;
-    double SHOOTER_WHEEL_CIRCUMFERENCE = Math.PI * SHOOTER_WHEEL_DIAMETER;
-    double SHOOTER_VELOCITY_RAW_MULTIPLIER = SHOOTER_WHEEL_CIRCUMFERENCE / 60;
-
-    //TODO: Find empirical multiplier
-    double SHOOTER_VELOCITY_EMPIRICAL_MULTIPLER = 1; 
-
-    double SHOOTER_MAX_RPM = 5600.0 * 2 / 3;
-    double SHOOT_FROM_INITATION_LINE_RPM = 3900.0 * 2 / 3;
-    double SHOOT_FROM_TRENCH_RPM = 4900.0 * 2 / 3;
-    double SHOOT_FROM_FAR_RPM = 5500.0 * 2 / 3;
-
-    double SHOOTER_TOLERANCE = 100;
-
-    SmartNumber SHOOTER_P = new SmartNumber("Shooter P", 0);
-    SmartNumber SHOOTER_I = new SmartNumber("Shooter I", 0);
-    SmartNumber SHOOTER_D = new SmartNumber("Shooter D", 0);
-    SmartNumber SHOOTER_FF = new SmartNumber("Shooter FF", 1.0 / SHOOTER_MAX_RPM);
-
-    double SHOOTER_BANGBANG_SPEED = 0.0;
-
-    /*********************************************************************************************
-     * Feeder Constants
-     *********************************************************************************************/
-    double FEEDER_MAX_RPM = 5600;
-  
-    double FEEDER_SPEED_MUL = 1.0;
-
-    SmartNumber FEEDER_P = new SmartNumber("Feeder P", 0);
-    SmartNumber FEEDER_I = new SmartNumber("Feeder I", 0);
-    SmartNumber FEEDER_D = new SmartNumber("Feeder D", 0);
-    SmartNumber FEEDER_FF = new SmartNumber("Feeder FF", 1.0 / FEEDER_MAX_RPM);
-
-    double FEEDER_BANGBANG_SPEED = 0.0;
 }

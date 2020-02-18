@@ -16,13 +16,13 @@ public class Climber extends SubsystemBase {
 
     private Solenoid liftSolenoid;
 
-    private DigitalInput limitSwitch;
+    // private DigitalInput limitSwitch;
 
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);
         liftSolenoid = new Solenoid(Constants.CLIMBER_LIFT_SOLENOID_CHANNEL);
-        limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
+        // limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
     }
 
     public void setNeutralMode(IdleMode mode) {
@@ -70,6 +70,7 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean isAtBottom() {
-        return limitSwitch.get();
+        return false;
+        // return limitSwitch.get();
     }
 }

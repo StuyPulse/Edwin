@@ -6,7 +6,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -40,9 +40,9 @@ public class Shooter extends SubsystemBase {
     private SmartNumber currentFeederVelocity;
 
     public Shooter() {
-        leftShooterMotor = new CANSparkMax(Constants.LEFT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
-        rightShooterMotor = new CANSparkMax(Constants.RIGHT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
-        middleShooterMotor = new CANSparkMax(Constants.MIDDLE_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
+        leftShooterMotor = new CANSparkMax(Ports.Shooter.LEFT, MotorType.kBrushless);
+        rightShooterMotor = new CANSparkMax(Ports.Shooter.RIGHT, MotorType.kBrushless);
+        middleShooterMotor = new CANSparkMax(Ports.Shooter.MIDDLE, MotorType.kBrushless);
 
         leftShooterMotor.setInverted(true);
 
@@ -50,9 +50,9 @@ public class Shooter extends SubsystemBase {
         rightShooterEncoder = new CANEncoder(rightShooterMotor);
         middleShooterEncoder = new CANEncoder(middleShooterMotor);
 
-        feederMotor = new CANSparkMax(Constants.FEEDER_MOTOR_PORT, MotorType.kBrushless);
+        feederMotor = new CANSparkMax(Ports.Shooter.FEEDER, MotorType.kBrushless);
 
-        hoodSolenoid = new Solenoid(Constants.HOOD_SOLENOID_PORT);
+        hoodSolenoid = new Solenoid(Ports.HOOD_SOLENOID);
 
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
@@ -120,20 +120,8 @@ public class Shooter extends SubsystemBase {
         return this.targetShooterVelocity.get();
     }
 
-    public void reverseShooter() {
-        shooterMotors.set(-1.0);
-    }
-
     public void stopShooter() {
         shooterMotors.stopMotor();
-    }
-
-    public void runFeeder() {
-        feederMotor.set(Constants.FEEDER_SPEED);
-    }
-
-    public void reverseFeed() {
-        feederMotor.set(-1.0);
     }
 
     public void stopFeeder() {

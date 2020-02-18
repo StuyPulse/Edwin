@@ -8,6 +8,7 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
 import com.stuypulse.robot.commands.ChimneyStopCommand;
 import com.stuypulse.robot.commands.ChimneyUpCommand;
@@ -124,9 +125,9 @@ public class RobotContainer {
 
     // operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
-    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_FAR_RPM));
-    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_INITATION_LINE_RPM));
-    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Constants.SHOOT_FROM_TRENCH_RPM));
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM));
+    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM));
+    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM));
     // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
     // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
     // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
@@ -148,6 +149,9 @@ public class RobotContainer {
           .toggleWhenPressed(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
       debug.getTopButton().toggleWhenPressed(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
 
+      debug.getRightButton().toggleWhenPressed(new ShooterDefaultCommand(shooter, debug,
+          new PIDCalculator(Shooting.Shooter.BANGBANG_SPEED), new PIDCalculator(Shooting.Feeder.BANGBANG_SPEED)));
+
       // Steal driving abilities from the driver
       debug.getBottomButton().toggleWhenPressed(new DrivetrainDriveCommand(drivetrain, debug));
 
@@ -156,9 +160,6 @@ public class RobotContainer {
       debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, -2.5));
       debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
       debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
-
-      debug.getRightButton().toggleWhenPressed(new ShooterDefaultCommand(shooter, debug,
-          new PIDCalculator(Constants.SHOOTER_BANGBANG_SPEED), new PIDCalculator(Constants.FEEDER_BANGBANG_SPEED)));
     }
   }
 

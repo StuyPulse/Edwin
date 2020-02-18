@@ -10,11 +10,11 @@ import com.stuypulse.robot.util.ColorSensor;
 
 public class Woof extends SubsystemBase {
     private CANSparkMax motor;
-    private ColorSensor sensor;
+    // private ColorSensor sensor;
 
     public Woof() {
         
-        sensor = new ColorSensor();
+        // sensor = new ColorSensor();
         motor = new CANSparkMax(Constants.WOOF_MOTOR_PORT, MotorType.kBrushless);
     
     }
@@ -24,7 +24,8 @@ public class Woof extends SubsystemBase {
     }
 
     public Color getColor() {
-       return sensor.getRawDetectedColor();
+        return Constants.CYAN_TARGET;
+        // return sensor.getRawDetectedColor();
     }
 
     public void stop() {

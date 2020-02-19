@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class SixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommandGroup {
     public SixBallTwoTrenchOneTrenchAutonCommand(Drivetrain drivetrain, Shooter shooter, Funnel funnel, Chimney chimney, Intake intake) {
 
-        final double DISTANCE_TO_ACQUIRE_TWO_BALLS = 2;
-        final double DISTANCE_TO_ACQUIRE_THIRD_BALL = 3;
+        final double DISTANCE_TO_ACQUIRE_TWO_BALLS = 6;
+        final double DISTANCE_TO_ACQUIRE_THIRD_BALL = 9;
         final double ANGLE_TO_ACQUIRE_FROM_TRENCH = 15;
 
         addCommands(

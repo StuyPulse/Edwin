@@ -173,9 +173,10 @@ public class RobotContainer {
 
   public void initSmartDashboard() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand());
-    autonChooser.addOption("Mobility", new MobilityAutonCommand(drivetrain));
-    autonChooser.addOption("Shoot Three without Limelight", new ShootThreeWithoutLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
-    autonChooser.addOption("Shoot Three with Limelight", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Mobility Forward", new MobilityAutonCommand(drivetrain, true));
+    autonChooser.addOption("Mobility Backward", new MobilityAutonCommand(drivetrain, false));
+    autonChooser.addOption("Shoot Three Forward", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney, true));
+    autonChooser.addOption("Shoot Three Backward", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney, false));
     autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
     autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
     autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake));

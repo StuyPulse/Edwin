@@ -7,6 +7,7 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
@@ -136,8 +137,8 @@ public class RobotContainer {
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
 
-    driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()));
-    driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
+    driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
+    driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)));
 
     /**
      * 
@@ -146,14 +147,14 @@ public class RobotContainer {
     if (DEBUG) {
       // Auto alignment for angle and speed and update pid values
       debug.getLeftButton()
-          .toggleWhenPressed(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
-      debug.getTopButton().toggleWhenPressed(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
+          .whileHeld(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
+      debug.getTopButton().whileHeld(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
 
-      debug.getRightButton().toggleWhenPressed(new ShooterDefaultCommand(shooter, debug,
+      debug.getRightButton().whileHeld(new ShooterDefaultCommand(shooter, debug,
           new PIDCalculator(Shooting.Shooter.BANGBANG_SPEED), new PIDCalculator(Shooting.Feeder.BANGBANG_SPEED)));
 
       // Steal driving abilities from the driver
-      debug.getBottomButton().toggleWhenPressed(new DrivetrainDriveCommand(drivetrain, debug));
+      debug.getBottomButton().whileHeld(new DrivetrainDriveCommand(drivetrain, debug));
 
       // DPad controls for 90 degree turns and 2.5 ft steps
       debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));

@@ -7,6 +7,7 @@ import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.input.WPIGamepad;
+import com.stuypulse.stuylib.streams.filters.RateLimit;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

@@ -181,7 +181,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         }
 
         if(angle instanceof PIDController) {
-            angle = Alignment.Speed.getPID();
+            angle = Alignment.Angle.getPID();
         }
     }
 }

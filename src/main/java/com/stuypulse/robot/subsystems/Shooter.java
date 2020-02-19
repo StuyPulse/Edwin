@@ -18,10 +18,7 @@ public class Shooter extends SubsystemBase {
         NONE, 
         SHOOT_FROM_INITIATION_LINE, 
         SHOOT_FROM_TRENCH, 
-        SHOOT_FROM_FAR,
-        CHARGING_FROM_INITATION_LINE,
-        CHARGING_FROM_TRENCH,
-        CHARGING_FROM_FAR,
+        SHOOT_FROM_FAR
     };
 
     // Motors
@@ -74,8 +71,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getRawMedianShooterVelocity() {
-        final double[] speeds = { leftShooterEncoder.getVelocity(), middleShooterEncoder.getVelocity(),
-                rightShooterEncoder.getVelocity() };
+        double[] speeds = {
+            leftShooterEncoder.getVelocity(), 
+            middleShooterEncoder.getVelocity(),
+            rightShooterEncoder.getVelocity() 
+        };
 
         Arrays.sort(speeds);
 

@@ -9,20 +9,12 @@ import com.stuypulse.robot.Constants;
 
 public class Chimney extends SubsystemBase {
 
-    public enum ChimneyMode {
-        NONE,
-        ACQUIRED_ONE_CELL,
-        HOLDING_MAX_CELLS
-    }
-
     // CANSpark Motor and Encoder
     private CANSparkMax motor;
 
     // IR Sensor
     private DigitalInput lowerSensor;
     private DigitalInput upperSensor;
-
-    private ChimneyMode mode = ChimneyMode.NONE;
 
     public Chimney() {
         motor = new CANSparkMax(Constants.CHIMNEY_LIFT_MOTOR_PORT, MotorType.kBrushless);
@@ -50,14 +42,6 @@ public class Chimney extends SubsystemBase {
 
     public void stop() {
         motor.stopMotor();
-    }
-
-    public void setChimneyMode(ChimneyMode mode) {
-        this.mode = mode;
-    }
-
-    public ChimneyMode getChimneyMode() {
-        return mode;
     }
 
 }

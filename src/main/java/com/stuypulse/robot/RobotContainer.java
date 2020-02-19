@@ -10,12 +10,6 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
-import com.stuypulse.robot.commands.ChimneyStopCommand;
-import com.stuypulse.robot.commands.ChimneyUpCommand;
-import com.stuypulse.robot.commands.ClimberMoveYoyoCommand;
-import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
-import com.stuypulse.robot.commands.ClimberSetupCommand;
-import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
@@ -27,31 +21,34 @@ import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.IntakeDeacquireCommand;
-import com.stuypulse.robot.commands.IntakeExtendCommand;
 import com.stuypulse.robot.commands.IntakeRetractCommand;
 import com.stuypulse.robot.commands.ReverseShooterCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.commands.ShooterDefaultCommand;
 import com.stuypulse.robot.commands.ShooterStopCommand;
-import com.stuypulse.robot.commands.WoofManualControlCommand;
-import com.stuypulse.robot.commands.WoofSpinToColorCommand;
-import com.stuypulse.robot.commands.WoofTurnRotationsCommand;
+import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.MobilityAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.ShootThreeWithLimelightAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.ShootThreeWithoutLimelightAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
 import com.stuypulse.robot.subsystems.Chimney;
-import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
-import com.stuypulse.robot.subsystems.Woof;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.input.WPIGamepad;
-import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
 import com.stuypulse.stuylib.input.gamepads.PS4;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -78,6 +75,8 @@ public class RobotContainer {
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
   private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+
+  private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -163,6 +162,18 @@ public class RobotContainer {
     }
   }
 
+  public void initSmartDashboard() {
+    autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand());
+    autonChooser.addOption("Mobility", new MobilityAutonCommand(drivetrain));
+    autonChooser.addOption("Shoot Three without Limelight", new ShootThreeWithoutLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Shoot Three with Limelight", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake));
+    autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain));
+    autonChooser.addOption("Eight Ball Five Rdvs", new EightBallFiveRdvsAutonCommand(drivetrain, intake));
+    autonChooser.addOption("Eight Ball Three Trench Two Rdvs", new EightBallThreeTrenchTwoRdvsAutonCommand(drivetrain));
+    SmartDashboard.putData("Autonomous", autonChooser);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -170,7 +181,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return autonChooser.getSelected();
   }
 
 }

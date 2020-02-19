@@ -6,19 +6,25 @@ import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainInnerGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
+import com.stuypulse.robot.commands.FeedAndShootBallsAtTargetVelocityCommand;
+import com.stuypulse.robot.commands.ShooterControlCommand;
+import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Funnel;
+import com.stuypulse.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class ShootThreeAutonCommand extends SequentialCommandGroup {
+public class ShootThreeWithLimelightAutonCommand extends SequentialCommandGroup {
 
     private final double FEET_TO_MOVE_AFTER_SHOOTING = 1;
 
-    public ShootThreeAutonCommand(Drivetrain drivetrain) {
+    public ShootThreeWithLimelightAutonCommand(Drivetrain drivetrain, Shooter shooter, Funnel funnel, Chimney chimney) {
         addCommands(
+            new ShooterControlCommand(shooter, Constants.Shooting.INITATION_LINE_RPM),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()),
-        // TODO: Add shoot 3
+            new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter),
             new DrivetrainMovementCommand(drivetrain, 0, FEET_TO_MOVE_AFTER_SHOOTING),
             new DrivetrainStopCommand(drivetrain)
         );

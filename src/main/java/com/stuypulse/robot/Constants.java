@@ -103,7 +103,7 @@ public interface Constants {
         double ANGLE_POWER = 1.0;
 
         double SPEED_FILTER = 0.5; 
-        double ANGLE_FILTER = 0.15;
+        double ANGLE_FILTER = 0.05;
 
         int SPEED_ORDER = 1;
         int ANGLE_ORDER = 1;
@@ -134,36 +134,42 @@ public interface Constants {
     }
 
     public interface Alignment {
+        double TRENCH_DISTANCE = toFeet(242);
+        double INITATION_LINE_DISTANCE = toFeet(95);
 
+        double MIN_DISTANCE = toFeet(3, 0);
+        double MAX_DISTANCE = toFeet(54, 0);
 
-        double TRENCH_DISTANCE = toFeet(248);
-        double INITATION_LINE_DISTANCE = toFeet(94.5);
-
-        // TODO: find better values for this
-        double MIN_ALIGNMENT_TIME = 1;
-        double MAX_ALIGNMENT_TIME = 7.5;
+        double MIN_ALIGNMENT_TIME = 0.5;
+        double MAX_ALIGNMENT_TIME = 1000000;
         
-        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.65);
-        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0);
+        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
+        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
         SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
 
         public interface Speed {
+
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.2);   // TODO: find value 
-            SmartNumber I = new SmartNumber("SpeedI", 0.01);  // TODO: find value 
-            SmartNumber D = new SmartNumber("SpeedD", 0.025); // TODO: find value 
+            SmartNumber P = new SmartNumber("SpeedP", 0.20); 
+            SmartNumber I = new SmartNumber("SpeedI", 0);
+            SmartNumber D = new SmartNumber("SpeedD", 0.025);
 
             // Get PID Controller
+            PIDController SPEED_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                return new PIDController(P.get(), I.get(), D.get());
+                SPEED_CONTROLLER.setP(P.get());
+                SPEED_CONTROLLER.setI(I.get());
+                SPEED_CONTROLLER.setD(D.get());
+                return SPEED_CONTROLLER;
             }
+
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.7 is nice]
             double BANGBANG_SPEED = 0.5;
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.0);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.5);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.4);
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
@@ -172,22 +178,26 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0.01); // TODO: find value 
-            SmartNumber I = new SmartNumber("AngleI", 0.00);  // TODO: find value 
-            SmartNumber D = new SmartNumber("AngleD", 0.0025); // TODO: find value 
+            SmartNumber P = new SmartNumber("AngleP", 0.0239);
+            SmartNumber I = new SmartNumber("AngleI", 0);
+            SmartNumber D = new SmartNumber("AngleD", 0.00221);
 
             // Get PID Controller
+            PIDController ANGLE_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                return new PIDController(P.get(), I.get(), D.get());
+                ANGLE_CONTROLLER.setP(P.get());
+                ANGLE_CONTROLLER.setI(I.get());
+                ANGLE_CONTROLLER.setD(D.get());
+                return ANGLE_CONTROLLER;
             }
             
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.7 is nice]
-            double BANGBANG_SPEED = 0.6;
+            double BANGBANG_SPEED = 0.35;
 
             // Low pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.0);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.02);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 5.0;
@@ -196,13 +206,13 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6);
+            double GOAL_HEIGHT = toFeet(7, 5);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
                 double PITCH = 20;
-                double YAW = 0.0;
+                SmartNumber YAW = new SmartNumber("Limelight Yaw", 2.0);
             }
         }
     }
@@ -216,6 +226,9 @@ public interface Constants {
         double FAR_RPM = 5500.0 * GEAR;
 
         double TOLERANCE = 100;
+
+        double SECONDS_TO_SPEED = 2;
+        double TARGET_VEL_RATE_LIMIT = TRENCH_RPM / (50.0 * SECONDS_TO_SPEED);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
@@ -264,6 +277,8 @@ public interface Constants {
     double CLIMBER_MOVE_DEADBAND = 0.25;
 
     double CLIMBER_EXPONENT = 1/3;
+    
+    double CLIMBER_MOVE_SLOW_SPEED = 0.1;
 
     /*********************************************************************************************
      * Funnel Constants
@@ -280,7 +295,7 @@ public interface Constants {
     //TODO: Test speeds
     double MOVE_LIFT_UP_SPEED = 1.0;
     double MOVE_LIFT_DOWN_SPEED = -1.0;
-    double CLIMBER_SETUP_WAIT_TIME = 0.1;
+    double CLIMBER_SETUP_WAIT_TIME = 0.2;
     double CLIMBER_SCALE = 0.5;
 
     /*********************************************************************************************
@@ -320,8 +335,10 @@ public interface Constants {
      * Intake Motor Ports
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = 18;
-    int INTAKE_SOLENOID_PORT_A = 6;
-    int INTAKE_SOLENOID_PORT_B = 7;
+    // int INTAKE_SOLENOID_PORT_A = 6;
+    int INTAKE_SOLENOID_PORT_A = 4;
+    int INTAKE_SOLENOID_PORT_B = 5;
+    // int INTAKE_SOLENOID_PORT_B = 7;
 
     /*********************************************************************************************
      * Intake Constants

@@ -229,12 +229,14 @@ public interface Constants {
 
         double TOLERANCE = 100;
 
+        double I_LIMIT = 300;
+
         double SECONDS_TO_SPEED = 2;
         double TARGET_VEL_RATE_LIMIT = TRENCH_RPM / (50.0 * SECONDS_TO_SPEED);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
-        
+
             SmartNumber P = new SmartNumber("Shooter P", 0.001148);
             SmartNumber I = new SmartNumber("Shooter I", 0.003382);
             SmartNumber D = new SmartNumber("Shooter D", 0.000097);
@@ -307,9 +309,10 @@ public interface Constants {
     int WOOF_SENSOR_PORT = -1;
 
     /*********************************************************************************************
-     * Control Panel Constants
+     * Woof Constants
      *********************************************************************************************/
     double WOOF_TURN_SPEED = 1.0;
+    double WOOF_TARGET_ENCODER_VALUE = 480;
     
     double CYAN_RED = 0.2;
     double CYAN_GREEN = 0.56;

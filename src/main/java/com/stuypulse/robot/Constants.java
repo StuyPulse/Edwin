@@ -1,3 +1,5 @@
+
+  
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -31,7 +33,7 @@ public interface Constants {
      * @param inches inches
      * @return value in feet
      */
-    private static double toFeet(int feet, double inches) {
+    public static double toFeet(int feet, double inches) {
         return ((double) feet) + (inches / 12.0);
     }
 
@@ -41,7 +43,7 @@ public interface Constants {
      * @param inches inches
      * @return value in feet
      */
-    private static double toFeet(double inches) {
+    public static double toFeet(double inches) {
         return toFeet(0, inches);
     }
 
@@ -226,7 +228,7 @@ public interface Constants {
     
         double INITATION_LINE_RPM = 2075;
         double TRENCH_RPM = 3000;
-        double FAR_RPM = 5500.0 * GEAR;
+        double FAR_RPM = 5300.0;
 
         double TOLERANCE = 100;
 
@@ -363,18 +365,19 @@ public interface Constants {
 	double CHIMNEY_LIFT_UP_SPEED = 1;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -1;
+    
     // AUTOS 
 
     //TODO check all values for correctlynessly
     /*********************************************************************************************
      * Movement Auton Command       
      *********************************************************************************************/
-    int DISTANCE_TO_MOVE_AT_START = 5;
+    double DISTANCE_TO_MOVE_AT_START = 5; //feet
 
     /*********************************************************************************************
      * Shoot Three (At Start) Auton Command
      *********************************************************************************************/
-    int SHOOT_FROM_START_TO_GOAL = 10;
+    double SHOOT_FROM_START_TO_GOAL = 10;
 
     /*********************************************************************************************
      * Shoot at start and take 3 balls from trench
@@ -409,4 +412,5 @@ public interface Constants {
     
     double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
     double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
+
 }

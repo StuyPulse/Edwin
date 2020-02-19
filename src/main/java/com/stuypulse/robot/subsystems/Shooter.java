@@ -6,6 +6,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IStreamFilter;
@@ -156,5 +157,9 @@ public class Shooter extends SubsystemBase {
 
     public void setDefaultSolenoidPosition() {
         retractHoodSolenoid();
+    }
+
+    public boolean isAtTargetVelocity() {
+        return Math.abs(getCurrentShooterVelocityInRPM() - getTargetVelocity()) <= Constants.Shooting.TOLERANCE;
     }
 }

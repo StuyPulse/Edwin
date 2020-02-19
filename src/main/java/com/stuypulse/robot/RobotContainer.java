@@ -31,6 +31,15 @@ import com.stuypulse.robot.commands.ShooterDefaultCommand;
 import com.stuypulse.robot.commands.ShooterStopCommand;
 import com.stuypulse.robot.commands.WoofManualControlCommand;
 import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
+import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.MobilityAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.ShootThreeWithLimelightAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.ShootThreeWithoutLimelightAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.SixBallTwoTrenchOneTrenchAutonCommand;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
@@ -47,6 +56,8 @@ import com.stuypulse.stuylib.input.gamepads.PS4;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -73,6 +84,8 @@ public class RobotContainer {
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
   private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+
+  private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -158,6 +171,19 @@ public class RobotContainer {
     }
   }
 
+  public void initSmartDashboard() {
+    autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand());
+    autonChooser.addOption("Mobility", new MobilityAutonCommand(drivetrain));
+    autonChooser.addOption("Shoot Three without Limelight", new ShootThreeWithoutLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Shoot Three with Limelight", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
+    autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake));
+    autonChooser.addOption("Eight Ball Five Rdvs", new EightBallFiveRdvsAutonCommand(drivetrain, intake));
+    autonChooser.addOption("Eight Ball Three Trench Two Rdvs", new EightBallThreeTrenchTwoRdvsAutonCommand(drivetrain));
+    SmartDashboard.putData("Autonomous", autonChooser);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -165,7 +191,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return autonChooser.getSelected();
   }
 
 }

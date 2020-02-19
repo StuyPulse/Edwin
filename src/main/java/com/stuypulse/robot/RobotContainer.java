@@ -37,6 +37,7 @@ import com.stuypulse.robot.commands.ShooterStopCommand;
 import com.stuypulse.robot.commands.WoofManualControlCommand;
 import com.stuypulse.robot.commands.WoofSpinToColorCommand;
 import com.stuypulse.robot.commands.WoofTurnRotationsCommand;
+import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
@@ -122,7 +123,7 @@ public class RobotContainer {
     operator.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
 
     // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
-    // operator.getRightBumper().whenPressed(new WoofTurnRotationsCommand(woof));
+    operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
 
     // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
 

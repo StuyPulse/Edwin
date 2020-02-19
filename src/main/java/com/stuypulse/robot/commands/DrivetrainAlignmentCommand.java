@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.robot.Constants.Alignment;
 
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
@@ -103,7 +104,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         double out = 0;
 
         if(angleError < Alignment.Angle.MAX_ANGLE_ERROR) {
-            out = speed.update(speedError);
+            out = SLMath.limit(speed.update(speedError), -1, 1);
         } else {
             angleError -= Alignment.Angle.MAX_ANGLE_ERROR;
             angleError = Alignment.Angle.MAX_ANGLE_ERROR - angleError;
@@ -130,7 +131,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             error += 360;
         }
     
-        return angle.update(error);
+        return SLMath.limit(angle.update(error), -1, 1);
     }
 
     // Alignment must use low gear
@@ -165,12 +166,23 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Time out for aligning
         if(timer.getTime() > Alignment.MAX_ALIGNMENT_TIME) {
-            return false;
+            return true;
         }
 
-        return (speed.getError() < Alignment.Speed.MAX_SPEED_ERROR 
-                && speed.getVelocity() < Alignment.Speed.MAX_SPEED_VEL
-                && angle.getError() < Alignment.Angle.MAX_ANGLE_ERROR
-                && angle.getVelocity() < Alignment.Angle.MAX_ANGLE_VEL);
+        return false && (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
+             && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+    }
+
+    public void execute() {
+        super.execute();
+
+        // Update PID controllers with new values
+        if(speed instanceof PIDController) {
+            speed = Alignment.Speed.getPID();
+        }
+
+        if(angle instanceof PIDController) {
+            angle = Alignment.Angle.getPID();
+        }
     }
 }

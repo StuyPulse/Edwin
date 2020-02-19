@@ -1,5 +1,6 @@
 package com.stuypulse.robot.commands;
 
+import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
@@ -20,5 +21,12 @@ public class ShooterControlCommand extends InstantCommand {
     public void initialize() {
         shooter.setTargetVelocity(targetVelocity);
         shooter.setShooterMode(mode);
+
+        if(mode == ShooterMode.SHOOT_FROM_TRENCH || mode == ShooterMode.SHOOT_FROM_FAR) {
+            shooter.retractHoodSolenoid();
+        }
+        if(mode == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
+            shooter.extendHoodSolenoid();
+        }
     }
 }

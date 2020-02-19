@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
-    private CANSparkMax motor;
-    private DoubleSolenoid solenoid;
+    private final CANSparkMax motor;
+    private final DoubleSolenoid solenoid;
 
     private DigitalInput sensor;
 
@@ -20,28 +20,30 @@ public class Intake extends SubsystemBase {
         motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
         solenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_A, Constants.INTAKE_SOLENOID_PORT_B);
 
-        sensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
+        //sensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
+        
+        motor.setInverted(true);
     }
 
     public void extend() {
-        if(solenoid.get() == Value.kReverse) {
-            solenoid.set(Value.kForward);
-        }
+        // if (solenoid.get() == Value.kReverse) {
+            solenoid.set(Value.kReverse);
+        // }
     }
 
     public void retract() {
-        if(solenoid.get() == Value.kForward) {
-            solenoid.set(Value.kReverse);
-        }
+        // if (solenoid.get() == Value.kForward) {
+            solenoid.set(Value.kForward);
+        // }
     }
 
-    public void toggle() {
-        if (solenoid.get() == Value.kForward) {
-            retract();
-        } else {
-            extend();
-        }
-    }
+    // public void toggle() {
+    //     if (solenoid.get() == Value.kForward) {
+    //         retract();
+    //     } else {
+    //         extend();
+    //     }
+    // }
 
     public void acquire() {
         setMotor(Constants.INTAKE_MOTOR_SPEED);
@@ -52,10 +54,10 @@ public class Intake extends SubsystemBase {
     }
 
     public void stop() {
-        setMotor(0);
+        motor.stopMotor();
     }
 
-    public void setMotor(double speed) {
+    public void setMotor(final double speed) {
         motor.set(speed);
     }
 

@@ -16,13 +16,15 @@ public class Climber extends SubsystemBase {
 
     private Solenoid liftSolenoid;
 
-    private DigitalInput limitSwitch;
+    // private DigitalInput limitSwitch;
 
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);
         liftSolenoid = new Solenoid(Constants.CLIMBER_LIFT_SOLENOID_CHANNEL);
-        limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
+        // limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
+
+        liftMotor.setInverted(false);
     }
 
     public void setNeutralMode(IdleMode mode) {
@@ -35,6 +37,10 @@ public class Climber extends SubsystemBase {
 
     public void moveLiftUp() {
         moveLift(Constants.MOVE_LIFT_UP_SPEED);
+    }
+
+    public void moveLiftDownSlow() {
+        moveLift(-Constants.CLIMBER_MOVE_SLOW_SPEED);
     }
 
     public void moveLift(double speed) {
@@ -58,18 +64,19 @@ public class Climber extends SubsystemBase {
     }
 
     public void enableLiftBrake() {
-        if (!liftSolenoid.get()) {
-            liftSolenoid.set(true);
-        }
-    }
-
-    public void releaseLiftBrake() {
         if (liftSolenoid.get()) {
             liftSolenoid.set(false);
         }
     }
 
+    public void releaseLiftBrake() {
+        if (!liftSolenoid.get()) {
+            liftSolenoid.set(true);
+        }
+    }
+
     public boolean isAtBottom() {
-        return limitSwitch.get();
+        return false;
+        // return limitSwitch.get();
     }
 }

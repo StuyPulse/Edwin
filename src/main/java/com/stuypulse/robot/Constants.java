@@ -150,9 +150,9 @@ public interface Constants {
         public interface Speed {
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.30); 
+            SmartNumber P = new SmartNumber("SpeedP", 0.20); 
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.09);
+            SmartNumber D = new SmartNumber("SpeedD", 0.025);
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();
@@ -212,7 +212,7 @@ public interface Constants {
                 double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
                 double PITCH = 20;
-                double YAW = 0.0;
+                SmartNumber YAW = new SmartNumber("Limelight Yaw", 2.0);
             }
         }
     }

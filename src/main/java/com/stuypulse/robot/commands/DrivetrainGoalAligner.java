@@ -52,7 +52,7 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
 
     public double getAngleError() {
         if(Limelight.hasValidTarget()) {
-            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW;
+            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue();
         } else {
             return 0;
         }

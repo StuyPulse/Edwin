@@ -18,8 +18,8 @@ public class Woof extends SubsystemBase {
         
         // sensor = new ColorSensor();
         motor = new CANSparkMax(Constants.WOOF_MOTOR_PORT, MotorType.kBrushless);
-    
-        encoder.setPositionConversionFactor(0.05);
+        encoder = new CANEncoder(motor);
+        // encoder.setPositionConversionFactor(0.05);
     }
 
     public void turn(double speed) {

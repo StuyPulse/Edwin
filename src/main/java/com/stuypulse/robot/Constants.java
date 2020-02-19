@@ -152,12 +152,12 @@ public interface Constants {
         public interface Speed {
 
             // Speed the Drivetrain Moves
-            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (TEST AFTER)
+            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.6 (TEST AFTER)
+            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.4 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.15 (TEST AFTER)
+            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.05 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();
@@ -170,7 +170,7 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.5; // 1.0 (TEST AFTER)
+            double BANGBANG_SPEED = 0.5; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);

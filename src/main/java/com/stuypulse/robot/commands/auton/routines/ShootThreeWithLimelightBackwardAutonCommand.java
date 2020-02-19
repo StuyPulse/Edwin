@@ -22,10 +22,10 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class ShootThreeWithLimelightAutonCommand extends SequentialCommandGroup {
+public class ShootThreeWithLimelightBackwardAutonCommand extends SequentialCommandGroup {
 
 
-    public ShootThreeWithLimelightAutonCommand(Drivetrain drivetrain, Shooter shooter, Intake intake, Funnel funnel, Chimney chimney, boolean towardIntake) {
+    public ShootThreeWithLimelightBackwardAutonCommand(Drivetrain drivetrain, Shooter shooter, Intake intake, Funnel funnel, Chimney chimney) {
         addCommands(
             new ShooterControlCommand(shooter, Constants.Shooting.INITATION_LINE_RPM),
             new WaitCommand(2),
@@ -45,12 +45,13 @@ public class ShootThreeWithLimelightAutonCommand extends SequentialCommandGroup 
             //new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter),
             
             new DrivetrainStopCommand(drivetrain),
-            new IntakeExtendCommand(intake),
-            new IntakeAcquireForeverCommand(intake),
             new ParallelRaceGroup(
-                new DrivetrainMovementCommand(drivetrain, 0, towardIntake? 4.0 : -10.0/12),
-                new WaitCommand(towardIntake? 10.0 : 1.0)
-            )
+                new DrivetrainMovementCommand(drivetrain, 0, -10.0/12),
+                new WaitCommand(1.0)
+            ),
+            new IntakeExtendCommand(intake),
+            new IntakeAcquireForeverCommand(intake)
+
 
         );
     }

@@ -36,7 +36,7 @@ import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand
 import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.MobilityAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.ShootThreeWithLimelightAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.ShootThreeWithoutLimelightAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.ShootThreeWithLimelightBackwardAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallTwoTrenchOneTrenchAutonCommand;
@@ -175,8 +175,8 @@ public class RobotContainer {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand());
     autonChooser.addOption("Mobility Forward", new MobilityAutonCommand(drivetrain, true));
     autonChooser.addOption("Mobility Backward", new MobilityAutonCommand(drivetrain, false));
-    autonChooser.addOption("Shoot Three Forward", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney, true));
-    autonChooser.addOption("Shoot Three Backward", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney, false));
+    autonChooser.addOption("Shoot Three Forward", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, intake, funnel, chimney, true));
+    autonChooser.addOption("Shoot Three Backward", new ShootThreeWithLimelightBackwardAutonCommand(drivetrain, shooter, intake, funnel, chimney));
     autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
     autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
     autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake));

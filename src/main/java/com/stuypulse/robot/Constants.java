@@ -126,12 +126,12 @@ public interface Constants {
             double OUTER_GEAR_RATIO = 24.0 / 60.0;
 
             // The difference between theoretical and actual distance
-            double REAL_YIELD = 1.0;
+            double REAL_YIELD = -1.0; //* (10.0 / 3.125) * (1.18 / 3.125);
             
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
             double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
 
-            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE;
+            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * 0.272;
         }
     }
 
@@ -369,7 +369,7 @@ public interface Constants {
     /*********************************************************************************************
      * Movement Auton Command       
      *********************************************************************************************/
-    double DISTANCE_TO_MOVE_AT_START = 3.125; //feet
+    double DISTANCE_TO_MOVE_AT_START = 3.25; //feet
 
     /*********************************************************************************************
      * Shoot Three (At Start) Auton Command

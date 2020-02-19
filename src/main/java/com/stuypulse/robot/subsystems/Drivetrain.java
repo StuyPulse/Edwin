@@ -94,7 +94,7 @@ public class Drivetrain extends SubsystemBase {
         // Configure Motors and Other Things
         setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
-        setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.NEO_DISTANCE_PER_ROTATION);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
         setLowGear();
     }
@@ -208,7 +208,7 @@ public class Drivetrain extends SubsystemBase {
         double left = getLeftNEODistance();
         double right = getRightNEODistance();
 
-        return Math.max(left, right);
+        return Math.max(left, right) * 0.272 * 0.81333333;
     }
 
     /**
@@ -240,7 +240,9 @@ public class Drivetrain extends SubsystemBase {
      * @return distance drivetrain has moved
      */
     public double getGreyhillDistance() {
-        return greyhills.getDistance();
+        //System.out.println(greyhills.getDistance());
+        System.out.println(Math.max(greyhills.getLeftEncoder().getDistance(),greyhills.getRightEncoder().getDistance()));
+        return Math.max(greyhills.getLeftEncoder().getDistance(),greyhills.getRightEncoder().getDistance());
     }
 
     /**

@@ -207,8 +207,8 @@ public interface Constants {
 
         double GEAR = 2.0 / 3.0; 
     
-        double INITATION_LINE_RPM = 3900.0 * GEAR;
-        double TRENCH_RPM = 4900.0 * GEAR;
+        double INITATION_LINE_RPM = 2075;
+        double TRENCH_RPM = 3000;
         double FAR_RPM = 5500.0 * GEAR;
 
         double TOLERANCE = 100;
@@ -216,12 +216,12 @@ public interface Constants {
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
         
-            SmartNumber P = new SmartNumber("Shooter P", 0);
-            SmartNumber I = new SmartNumber("Shooter I", 0);
-            SmartNumber D = new SmartNumber("Shooter D", 0);
-            SmartNumber FF = new SmartNumber("Shooter FF", 1.0 / MAX_RPM);
+            SmartNumber P = new SmartNumber("Shooter P", 0.001148);
+            SmartNumber I = new SmartNumber("Shooter I", 0.003382);
+            SmartNumber D = new SmartNumber("Shooter D", 0.000097);
+            SmartNumber FF = new SmartNumber("Shooter FF", 0.00019);
         
-            double BANGBANG_SPEED = 0.25;
+            double BANGBANG_SPEED = 0.1;
         }
     
         public interface Feeder {
@@ -229,12 +229,12 @@ public interface Constants {
 
             double MAX_RPM = 5600.0 * GEAR;
         
-            SmartNumber P = new SmartNumber("Feeder P", 0);
-            SmartNumber I = new SmartNumber("Feeder I", 0);
-            SmartNumber D = new SmartNumber("Feeder D", 0);
-            SmartNumber FF = new SmartNumber("Feeder FF", 1.0 / MAX_RPM);
+            SmartNumber P = new SmartNumber("Feeder P", 0.000972);
+            SmartNumber I = new SmartNumber("Feeder I", 0.002740);
+            SmartNumber D = new SmartNumber("Feeder D", 0.000086);
+            SmartNumber FF = new SmartNumber("Feeder FF", 0.000195);
         
-            double BANGBANG_SPEED = 0.25;
+            double BANGBANG_SPEED = 0.1;
         }
     }
 
@@ -265,7 +265,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     //TODO: Test
-    double FUNNEL_SPEED = 1.0;
+    double FUNNEL_SPEED = 0.2;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;

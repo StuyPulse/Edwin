@@ -20,8 +20,8 @@ public class ShooterDefaultCommand extends CommandBase {
         Controller feedController) {
         this.shooter = shooter;
         this.gamepad = gamepad;
-        this.shootController = shootController;
-        this.feedController = feedController;
+        this.shootController = shootController.setErrorFilter(new RateLimit(60));
+        this.feedController = feedController.setErrorFilter(new RateLimit(60));
 
         addRequirements(this.shooter);
 
@@ -55,7 +55,7 @@ public class ShooterDefaultCommand extends CommandBase {
         if (shootController instanceof PIDCalculator) {
 
             PIDCalculator calculator = (PIDCalculator) shootController;
-            PIDController controller = (PIDController) calculator.getPIController();
+            PIDController controller = (PIDController) calculator.getPIDController();
 
             Shooting.Shooter.P.set(controller.getP());
             Shooting.Shooter.I.set(controller.getI());
@@ -65,7 +65,7 @@ public class ShooterDefaultCommand extends CommandBase {
         if (feedController instanceof PIDCalculator) {
 
             PIDCalculator calculator = (PIDCalculator) feedController;
-            PIDController controller = (PIDController) calculator.getPIController();
+            PIDController controller = (PIDController) calculator.getPIDController();
 
             Shooting.Feeder.P.set(controller.getP());
             Shooting.Feeder.I.set(controller.getI());
@@ -107,7 +107,7 @@ public class ShooterDefaultCommand extends CommandBase {
         double error = target - speed;
 
         // Speed to set the motor plus feed forward
-        double output = shootController.update(error);
+        double output = feedController.update(error);
         output += target * Shooting.Feeder.FF.get();
 
         // Set the shooter to that

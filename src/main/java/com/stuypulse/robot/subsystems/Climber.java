@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase {
         liftSolenoid = new Solenoid(Constants.CLIMBER_LIFT_SOLENOID_CHANNEL);
         // limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
 
-        liftMotor.setInverted(true);
+        liftMotor.setInverted(false);
     }
 
     public void setNeutralMode(IdleMode mode) {
@@ -37,6 +37,10 @@ public class Climber extends SubsystemBase {
 
     public void moveLiftUp() {
         moveLift(Constants.MOVE_LIFT_UP_SPEED);
+    }
+
+    public void moveLiftDownSlow() {
+        moveLift(-Constants.CLIMBER_MOVE_SLOW_SPEED);
     }
 
     public void moveLift(double speed) {

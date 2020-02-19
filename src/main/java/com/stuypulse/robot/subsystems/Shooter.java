@@ -9,6 +9,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.stuylib.network.SmartNumber;
+import com.stuypulse.stuylib.streams.filters.IStreamFilter;
+import com.stuypulse.stuylib.streams.filters.IStreamFilterGroup;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -111,20 +113,22 @@ public class Shooter extends SubsystemBase {
         return speed;
     }
 
+    private IStreamFilter shooterFilter = new IStreamFilterGroup(
+        (x) -> Math.max(0.0, x),
+        (x) -> (targetShooterVelocity.doubleValue() < 100) ? 0.0 : x
+    );
+
+    private IStreamFilter feederFilter = new IStreamFilterGroup(
+        (x) -> Math.max(0.0, x),
+        (x) -> (targetShooterVelocity.doubleValue() < 100) ? 0.0 : x
+    );
+
     public void setShooterSpeed(double speed) {
-        if(getTargetVelocity() < 100) {
-            shooterMotors.set(0);
-        } else {
-            shooterMotors.set(Math.max(0, speed));
-        }
+        shooterMotors.set(shooterFilter.get(speed));
     }
 
     public void setFeederSpeed(double speed) {
-        if(getTargetVelocity() < 100) {
-            feederMotor.set(0);
-        } else {
-            feederMotor.set(Math.max(0, speed));
-        }
+        feederMotor.set(feederFilter.get(speed));
     }
 
     public void setTargetVelocity(double targetVelocity) {

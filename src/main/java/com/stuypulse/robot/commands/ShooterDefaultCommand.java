@@ -1,12 +1,12 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.input.WPIGamepad;
+import com.stuypulse.stuylib.streams.filters.IStreamFilter;
 import com.stuypulse.stuylib.streams.filters.RateLimit;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -17,12 +17,18 @@ public class ShooterDefaultCommand extends CommandBase {
     public Controller shootController;
     public Controller feedController;
 
+    public double targetVel;
+    public IStreamFilter targetVelFilter;
+
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad, Controller shootController,
         Controller feedController) {
         this.shooter = shooter;
         this.gamepad = gamepad;
-        this.shootController = shootController.setErrorFilter(new RateLimit(60));
-        this.feedController = feedController.setErrorFilter(new RateLimit(60));
+        this.shootController = shootController;
+        this.feedController = feedController;
+
+        this.targetVel = 0;
+        this.targetVelFilter = new RateLimit(Shooting.TARGET_VEL_RATE_LIMIT);
 
         addRequirements(this.shooter);
 
@@ -77,7 +83,7 @@ public class ShooterDefaultCommand extends CommandBase {
     public void updateShooter() {
         // Target speed to go at
         double speed = shooter.getCurrentShooterVelocityInRPM();
-        double target = shooter.getTargetVelocity();
+        double target = targetVel;
 
         // The error from current speed to target
         double error = target - speed;
@@ -102,7 +108,7 @@ public class ShooterDefaultCommand extends CommandBase {
     public void updateFeeder() {
         // Target speed to go at
         double speed = shooter.getCurrentFeederVelocityInRPM();
-        double target = shooter.getTargetVelocity() * Shooting.Feeder.SPEED_MUL;
+        double target = targetVel * Shooting.Feeder.SPEED_MUL;
 
         // The error from current speed to target
         double error = target - speed;
@@ -117,6 +123,9 @@ public class ShooterDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
+
+        // Update target velocity
+        targetVel = targetVelFilter.get(shooter.getTargetVelocity());
 
         // If using PID, get its PID values
         updatePID();

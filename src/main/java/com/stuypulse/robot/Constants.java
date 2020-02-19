@@ -105,7 +105,7 @@ public interface Constants {
         double ANGLE_POWER = 1.0;
 
         double SPEED_FILTER = 0.5; 
-        double ANGLE_FILTER = 0.15;
+        double ANGLE_FILTER = 0.1;
 
         int SPEED_ORDER = 1;
         int ANGLE_ORDER = 1;
@@ -136,36 +136,38 @@ public interface Constants {
     }
 
     public interface Alignment {
+        double TRENCH_DISTANCE = toFeet(242);
+        double INITATION_LINE_DISTANCE = toFeet(91.5);
 
-
-        double TRENCH_DISTANCE = toFeet(248);
-        double INITATION_LINE_DISTANCE = toFeet(94.5);
-
-        // TODO: find better values for this
-        double MIN_ALIGNMENT_TIME = 1;
+        double MIN_ALIGNMENT_TIME = 0.5;
         double MAX_ALIGNMENT_TIME = 7.5;
         
-        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.65);
-        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0);
-        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
+        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.6);
+        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 1.2);
+        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 3.0 / 40);
 
         public interface Speed {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.2);   // TODO: find value 
-            SmartNumber I = new SmartNumber("SpeedI", 0.01);  // TODO: find value 
-            SmartNumber D = new SmartNumber("SpeedD", 0.025); // TODO: find value 
+            SmartNumber P = new SmartNumber("SpeedP", 0); 
+            SmartNumber I = new SmartNumber("SpeedI", 0);
+            SmartNumber D = new SmartNumber("SpeedD", 0);
 
             // Get PID Controller
+            PIDController SPEED_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                return new PIDController(P.get(), I.get(), D.get());
+                SPEED_CONTROLLER.setP(P.get());
+                SPEED_CONTROLLER.setI(I.get());
+                SPEED_CONTROLLER.setD(D.get());
+                return SPEED_CONTROLLER;
             }
+
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.7 is nice]
-            double BANGBANG_SPEED = 0.5;
+            double BANGBANG_SPEED = 0.3;
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.0);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.5);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
@@ -174,22 +176,26 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0.01); // TODO: find value 
-            SmartNumber I = new SmartNumber("AngleI", 0.00);  // TODO: find value 
-            SmartNumber D = new SmartNumber("AngleD", 0.0025); // TODO: find value 
+            SmartNumber P = new SmartNumber("AngleP", 0);
+            SmartNumber I = new SmartNumber("AngleI", 0);
+            SmartNumber D = new SmartNumber("AngleD", 0);
 
             // Get PID Controller
+            PIDController ANGLE_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                return new PIDController(P.get(), I.get(), D.get());
+                ANGLE_CONTROLLER.setP(P.get());
+                ANGLE_CONTROLLER.setI(I.get());
+                ANGLE_CONTROLLER.setD(D.get());
+                return ANGLE_CONTROLLER;
             }
             
             // Bang Bang speed when measuring PID Values 
-            // [whatever you want, but 0.7 is nice]
-            double BANGBANG_SPEED = 0.6;
+            double BANGBANG_SPEED = 0.35;
 
             // Low pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.0);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.02);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.02);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 5.0;
@@ -198,7 +204,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6);
+            double GOAL_HEIGHT = toFeet(7, 5);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);
@@ -218,6 +224,9 @@ public interface Constants {
         double FAR_RPM = 5500.0 * GEAR;
 
         double TOLERANCE = 100;
+
+        double SECONDS_TO_SPEED = 2;
+        double TARGET_VEL_RATE_LIMIT = TRENCH_RPM / (50.0 * SECONDS_TO_SPEED);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;

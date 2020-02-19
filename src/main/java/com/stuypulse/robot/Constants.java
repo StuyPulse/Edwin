@@ -293,7 +293,7 @@ public interface Constants {
      * Woof Constants
      *********************************************************************************************/
     double WOOF_TURN_SPEED = 1.0;
-    double WOOF_TARGET_ENCODER_VALUE = 1000;
+    double WOOF_TARGET_ENCODER_VALUE = 480;
     
     double CYAN_RED = 0.2;
     double CYAN_GREEN = 0.56;

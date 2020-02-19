@@ -26,11 +26,6 @@ public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
         setNeverFinish();
     }
 
-    // This command never really finishes
-    public boolean isFinished() {
-        return false;
-    }
-
     // Report value to smart dashboard
     public void execute() {
         super.execute();

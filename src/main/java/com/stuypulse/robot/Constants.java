@@ -103,7 +103,7 @@ public interface Constants {
         double ANGLE_POWER = 1.0;
 
         double SPEED_FILTER = 0.5; 
-        double ANGLE_FILTER = 0.1;
+        double ANGLE_FILTER = 0.05;
 
         int SPEED_ORDER = 1;
         int ANGLE_ORDER = 1;

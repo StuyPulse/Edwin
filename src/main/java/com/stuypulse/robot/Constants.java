@@ -155,7 +155,7 @@ public interface Constants {
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.4); 
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.1);
+            SmartNumber D = new SmartNumber("SpeedD", 0.05);
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();

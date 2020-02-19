@@ -168,7 +168,7 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.5;
+            double BANGBANG_SPEED = 1;
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);

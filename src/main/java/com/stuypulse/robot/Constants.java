@@ -149,10 +149,13 @@ public interface Constants {
 
         public interface Speed {
 
+            // Speed the Drivetrain Moves
+            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 0.5);
+
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.20); 
+            SmartNumber P = new SmartNumber("SpeedP", 0.4); 
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.025);
+            SmartNumber D = new SmartNumber("SpeedD", 0.1);
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();

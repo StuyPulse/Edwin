@@ -46,6 +46,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Used to check timeout of alignment
     private StopWatch timer;
 
+    // Return false in isFinished
+    private boolean neverFinish;
+
     /**
      * This creates a command that aligns the robot
      * 
@@ -73,6 +76,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Used to check the alignment time.
         this.timer = new StopWatch();
+
+        // Normally end the command once aligned
+        this.neverFinish = false;
     }
 
     /**
@@ -99,23 +105,22 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
-        double angleError = Math.abs(aligner.getAngleError());
+        double angleError = Math.abs(angle.getError());
         double speedError = aligner.getSpeedError();
         double out = 0;
 
         if(angleError < Alignment.Angle.MAX_ANGLE_ERROR) {
-            out = SLMath.limit(speed.update(speedError), -1, 1);
+            out = SLMath.limit(speed.update(speedError), 1);
         } else {
             angleError -= Alignment.Angle.MAX_ANGLE_ERROR;
             angleError = Alignment.Angle.MAX_ANGLE_ERROR - angleError;
-            angleError = Math.max(angleError, 0.0);
+            angleError = Math.max(angleError, 0.0) / Alignment.Angle.MAX_ANGLE_ERROR;
 
-            out = SLMath.limit(speed.update(speedError), -1, 1);
-            out *= (Alignment.Angle.MAX_ANGLE_ERROR - angleError);
-            out /= Alignment.Angle.MAX_ANGLE_ERROR;
+            out = SLMath.limit(speed.update(speedError), 1);
+            out = SLMath.limit(out * angleError, 1);
         }
 
-        return out;
+        return out * Alignment.Speed.MAX_SPEED.doubleValue();
     }
 
     // Update angle based on angle error
@@ -139,41 +144,22 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return Drivetrain.Gear.LOW;
     }
 
+    // Aligning doesn't need to use curvature drive
+    // Arcade drive is better for non humans
     public boolean useCurvatureDrive() {
-        // Aligning doesn't need to use curvature drive
-        // Arcade drive is better for non humans
         return false;
+    }
+
+    // Make the command never finish
+    public DrivetrainAlignmentCommand setNeverFinish() {
+        this.neverFinish = true;
+        return this;
     }
 
     // Set the gear and other things when initializing
     public void initialize() {
         aligner.init();
         timer.reset();
-    }
-
-    // Turn limelight off when no longer aligning due to rules
-    public void end(boolean interrupted) {
-        Limelight.setLEDMode(Limelight.LEDMode.FORCE_OFF);
-    }
-
-    // Command is finished if all of the errors are small enough
-    public boolean isFinished() {
-        // Check if the aligner hasn't run for long enough
-        if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
-            return false;
-        }
-
-        // Time out for aligning
-        if(timer.getTime() > Alignment.MAX_ALIGNMENT_TIME) {
-            return true;
-        }
-
-<<<<<<< HEAD
-        return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
-=======
-        return false && (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
->>>>>>> 1a7d7cb5340a9e83ba7a1a90de50c9a693794892
-             && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
     }
 
     public void execute() {
@@ -187,5 +173,31 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         if(angle instanceof PIDController) {
             angle = Alignment.Angle.getPID();
         }
+    }
+
+    // Command is finished if all of the errors are small enough
+    public boolean isFinished() {
+        // If you do not want the command to automatically finish
+        if(neverFinish) {
+            return false;
+        }
+
+        // Check if the aligner hasn't run for long enough
+        if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
+            return false;
+        }
+
+        // Time out for aligning
+        if(timer.getTime() > Alignment.MAX_ALIGNMENT_TIME) {
+            return true;
+        }
+
+        return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
+             && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+    }
+
+    // Turn limelight off when no longer aligning due to rules
+    public void end(boolean interrupted) {
+        Limelight.setLEDMode(Limelight.LEDMode.FORCE_OFF);
     }
 }

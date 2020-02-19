@@ -11,9 +11,6 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
-import com.stuypulse.robot.commands.ChimneyStopCommand;
-import com.stuypulse.robot.commands.ChimneyUpCommand;
-import com.stuypulse.robot.commands.ClimberMoveYoyoCommand;
 import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
 import com.stuypulse.robot.commands.ClimberSetupCommand;
 import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
@@ -22,21 +19,18 @@ import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
 import com.stuypulse.robot.commands.DrivetrainDriveCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
-import com.stuypulse.robot.commands.DrivetrainInnerGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.IntakeDeacquireCommand;
-import com.stuypulse.robot.commands.IntakeExtendCommand;
 import com.stuypulse.robot.commands.IntakeRetractCommand;
 import com.stuypulse.robot.commands.ReverseShooterCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.commands.ShooterDefaultCommand;
 import com.stuypulse.robot.commands.ShooterStopCommand;
 import com.stuypulse.robot.commands.WoofManualControlCommand;
-import com.stuypulse.robot.commands.WoofSpinToColorCommand;
-import com.stuypulse.robot.commands.WoofTurnRotationsCommand;
+import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;
@@ -122,7 +116,7 @@ public class RobotContainer {
     operator.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
 
     // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
-    // operator.getRightBumper().whenPressed(new WoofTurnRotationsCommand(woof));
+    operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
 
     // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
 

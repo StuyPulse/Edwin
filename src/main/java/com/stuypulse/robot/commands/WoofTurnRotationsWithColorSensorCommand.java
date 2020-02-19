@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.stuypulse.robot.Constants;
 
-public class WoofTurnRotationsCommand extends CommandBase {
+public class WoofTurnRotationsWithColorSensorCommand extends CommandBase {
 
-    private final Woof controlPanel;
+    private final Woof woof;
     
     private Color previousColor = null;
     private double colorCount;
@@ -17,15 +17,15 @@ public class WoofTurnRotationsCommand extends CommandBase {
      *
      * @param subsystem The subsystem used by this command.
      */
-    public WoofTurnRotationsCommand(Woof controlPanel) {
-        this.controlPanel = controlPanel;
-        addRequirements(controlPanel);
+    public WoofTurnRotationsWithColorSensorCommand(Woof woof) {
+        this.woof = woof;
+        addRequirements(woof);
     }
 
     @Override
     public void execute() {
-        controlPanel.turn(Constants.WOOF_TURN_SPEED);
-        if (previousColor != null && previousColor != controlPanel.getColor()) { 
+        woof.turn(Constants.WOOF_TURN_SPEED);
+        if (previousColor != null && previousColor != woof.getColor()) { 
             /**
              * checks if a previous color exists and that it is not the same as the curent color
              * if so, increment colorCount, which keeps track of the number of colors passed so far.
@@ -33,7 +33,7 @@ public class WoofTurnRotationsCommand extends CommandBase {
               */
             colorCount += 0.125;
         }
-        previousColor = controlPanel.getColor();
+        previousColor = woof.getColor();
     }
 
     @Override
@@ -44,6 +44,6 @@ public class WoofTurnRotationsCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        controlPanel.stop();
+        woof.stop();
     }
 }

@@ -64,17 +64,17 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
 
   //Subsystems
   private final Chimney chimney = new Chimney();
-  // private final Climber climber = new Climber();
+  private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Funnel funnel = new Funnel();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
-  // private final Woof woof = new Woof();
+  private final Woof woof = new Woof();
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
@@ -93,9 +93,9 @@ public class RobotContainer {
 
     // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
-    // woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
+    woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
 
-    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, operator));
+    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
 
     new Thread(new MotorStalling(funnel)).start();
   }
@@ -108,9 +108,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-    // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
-    // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() <= -Math.abs(operator.getLeftX()))).whileHeld(new ClimberRobotClimbCommand(climber));
+    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() <= -Math.abs(operator.getLeftX()))).whileHeld(new ClimberRobotClimbCommand(climber, intake));
     // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX()) >= Math.abs(operator.getLeftY()))).whileHeld(new ClimberMoveYoyoCommand(climber, operator));
 
     operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
@@ -124,7 +124,7 @@ public class RobotContainer {
     // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
     // operator.getRightBumper().whenPressed(new WoofTurnRotationsCommand(woof));
 
-    // operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
 
     operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM));
     operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM));

@@ -1,6 +1,5 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.control.Controller;

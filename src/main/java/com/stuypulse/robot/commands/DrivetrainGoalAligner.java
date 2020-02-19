@@ -37,6 +37,12 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
             targetDistance.set(distance);
             distanceError.set(goal_dist - distance);
 
+            if(goal_dist < Alignment.MIN_DISTANCE) {
+                return 0;
+            } else if(goal_dist > Alignment.MAX_DISTANCE) {
+                return 0;
+            }
+
             // Return the error from the target distance
             return 0 - (goal_dist - distance);
         } else {
@@ -46,7 +52,7 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
 
     public double getAngleError() {
         if(Limelight.hasValidTarget()) {
-            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW;
+            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue();
         } else {
             return 0;
         }

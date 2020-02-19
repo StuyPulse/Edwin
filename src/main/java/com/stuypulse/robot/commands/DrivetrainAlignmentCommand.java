@@ -165,10 +165,14 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Time out for aligning
         if(timer.getTime() > Alignment.MAX_ALIGNMENT_TIME) {
-            return false;
+            return true;
         }
 
+<<<<<<< HEAD
         return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
+=======
+        return false && (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
+>>>>>>> 1a7d7cb5340a9e83ba7a1a90de50c9a693794892
              && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
     }
 

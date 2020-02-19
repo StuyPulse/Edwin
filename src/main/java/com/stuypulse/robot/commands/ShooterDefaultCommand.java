@@ -6,6 +6,7 @@ import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.input.WPIGamepad;
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.filters.IStreamFilter;
 import com.stuypulse.stuylib.streams.filters.RateLimit;
 
@@ -28,14 +29,20 @@ public class ShooterDefaultCommand extends CommandBase {
         this.feedController = feedController;
 
         this.targetVel = 0;
-        this.targetVelFilter = new RateLimit(Shooting.TARGET_VEL_RATE_LIMIT);
+        this.targetVelFilter = (x) -> x;
 
         addRequirements(this.shooter);
 
     }
 
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad) {
-        this(shooter, gamepad, new PIDController(), new PIDController());
+        this(shooter, gamepad, 
+            new PIDController().setIntegratorFilter(
+                (x) -> SLMath.limit(x, Shooting.I_LIMIT)
+            ), 
+            new PIDController().setIntegratorFilter(
+                (x) -> SLMath.limit(x, Shooting.I_LIMIT)
+            ));
 
         addRequirements(this.shooter);
     }

@@ -101,7 +101,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
      * @param drivetrain the drivetrain you want to move
      * @param angle      the angle you want it to turn before moving (this may*
      *                   affect distance)
-     * @param distance   the distance you want it to travel
+     * @param distance   the distance you want it to travel (feet)
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle, double distance) {
         super(drivetrain, new Aligner(drivetrain, angle, distance));

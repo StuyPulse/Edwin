@@ -103,7 +103,7 @@ public interface Constants {
         double ANGLE_POWER = 1.0;
 
         double SPEED_FILTER = 0.5; 
-        double ANGLE_FILTER = 0.15;
+        double ANGLE_FILTER = 0.1;
 
         int SPEED_ORDER = 1;
         int ANGLE_ORDER = 1;
@@ -134,18 +134,15 @@ public interface Constants {
     }
 
     public interface Alignment {
+        double TRENCH_DISTANCE = toFeet(242);
+        double INITATION_LINE_DISTANCE = toFeet(91.5);
 
-
-        double TRENCH_DISTANCE = toFeet(248);
-        double INITATION_LINE_DISTANCE = toFeet(94.5);
-
-        // TODO: find better values for this
-        double MIN_ALIGNMENT_TIME = 1;
+        double MIN_ALIGNMENT_TIME = 0.5;
         double MAX_ALIGNMENT_TIME = 7.5;
         
-        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.65);
-        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0);
-        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
+        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.6);
+        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 1.2);
+        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 3.0 / 40);
 
         public interface Speed {
             // Preset PID Values
@@ -154,11 +151,17 @@ public interface Constants {
             SmartNumber D = new SmartNumber("SpeedD", 0);
 
             // Get PID Controller
+            PIDController SPEED_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                return new PIDController(P.get(), I.get(), D.get());
+                SPEED_CONTROLLER.setP(P.get());
+                SPEED_CONTROLLER.setI(I.get());
+                SPEED_CONTROLLER.setD(D.get());
+                return SPEED_CONTROLLER;
             }
+
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.35;
+            double BANGBANG_SPEED = 0.3;
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
@@ -176,12 +179,17 @@ public interface Constants {
             SmartNumber D = new SmartNumber("AngleD", 0);
 
             // Get PID Controller
+            PIDController ANGLE_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                return new PIDController(P.get(), I.get(), D.get());
+                ANGLE_CONTROLLER.setP(P.get());
+                ANGLE_CONTROLLER.setI(I.get());
+                ANGLE_CONTROLLER.setD(D.get());
+                return ANGLE_CONTROLLER;
             }
             
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.4;
+            double BANGBANG_SPEED = 0.35;
 
             // Low pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.02);
@@ -194,7 +202,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6);
+            double GOAL_HEIGHT = toFeet(7, 5);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);

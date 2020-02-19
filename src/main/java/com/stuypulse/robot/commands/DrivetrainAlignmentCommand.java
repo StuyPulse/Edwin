@@ -177,17 +177,11 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Update PID controllers with new values
         if(speed instanceof PIDController) {
-            PIDController s = (PIDController) speed;
-            s.setP(Alignment.Speed.P.doubleValue());
-            s.setI(Alignment.Speed.I.doubleValue());
-            s.setD(Alignment.Speed.D.doubleValue());
+            speed = Alignment.Speed.getPID();
         }
 
         if(angle instanceof PIDController) {
-            PIDController a = (PIDController) angle;
-            a.setP(Alignment.Angle.P.doubleValue());
-            a.setI(Alignment.Angle.I.doubleValue());
-            a.setD(Alignment.Angle.D.doubleValue());
+            angle = Alignment.Speed.getPID();
         }
     }
 }

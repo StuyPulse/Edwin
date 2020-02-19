@@ -23,6 +23,8 @@ public class Climber extends SubsystemBase {
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);
         liftSolenoid = new Solenoid(Constants.CLIMBER_LIFT_SOLENOID_CHANNEL);
         // limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
+
+        liftMotor.setInverted(true);
     }
 
     public void setNeutralMode(IdleMode mode) {
@@ -58,14 +60,14 @@ public class Climber extends SubsystemBase {
     }
 
     public void enableLiftBrake() {
-        if (!liftSolenoid.get()) {
-            liftSolenoid.set(true);
+        if (liftSolenoid.get()) {
+            liftSolenoid.set(false);
         }
     }
 
     public void releaseLiftBrake() {
-        if (liftSolenoid.get()) {
-            liftSolenoid.set(false);
+        if (!liftSolenoid.get()) {
+            liftSolenoid.set(true);
         }
     }
 

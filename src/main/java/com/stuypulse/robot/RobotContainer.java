@@ -7,6 +7,7 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
@@ -34,6 +35,7 @@ import com.stuypulse.robot.commands.auton.routines.ShootThreeWithLimelightAutonC
 import com.stuypulse.robot.commands.auton.routines.ShootThreeWithoutLimelightAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.SixBallTwoTrenchOneTrenchAutonCommand;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
@@ -60,17 +62,17 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
 
   //Subsystems
   private final Chimney chimney = new Chimney();
-  // private final Climber climber = new Climber();
+  private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Funnel funnel = new Funnel();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
-  // private final Woof woof = new Woof();
+  private final Woof woof = new Woof();
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
@@ -91,9 +93,9 @@ public class RobotContainer {
 
     // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
-    // woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
+    woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
 
-    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, operator));
+    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
 
     new Thread(new MotorStalling(funnel)).start();
   }
@@ -106,9 +108,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-    // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
-    // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() <= -Math.abs(operator.getLeftX()))).whileHeld(new ClimberRobotClimbCommand(climber));
+    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() <= -Math.abs(operator.getLeftX()))).whileHeld(new ClimberRobotClimbCommand(climber, intake));
     // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX()) >= Math.abs(operator.getLeftY()))).whileHeld(new ClimberMoveYoyoCommand(climber, operator));
 
     operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
@@ -122,7 +124,7 @@ public class RobotContainer {
     // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
     // operator.getRightBumper().whenPressed(new WoofTurnRotationsCommand(woof));
 
-    // operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+    // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
 
     operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM));
     operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM));
@@ -135,8 +137,8 @@ public class RobotContainer {
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
 
-    driver.getLeftButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()));
-    driver.getTopButton().whenHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)));
+    driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
+    driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)));
 
     /**
      * 
@@ -145,14 +147,14 @@ public class RobotContainer {
     if (DEBUG) {
       // Auto alignment for angle and speed and update pid values
       debug.getLeftButton()
-          .toggleWhenPressed(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(10)));
-      debug.getTopButton().toggleWhenPressed(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(10)));
+          .whileHeld(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
+      debug.getTopButton().whileHeld(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
 
-      debug.getRightButton().toggleWhenPressed(new ShooterDefaultCommand(shooter, debug,
+      debug.getRightButton().whileHeld(new ShooterDefaultCommand(shooter, debug,
           new PIDCalculator(Shooting.Shooter.BANGBANG_SPEED), new PIDCalculator(Shooting.Feeder.BANGBANG_SPEED)));
 
       // Steal driving abilities from the driver
-      debug.getBottomButton().toggleWhenPressed(new DrivetrainDriveCommand(drivetrain, debug));
+      debug.getBottomButton().whileHeld(new DrivetrainDriveCommand(drivetrain, debug));
 
       // DPad controls for 90 degree turns and 2.5 ft steps
       debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
@@ -167,8 +169,9 @@ public class RobotContainer {
     autonChooser.addOption("Mobility", new MobilityAutonCommand(drivetrain));
     autonChooser.addOption("Shoot Three without Limelight", new ShootThreeWithoutLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
     autonChooser.addOption("Shoot Three with Limelight", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, funnel, chimney));
-    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake));
-    autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain));
+    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
+    autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake));
     autonChooser.addOption("Eight Ball Five Rdvs", new EightBallFiveRdvsAutonCommand(drivetrain, intake));
     autonChooser.addOption("Eight Ball Three Trench Two Rdvs", new EightBallThreeTrenchTwoRdvsAutonCommand(drivetrain));
     SmartDashboard.putData("Autonomous", autonChooser);

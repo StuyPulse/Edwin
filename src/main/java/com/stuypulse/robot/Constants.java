@@ -176,7 +176,7 @@ public interface Constants {
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
-            double MAX_SPEED_VEL = toFeet(3.0);
+            double MAX_SPEED_VEL = toFeet(6.0);
         }
 
         public interface Angle {
@@ -203,8 +203,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 5.0;
-            double MAX_ANGLE_VEL = 3.0;
+            double MAX_ANGLE_ERROR = 4.0;
+            double MAX_ANGLE_VEL = 8.0;
         }
 
         public interface Measurements {

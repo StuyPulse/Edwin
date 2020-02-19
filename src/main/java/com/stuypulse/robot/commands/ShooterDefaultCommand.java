@@ -24,11 +24,11 @@ public class ShooterDefaultCommand extends CommandBase {
         Controller feedController) {
         this.shooter = shooter;
         this.gamepad = gamepad;
-        this.shootController = shootController;
-        this.feedController = feedController;
+        this.shootController = shootController.setErrorFilter(new RateLimit(60));
+        this.feedController = feedController.setErrorFilter(new RateLimit(60));
 
         this.targetVel = 0;
-        this.targetVelFilter = new RateLimit(Shooting.TARGET_VEL_RATE_LIMIT);
+        this.targetVelFilter = (x) -> x;//new RateLimit(Shooting.TARGET_VEL_RATE_LIMIT);
 
         addRequirements(this.shooter);
 

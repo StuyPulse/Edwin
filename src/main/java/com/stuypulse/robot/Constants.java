@@ -135,20 +135,26 @@ public interface Constants {
 
     public interface Alignment {
         double TRENCH_DISTANCE = toFeet(242);
-        double INITATION_LINE_DISTANCE = toFeet(91.5);
+        double INITATION_LINE_DISTANCE = toFeet(95);
+
+        double MIN_DISTANCE = toFeet(3, 0);
+        double MAX_DISTANCE = toFeet(54, 0);
 
         double MIN_ALIGNMENT_TIME = 0.5;
-        double MAX_ALIGNMENT_TIME = 7.5;
+        double MAX_ALIGNMENT_TIME = 1000000;
         
-        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.6);
-        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 1.2);
-        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 3.0 / 40);
+        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
+        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
+        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
 
         public interface Speed {
+
+
+
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0); 
+            SmartNumber P = new SmartNumber("SpeedP", 0.30); 
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0);
+            SmartNumber D = new SmartNumber("SpeedD", 0.09);
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();
@@ -161,11 +167,11 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.3;
+            double BANGBANG_SPEED = 0.5;
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.4);
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
@@ -174,9 +180,9 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0);
+            SmartNumber P = new SmartNumber("AngleP", 0.0239);
             SmartNumber I = new SmartNumber("AngleI", 0);
-            SmartNumber D = new SmartNumber("AngleD", 0);
+            SmartNumber D = new SmartNumber("AngleD", 0.00221);
 
             // Get PID Controller
             PIDController ANGLE_CONTROLLER = new PIDController();
@@ -192,8 +198,8 @@ public interface Constants {
             double BANGBANG_SPEED = 0.35;
 
             // Low pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.02);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 5.0;

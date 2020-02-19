@@ -149,8 +149,6 @@ public interface Constants {
 
         public interface Speed {
 
-
-
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.30); 
             SmartNumber I = new SmartNumber("SpeedI", 0);

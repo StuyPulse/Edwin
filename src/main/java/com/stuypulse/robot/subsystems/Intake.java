@@ -4,9 +4,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -22,24 +21,24 @@ public class Intake extends SubsystemBase {
     }
 
     public void extend() {
-        if (solenoid.get() == Value.kReverse) {
-            solenoid.set(Value.kForward);
-        }
+        // if (solenoid.get() == Value.kReverse) {
+            solenoid.set(Value.kReverse);
+        // }
     }
 
     public void retract() {
-        if (solenoid.get() == Value.kForward) {
-            solenoid.set(Value.kReverse);
-        }
+        // if (solenoid.get() == Value.kForward) {
+            solenoid.set(Value.kForward);
+        // }
     }
 
-    public void toggle() {
-        if (solenoid.get() == Value.kForward) {
-            retract();
-        } else {
-            extend();
-        }
-    }
+    // public void toggle() {
+    //     if (solenoid.get() == Value.kForward) {
+    //         retract();
+    //     } else {
+    //         extend();
+    //     }
+    // }
 
     public void acquire() {
         setMotor(Constants.INTAKE_MOTOR_SPEED);

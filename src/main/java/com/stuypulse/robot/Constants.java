@@ -264,6 +264,8 @@ public interface Constants {
     double CLIMBER_MOVE_DEADBAND = 0.25;
 
     double CLIMBER_EXPONENT = 1/3;
+    
+    double CLIMBER_MOVE_SLOW_SPEED = 0.1;
 
     /*********************************************************************************************
      * Funnel Constants
@@ -280,7 +282,7 @@ public interface Constants {
     //TODO: Test speeds
     double MOVE_LIFT_UP_SPEED = 1.0;
     double MOVE_LIFT_DOWN_SPEED = -1.0;
-    double CLIMBER_SETUP_WAIT_TIME = 0.1;
+    double CLIMBER_SETUP_WAIT_TIME = 0.2;
     double CLIMBER_SCALE = 0.5;
 
     /*********************************************************************************************
@@ -319,8 +321,10 @@ public interface Constants {
      * Intake Motor Ports
      *********************************************************************************************/
     int INTAKE_MOTOR_PORT = 18;
-    int INTAKE_SOLENOID_PORT_A = 6;
-    int INTAKE_SOLENOID_PORT_B = 7;
+    // int INTAKE_SOLENOID_PORT_A = 6;
+    int INTAKE_SOLENOID_PORT_A = 4;
+    int INTAKE_SOLENOID_PORT_B = 5;
+    // int INTAKE_SOLENOID_PORT_B = 7;
 
     /*********************************************************************************************
      * Intake Constants

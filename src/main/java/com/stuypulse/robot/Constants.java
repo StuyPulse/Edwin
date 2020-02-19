@@ -225,7 +225,7 @@ public interface Constants {
     
         double INITATION_LINE_RPM = 2075;
         double TRENCH_RPM = 3000;
-        double FAR_RPM = 5500.0 * GEAR;
+        double FAR_RPM = 5300.0;
 
         double TOLERANCE = 100;
 

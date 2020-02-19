@@ -30,6 +30,7 @@ import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.commands.ShooterDefaultCommand;
 import com.stuypulse.robot.commands.ShooterStopCommand;
 import com.stuypulse.robot.commands.WoofManualControlCommand;
+import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
 import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
@@ -39,7 +40,6 @@ import com.stuypulse.robot.commands.auton.routines.ShootThreeWithoutLimelightAut
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallTwoTrenchOneTrenchAutonCommand;
-import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Drivetrain;

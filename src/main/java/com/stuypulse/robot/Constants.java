@@ -153,11 +153,11 @@ public interface Constants {
                 return new PIDController(P.get(), I.get(), D.get());
             }
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.25;
+            double BANGBANG_SPEED = 0.35;
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.04);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.16);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(5.0);
@@ -176,11 +176,11 @@ public interface Constants {
             }
             
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.3;
+            double BANGBANG_SPEED = 0.4;
 
             // Low pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.02);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.1);
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 5.0;

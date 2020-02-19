@@ -223,6 +223,9 @@ public interface Constants {
 
         double TOLERANCE = 100;
 
+        double SECONDS_TO_SPEED = 2;
+        double TARGET_VEL_RATE_LIMIT = TRENCH_RPM / (50.0 * SECONDS_TO_SPEED);
+
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
         

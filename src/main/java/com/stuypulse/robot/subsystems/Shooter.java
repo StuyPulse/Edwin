@@ -58,10 +58,16 @@ public class Shooter extends SubsystemBase {
 
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
+        // shooterMotors = new SpeedControllerGroup(rightShooterMotor);
+
         targetShooterVelocity = new SmartNumber("Shooter Target Vel", 30);
         currentShooterVelocity = new SmartNumber("Shooter Current Vel", -1);
 
         currentFeederVelocity = new SmartNumber("Feeder Current Vel", -1);
+
+        rightShooterMotor.setIdleMode(IdleMode.kCoast);
+        leftShooterMotor.setIdleMode(IdleMode.kCoast);
+        rightShooterMotor.setIdleMode(IdleMode.kCoast);
 
         feederMotor.setIdleMode(IdleMode.kCoast);
         feederMotor.setInverted(true);

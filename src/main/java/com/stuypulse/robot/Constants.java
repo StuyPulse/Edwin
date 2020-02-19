@@ -135,12 +135,17 @@ public interface Constants {
 
     public interface Alignment {
 
-        double MIN_ALIGNMENT_TIME = 0.25;
+
+        double TRENCH_DISTANCE = toFeet(248);
+        double INITATION_LINE_DISTANCE = toFeet(94.5);
+
+        // TODO: find better values for this
+        double MIN_ALIGNMENT_TIME = 1;
         double MAX_ALIGNMENT_TIME = 7.5;
         
-        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.6);
-        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 1.2);
-        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 3.0 / 40.0);
+        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.65);
+        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0);
+        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
 
         public interface Speed {
             // Preset PID Values
@@ -160,7 +165,7 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(5.0);
+            double MAX_SPEED_ERROR = toFeet(3.0);
             double MAX_SPEED_VEL = toFeet(3.0);
         }
 
@@ -204,8 +209,8 @@ public interface Constants {
 
         double GEAR = 2.0 / 3.0; 
     
-        double INITATION_LINE_RPM = 3900.0 * GEAR;
-        double TRENCH_RPM = 4900.0 * GEAR;
+        double INITATION_LINE_RPM = 2075;
+        double TRENCH_RPM = 3000;
         double FAR_RPM = 5500.0 * GEAR;
 
         double TOLERANCE = 100;
@@ -213,12 +218,12 @@ public interface Constants {
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
         
-            SmartNumber P = new SmartNumber("Shooter P", 0);
-            SmartNumber I = new SmartNumber("Shooter I", 0);
-            SmartNumber D = new SmartNumber("Shooter D", 0);
-            SmartNumber FF = new SmartNumber("Shooter FF", 1.0 / MAX_RPM);
+            SmartNumber P = new SmartNumber("Shooter P", 0.001148);
+            SmartNumber I = new SmartNumber("Shooter I", 0.003382);
+            SmartNumber D = new SmartNumber("Shooter D", 0.000097);
+            SmartNumber FF = new SmartNumber("Shooter FF", 0.00019);
         
-            double BANGBANG_SPEED = 0.25;
+            double BANGBANG_SPEED = 0.1;
         }
     
         public interface Feeder {
@@ -226,12 +231,12 @@ public interface Constants {
 
             double MAX_RPM = 5600.0 * GEAR;
         
-            SmartNumber P = new SmartNumber("Feeder P", 0);
-            SmartNumber I = new SmartNumber("Feeder I", 0);
-            SmartNumber D = new SmartNumber("Feeder D", 0);
-            SmartNumber FF = new SmartNumber("Feeder FF", 1.0 / MAX_RPM);
+            SmartNumber P = new SmartNumber("Feeder P", 0.000972);
+            SmartNumber I = new SmartNumber("Feeder I", 0.002740);
+            SmartNumber D = new SmartNumber("Feeder D", 0.000086);
+            SmartNumber FF = new SmartNumber("Feeder FF", 0.000195);
         
-            double BANGBANG_SPEED = 0.25;
+            double BANGBANG_SPEED = 0.1;
         }
     }
 
@@ -262,7 +267,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     //TODO: Test
-    double FUNNEL_SPEED = 1.0;
+    double FUNNEL_SPEED = 0.2;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
@@ -271,8 +276,8 @@ public interface Constants {
      * Climber Constants
      *********************************************************************************************/
     //TODO: Test speeds
-    double MOVE_LIFT_UP_SPEED = 0.1;
-    double MOVE_LIFT_DOWN_SPEED = -0.5;
+    double MOVE_LIFT_UP_SPEED = 1.0;
+    double MOVE_LIFT_DOWN_SPEED = -1.0;
     double CLIMBER_SETUP_WAIT_TIME = 0.1;
     double CLIMBER_SCALE = 0.5;
 

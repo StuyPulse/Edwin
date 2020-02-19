@@ -19,10 +19,10 @@ public class ShooterControlCommand extends InstantCommand {
     public void initialize() {
         shooter.setTargetVelocity(targetVelocity);
 
-        if(targetVelocity == Shooting.TRENCH_RPM || targetVelocity == Shooting.FAR_RPM) {
+        if(Math.abs(targetVelocity - Shooting.TRENCH_RPM) < 100 || Math.abs(targetVelocity - Shooting.FAR_RPM) < 100) {
             shooter.retractHoodSolenoid();
         }
-        if(targetVelocity == Shooting.INITATION_LINE_RPM) {
+        if(Math.abs(targetVelocity - Shooting.INITATION_LINE_RPM) < 100) {
             shooter.extendHoodSolenoid();
         }
     }

@@ -11,13 +11,14 @@ import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Shooter;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class SixBallThreeTrenchAutonCommand extends SequentialCommandGroup {
     public SixBallThreeTrenchAutonCommand(Drivetrain drivetrain, Shooter shooter, Funnel funnel, Chimney chimney) {
         addCommands(
-            new ShooterControlCommand(shooter, Constants.Shooting.INITATION_LINE_RPM),
+            new ShooterControlCommand(shooter, Constants.Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             //Shoot 3
             //new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter),

@@ -53,6 +53,8 @@ public class Drivetrain extends SubsystemBase {
     // NAVX for Gyro
     private AHRS navx;
 
+    private boolean isAligned;
+
     public Drivetrain() {
         // Add Motors to list
         leftMotors = new CANSparkMax[] { 
@@ -335,5 +337,13 @@ public class Drivetrain extends SubsystemBase {
         } else {
             curvatureDrive(speed, rotation, false);
         }
+    }
+
+    public void setIsAligned(boolean aligned) {
+        isAligned = aligned;
+    }
+
+    public boolean getIsAligned() {
+        return isAligned;
     }
 }

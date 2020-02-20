@@ -19,29 +19,38 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
 
+    public enum ShooterMode {
+        NONE, 
+        SHOOT_FROM_INITIATION_LINE, 
+        SHOOT_FROM_TRENCH, 
+        SHOOT_FROM_FAR
+    };
+
     // Motors
-    private CANSparkMax leftShooterMotor;
-    private CANSparkMax rightShooterMotor;
-    private CANSparkMax middleShooterMotor;
-    private CANSparkMax feederMotor;
+    private final CANSparkMax leftShooterMotor;
+    private final CANSparkMax rightShooterMotor;
+    private final CANSparkMax middleShooterMotor;
+    private final CANSparkMax feederMotor;
 
     // Encoders
-    private CANEncoder leftShooterEncoder;
-    private CANEncoder rightShooterEncoder;
-    private CANEncoder middleShooterEncoder;
+    private final CANEncoder leftShooterEncoder;
+    private final CANEncoder rightShooterEncoder;
+    private final CANEncoder middleShooterEncoder;
     private CANEncoder feederEncoder;
 
     // Hood Solenoid
-    private Solenoid hoodSolenoid;
+    private final Solenoid hoodSolenoid;
 
     // SpeedControllerGroup
-    private SpeedControllerGroup shooterMotors;
+    private final SpeedControllerGroup shooterMotors;
 
     // SmartNumbers for SmartDashboard
     private SmartNumber targetShooterVelocity;
     private SmartNumber currentShooterVelocity;
 
     private SmartNumber currentFeederVelocity;
+
+    private ShooterMode mode = ShooterMode.NONE;
 
     public Shooter() {
         // Shooter Stuff
@@ -87,7 +96,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getRawMedianShooterVelocity() {
-        double[] speeds = { 
+        double[] speeds = {
             leftShooterEncoder.getVelocity(), 
             middleShooterEncoder.getVelocity(),
             rightShooterEncoder.getVelocity() 
@@ -170,7 +179,15 @@ public class Shooter extends SubsystemBase {
         retractHoodSolenoid();
     }
 
+    public void setShooterMode(ShooterMode mode) {
+        this.mode = mode;
+    }
+
+    public ShooterMode getShooterMode() {
+        return mode;
+    }
+
     public boolean isAtTargetVelocity() {
-        return Math.abs(getCurrentShooterVelocityInRPM() - getTargetVelocity()) <= Constants.Shooting.TOLERANCE;
+        return (Math.abs(getTargetVelocity() - getCurrentShooterVelocityInRPM()) <= Constants.Shooting.TOLERANCE);
     }
 }

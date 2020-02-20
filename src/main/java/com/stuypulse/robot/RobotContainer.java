@@ -11,6 +11,8 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
+import com.stuypulse.robot.commands.ChimneyUpCommand;
+import com.stuypulse.robot.commands.ClimberMoveYoyoCommand;
 import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
 import com.stuypulse.robot.commands.ClimberSetupCommand;
 import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
@@ -49,6 +51,8 @@ import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.Woof;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
+import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.input.WPIGamepad;
@@ -82,6 +86,8 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Woof woof = new Woof();
+
+  private final LEDController ledController = new LEDController(0, shooter, intake, drivetrain);
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
@@ -135,13 +141,14 @@ public class RobotContainer {
 
     // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
 
-    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM));
-    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM));
-    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM));
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE));
+    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE));
+    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH));
     // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
     // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
     // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
-    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter)).whenPressed(new ShooterControlCommand(shooter, 0));
+    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter)).whenPressed(new ShooterControlCommand(shooter, 0, ShooterMode.NONE));
+
     operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
@@ -171,15 +178,18 @@ public class RobotContainer {
       debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
       debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
     }
-  }
+  } 
+    public LEDController getLEDController() {
+      return ledController;
+    }
 
   public void initSmartDashboard() {
-    autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand());
-    autonChooser.addOption("Mobility Toward Intake", new MobilityTowardIntakeAutonCommand(drivetrain));
-    autonChooser.addOption("Mobility Toward Shooter", new MobilityTowardShooterAutonCommand(drivetrain));
-    autonChooser.addOption("Shoot Three, Move Toward Intake", new ShootThreeMoveTowardIntakeAutonCommand(drivetrain, shooter, intake, funnel, chimney));
-    autonChooser.addOption("Shoot Three, Move Toward Shooter", new ShootThreeMoveTowardShooterAutonCommand(drivetrain, shooter, intake, funnel, chimney));
-    autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake));
+    autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
+    autonChooser.addOption("Mobility Toward Intake", new MobilityTowardIntakeAutonCommand(drivetrain, ledController));
+    autonChooser.addOption("Mobility Toward Shooter", new MobilityTowardShooterAutonCommand(drivetrain, ledController));
+    autonChooser.addOption("Shoot Three, Move Toward Intake", new ShootThreeMoveTowardIntakeAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
+    autonChooser.addOption("Shoot Three, Move Toward Shooter", new ShootThreeMoveTowardShooterAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
+    autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
 
     autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
     autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));

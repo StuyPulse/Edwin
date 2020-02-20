@@ -13,6 +13,7 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
     public SixBallThreeRdvsAutonCommand(Drivetrain drivetrain, Intake intake, Funnel funnel, Chimney chimney, Shooter shooter) {
         addCommands(
-            new ShooterControlCommand(shooter, Constants.Shooting.INITATION_LINE_RPM),
+            new ShooterControlCommand(shooter, Constants.Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             
             //Shoot 3

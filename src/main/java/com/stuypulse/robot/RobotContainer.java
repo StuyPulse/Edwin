@@ -11,8 +11,6 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.commands.ChimneyDownCommand;
-import com.stuypulse.robot.commands.ChimneyUpCommand;
-import com.stuypulse.robot.commands.ClimberMoveYoyoCommand;
 import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
 import com.stuypulse.robot.commands.ClimberSetupCommand;
 import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
@@ -22,7 +20,6 @@ import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
 import com.stuypulse.robot.commands.DrivetrainDriveCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
-import com.stuypulse.robot.commands.FeedBallsAutomaticCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
@@ -50,8 +47,8 @@ import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
-import com.stuypulse.robot.subsystems.Woof;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
+import com.stuypulse.robot.subsystems.Woof;
 import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.stuylib.control.PIDCalculator;
@@ -109,7 +106,7 @@ public class RobotContainer {
     // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
     woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-    chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
 
     new Thread(new MotorStalling(funnel)).start();

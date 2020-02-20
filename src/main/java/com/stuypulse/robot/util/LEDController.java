@@ -23,15 +23,20 @@ public class LEDController {
         this.drivetrain = drivetrain;
     }
 
-    public static void setValue(double value) {
+    public void setValue(double value) {
         controller.set(value);
     }
 
-    public static double getValue() {
+    public double getValue() {
         return controller.get();
     }
 
-    enum Color {
+    public enum Color {
+        ORANGE_SOLID, 
+        GREEN_SOLID,
+        BLUE_SOLID,
+        PURPLE_SOLID,
+
         WHITE_SOLID,  // Shoot from initation line
         PINK_SOLID,   // Shoot from trench
         RED_SOLID,    // Shoot from far
@@ -44,8 +49,20 @@ public class LEDController {
         OFF
     }
 
-    private static void setColor(Color color) {
+    public void setColor(Color color) {
         switch (color) {
+            case ORANGE_SOLID:
+                setValue(0.65);
+                break;
+            case GREEN_SOLID:
+                setValue(0.77);
+                break;
+            case BLUE_SOLID:
+                setValue(0.87);
+                break;
+            case PURPLE_SOLID:
+                setValue(0.91);
+                break;
             case WHITE_SOLID:
                 setValue(0.93);
                 break;

@@ -157,9 +157,9 @@ public interface Constants {
             SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.075 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();

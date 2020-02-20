@@ -1,23 +1,25 @@
 package com.stuypulse.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.stuypulse.robot.Constants.DrivetrainSettings;
-import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.stuylib.util.TankDriveEncoder;
-
 import java.util.Arrays;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.robot.Constants.DrivetrainSettings;
+import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.stuylib.util.TankDriveEncoder;
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -92,7 +94,7 @@ public class Drivetrain extends SubsystemBase {
         // Configure Motors and Other Things
         setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
-        setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.NEO_DISTANCE_PER_ROTATION);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
         setLowGear();
     }
@@ -206,7 +208,7 @@ public class Drivetrain extends SubsystemBase {
         double left = getLeftNEODistance();
         double right = getRightNEODistance();
 
-        return Math.max(left, right);
+        return Math.max(left, right) * 0.272 * 0.81333333;
     }
 
     /**
@@ -238,7 +240,9 @@ public class Drivetrain extends SubsystemBase {
      * @return distance drivetrain has moved
      */
     public double getGreyhillDistance() {
-        return greyhills.getDistance();
+        //System.out.println(greyhills.getDistance());
+        System.out.println(Math.max(greyhills.getLeftEncoder().getDistance(),greyhills.getRightEncoder().getDistance()));
+        return Math.max(greyhills.getLeftEncoder().getDistance(),greyhills.getRightEncoder().getDistance());
     }
 
     /**

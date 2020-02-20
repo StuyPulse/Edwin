@@ -21,11 +21,11 @@ public class EightBallThreeTrenchTwoRdvsAutonCommand extends SequentialCommandGr
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH),
             new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_TO_TRENCH),
-            new IntakeAcquireCommand(new Intake()),
+            // new IntakeAcquireCommand(intake),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_BALL_TO_BALL),
 
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_TRENCH_TO_RDVS),
-            new IntakeAcquireCommand(new Intake()),
+            // new IntakeAcquireCommand(intake),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_TRENCH_TO_RDVS),
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_TWO_BALL),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_BETWEEN_TWO_BALL),

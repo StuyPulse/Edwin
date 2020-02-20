@@ -51,14 +51,14 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
          */
         public void init() {
             goalAngle = drivetrain.getGyroAngle() + angle;
-            goalDistance = drivetrain.getGreyhillDistance() + distance;
+            goalDistance = drivetrain.getNEODistance() + distance;
         }
 
         public double getSpeedError() {
             if (justTurning) {
                 return 0.0;
             } else {
-                return goalDistance - drivetrain.getGreyhillDistance();
+                return goalDistance - drivetrain.getNEODistance();
             }
         }
 

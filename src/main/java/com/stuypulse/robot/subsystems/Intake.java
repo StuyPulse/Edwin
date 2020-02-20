@@ -14,13 +14,13 @@ public class Intake extends SubsystemBase {
     private final CANSparkMax motor;
     private final DoubleSolenoid solenoid;
 
-    // private DigitalInput sensor;
+    private DigitalInput sensor;
 
     public Intake() {
         motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
         solenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_A, Constants.INTAKE_SOLENOID_PORT_B);
 
-        // sensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
+        sensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
         
         motor.setInverted(true);
     }
@@ -62,8 +62,7 @@ public class Intake extends SubsystemBase {
     }
 
     public boolean isBallDetected() {
-        return false;
-        // return sensor.get();
+        return sensor.get();
     }
 
 }

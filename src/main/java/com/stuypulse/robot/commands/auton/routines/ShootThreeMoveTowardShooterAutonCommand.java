@@ -6,7 +6,7 @@ import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
-import com.stuypulse.robot.commands.IntakeAcquireCommand;
+import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
 import com.stuypulse.robot.commands.IntakeExtendCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.commands.TimeoutCommand;
@@ -35,8 +35,7 @@ public class ShootThreeMoveTowardShooterAutonCommand extends SequentialCommandGr
             new DrivetrainStopCommand(drivetrain),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_MOVE_TOWARD_SHOOTER).setTimeout(1.0),
 
-            new IntakeExtendCommand(intake),
-            new IntakeAcquireCommand(intake)
+            new IntakeAcquireSetupCommand(intake)
         );
     }
     

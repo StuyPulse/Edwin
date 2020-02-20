@@ -22,7 +22,7 @@ import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
-import com.stuypulse.robot.commands.IntakeAcquireCommand;
+import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
 import com.stuypulse.robot.commands.IntakeDeacquireCommand;
 import com.stuypulse.robot.commands.IntakeRetractCommand;
 import com.stuypulse.robot.commands.ReverseShooterCommand;
@@ -127,7 +127,7 @@ public class RobotContainer {
     // operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
 
     operator.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
-    operator.getRightTrigger().whileHeld(new IntakeAcquireCommand(intake));
+    operator.getRightTrigger().whileHeld(new IntakeAcquireSetupCommand(intake));
 
     // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
     operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));

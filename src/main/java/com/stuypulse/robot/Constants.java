@@ -293,7 +293,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     //TODO: Test
-    double FUNNEL_SPEED = 0.2;
+    double FUNNEL_SPEED = 0.4;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;

@@ -35,7 +35,9 @@ public class ShootThreeMoveTowardIntakeAutonCommand extends SequentialCommandGro
             new DrivetrainStopCommand(drivetrain),
 
             new IntakeExtendCommand(intake),
+            new WaitCommand(0.1),
             new IntakeAcquireForeverCommand(intake),
+            
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_MOVE_TOWARD_INTAKE).setTimeout(2.0),
             new IntakeAcquireCommand(intake) // makes intake stop once auton ends
 

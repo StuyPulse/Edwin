@@ -119,6 +119,8 @@ public interface Constants {
         // Encoder Constants
         public interface Encoders {
 
+            boolean USE_GREYHILLS = false;
+
             double WHEEL_DIAMETER = 0.5;
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
             
@@ -131,7 +133,8 @@ public interface Constants {
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
             double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
 
-            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * 0.272;
+            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE;
+            double NEO_YIELD = 0.272 * 0.81333333;
         }
     }
 
@@ -142,8 +145,7 @@ public interface Constants {
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
-        double MIN_ALIGNMENT_TIME = 0.5;
-        double MAX_ALIGNMENT_TIME = 1000000;
+        double MIN_ALIGNMENT_TIME = 0.25;
         
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
@@ -155,9 +157,9 @@ public interface Constants {
             SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.4 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.05 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.075 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();
@@ -205,8 +207,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 4.0;
-            double MAX_ANGLE_VEL = 8.0;
+            double MAX_ANGLE_ERROR = 2.0;
+            double MAX_ANGLE_VEL = 4.0;
         }
 
         public interface Measurements {

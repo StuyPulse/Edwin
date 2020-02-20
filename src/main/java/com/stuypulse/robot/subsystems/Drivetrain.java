@@ -201,6 +201,14 @@ public class Drivetrain extends SubsystemBase {
         return rightNEO.getPosition();
     }
 
+    private double absMax(double a, double b) {
+        if(Math.abs(a) < Math.abs(b)) {
+            return b;
+        } else {
+            return a;
+        }
+    }
+
     /**
      * @return distance drivetrain has moved
      */
@@ -208,7 +216,7 @@ public class Drivetrain extends SubsystemBase {
         double left = getLeftNEODistance();
         double right = getRightNEODistance();
 
-        return Math.max(left, right) * 0.272 * 0.81333333;
+        return absMax(left, right) * DrivetrainSettings.Encoders.NEO_YIELD;
     }
 
     /**
@@ -240,9 +248,7 @@ public class Drivetrain extends SubsystemBase {
      * @return distance drivetrain has moved
      */
     public double getGreyhillDistance() {
-        //System.out.println(greyhills.getDistance());
-        System.out.println(Math.max(greyhills.getLeftEncoder().getDistance(),greyhills.getRightEncoder().getDistance()));
-        return Math.max(greyhills.getLeftEncoder().getDistance(),greyhills.getRightEncoder().getDistance());
+        return greyhills.getDistance();
     }
 
     /**

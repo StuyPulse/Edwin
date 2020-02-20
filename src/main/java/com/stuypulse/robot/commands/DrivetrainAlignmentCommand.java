@@ -44,6 +44,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Used to check timeout of alignment
     private StopWatch timer;
 
+    // Maximum amount of time to align
+    private double timeout;
+
     // Return false in isFinished
     private boolean neverFinish;
 
@@ -75,6 +78,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         // Used to check the alignment time.
         this.timer = new StopWatch();
 
+        // By default there is no timeout
+        this.timeout = -1;
+
         // Normally end the command once aligned
         this.neverFinish = false;
     }
@@ -87,6 +93,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
      */
     public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner) {
         this(drivetrain, aligner, Alignment.Speed.getPID(), Alignment.Angle.getPID());
+    }
+
+    // Set the maximum amount of time that the alignment should take
+    public DrivetrainAlignmentCommand setTimeout(double timeout) {
+        this.timeout = timeout;
+        return this;
     }
 
     // Get the Speed Controller
@@ -186,7 +198,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         }
 
         // Time out for aligning
-        if(timer.getTime() > Alignment.MAX_ALIGNMENT_TIME) {
+        if(timer.getTime() > timeout && timeout > 0) {
             return true;
         }
 

@@ -226,6 +226,8 @@ public interface Constants {
 
     public interface Shooting {
 
+        int CURRENT_LIMIT = 45;
+
         double GEAR = 2.0 / 3.0; 
     
         double INITATION_LINE_RPM = 2075;

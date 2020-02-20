@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IStreamFilter;
 import com.stuypulse.stuylib.streams.filters.IStreamFilterGroup;
@@ -43,6 +44,7 @@ public class Shooter extends SubsystemBase {
     private SmartNumber currentFeederVelocity;
 
     public Shooter() {
+        // Shooter Stuff
         leftShooterMotor = new CANSparkMax(Ports.Shooter.LEFT, MotorType.kBrushless);
         rightShooterMotor = new CANSparkMax(Ports.Shooter.RIGHT, MotorType.kBrushless);
         middleShooterMotor = new CANSparkMax(Ports.Shooter.MIDDLE, MotorType.kBrushless);
@@ -53,26 +55,35 @@ public class Shooter extends SubsystemBase {
         rightShooterEncoder = new CANEncoder(rightShooterMotor);
         middleShooterEncoder = new CANEncoder(middleShooterMotor);
 
-        feederMotor = new CANSparkMax(Ports.Shooter.FEEDER, MotorType.kBrushless);
-
-        hoodSolenoid = new Solenoid(Ports.HOOD_SOLENOID);
-
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
-        // shooterMotors = new SpeedControllerGroup(rightShooterMotor);
+        // Feeder Stuff
+        feederMotor = new CANSparkMax(Ports.Shooter.FEEDER, MotorType.kBrushless);
 
+        feederMotor.setInverted(true);
+        feederEncoder = new CANEncoder(feederMotor);
+
+        // Hood Stuff
+        hoodSolenoid = new Solenoid(Ports.HOOD_SOLENOID);
+
+        // Target Vel Stuff
         targetShooterVelocity = new SmartNumber("Shooter Target Vel", 30);
         currentShooterVelocity = new SmartNumber("Shooter Current Vel", -1);
 
         currentFeederVelocity = new SmartNumber("Feeder Current Vel", -1);
 
+        // Setting Modes Stuff
         rightShooterMotor.setIdleMode(IdleMode.kCoast);
         leftShooterMotor.setIdleMode(IdleMode.kCoast);
-        rightShooterMotor.setIdleMode(IdleMode.kCoast);
+        middleShooterMotor.setIdleMode(IdleMode.kCoast);
 
         feederMotor.setIdleMode(IdleMode.kCoast);
-        feederMotor.setInverted(true);
-        feederEncoder = new CANEncoder(feederMotor);
+
+        rightShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+        leftShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+        middleShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+
+        feederMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
     }
 
     public double getRawMedianShooterVelocity() {

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
@@ -96,6 +97,7 @@ public class Drivetrain extends SubsystemBase {
         // Configure Motors and Other Things
         setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
+        setIdleMode(IdleMode.kBrake);
         setNEODistancePerRotation(DrivetrainSettings.Encoders.NEO_DISTANCE_PER_ROTATION);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
         setLowGear();
@@ -114,7 +116,21 @@ public class Drivetrain extends SubsystemBase {
         for (CANSparkMax motor : rightMotors) {
             motor.setSmartCurrentLimit(limit);
         }
+    }
 
+    /**
+     * Set the idle mode of the all the motors
+     * 
+     * @param mode mode to set the moters to
+     */
+    public void setIdleMode(IdleMode mode) {
+        for (CANSparkMax motor : leftMotors) {
+            motor.setIdleMode(mode);
+        }
+
+        for (CANSparkMax motor : rightMotors) {
+            motor.setIdleMode(mode);
+        }
     }
 
     /**

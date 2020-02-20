@@ -20,6 +20,7 @@ import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
 import com.stuypulse.robot.commands.DrivetrainDriveCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
+import com.stuypulse.robot.commands.FeedBallsAutomaticCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
@@ -102,7 +103,7 @@ public class RobotContainer {
     // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
     woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-
+    chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
 
     new Thread(new MotorStalling(funnel)).start();

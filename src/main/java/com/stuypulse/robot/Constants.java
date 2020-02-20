@@ -293,7 +293,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     //TODO: Test
-    double FUNNEL_SPEED = 0.4;
+    double FUNNEL_SPEED = 1.0;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
@@ -364,7 +364,7 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	double CHIMNEY_LIFT_UP_SPEED = 1;
+	double CHIMNEY_LIFT_UP_SPEED = 1.0;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -1;
     

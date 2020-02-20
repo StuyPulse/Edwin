@@ -1,14 +1,14 @@
 package com.stuypulse.robot.commands.auton.routines;
 
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.commands.DrivetrainGoalAligner;
-import com.stuypulse.robot.commands.DrivetrainLowGearCommand;
-import com.stuypulse.robot.commands.DrivetrainMovementCommand;
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
+import com.stuypulse.robot.commands.DrivetrainGoalAligner;
+import com.stuypulse.robot.commands.DrivetrainInnerGoalAligner;
+import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -17,14 +17,15 @@ public class EightBallThreeTrenchTwoRdvsAutonCommand extends SequentialCommandGr
     public EightBallThreeTrenchTwoRdvsAutonCommand(Drivetrain drivetrain) {
         addCommands(
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()),
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH),
             new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_TO_TRENCH),
-            new IntakeAcquireCommand(new Intake()),
+            // new IntakeAcquireCommand(intake),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_BALL_TO_BALL),
 
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_TRENCH_TO_RDVS),
-            new IntakeAcquireCommand(new Intake()),
+            // new IntakeAcquireCommand(intake),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_TRENCH_TO_RDVS),
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_RDVS_TO_TWO_BALL),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_BETWEEN_TWO_BALL),

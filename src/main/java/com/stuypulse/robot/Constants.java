@@ -1,3 +1,5 @@
+
+  
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -31,7 +33,7 @@ public interface Constants {
      * @param inches inches
      * @return value in feet
      */
-    private static double toFeet(int feet, double inches) {
+    public static double toFeet(int feet, double inches) {
         return ((double) feet) + (inches / 12.0);
     }
 
@@ -41,7 +43,7 @@ public interface Constants {
      * @param inches inches
      * @return value in feet
      */
-    private static double toFeet(double inches) {
+    public static double toFeet(double inches) {
         return toFeet(0, inches);
     }
 
@@ -117,6 +119,8 @@ public interface Constants {
         // Encoder Constants
         public interface Encoders {
 
+            boolean USE_GREYHILLS = false;
+
             double WHEEL_DIAMETER = 0.5;
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
             
@@ -124,12 +128,13 @@ public interface Constants {
             double OUTER_GEAR_RATIO = 24.0 / 60.0;
 
             // The difference between theoretical and actual distance
-            double REAL_YIELD = 1.0;
+            double REAL_YIELD = -1.0; //* (10.0 / 3.125) * (1.18 / 3.125);
             
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
             double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
 
             double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE;
+            double NEO_YIELD = 0.272 * 0.81333333;
         }
     }
 
@@ -140,8 +145,7 @@ public interface Constants {
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
-        double MIN_ALIGNMENT_TIME = 0.5;
-        double MAX_ALIGNMENT_TIME = 1000000;
+        double MIN_ALIGNMENT_TIME = 0.25;
         
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
@@ -149,10 +153,13 @@ public interface Constants {
 
         public interface Speed {
 
+            // Speed the Drivetrain Moves
+            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
+
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.20); 
+            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.025);
+            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();
@@ -165,7 +172,7 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values 
-            double BANGBANG_SPEED = 0.5;
+            double BANGBANG_SPEED = 0.5; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
@@ -173,7 +180,7 @@ public interface Constants {
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
-            double MAX_SPEED_VEL = toFeet(3.0);
+            double MAX_SPEED_VEL = toFeet(6.0);
         }
 
         public interface Angle {
@@ -200,8 +207,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 5.0;
-            double MAX_ANGLE_VEL = 3.0;
+            double MAX_ANGLE_ERROR = 2.0;
+            double MAX_ANGLE_VEL = 4.0;
         }
 
         public interface Measurements {
@@ -223,16 +230,18 @@ public interface Constants {
     
         double INITATION_LINE_RPM = 2075;
         double TRENCH_RPM = 3000;
-        double FAR_RPM = 5500.0 * GEAR;
+        double FAR_RPM = 5300.0;
 
         double TOLERANCE = 100;
+
+        double I_LIMIT = 300;
 
         double SECONDS_TO_SPEED = 2;
         double TARGET_VEL_RATE_LIMIT = TRENCH_RPM / (50.0 * SECONDS_TO_SPEED);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
-        
+
             SmartNumber P = new SmartNumber("Shooter P", 0.001148);
             SmartNumber I = new SmartNumber("Shooter I", 0.003382);
             SmartNumber D = new SmartNumber("Shooter D", 0.000097);
@@ -284,7 +293,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     //TODO: Test
-    double FUNNEL_SPEED = 0.2;
+    double FUNNEL_SPEED = 1.0;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
@@ -305,9 +314,10 @@ public interface Constants {
     int WOOF_SENSOR_PORT = -1;
 
     /*********************************************************************************************
-     * Control Panel Constants
+     * Woof Constants
      *********************************************************************************************/
     double WOOF_TURN_SPEED = 1.0;
+    double WOOF_TARGET_ENCODER_VALUE = 30;
     
     double CYAN_RED = 0.2;
     double CYAN_GREEN = 0.56;
@@ -355,21 +365,22 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	double CHIMNEY_LIFT_UP_SPEED = 1;
+	double CHIMNEY_LIFT_UP_SPEED = 1.0;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -1;
+    
     // AUTOS 
 
     //TODO check all values for correctlynessly
     /*********************************************************************************************
      * Movement Auton Command       
      *********************************************************************************************/
-    int DISTANCE_TO_MOVE_AT_START = 5;
+    double DISTANCE_TO_MOVE_AT_START = 3.25; //feet
 
     /*********************************************************************************************
      * Shoot Three (At Start) Auton Command
      *********************************************************************************************/
-    int SHOOT_FROM_START_TO_GOAL = 10;
+    double SHOOT_FROM_START_TO_GOAL = 10;
 
     /*********************************************************************************************
      * Shoot at start and take 3 balls from trench
@@ -404,4 +415,5 @@ public interface Constants {
     
     double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
     double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
+
 }

@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     pneumatics = new Pneumatics();
     robotContainer = new RobotContainer();
+    robotContainer.initSmartDashboard();
   }
 
   /**

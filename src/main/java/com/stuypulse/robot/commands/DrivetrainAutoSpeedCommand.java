@@ -23,11 +23,7 @@ public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
      */
     public DrivetrainAutoSpeedCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
         super(drivetrain, aligner, new PIDCalculator(Alignment.Speed.BANGBANG_SPEED), Alignment.Angle.getPID());
-    }
-
-    // This command never really finishes
-    public boolean isFinished() {
-        return false;
+        setNeverFinish();
     }
 
     // Report value to smart dashboard

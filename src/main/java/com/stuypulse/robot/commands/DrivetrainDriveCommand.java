@@ -10,7 +10,6 @@ import com.stuypulse.stuylib.streams.IStream;
 import com.stuypulse.stuylib.streams.FilteredIStream;
 import com.stuypulse.stuylib.streams.filters.OrderedLowPassFilter;
 import com.stuypulse.stuylib.math.SLMath;
-import com.stuypulse.stuylib.network.SmartBoolean;
 
 /**
  * DrivetrainDriveCommand takes in a drivetrain and a gamepad and feeds the
@@ -18,9 +17,9 @@ import com.stuypulse.stuylib.network.SmartBoolean;
  */
 public class DrivetrainDriveCommand extends DrivetrainCommand {
 
-    private static SmartBoolean filtering = new SmartBoolean("Enable Filtering", true);
-
     private Gamepad gamepad;
+
+    private boolean useFiltering;
 
     private IStream rawSpeed;
     private IStream rawAngle;
@@ -38,6 +37,9 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     public void initialize() {
         super.initialize();
+
+        // Use filtering by default
+        this.useFiltering = true;
 
         // Create an IStream that gets the speed from the controller
         this.rawSpeed = () -> {
@@ -64,17 +66,25 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
         );
     }
 
-    // Give the IStream's result for speed when the drivetrain wants it
-    public double getSpeed() {
-
-        double s = speed.get();
-
-        if(!filtering.get()) {
-            s = rawSpeed.get();
+    // Check DPad for enabling or disableing filters
+    private boolean checkDPad() {
+        if(gamepad.getRawDPadUp()) {
+            return (useFiltering = true);
         }
 
-        if(DrivetrainSettings.COOL_RUMBLE) {
-            gamepad.setRumble(Math.abs(s) * DrivetrainSettings.COOL_RUMBLE_MAG);
+        if(gamepad.getRawDPadDown()) {
+            return (useFiltering = false);
+        }
+
+        return useFiltering;
+    }
+
+    // Give the IStream's result for speed when the drivetrain wants it
+    public double getSpeed() {
+        double s = speed.get();
+
+        if(!checkDPad()) {
+            s = rawSpeed.get();
         }
 
         return s;
@@ -84,7 +94,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     public double getAngle() {
         double a = angle.get();
 
-        if(!filtering.get()) {
+        if(!checkDPad()) {
             a = rawAngle.get();
         }
 

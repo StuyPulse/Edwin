@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.stuylib.math.SLMath;
 
 /**
  * Extends off of the DrivetrainPIDAlignmentCommand and uses its controllers to
@@ -139,6 +140,6 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 
     // Scale the speed
     public double getSpeed() {
-        return super.getSpeed() * speed;
+        return SLMath.limit(super.getSpeed(), speed);
     }
 }

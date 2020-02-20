@@ -6,7 +6,6 @@ import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainInnerGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
-import com.stuypulse.robot.commands.FeedAndShootBallsAtTargetVelocityCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.subsystems.Chimney;
@@ -25,7 +24,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             
             //Shoot 3
-            new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter),
+            //new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter),
             new DrivetrainMovementCommand(drivetrain, 0, 12),
 
             //Move forward
@@ -36,10 +35,10 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_POINT_TO_THREE_BALL),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.DISTANCE_FROM_TRENCH_TO_GOAL)),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()),
-            new DrivetrainStopCommand(drivetrain),
+            new DrivetrainStopCommand(drivetrain)
             
             //Shoot 3
-            new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter)
+            //new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter)
             );
     }
 }

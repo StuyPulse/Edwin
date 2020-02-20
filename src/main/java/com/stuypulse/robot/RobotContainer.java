@@ -34,9 +34,10 @@ import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
 import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.MobilityAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.ShootThreeWithLimelightAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.ShootThreeWithLimelightBackwardAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.MobilityTowardIntakeAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.MobilityTowardShooterAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardIntakeAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardShooterAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.SixBallTwoTrenchOneTrenchAutonCommand;
@@ -173,15 +174,17 @@ public class RobotContainer {
 
   public void initSmartDashboard() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand());
-    autonChooser.addOption("Mobility Forward", new MobilityAutonCommand(drivetrain, true));
-    autonChooser.addOption("Mobility Backward", new MobilityAutonCommand(drivetrain, false));
-    autonChooser.addOption("Shoot Three Forward", new ShootThreeWithLimelightAutonCommand(drivetrain, shooter, intake, funnel, chimney, true));
-    autonChooser.addOption("Shoot Three Backward", new ShootThreeWithLimelightBackwardAutonCommand(drivetrain, shooter, intake, funnel, chimney));
+    autonChooser.addOption("Mobility Toward Intake", new MobilityTowardIntakeAutonCommand(drivetrain));
+    autonChooser.addOption("Mobility Toward Shooter", new MobilityTowardShooterAutonCommand(drivetrain));
+    autonChooser.addOption("Shoot Three, Move Toward Intake", new ShootThreeMoveTowardIntakeAutonCommand(drivetrain, shooter, intake, funnel, chimney));
+    autonChooser.addOption("Shoot Three, Move Toward Shooter", new ShootThreeMoveTowardShooterAutonCommand(drivetrain, shooter, intake, funnel, chimney));
+    autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake));
+
     autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
     autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
-    autonChooser.addOption("Six Ball Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake));
     autonChooser.addOption("Eight Ball Five Rdvs", new EightBallFiveRdvsAutonCommand(drivetrain, intake));
     autonChooser.addOption("Eight Ball Three Trench Two Rdvs", new EightBallThreeTrenchTwoRdvsAutonCommand(drivetrain));
+    
     SmartDashboard.putData("Autonomous", autonChooser);
   }
 

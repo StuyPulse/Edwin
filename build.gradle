@@ -13,7 +13,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 def ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main"
-final String STUYLIB_VERSION = '2020.1.9.1'
+final String STUYLIB_VERSION = '2020.1.9.2'
 final boolean COMPOSITE_BUILD = true;
 
 // Define my targets (RoboRIO) and artifacts (deployable files)

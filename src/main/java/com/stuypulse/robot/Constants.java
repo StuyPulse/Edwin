@@ -181,6 +181,7 @@ public interface Constants {
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
             double MAX_SPEED_VEL = toFeet(6.0);
+            double SPEED_DEADBAND = MAX_SPEED_ERROR / 2.0;
         }
 
         public interface Angle {
@@ -209,6 +210,7 @@ public interface Constants {
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 2.0;
             double MAX_ANGLE_VEL = 4.0;
+            double ANGLE_DEADBAND = MAX_ANGLE_ERROR / 2.0;
         }
 
         public interface Measurements {

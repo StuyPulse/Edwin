@@ -115,13 +115,20 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
-        double out = 0;
-
+        // Only start driving if the angle is aligned first.
         if(angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL)) {
-            out = SLMath.limit(speed.update(aligner.getSpeedError()), 1);
-        } 
+            double error = aligner.getSpeedError();
+    
+            if(Math.abs(error) < Alignment.Speed.SPEED_DEADBAND) { 
+                error = 0;
+            } else {
+                error -= Math.copySign(Alignment.Angle.ANGLE_DEADBAND, error);
+            }
 
-        return out * Alignment.Speed.MAX_SPEED.doubleValue();
+            return SLMath.limit(speed.update(error), 1) * Alignment.Speed.MAX_SPEED.doubleValue();
+        } else {
+            return 0;
+        }
     }
 
     // Update angle based on angle error
@@ -137,6 +144,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             error += 360;
         }
     
+        if(Math.abs(error) < Alignment.Angle.ANGLE_DEADBAND) { 
+            error = 0;
+        } else {
+            error -= Math.copySign(Alignment.Angle.ANGLE_DEADBAND, error);
+        }
+
         return SLMath.limit(angle.update(error), -1, 1);
     }
 
@@ -166,13 +179,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public void execute() {
         super.execute();
 
-        // Update PID controllers with new values
-        if(speed instanceof PIDController) {
-            speed = Alignment.Speed.getPID();
-        }
-
+        // Update PID controllers with new values   
         if(angle instanceof PIDController) {
             angle = Alignment.Angle.getPID();
+        }
+
+        if(speed instanceof PIDController) {
+            speed = Alignment.Speed.getPID();
         }
     }
 

@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IStreamFilter;
 import com.stuypulse.stuylib.streams.filters.IStreamFilterGroup;
@@ -18,23 +19,30 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
 
+    public enum ShooterMode {
+        NONE, 
+        SHOOT_FROM_INITIATION_LINE, 
+        SHOOT_FROM_TRENCH, 
+        SHOOT_FROM_FAR
+    };
+
     // Motors
-    private CANSparkMax leftShooterMotor;
-    private CANSparkMax rightShooterMotor;
-    private CANSparkMax middleShooterMotor;
-    private CANSparkMax feederMotor;
+    private final CANSparkMax leftShooterMotor;
+    private final CANSparkMax rightShooterMotor;
+    private final CANSparkMax middleShooterMotor;
+    private final CANSparkMax feederMotor;
 
     // Encoders
-    private CANEncoder leftShooterEncoder;
-    private CANEncoder rightShooterEncoder;
-    private CANEncoder middleShooterEncoder;
+    private final CANEncoder leftShooterEncoder;
+    private final CANEncoder rightShooterEncoder;
+    private final CANEncoder middleShooterEncoder;
     private CANEncoder feederEncoder;
 
     // Hood Solenoid
-    private Solenoid hoodSolenoid;
+    private final Solenoid hoodSolenoid;
 
     // SpeedControllerGroup
-    private SpeedControllerGroup shooterMotors;
+    private final SpeedControllerGroup shooterMotors;
 
     // SmartNumbers for SmartDashboard
     private SmartNumber targetShooterVelocity;
@@ -42,7 +50,10 @@ public class Shooter extends SubsystemBase {
 
     private SmartNumber currentFeederVelocity;
 
+    private ShooterMode mode = ShooterMode.NONE;
+
     public Shooter() {
+        // Shooter Stuff
         leftShooterMotor = new CANSparkMax(Ports.Shooter.LEFT, MotorType.kBrushless);
         rightShooterMotor = new CANSparkMax(Ports.Shooter.RIGHT, MotorType.kBrushless);
         middleShooterMotor = new CANSparkMax(Ports.Shooter.MIDDLE, MotorType.kBrushless);
@@ -53,30 +64,39 @@ public class Shooter extends SubsystemBase {
         rightShooterEncoder = new CANEncoder(rightShooterMotor);
         middleShooterEncoder = new CANEncoder(middleShooterMotor);
 
-        feederMotor = new CANSparkMax(Ports.Shooter.FEEDER, MotorType.kBrushless);
-
-        hoodSolenoid = new Solenoid(Ports.HOOD_SOLENOID);
-
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
-        // shooterMotors = new SpeedControllerGroup(rightShooterMotor);
+        // Feeder Stuff
+        feederMotor = new CANSparkMax(Ports.Shooter.FEEDER, MotorType.kBrushless);
 
+        feederMotor.setInverted(true);
+        feederEncoder = new CANEncoder(feederMotor);
+
+        // Hood Stuff
+        hoodSolenoid = new Solenoid(Ports.HOOD_SOLENOID);
+
+        // Target Vel Stuff
         targetShooterVelocity = new SmartNumber("Shooter Target Vel", 30);
         currentShooterVelocity = new SmartNumber("Shooter Current Vel", -1);
 
         currentFeederVelocity = new SmartNumber("Feeder Current Vel", -1);
 
+        // Setting Modes Stuff
         rightShooterMotor.setIdleMode(IdleMode.kCoast);
         leftShooterMotor.setIdleMode(IdleMode.kCoast);
-        rightShooterMotor.setIdleMode(IdleMode.kCoast);
+        middleShooterMotor.setIdleMode(IdleMode.kCoast);
 
         feederMotor.setIdleMode(IdleMode.kCoast);
-        feederMotor.setInverted(true);
-        feederEncoder = new CANEncoder(feederMotor);
+
+        rightShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+        leftShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+        middleShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+
+        feederMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
     }
 
     public double getRawMedianShooterVelocity() {
-        double[] speeds = { 
+        double[] speeds = {
             leftShooterEncoder.getVelocity(), 
             middleShooterEncoder.getVelocity(),
             rightShooterEncoder.getVelocity() 
@@ -159,7 +179,15 @@ public class Shooter extends SubsystemBase {
         retractHoodSolenoid();
     }
 
+    public void setShooterMode(ShooterMode mode) {
+        this.mode = mode;
+    }
+
+    public ShooterMode getShooterMode() {
+        return mode;
+    }
+
     public boolean isAtTargetVelocity() {
-        return Math.abs(getCurrentShooterVelocityInRPM() - getTargetVelocity()) <= Constants.Shooting.TOLERANCE;
+        return (Math.abs(getTargetVelocity() - getCurrentShooterVelocityInRPM()) <= Constants.Shooting.TOLERANCE);
     }
 }

@@ -1,15 +1,17 @@
 package com.stuypulse.robot.commands.auton.routines;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import com.stuypulse.robot.commands.LEDSetCommand;
+import com.stuypulse.robot.util.LEDController;
+import com.stuypulse.robot.util.LEDController.Color;
 
-public class DoNothingAutonCommand extends CommandGroupBase {
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-    @Override
-    public void addCommands(Command... commands) {
-        // TODO Auto-generated method stub
-        //TODO DONEEEEEE
+public class DoNothingAutonCommand extends SequentialCommandGroup {
+    
+    public DoNothingAutonCommand(LEDController controller) {
+        addCommands(
+            new LEDSetCommand(Color.RED_SOLID, controller)
+        );
     }
-    
-    
+
 }

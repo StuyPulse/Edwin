@@ -5,19 +5,17 @@ import java.util.Arrays;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.stuylib.util.TankDriveEncoder;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -51,6 +49,8 @@ public class Drivetrain extends SubsystemBase {
 
     // NAVX for Gyro
     private AHRS navx;
+
+    private boolean isAligned;
 
     public Drivetrain() {
         // Add Motors to list
@@ -94,6 +94,10 @@ public class Drivetrain extends SubsystemBase {
         // Configure Motors and Other Things
         setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
+        leftMotors[0].setIdleMode(IdleMode.kBrake);
+        leftMotors[1].setIdleMode(IdleMode.kCoast);
+        rightMotors[0].setIdleMode(IdleMode.kBrake);
+        rightMotors[1].setIdleMode(IdleMode.kCoast);
         setNEODistancePerRotation(DrivetrainSettings.Encoders.NEO_DISTANCE_PER_ROTATION);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
         setLowGear();
@@ -112,7 +116,21 @@ public class Drivetrain extends SubsystemBase {
         for (CANSparkMax motor : rightMotors) {
             motor.setSmartCurrentLimit(limit);
         }
+    }
 
+    /**
+     * Set the idle mode of the all the motors
+     * 
+     * @param mode mode to set the moters to
+     */
+    public void setIdleMode(IdleMode mode) {
+        for (CANSparkMax motor : leftMotors) {
+            motor.setIdleMode(mode);
+        }
+
+        for (CANSparkMax motor : rightMotors) {
+            motor.setIdleMode(mode);
+        }
     }
 
     /**
@@ -319,5 +337,13 @@ public class Drivetrain extends SubsystemBase {
         } else {
             curvatureDrive(speed, rotation, false);
         }
+    }
+
+    public void setIsAligned(boolean aligned) {
+        isAligned = aligned;
+    }
+
+    public boolean getIsAligned() {
+        return isAligned;
     }
 }

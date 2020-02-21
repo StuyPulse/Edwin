@@ -146,7 +146,7 @@ public interface Constants {
         double MAX_DISTANCE = toFeet(54, 0);
 
         double MIN_ALIGNMENT_TIME = 0.25;
-        
+
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
         SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
@@ -236,10 +236,8 @@ public interface Constants {
 
         double TOLERANCE = 100;
 
-        double I_LIMIT = 300;
-
-        double SECONDS_TO_SPEED = 2;
-        double TARGET_VEL_RATE_LIMIT = TRENCH_RPM / (50.0 * SECONDS_TO_SPEED);
+        SmartNumber I_LIMIT = new SmartNumber("Shooter / Feeder I Limit", 200);
+        SmartNumber I_RANGE = new SmartNumber("Shooter / Feeder I Range", 300);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;

@@ -181,7 +181,7 @@ public interface Constants {
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
             double MAX_SPEED_VEL = toFeet(6.0);
-            double SPEED_DEADBAND = MAX_SPEED_ERROR / 2.0;
+            double SPEED_DEADBAND = 0;
         }
 
         public interface Angle {
@@ -209,7 +209,7 @@ public interface Constants {
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 2.0;
-            double MAX_ANGLE_VEL = 4.0;
+            double MAX_ANGLE_VEL = 6.0;
             double ANGLE_DEADBAND = MAX_ANGLE_ERROR / 2.0;
         }
 
@@ -238,15 +238,15 @@ public interface Constants {
 
         double TOLERANCE = 100;
 
-        SmartNumber I_LIMIT = new SmartNumber("Shooter / Feeder I Limit", 200);
-        SmartNumber I_RANGE = new SmartNumber("Shooter / Feeder I Range", 300);
+        SmartNumber I_LIMIT = new SmartNumber("Shooter / Feeder I Limit", 400);
+        SmartNumber I_RANGE = new SmartNumber("Shooter / Feeder I Range", 400);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Shooter P", 0.001148);
-            SmartNumber I = new SmartNumber("Shooter I", 0.003382);
-            SmartNumber D = new SmartNumber("Shooter D", 0.000097);
+            SmartNumber P = new SmartNumber("Shooter P", 0.0);
+            SmartNumber I = new SmartNumber("Shooter I", 0.0);
+            SmartNumber D = new SmartNumber("Shooter D", 0.0);
             SmartNumber FF = new SmartNumber("Shooter FF", 0.00019);
 
             double BANGBANG_SPEED = 0.1;
@@ -257,9 +257,9 @@ public interface Constants {
 
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Feeder P", 0.000972);
-            SmartNumber I = new SmartNumber("Feeder I", 0.002740);
-            SmartNumber D = new SmartNumber("Feeder D", 0.000086);
+            SmartNumber P = new SmartNumber("Feeder P", 0.0);
+            SmartNumber I = new SmartNumber("Feeder I", 0.0);
+            SmartNumber D = new SmartNumber("Feeder D", 0.0);
             SmartNumber FF = new SmartNumber("Feeder FF", 0.000195);
 
             double BANGBANG_SPEED = 0.1;

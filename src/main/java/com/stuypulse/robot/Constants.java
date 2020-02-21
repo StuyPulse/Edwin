@@ -1,5 +1,4 @@
 
-  
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -81,14 +80,14 @@ public interface Constants {
             int LEFT = 12;
             int MIDDLE = 13;
             int RIGHT = 14;
-            
+
             int FEEDER = 11;
         }
     }
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        double QUICKTURN_THRESHOLD = 0.05; 
+        double QUICKTURN_THRESHOLD = 0.05;
 
         // How much to slow down quick turn
         double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
@@ -104,14 +103,14 @@ public interface Constants {
         double SPEED_POWER = 1.0;
         double ANGLE_POWER = 1.0;
 
-        double SPEED_FILTER = 0.5; 
+        double SPEED_FILTER = 0.5;
         double ANGLE_FILTER = 0.05;
 
         int SPEED_ORDER = 1;
         int ANGLE_ORDER = 1;
-        
+
         // Current Limit for the motors
-        int CURRENT_LIMIT = 40; 
+        int CURRENT_LIMIT = 40;
 
         // If the motors are inverted
         boolean IS_INVERTED = true;
@@ -123,15 +122,16 @@ public interface Constants {
 
             double WHEEL_DIAMETER = 0.5;
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-            
+
             // Ratio of the smaller gear to the larger gear
             double OUTER_GEAR_RATIO = 24.0 / 60.0;
 
             // The difference between theoretical and actual distance
-            double REAL_YIELD = -1.0; //* (10.0 / 3.125) * (1.18 / 3.125);
-            
+            double REAL_YIELD = -1.0; // * (10.0 / 3.125) * (1.18 / 3.125);
+
             double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
-            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION) * REAL_YIELD;
+            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION)
+                    * REAL_YIELD;
 
             double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE;
             double NEO_YIELD = 0.272 * 0.81333333;
@@ -139,14 +139,14 @@ public interface Constants {
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(242);
-        double INITATION_LINE_DISTANCE = toFeet(95);
+        double TRENCH_DISTANCE = toFeet(198);
+        double INITATION_LINE_DISTANCE = toFeet(82);
 
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
         double MIN_ALIGNMENT_TIME = 0.25;
-        
+
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
         SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
@@ -154,12 +154,12 @@ public interface Constants {
         public interface Speed {
 
             // Speed the Drivetrain Moves
-            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 0.5); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.2); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber P = new SmartNumber("SpeedP", 0.4); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.025); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber D = new SmartNumber("SpeedD", 0.05); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();
@@ -171,7 +171,7 @@ public interface Constants {
                 return SPEED_CONTROLLER;
             }
 
-            // Bang Bang speed when measuring PID Values 
+            // Bang Bang speed when measuring PID Values
             double BANGBANG_SPEED = 0.5; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Low Pass Filter Time Constant for controller
@@ -198,8 +198,8 @@ public interface Constants {
                 ANGLE_CONTROLLER.setD(D.get());
                 return ANGLE_CONTROLLER;
             }
-            
-            // Bang Bang speed when measuring PID Values 
+
+            // Bang Bang speed when measuring PID Values
             double BANGBANG_SPEED = 0.35;
 
             // Low pass Filter Time Constant for controller
@@ -218,8 +218,8 @@ public interface Constants {
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
-                double PITCH = 20;
-                SmartNumber YAW = new SmartNumber("Limelight Yaw", 2.0);
+                double PITCH = 25;
+                SmartNumber YAW = new SmartNumber("Limelight Yaw", 4.0);
             }
         }
     }
@@ -228,8 +228,8 @@ public interface Constants {
 
         int CURRENT_LIMIT = 45;
 
-        double GEAR = 2.0 / 3.0; 
-    
+        double GEAR = 2.0 / 3.0;
+
         double INITATION_LINE_RPM = 2075;
         double TRENCH_RPM = 3000;
         double FAR_RPM = 5300.0;
@@ -248,20 +248,20 @@ public interface Constants {
             SmartNumber I = new SmartNumber("Shooter I", 0.003382);
             SmartNumber D = new SmartNumber("Shooter D", 0.000097);
             SmartNumber FF = new SmartNumber("Shooter FF", 0.00019);
-        
+
             double BANGBANG_SPEED = 0.1;
         }
-    
+
         public interface Feeder {
             double SPEED_MUL = 1.0;
 
             double MAX_RPM = 5600.0 * GEAR;
-        
+
             SmartNumber P = new SmartNumber("Feeder P", 0.000972);
             SmartNumber I = new SmartNumber("Feeder I", 0.002740);
             SmartNumber D = new SmartNumber("Feeder D", 0.000086);
             SmartNumber FF = new SmartNumber("Feeder FF", 0.000195);
-        
+
             double BANGBANG_SPEED = 0.1;
         }
     }
@@ -287,15 +287,15 @@ public interface Constants {
      *********************************************************************************************/
     double CLIMBER_MOVE_DEADBAND = 0.25;
 
-    double CLIMBER_EXPONENT = 1/3;
-    
+    double CLIMBER_EXPONENT = 1 / 3;
+
     double CLIMBER_MOVE_SLOW_SPEED = 0.1;
 
     /*********************************************************************************************
      * Funnel Constants
      *********************************************************************************************/
-    //TODO: Test
-    double FUNNEL_SPEED = 1.0;
+    // TODO: Test
+    double FUNNEL_SPEED = 0.7;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
@@ -303,7 +303,7 @@ public interface Constants {
     /*********************************************************************************************
      * Climber Constants
      *********************************************************************************************/
-    //TODO: Test speeds
+    // TODO: Test speeds
     double MOVE_LIFT_UP_SPEED = 1.0;
     double MOVE_LIFT_DOWN_SPEED = -1.0;
     double CLIMBER_SETUP_WAIT_TIME = 0.2;
@@ -320,11 +320,11 @@ public interface Constants {
      *********************************************************************************************/
     double WOOF_TURN_SPEED = 1.0;
     double WOOF_TARGET_ENCODER_VALUE = 30;
-    
+
     double CYAN_RED = 0.2;
     double CYAN_GREEN = 0.56;
     double CYAN_BLUE = 0.3;
-    
+
     double GREEN_RED = 0.25;
     double GREEN_GREEN = 0.65;
     double GREEN_BLUE = 0.17;
@@ -336,7 +336,7 @@ public interface Constants {
     double YELLOW_RED = 0.30;
     double YELLOW_GREEN = 0.50;
     double YELLOW_BLUE = 0.1;
-    
+
     Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
     Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
     Color RED_TARGET = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
@@ -354,30 +354,30 @@ public interface Constants {
 
     /*********************************************************************************************
      * Intake Constants
-     *********************************************************************************************/    
+     *********************************************************************************************/
     double INTAKE_MOTOR_SPEED = 1.0;
 
     /*********************************************************************************************
      * CHIMNEY Motor & Sensor Ports
      *********************************************************************************************/
-  	int CHIMNEY_LIFT_MOTOR_PORT = 8;
-	  int CHIMNEY_LOWER_SENSOR_PORT = 5;
+    int CHIMNEY_LIFT_MOTOR_PORT = 8;
+    int CHIMNEY_LOWER_SENSOR_PORT = 5;
     int CHIMNEY_UPPER_SENSOR_PORT = 6;
-    
+
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-	double CHIMNEY_LIFT_UP_SPEED = 1.0;
+    double CHIMNEY_LIFT_UP_SPEED = 0.7;
     double CHIMNEY_ENCODER_RADIUS = -1;
-    double CHIMNEY_BALL_PER_ROTATIONS = -1;
-    
-    // AUTOS 
+    double CHIMNEY_BALL_PER_ROTATIONS = -0.7;
 
-    //TODO check all values for correctlynessly
+    // AUTOS
+
+    // TODO check all values for correctlynessly
     /*********************************************************************************************
-     * Movement Auton Command       
+     * Movement Auton Command
      *********************************************************************************************/
-    double DISTANCE_TO_MOVE_AT_START = 3.25; //feet
+    double DISTANCE_TO_MOVE_AT_START = 3.25; // feet
 
     /*********************************************************************************************
      * Shoot Three (At Start) Auton Command
@@ -393,28 +393,27 @@ public interface Constants {
     double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
 
     /*********************************************************************************************
-     * Shoot three at start, get 3 balls from trench, and then take 2 balls from rdvs
+     * Shoot three at start, get 3 balls from trench, and then take 2 balls from
+     * rdvs
      *********************************************************************************************/
     double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
     double DISTANCE_FROM_TRENCH_TO_RDVS = 109.85;
-    double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; //estimation between 0 - 54.12
+    double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; // estimation between 0 - 54.12
     double DISTANCE_BETWEEN_TWO_BALL = 16.57;
-    double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = 40; //estimation according to field markings
-
+    double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = 40; // estimation according to field markings
 
     /*********************************************************************************************
      * Shoot three at start and get 3 balls from rdvs
      *********************************************************************************************/
 
     double DISTANCE_FROM_START_TO_RDVS = 107.83;
-    double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; //estimation from common knowledge
-    double DISTANCE_FOR_THREE_BALLS_IN_RDVS = 36; //estimate. Probably higher
-
+    double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; // estimation from common knowledge
+    double DISTANCE_FOR_THREE_BALLS_IN_RDVS = 36; // estimate. Probably higher
 
     /*********************************************************************************************
      * Shoot three at start, and then get 5 balls from rdvs
      *********************************************************************************************/
-    
+
     double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
     double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
 

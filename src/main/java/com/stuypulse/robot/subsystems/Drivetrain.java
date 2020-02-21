@@ -9,16 +9,13 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.stuylib.util.TankDriveEncoder;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -97,7 +94,10 @@ public class Drivetrain extends SubsystemBase {
         // Configure Motors and Other Things
         setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
-        setIdleMode(IdleMode.kBrake);
+        leftMotors[0].setIdleMode(IdleMode.kBrake);
+        leftMotors[1].setIdleMode(IdleMode.kCoast);
+        rightMotors[0].setIdleMode(IdleMode.kBrake);
+        rightMotors[1].setIdleMode(IdleMode.kCoast);
         setNEODistancePerRotation(DrivetrainSettings.Encoders.NEO_DISTANCE_PER_ROTATION);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
         setLowGear();

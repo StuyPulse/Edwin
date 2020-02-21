@@ -22,13 +22,23 @@ public class FeedBallsAutomaticCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if ((!chimney.getUpperChimneyValue() && chimney.getLowerChimneyValue()) // can bring a ball up the chimmey or 
-            || gamepad.getRawDPadUp() || gamepad.getRawDPadDown() || gamepad.getRawDPadLeft()) { // shooter being run
+        if(gamepad.getRawBottomButton()) {
             chimney.liftUp();
             funnel.funnel();
         } else {
-            chimney.stop();
-            funnel.stop();
+            if(chimney.getLowerChimneyValue() && !chimney.getUpperChimneyValue()) {
+                chimney.liftUp();
+                funnel.funnel();
+            } else if(chimney.getLowerChimneyValue() && chimney.getUpperChimneyValue()) {
+                chimney.liftDown();
+                funnel.stop();
+            } else if(!chimney.getLowerChimneyValue() && chimney.getUpperChimneyValue()) {
+                chimney.stop();
+                funnel.stop();
+            } else if(!chimney.getLowerChimneyValue() && chimney.getUpperChimneyValue()) {
+                chimney.stop();
+                funnel.stop();
+            }
         }
     }
 

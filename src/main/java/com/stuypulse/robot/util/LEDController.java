@@ -1,26 +1,14 @@
 package com.stuypulse.robot.util;
 
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.subsystems.Shooter;
-import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
-import com.stuypulse.stuylib.network.limelight.Limelight;
-
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj.Timer;
 
 public class LEDController {
 
     private static PWMSparkMax controller;
-    private static Shooter shooter;
-    private static Intake intake;
-    private static Drivetrain drivetrain;
 
-    public LEDController(int port, Shooter shooter, Intake intake, Drivetrain drivetrain) {
+    public LEDController(int port) {
         controller = new PWMSparkMax(port);
-        this.shooter = shooter;
-        this.intake = intake;
-        this.drivetrain = drivetrain;
     }
 
     public void setValue(double value) {
@@ -100,48 +88,13 @@ public class LEDController {
                 } 
                 break;
             case BLUE_FLASH:
-                if (getValue() != 0.99) {
-                    setValue(0.87);
-                    Timer.delay(0.5);
-                    setValue(0.99);
-                } 
+                setValue(0.87);
+                Timer.delay(0.5);
+                setValue(0.99);
                 break;
             case OFF:
                 setValue(0.99);
                 break;
-        }
-    }
-
-    public void controlLEDs() {
-        if (Limelight.hasValidTarget()) {
-            setColor(Color.YELLOW_SOLID);
-        } else if(drivetrain.getIsAligned()) {
-            setColor(Color.LIME_FLASH);
-            drivetrain.setIsAligned(false);
-        } else if(intake.isBallDetected()) {
-            setColor(Color.BLUE_FLASH);
-        } else {
-            if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
-                if (shooter.isAtTargetVelocity()) {
-                    setColor(Color.WHITE_SOLID);
-                } else {
-                    setColor(Color.WHITE_PULSE);
-                }
-            } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
-                if (shooter.isAtTargetVelocity()) {
-                    setColor(Color.PINK_SOLID);
-                } else {
-                    setColor(Color.PINK_PULSE);
-                }
-            } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
-                if (shooter.isAtTargetVelocity()) {
-                    setColor(Color.RED_SOLID);
-                } else {
-                    setColor(Color.RED_PULSE);
-                }
-            } else {
-                setColor(Color.OFF);
-            }
         }
     }
 }

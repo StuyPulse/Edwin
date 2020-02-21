@@ -7,12 +7,15 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.util.BrownoutProtector;
 import com.stuypulse.robot.util.Pneumatics;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +28,8 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
   private Pneumatics pneumatics;
+
+  private PowerDistributionPanel pdp;
 
   private boolean compress;
 
@@ -42,6 +47,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     pneumatics = new Pneumatics();
+    pdp = new PowerDistributionPanel();
     robotContainer = new RobotContainer();
     robotContainer.initSmartDashboard();
   }
@@ -108,7 +114,19 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    new Thread(() -> robotContainer.getLEDController().controlLEDs()).start();
+
+    new Thread(
+      new BrownoutProtector(
+        pdp,
+        robotContainer.getChimney(), 
+        robotContainer.getClimber(), 
+        robotContainer.getDrivetrain(), 
+        robotContainer.getFunnel(), 
+        robotContainer.getIntake(), 
+        robotContainer.getShooter(), 
+        robotContainer.getWoof()
+      )
+    ).start();;
   }
 
   /**

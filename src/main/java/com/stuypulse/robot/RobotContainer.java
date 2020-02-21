@@ -206,4 +206,32 @@ public class RobotContainer {
     return autonChooser.getSelected();
   }
 
+  public Chimney getChimney() {
+    return chimney;
+  }
+
+  public Climber getClimber() {
+    return climber;
+  }
+
+  public Drivetrain getDrivetrain() {
+    return drivetrain;
+  }
+
+  public Funnel getFunnel() {
+    return funnel;
+  }
+
+  public Intake getIntake() {
+    return intake;
+  }
+
+  public Shooter getShooter() {
+    return shooter;
+  }  
+  
+  public Woof getWoof() {
+    return woof;
+  }
+
 }

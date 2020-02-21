@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
+import com.stuypulse.robot.util.BrownoutProtection;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IStreamFilter;
 import com.stuypulse.stuylib.streams.filters.IStreamFilterGroup;
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Shooter extends SubsystemBase {
+public class Shooter extends SubsystemBase implements BrownoutProtection {
 
     public enum ShooterMode {
         NONE, 
@@ -189,5 +190,21 @@ public class Shooter extends SubsystemBase {
 
     public boolean isAtTargetVelocity() {
         return (Math.abs(getTargetVelocity() - getCurrentShooterVelocityInRPM()) <= Constants.Shooting.TOLERANCE);
+    }
+
+    @Override
+    public void enableBrownout() {
+        leftShooterMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+        middleShooterMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT); 
+        rightShooterMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT); 
+        feederMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT); 
+    }
+
+    @Override
+    public void disableBrownout() {
+        leftShooterMotor.setSmartCurrentLimit(0);
+        middleShooterMotor.setSmartCurrentLimit(0); 
+        rightShooterMotor.setSmartCurrentLimit(0); 
+        feederMotor.setSmartCurrentLimit(0); 
     }
 }

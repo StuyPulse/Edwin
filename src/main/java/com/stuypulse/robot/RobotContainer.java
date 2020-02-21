@@ -84,7 +84,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Woof woof = new Woof();
 
-  private final LEDController ledController = new LEDController(0, shooter, intake, drivetrain);
+  private final LEDController ledController = new LEDController(0);
 
   private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
@@ -109,7 +109,6 @@ public class RobotContainer {
     // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
 
-    new Thread(new MotorStalling(funnel)).start();
   }
 
   /**
@@ -204,6 +203,22 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return autonChooser.getSelected();
+  }
+
+  public Drivetrain getDrivetrain() {
+    return drivetrain;
+  }
+
+  public Intake getIntake() {
+    return intake;
+  }
+
+  public Shooter getShooter() {
+    return shooter;
+  }
+
+  public Funnel getFunnel() {
+    return funnel;
   }
 
 }

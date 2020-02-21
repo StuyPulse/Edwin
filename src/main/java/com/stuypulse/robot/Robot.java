@@ -7,6 +7,8 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.util.LEDControl;
+import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.util.Pneumatics;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -108,7 +110,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    new Thread(() -> robotContainer.getLEDController().controlLEDs()).start();
+    new Thread(new MotorStalling(robotContainer.getFunnel())).start();
+    new Thread(new LEDControl(robotContainer.getLEDController(), robotContainer.getDrivetrain(), robotContainer.getShooter(), robotContainer.getIntake())).start();
   }
 
   /**

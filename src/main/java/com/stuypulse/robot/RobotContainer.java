@@ -187,7 +187,7 @@ public class RobotContainer {
     autonChooser.addOption("Shoot Three, Move Toward Intake", new ShootThreeMoveTowardIntakeAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
     autonChooser.addOption("Shoot Three, Move Toward Shooter", new ShootThreeMoveTowardShooterAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
     autonChooser.addOption("Six Ball: Two, then One Trench", new SixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
-    autonChooser.addOption("Eight Ball: Two Rdvs, then Three Trench", new EightBallTwoRdvsThreeTrenchAutonCommand(intake, shooter, funnel, chimney, drivetrain));
+    autonChooser.addOption("Eight Ball: Two Rdvs, then Three Trench", new EightBallTwoRdvsThreeTrenchAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
 
 
     autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));

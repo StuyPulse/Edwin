@@ -8,18 +8,17 @@ import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.filters.IStreamFilter;
-import com.stuypulse.stuylib.streams.filters.RateLimit;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ShooterDefaultCommand extends CommandBase {
+    public static final IStreamFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, Shooting.I_LIMIT.doubleValue());
+    public static final IStreamFilter RESET_FILTER = (x) -> 0;
+
     public Shooter shooter;
     public WPIGamepad gamepad;
     public Controller shootController;
     public Controller feedController;
-
-    public double targetVel;
-    public IStreamFilter targetVelFilter;
 
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad, Controller shootController,
         Controller feedController) {
@@ -28,23 +27,11 @@ public class ShooterDefaultCommand extends CommandBase {
         this.shootController = shootController;
         this.feedController = feedController;
 
-        this.targetVel = 0;
-        this.targetVelFilter = (x) -> x;
-
         addRequirements(this.shooter);
-
     }
 
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad) {
-        this(shooter, gamepad, 
-            new PIDController().setIntegratorFilter(
-                (x) -> SLMath.limit(x, Shooting.I_LIMIT)
-            ), 
-            new PIDController().setIntegratorFilter(
-                (x) -> SLMath.limit(x, Shooting.I_LIMIT)
-            ));
-
-        addRequirements(this.shooter);
+        this(shooter, gamepad, new PIDController(), new PIDController());
     }
 
     public void updatePID() {
@@ -54,6 +41,12 @@ public class ShooterDefaultCommand extends CommandBase {
             controller.setP(Shooting.Shooter.P.get());
             controller.setI(Shooting.Shooter.I.get());
             controller.setD(Shooting.Shooter.D.get());
+
+            if(controller.isDone(Shooting.I_RANGE.doubleValue())) {
+                controller.setIntegratorFilter(INTEGRAL_FILTER);
+            } else {
+                controller.setIntegratorFilter(RESET_FILTER);
+            }
         }
 
         if (feedController instanceof PIDController) {
@@ -62,6 +55,12 @@ public class ShooterDefaultCommand extends CommandBase {
             controller.setP(Shooting.Feeder.P.get());
             controller.setI(Shooting.Feeder.I.get());
             controller.setD(Shooting.Feeder.D.get());
+
+            if(controller.isDone(Shooting.I_RANGE.doubleValue())) {
+                controller.setIntegratorFilter(INTEGRAL_FILTER);
+            } else {
+                controller.setIntegratorFilter(RESET_FILTER);
+            }
         }
     }
 
@@ -90,7 +89,7 @@ public class ShooterDefaultCommand extends CommandBase {
     public void updateShooter() {
         // Target speed to go at
         double speed = shooter.getCurrentShooterVelocityInRPM();
-        double target = targetVel;
+        double target = shooter.getTargetVelocity();
 
         // The error from current speed to target
         double error = target - speed;
@@ -115,7 +114,7 @@ public class ShooterDefaultCommand extends CommandBase {
     public void updateFeeder() {
         // Target speed to go at
         double speed = shooter.getCurrentFeederVelocityInRPM();
-        double target = targetVel * Shooting.Feeder.SPEED_MUL;
+        double target = shooter.getTargetVelocity() * Shooting.Feeder.SPEED_MUL;
 
         // The error from current speed to target
         double error = target - speed;
@@ -130,9 +129,6 @@ public class ShooterDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
-
-        // Update target velocity
-        targetVel = targetVelFilter.get(shooter.getTargetVelocity());
 
         // If using PID, get its PID values
         updatePID();

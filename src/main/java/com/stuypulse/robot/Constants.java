@@ -181,6 +181,7 @@ public interface Constants {
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3.0);
             double MAX_SPEED_VEL = toFeet(6.0);
+            double SPEED_DEADBAND = MAX_SPEED_ERROR / 2.0;
         }
 
         public interface Angle {
@@ -209,6 +210,7 @@ public interface Constants {
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 2.0;
             double MAX_ANGLE_VEL = 4.0;
+            double ANGLE_DEADBAND = MAX_ANGLE_ERROR / 2.0;
         }
 
         public interface Measurements {
@@ -236,10 +238,8 @@ public interface Constants {
 
         double TOLERANCE = 100;
 
-        double I_LIMIT = 300;
-
-        double SECONDS_TO_SPEED = 2;
-        double TARGET_VEL_RATE_LIMIT = TRENCH_RPM / (50.0 * SECONDS_TO_SPEED);
+        SmartNumber I_LIMIT = new SmartNumber("Shooter / Feeder I Limit", 200);
+        SmartNumber I_RANGE = new SmartNumber("Shooter / Feeder I Range", 300);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;

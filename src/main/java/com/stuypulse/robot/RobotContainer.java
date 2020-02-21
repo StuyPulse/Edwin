@@ -170,8 +170,8 @@ public class RobotContainer {
       debug.getBottomButton().whileHeld(new DrivetrainDriveCommand(drivetrain, debug));
 
       // DPad controls for 90 degree turns and 2.5 ft steps
-      debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 10));
-      debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, -10));
+      debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
+      debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
       debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
       debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
     }

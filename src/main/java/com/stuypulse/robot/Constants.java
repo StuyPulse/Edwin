@@ -134,7 +134,7 @@ public interface Constants {
                     * REAL_YIELD;
 
             double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
-            double NEO_YIELD = 0.81333333;
+            double NEO_YIELD = 0.98277777777777;
             double LEFT_NEO_YEILD = 1.0;
             double RIGHT_NEO_YEILD = -1.0;
         }
@@ -161,7 +161,7 @@ public interface Constants {
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.4); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.04); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber D = new SmartNumber("SpeedD", 0.035); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
             PIDController SPEED_CONTROLLER = new PIDController();

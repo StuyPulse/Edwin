@@ -181,16 +181,16 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.4);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(2.5);
+            double MAX_SPEED_ERROR = toFeet(3);
             double MAX_SPEED_VEL = toFeet(6.0);
             double SPEED_DEADBAND = 0;
         }
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0.0239);
+            SmartNumber P = new SmartNumber("AngleP", 0.022);
             SmartNumber I = new SmartNumber("AngleI", 0);
-            SmartNumber D = new SmartNumber("AngleD", 0.00221);
+            SmartNumber D = new SmartNumber("AngleD", 0.0023);
 
             // Get PID Controller
             PIDController ANGLE_CONTROLLER = new PIDController();

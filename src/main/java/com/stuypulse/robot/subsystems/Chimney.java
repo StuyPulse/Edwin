@@ -1,6 +1,7 @@
 package com.stuypulse.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,6 +22,8 @@ public class Chimney extends SubsystemBase {
 
         lowerSensor = new DigitalInput(Constants.CHIMNEY_LOWER_SENSOR_PORT);
         upperSensor = new DigitalInput(Constants.CHIMNEY_UPPER_SENSOR_PORT);
+
+        motor.setIdleMode(IdleMode.kCoast);
     }
 
     // IR SENSOR VALUES

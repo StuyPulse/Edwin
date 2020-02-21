@@ -41,11 +41,11 @@ public class SixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommandGrou
             new WaitCommand(1.0),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setSpeed(0.8).setTimeout(5),
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setSpeed(0.8).setTimeout(3),
             // new DrivetrainMovementCommand(drivetrain, 0, -DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setTimeout(1.5),
            
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setTimeout(15),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setTimeout(3.5),
             
             new LEDSetCommand(Color.RED_SOLID, controller),
             new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 1.0),
@@ -56,7 +56,7 @@ public class SixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommandGrou
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setTimeout(1.5),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setTimeout(4),
             
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new ParallelCommandGroup(

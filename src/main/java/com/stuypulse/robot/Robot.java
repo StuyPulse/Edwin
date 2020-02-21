@@ -10,6 +10,7 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.util.LEDControl;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.util.Pneumatics;
+import com.stuypulse.stuylib.network.limelight.Limelight;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -79,6 +80,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    Limelight.setLEDMode(Limelight.LEDMode.PIPELINE);
   }
 
   /**

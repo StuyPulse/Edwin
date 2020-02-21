@@ -1,36 +1,54 @@
 package com.stuypulse.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.util.BrownoutProtection;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase implements BrownoutProtection{
 
     private CANSparkMax liftMotor;
     private CANSparkMax yoyoMotor;
-    
-    
+
+    private Solenoid liftSolenoid;
+
+    // private DigitalInput limitSwitch;
+
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);
+        liftSolenoid = new Solenoid(Constants.CLIMBER_LIFT_SOLENOID_CHANNEL);
+        // limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
+
+        liftMotor.setInverted(false);
     }
 
-    public void climbUp() {
-        liftMotor.set(Constants.CLIMB_UP_SPEED);
+    public void setNeutralMode(IdleMode mode) {
+        liftMotor.setIdleMode(mode);
     }
 
-    public void climbDown() {
-        liftMotor.set(Constants.CLIMB_DOWN_SPEED);
+    public void moveLiftDown() {
+        moveLift(Constants.MOVE_LIFT_DOWN_SPEED);
     }
 
-    public void moveLeft(double speed) {
-        yoyoMotor.set(speed);
+    public void moveLiftUp() {
+        moveLift(Constants.MOVE_LIFT_UP_SPEED);
     }
 
-    public void moveRight(double speed) {
+    public void moveLiftDownSlow() {
+        moveLift(-Constants.CLIMBER_MOVE_SLOW_SPEED);
+    }
+
+    public void moveLift(double speed) {
+        liftMotor.set(speed);
+    }
+
+    public void moveYoyo(double speed) {
         yoyoMotor.set(speed);
     }
 
@@ -44,5 +62,34 @@ public class Climber extends SubsystemBase implements BrownoutProtection{
     public void disableBrownout() {
         liftMotor.setSmartCurrentLimit(0);
         yoyoMotor.setSmartCurrentLimit(0);
+    }
+    
+    public void stopClimber() {
+        liftMotor.stopMotor();
+    }
+
+    public void stopYoyo() {
+        yoyoMotor.stopMotor();
+    }
+
+    public void toggleLiftBrake() {
+        liftSolenoid.set(!liftSolenoid.get());
+    }
+
+    public void enableLiftBrake() {
+        if (liftSolenoid.get()) {
+            liftSolenoid.set(false);
+        }
+    }
+
+    public void releaseLiftBrake() {
+        if (!liftSolenoid.get()) {
+            liftSolenoid.set(true);
+        }
+    }
+
+    public boolean isAtBottom() {
+        return false;
+        // return limitSwitch.get();
     }
 }

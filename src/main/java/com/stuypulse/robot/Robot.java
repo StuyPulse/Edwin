@@ -29,8 +29,8 @@ public class Robot extends TimedRobot {
   private boolean compress;
 
   public void updateDashboard() {
-    compress = SmartDashboard.getBoolean("Start Compressing", false);
-    SmartDashboard.putNumber("Robot Air Pressure", pneumatics.getPressure());
+    compress = SmartDashboard.getBoolean("Start Compressing", true);
+    SmartDashboard.putNumber("Robot Air Pressure", pneumatics.getPressure() / 1000.0);
   }
 
   /**
@@ -41,7 +41,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    pneumatics = new Pneumatics();
     robotContainer = new RobotContainer();
+    robotContainer.initSmartDashboard();
   }
 
   /**
@@ -106,6 +108,7 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+    new Thread(() -> robotContainer.getLEDController().controlLEDs()).start();
   }
 
   /**

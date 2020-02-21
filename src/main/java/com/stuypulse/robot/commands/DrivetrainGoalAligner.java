@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.Alignment;
+import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
 /**
@@ -9,6 +10,10 @@ import com.stuypulse.stuylib.network.limelight.Limelight;
  * target.
  */
 public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner {
+
+    private static SmartNumber currentDistance = new SmartNumber("GOAL Current Distance");
+    private static SmartNumber targetDistance = new SmartNumber("GOAL Target Distance");
+    private static SmartNumber distanceError = new SmartNumber("GOAL Target Error");
 
     private double distance;
 
@@ -22,16 +27,35 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
     }
 
     public double getSpeedError() {
-        double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
-        double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
-        double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
-                - Alignment.Measurements.Limelight.DISTANCE;
+        if(Limelight.hasValidTarget()) {
+            double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
+            double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
+            double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
+                    - Alignment.Measurements.Limelight.DISTANCE;
+    
+            currentDistance.set(goal_dist);
+            targetDistance.set(distance);
+            distanceError.set(goal_dist - distance);
 
-        // Return the error from the target distance
-        return 0 - (goal_dist - distance);
+            if(goal_dist < Alignment.MIN_DISTANCE) {
+                return 0;
+            } else if(goal_dist > Alignment.MAX_DISTANCE) {
+                return 0;
+            }
+
+            // Return the error from the target distance
+            return 0 - (goal_dist - distance);
+        } else {
+            return 0;
+        }
     }
 
     public double getAngleError() {
-        return 0 - (Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW);
+        if(Limelight.hasValidTarget()) {
+            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue();
+        } else {
+            return 0;
+        }
     }
+
 }

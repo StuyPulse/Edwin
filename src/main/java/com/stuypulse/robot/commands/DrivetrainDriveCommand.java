@@ -19,6 +19,8 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     private Gamepad gamepad;
 
+    private boolean useFiltering;
+
     private IStream rawSpeed;
     private IStream rawAngle;
 
@@ -31,6 +33,13 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         // Store the gamepad
         this.gamepad = gamepad;
+    }
+
+    public void initialize() {
+        super.initialize();
+
+        // Use filtering by default
+        this.useFiltering = true;
 
         // Create an IStream that gets the speed from the controller
         this.rawSpeed = () -> {
@@ -57,20 +66,52 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
         );
     }
 
-    // Give the IStream's result for speed when the drivetrain wants it
-    public double getSpeed() {
-
-        if(gamepad.getRawBottomButton()) {
-            drivetrain.setLowGear();
-        } else {
-            drivetrain.setHighGear();
+    // Check DPad for enabling or disableing filters
+    private boolean checkDPad() {
+        if(gamepad.getRawDPadUp()) {
+            return (useFiltering = true);
         }
 
-        return speed.get();
+        if(gamepad.getRawDPadDown()) {
+            return (useFiltering = false);
+        }
+
+        return useFiltering;
+    }
+
+    // Give the IStream's result for speed when the drivetrain wants it
+    public double getSpeed() {
+        double s = speed.get();
+
+        if(!checkDPad()) {
+            s = rawSpeed.get();
+        }
+
+        return s;
     }
 
     // Give the IStream's result for angle when the drivetrain wants it
     public double getAngle() {
-        return angle.get();
+        double a = angle.get();
+
+        if(!checkDPad()) {
+            a = rawAngle.get();
+        }
+
+        return a;
+    }
+
+    // If the drivetrain goes into high or low gear
+    public Drivetrain.Gear getGear() {
+        if(gamepad.getRawBottomButton()) {
+            return Drivetrain.Gear.LOW;
+        } else {
+            return Drivetrain.Gear.HIGH;
+        }
+    }
+
+    // Humans need curvature drive because they're st00p1d
+    public boolean useCurvatureDrive() {
+        return true;
     }
 }

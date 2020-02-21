@@ -25,10 +25,10 @@ public class Chimney extends SubsystemBase implements BrownoutProtection{
     }
 
     // IR SENSOR VALUES
-    public boolean getLowerChuteValue() {
+    public boolean getLowerChimneyValue() {
         return lowerSensor.get();
     }
-    public boolean getUpperChuteValue() {
+    public boolean getUpperChimneyValue() {
         return upperSensor.get();
     }
 

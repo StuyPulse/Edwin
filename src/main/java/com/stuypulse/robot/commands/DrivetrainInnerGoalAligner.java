@@ -12,7 +12,8 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
  */
 public class DrivetrainInnerGoalAligner implements DrivetrainAlignmentCommand.Aligner {
 
-    private LowPassFilter filter = new LowPassFilter(0.5);
+    private LowPassFilter filter = new LowPassFilter(0.2);
+
     public DrivetrainInnerGoalAligner() {
     }
 
@@ -22,7 +23,10 @@ public class DrivetrainInnerGoalAligner implements DrivetrainAlignmentCommand.Al
     }
 
     public double getAngleError() {
-        // TODO: have CV replace this command
-        return 0- (Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW + filter.get(CVFuncs.txOffset()));
+        if(Limelight.hasValidTarget()) {
+            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue() + filter.get(CVFuncs.txOffset());
+        } else {
+            return 0;
+        }
     }
 }

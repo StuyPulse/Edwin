@@ -23,11 +23,7 @@ public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
      */
     public DrivetrainAutoSpeedCommand(Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {
         super(drivetrain, aligner, new PIDCalculator(Alignment.Speed.BANGBANG_SPEED), Alignment.Angle.getPID());
-    }
-
-    // This command never really finishes
-    public boolean isFinished() {
-        return false;
+        setNeverFinish();
     }
 
     // Report value to smart dashboard
@@ -35,15 +31,15 @@ public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
         super.execute();
 
         if (getSpeedController() instanceof PIDCalculator) {
-            PIDController calulated = ((PIDCalculator) getSpeedController()).getPIDController(
+            PIDController calculated = ((PIDCalculator) getSpeedController()).getPIDController(
                     Alignment.AUTOTUNE_P.doubleValue(), 
                     Alignment.AUTOTUNE_I.doubleValue(),
                     Alignment.AUTOTUNE_D.doubleValue()
                 );
             
-            Alignment.Speed.P.set(calulated.getP());
-            Alignment.Speed.I.set(calulated.getI());
-            Alignment.Speed.D.set(calulated.getD());
+            Alignment.Speed.P.set(calculated.getP());
+            Alignment.Speed.I.set(calculated.getI());
+            Alignment.Speed.D.set(calculated.getD());
         }
     }
 }

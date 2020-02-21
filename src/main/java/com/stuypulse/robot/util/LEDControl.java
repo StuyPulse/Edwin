@@ -1,10 +1,12 @@
 package com.stuypulse.robot.util;
 
+import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 import com.stuypulse.robot.util.LEDController.Color;
+import com.stuypulse.stuylib.input.Gamepad;
 
 public class LEDControl implements Runnable {
 
@@ -12,18 +14,24 @@ public class LEDControl implements Runnable {
     private Drivetrain drivetrain;
     private Shooter shooter;
     private Intake intake;
+    private Gamepad driver;
 
-    public LEDControl(LEDController controller, Drivetrain drivetrain, Shooter shooter, Intake intake) {
-        this.controller = controller;
-        this.drivetrain = drivetrain;
-        this.shooter = shooter;
-        this.intake = intake;
+    public LEDControl(RobotContainer robot) {
+        controller = robot.getLEDController();
+        drivetrain = robot.getDrivetrain();
+        shooter = robot.getShooter();
+        intake = robot.getIntake();
+        driver = robot.getDriver();
     }
 
     public void controlLEDs() {
-        System.out.println("PPPPPPLLLLLLLLLEEEEEEEEEEAAAAAAASSSSSSSSEEEEEE WWWWWWOOOOOOOOOORRRRRRRRRKKKKKKKKK");
         while (true) {
-            if (Limelight.hasValidTarget()) {
+            try {
+                Thread.sleep(250);
+            } catch(InterruptedException e) {
+                System.out.println("oof" + e);
+            }
+            if (driver.getRawTopButton() || driver.getRawLeftButton()) {
                 controller.setColor(Color.YELLOW_SOLID);
                 System.out.println("ALIGNING - yellow solid");
             } else if(drivetrain.getIsAligned()) {
@@ -31,7 +39,7 @@ public class LEDControl implements Runnable {
                 drivetrain.setIsAligned(false);
                 System.out.println("IS ALIGNED - lime flash");
             } else if(intake.isBallDetected() && controller.getValue() != 0.99) {
-                controller.setColor(Color.BLUE_FLASH);
+                controller.setColor(Color.BLUE_SOLID);
                 System.out.println("BALL DETECTED - blue flash");
             } else {
                 if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {

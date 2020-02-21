@@ -52,6 +52,7 @@ import com.stuypulse.robot.subsystems.Woof;
 import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.stuylib.control.PIDCalculator;
+import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
@@ -219,6 +220,10 @@ public class RobotContainer {
 
   public Funnel getFunnel() {
     return funnel;
+  }
+
+  public Gamepad getDriver() {
+    return driver;
   }
 
 }

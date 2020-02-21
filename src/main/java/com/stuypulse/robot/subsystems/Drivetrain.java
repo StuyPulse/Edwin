@@ -68,6 +68,9 @@ public class Drivetrain extends SubsystemBase {
         leftNEO = leftMotors[1].getEncoder();
         rightNEO = rightMotors[1].getEncoder();
 
+        leftNEO.setPosition(0);
+        rightNEO.setPosition(0);
+
         greyhills = new TankDriveEncoder(
             new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B), 
             new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B)
@@ -209,14 +212,14 @@ public class Drivetrain extends SubsystemBase {
      * @return distance left side of drivetrain has moved
      */
     public double getLeftNEODistance() {
-        return leftNEO.getPosition();
+        return leftNEO.getPosition() * DrivetrainSettings.Encoders.LEFT_NEO_YEILD;
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
     public double getRightNEODistance() {
-        return rightNEO.getPosition();
+        return rightNEO.getPosition() * DrivetrainSettings.Encoders.RIGHT_NEO_YEILD;
     }
 
     private double absMax(double a, double b) {
@@ -233,6 +236,10 @@ public class Drivetrain extends SubsystemBase {
     public double getNEODistance() {
         double left = getLeftNEODistance();
         double right = getRightNEODistance();
+
+        System.out.println("Right: " + right);
+        System.out.println("Left:  " + left);
+        
 
         return absMax(left, right) * DrivetrainSettings.Encoders.NEO_YIELD;
     }

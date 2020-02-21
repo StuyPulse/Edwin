@@ -23,7 +23,7 @@ public class SixBallThreeTrenchAutonCommand extends SequentialCommandGroup {
             //Shoot 3
             //new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter),
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH),
-            new DrivetrainMovementCommand(drivetrain, 0, Constants.toFeet(0, Constants.DISTANCE_FROM_START_TO_TRENCH)),
+            //new DrivetrainMovementCommand(drivetrain, 0, Constants.toFeet(0, Constants.DISTANCE_FROM_START_TO_TRENCH)),
             new DrivetrainMovementCommand(drivetrain, -Constants.toFeet(0, Constants.ANGLE_FROM_START_TO_TRENCH)),
             // new IntakeAcquireCommand(intake),
             new DrivetrainMovementCommand(drivetrain, 0, 2 * Constants.toFeet(0, Constants.DISTANCE_FROM_BALL_TO_BALL)),

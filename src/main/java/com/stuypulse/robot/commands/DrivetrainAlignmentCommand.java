@@ -122,7 +122,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             if(Math.abs(error) < Alignment.Speed.SPEED_DEADBAND) { 
                 error = 0;
             } else {
-                error -= Math.copySign(Alignment.Angle.ANGLE_DEADBAND, error);
+                error -= Math.copySign(Alignment.Speed.SPEED_DEADBAND, error);
             }
 
             return SLMath.limit(speed.update(error), 1) * Alignment.Speed.MAX_SPEED.doubleValue();

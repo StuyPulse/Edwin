@@ -110,8 +110,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    new Thread(new MotorStalling(robotContainer.getFunnel())).start();
-    new Thread(new LEDControl(robotContainer.getLEDController(), robotContainer.getDrivetrain(), robotContainer.getShooter(), robotContainer.getIntake())).start();
+    // new Thread(new MotorStalling(robotContainer.getFunnel())).start();
+    // new Thread(new LEDControl(robotContainer.getLEDController(), robotContainer.getDrivetrain(), robotContainer.getShooter(), robotContainer.getIntake())).start();
   }
 
   /**

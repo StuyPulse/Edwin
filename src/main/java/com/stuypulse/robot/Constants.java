@@ -133,8 +133,10 @@ public interface Constants {
             double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION)
                     * REAL_YIELD;
 
-            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE;
-            double NEO_YIELD = 0.272 * 0.81333333;
+            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
+            double NEO_YIELD = 0.81333333;
+            double LEFT_NEO_YEILD = 1.0;
+            double RIGHT_NEO_YEILD = -1.0;
         }
     }
 
@@ -154,7 +156,7 @@ public interface Constants {
         public interface Speed {
 
             // Speed the Drivetrain Moves
-            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 0.5); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 0.65); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.4); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
@@ -172,14 +174,14 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values
-            double BANGBANG_SPEED = 0.5; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
+            double BANGBANG_SPEED = 0.6; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.4);
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(3.0);
+            double MAX_SPEED_ERROR = toFeet(2.5);
             double MAX_SPEED_VEL = toFeet(6.0);
             double SPEED_DEADBAND = 0;
         }
@@ -208,9 +210,9 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 2.0;
+            double MAX_ANGLE_ERROR = 2.5;
             double MAX_ANGLE_VEL = 6.0;
-            double ANGLE_DEADBAND = MAX_ANGLE_ERROR / 2.0;
+            double ANGLE_DEADBAND = 0;
         }
 
         public interface Measurements {
@@ -221,7 +223,7 @@ public interface Constants {
                 double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
                 double PITCH = 25;
-                SmartNumber YAW = new SmartNumber("Limelight Yaw", 4.0);
+                SmartNumber YAW = new SmartNumber("Limelight Yaw", 3.25);
             }
         }
     }
@@ -233,7 +235,7 @@ public interface Constants {
         double GEAR = 2.0 / 3.0;
 
         double INITATION_LINE_RPM = 2075;
-        double TRENCH_RPM = 3000;
+        double TRENCH_RPM = 2900;
         double FAR_RPM = 5300.0;
 
         double TOLERANCE = 100;
@@ -244,12 +246,12 @@ public interface Constants {
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Shooter P", 0.0);
-            SmartNumber I = new SmartNumber("Shooter I", 0.0);
-            SmartNumber D = new SmartNumber("Shooter D", 0.0);
-            SmartNumber FF = new SmartNumber("Shooter FF", 0.00019);
+            SmartNumber P = new SmartNumber("Shooter P", 0.001234);
+            SmartNumber I = new SmartNumber("Shooter I", 0.003559);
+            SmartNumber D = new SmartNumber("Shooter D", 0.000107);
+            SmartNumber FF = new SmartNumber("Shooter FF", 0.000195);
 
-            double BANGBANG_SPEED = 0.1;
+            double BANGBANG_SPEED = 0.2;
         }
 
         public interface Feeder {
@@ -257,12 +259,12 @@ public interface Constants {
 
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Feeder P", 0.0);
-            SmartNumber I = new SmartNumber("Feeder I", 0.0);
-            SmartNumber D = new SmartNumber("Feeder D", 0.0);
-            SmartNumber FF = new SmartNumber("Feeder FF", 0.000195);
+            SmartNumber P = new SmartNumber("Feeder P", 0.000944);
+            SmartNumber I = new SmartNumber("Feeder I", 0.002550);
+            SmartNumber D = new SmartNumber("Feeder D", 0.000087);
+            SmartNumber FF = new SmartNumber("Feeder FF", 0.000205);
 
-            double BANGBANG_SPEED = 0.1;
+            double BANGBANG_SPEED = 0.2;
         }
     }
 
@@ -295,7 +297,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     // TODO: Test
-    double FUNNEL_SPEED = 0.5;
+    double FUNNEL_SPEED = 1;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
@@ -367,7 +369,7 @@ public interface Constants {
     /*********************************************************************************************
      * CHIMNEY Constants
      *********************************************************************************************/
-    double CHIMNEY_LIFT_UP_SPEED = 0.5;
+    double CHIMNEY_LIFT_UP_SPEED = 1.0;
     double CHIMNEY_ENCODER_RADIUS = -1;
     double CHIMNEY_BALL_PER_ROTATIONS = -0.5;
 
@@ -388,7 +390,7 @@ public interface Constants {
      * Shoot at start and take 3 balls from trench
      *********************************************************************************************/
     double ANGLE_FROM_START_TO_TRENCH = 37.7;
-    double DISTANCE_FROM_START_TO_TRENCH = 109.4;
+    double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = 5;
     double DISTANCE_FROM_BALL_TO_BALL = 36;
     double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
 

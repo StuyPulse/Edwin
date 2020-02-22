@@ -7,7 +7,10 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.util.LEDControl;
+import com.stuypulse.robot.util.MotorStalling;
 import com.stuypulse.robot.util.Pneumatics;
+import com.stuypulse.stuylib.network.limelight.Limelight;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,8 +32,8 @@ public class Robot extends TimedRobot {
   private boolean compress;
 
   public void updateDashboard() {
-    compress = SmartDashboard.getBoolean("Start Compressing", false);
-    SmartDashboard.putNumber("Robot Air Pressure", pneumatics.getPressure());
+    compress = SmartDashboard.getBoolean("Start Compressing", true);
+    SmartDashboard.putNumber("Robot Air Pressure", pneumatics.getPressure() / 1000.0);
   }
 
   /**
@@ -41,7 +44,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    pneumatics = new Pneumatics();
     robotContainer = new RobotContainer();
+    robotContainer.initSmartDashboard();
   }
 
   /**
@@ -75,6 +80,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    Limelight.setLEDMode(Limelight.LEDMode.PIPELINE);
   }
 
   /**
@@ -106,6 +112,10 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+    // new Thread(new MotorStalling(robotContainer.getFunnel())).start();
+    Thread ledThread = new Thread(new LEDControl(robotContainer));
+    ledThread.setPriority(Thread.MIN_PRIORITY);
+    ledThread.start();
   }
 
   /**

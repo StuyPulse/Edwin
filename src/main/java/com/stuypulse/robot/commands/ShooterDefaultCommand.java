@@ -1,15 +1,20 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.input.WPIGamepad;
+import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.streams.filters.IStreamFilter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ShooterDefaultCommand extends CommandBase {
+    public static final IStreamFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, Shooting.I_LIMIT.doubleValue());
+    public static final IStreamFilter RESET_FILTER = (x) -> 0;
+
     public Shooter shooter;
     public WPIGamepad gamepad;
     public Controller shootController;
@@ -21,6 +26,8 @@ public class ShooterDefaultCommand extends CommandBase {
         this.gamepad = gamepad;
         this.shootController = shootController;
         this.feedController = feedController;
+
+        addRequirements(this.shooter);
     }
 
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad) {
@@ -31,17 +38,29 @@ public class ShooterDefaultCommand extends CommandBase {
         if (shootController instanceof PIDController) {
             PIDController controller = (PIDController) shootController;
 
-            controller.setP(Constants.SHOOTER_P.get());
-            controller.setI(Constants.SHOOTER_I.get());
-            controller.setD(Constants.SHOOTER_D.get());
+            controller.setP(Shooting.Shooter.P.get());
+            controller.setI(Shooting.Shooter.I.get());
+            controller.setD(Shooting.Shooter.D.get());
+
+            if(controller.isDone(Shooting.I_RANGE.doubleValue())) {
+                controller.setIntegratorFilter(INTEGRAL_FILTER);
+            } else {
+                controller.setIntegratorFilter(RESET_FILTER);
+            }
         }
 
         if (feedController instanceof PIDController) {
             PIDController controller = (PIDController) feedController;
 
-            controller.setP(Constants.FEEDER_P.get());
-            controller.setI(Constants.FEEDER_I.get());
-            controller.setD(Constants.FEEDER_D.get());
+            controller.setP(Shooting.Feeder.P.get());
+            controller.setI(Shooting.Feeder.I.get());
+            controller.setD(Shooting.Feeder.D.get());
+
+            if(controller.isDone(Shooting.I_RANGE.doubleValue())) {
+                controller.setIntegratorFilter(INTEGRAL_FILTER);
+            } else {
+                controller.setIntegratorFilter(RESET_FILTER);
+            }
         }
     }
 
@@ -49,21 +68,21 @@ public class ShooterDefaultCommand extends CommandBase {
         if (shootController instanceof PIDCalculator) {
 
             PIDCalculator calculator = (PIDCalculator) shootController;
-            PIDController controller = (PIDController) calculator.getPIController();
+            PIDController controller = (PIDController) calculator.getPIDController();
 
-            Constants.SHOOTER_P.set(controller.getP());
-            Constants.SHOOTER_I.set(controller.getI());
-            Constants.SHOOTER_D.set(controller.getD());
+            Shooting.Shooter.P.set(controller.getP());
+            Shooting.Shooter.I.set(controller.getI());
+            Shooting.Shooter.D.set(controller.getD());
         }
 
         if (feedController instanceof PIDCalculator) {
 
             PIDCalculator calculator = (PIDCalculator) feedController;
-            PIDController controller = (PIDController) calculator.getPIController();
+            PIDController controller = (PIDController) calculator.getPIDController();
 
-            Constants.FEEDER_P.set(controller.getP());
-            Constants.FEEDER_I.set(controller.getI());
-            Constants.FEEDER_D.set(controller.getD());
+            Shooting.Feeder.P.set(controller.getP());
+            Shooting.Feeder.I.set(controller.getI());
+            Shooting.Feeder.D.set(controller.getD());
         }
     }
 
@@ -77,30 +96,32 @@ public class ShooterDefaultCommand extends CommandBase {
 
         // Speed to set the motor plus feed forward
         double output = shootController.update(error);
-        output += target * Constants.SHOOTER_FF.get();
+        output += target * Shooting.Shooter.FF.get();
 
         // Set the shooter to that
         shooter.setShooterSpeed(output);
 
-        double rumbleMag = Math.abs(speed - target);
-        rumbleMag = Constants.SHOOTER_TOLERANCE - rumbleMag;
-        rumbleMag = Math.max(error, 0.0);
-        rumbleMag /= Constants.SHOOTER_TOLERANCE;
+        if(gamepad != null) {
+            double rumbleMag = Math.abs(speed - target);
+            rumbleMag = Shooting.TOLERANCE - rumbleMag;
+            rumbleMag = Math.max(error, 0.0);
+            rumbleMag /= Shooting.TOLERANCE;
 
-        gamepad.setRumble(rumbleMag);
+            gamepad.setRumble(rumbleMag);
+        }
     }
 
     public void updateFeeder() {
         // Target speed to go at
         double speed = shooter.getCurrentFeederVelocityInRPM();
-        double target = shooter.getTargetVelocity() * Constants.FEEDER_SPEED_MUL;
+        double target = shooter.getTargetVelocity() * Shooting.Feeder.SPEED_MUL;
 
         // The error from current speed to target
         double error = target - speed;
 
         // Speed to set the motor plus feed forward
-        double output = shootController.update(error);
-        output += target * Constants.FEEDER_FF.get();
+        double output = feedController.update(error);
+        output += target * Shooting.Feeder.FF.get();
 
         // Set the shooter to that
         shooter.setFeederSpeed(output);

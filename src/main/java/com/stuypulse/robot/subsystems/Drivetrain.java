@@ -1,5 +1,16 @@
 package com.stuypulse.robot.subsystems;
 
+import java.util.Arrays;
+
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.robot.Constants.DrivetrainSettings;
+import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.stuylib.util.TankDriveEncoder;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -7,17 +18,6 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.stuypulse.robot.Constants.DrivetrainSettings;
-import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.stuylib.util.TankDriveEncoder;
-
-import java.util.Arrays;
-
-import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -29,16 +29,6 @@ public class Drivetrain extends SubsystemBase {
     // Turn a list of speed controllers into a speed controller group
     private static SpeedControllerGroup makeControllerGroup(SpeedController... controllers) {
         return new SpeedControllerGroup(controllers[0], Arrays.copyOfRange(controllers, 1, controllers.length));
-    }
-
-    // Take a list of motors and return the ones used in high gear
-    private static CANSparkMax[] getHighGear(CANSparkMax[] motors) {
-        return motors;
-    }
-
-    // Take a list of motors and return the ones used in low gear
-    private static CANSparkMax[] getLowGear(CANSparkMax[] motors) {
-        return motors;
     }
 
     // An array of motors on the left and right side of the drive train
@@ -60,6 +50,8 @@ public class Drivetrain extends SubsystemBase {
     // NAVX for Gyro
     private AHRS navx;
 
+    private boolean isAligned;
+
     public Drivetrain() {
         // Add Motors to list
         leftMotors = new CANSparkMax[] { 
@@ -76,6 +68,9 @@ public class Drivetrain extends SubsystemBase {
         leftNEO = leftMotors[1].getEncoder();
         rightNEO = rightMotors[1].getEncoder();
 
+        leftNEO.setPosition(0);
+        rightNEO.setPosition(0);
+
         greyhills = new TankDriveEncoder(
             new Encoder(Ports.Drivetrain.LEFT_ENCODER_A, Ports.Drivetrain.LEFT_ENCODER_B), 
             new Encoder(Ports.Drivetrain.RIGHT_ENCODER_A, Ports.Drivetrain.RIGHT_ENCODER_B)
@@ -83,14 +78,16 @@ public class Drivetrain extends SubsystemBase {
 
         // Create DifferentialDrive for different gears
         highGearDrive = new DifferentialDrive(
-            makeControllerGroup(getHighGear(leftMotors)),
-            makeControllerGroup(getHighGear(rightMotors))
+            makeControllerGroup(leftMotors),
+            makeControllerGroup(rightMotors)
         );
 
-        lowGearDrive = new DifferentialDrive(
-            makeControllerGroup(getLowGear(leftMotors)),
-            makeControllerGroup(getLowGear(rightMotors))
-        );
+        lowGearDrive = highGearDrive;
+
+        // lowGearDrive = new DifferentialDrive(
+        //     makeControllerGroup(getLowGear(leftMotors)),
+        //     makeControllerGroup(getLowGear(rightMotors))
+        // );
 
         gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
 
@@ -98,9 +95,13 @@ public class Drivetrain extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP);
 
         // Configure Motors and Other Things
-        setInverted(false);
+        setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
-        setNEODistancePerRotation(DrivetrainSettings.Encoders.WHEEL_CIRCUMFERENCE);
+        leftMotors[0].setIdleMode(IdleMode.kBrake);
+        leftMotors[1].setIdleMode(IdleMode.kCoast);
+        rightMotors[0].setIdleMode(IdleMode.kBrake);
+        rightMotors[1].setIdleMode(IdleMode.kCoast);
+        setNEODistancePerRotation(DrivetrainSettings.Encoders.NEO_DISTANCE_PER_ROTATION);
         setGreyhillDistancePerPulse(DrivetrainSettings.Encoders.GREYHILL_FEET_PER_PULSE);
         setLowGear();
     }
@@ -118,7 +119,21 @@ public class Drivetrain extends SubsystemBase {
         for (CANSparkMax motor : rightMotors) {
             motor.setSmartCurrentLimit(limit);
         }
+    }
 
+    /**
+     * Set the idle mode of the all the motors
+     * 
+     * @param mode mode to set the moters to
+     */
+    public void setIdleMode(IdleMode mode) {
+        for (CANSparkMax motor : leftMotors) {
+            motor.setIdleMode(mode);
+        }
+
+        for (CANSparkMax motor : rightMotors) {
+            motor.setIdleMode(mode);
+        }
     }
 
     /**
@@ -197,14 +212,22 @@ public class Drivetrain extends SubsystemBase {
      * @return distance left side of drivetrain has moved
      */
     public double getLeftNEODistance() {
-        return leftNEO.getPosition();
+        return leftNEO.getPosition() * DrivetrainSettings.Encoders.LEFT_NEO_YEILD;
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
     public double getRightNEODistance() {
-        return rightNEO.getPosition();
+        return rightNEO.getPosition() * DrivetrainSettings.Encoders.RIGHT_NEO_YEILD;
+    }
+
+    private double absMax(double a, double b) {
+        if(Math.abs(a) < Math.abs(b)) {
+            return b;
+        } else {
+            return a;
+        }
     }
 
     /**
@@ -214,7 +237,11 @@ public class Drivetrain extends SubsystemBase {
         double left = getLeftNEODistance();
         double right = getRightNEODistance();
 
-        return Math.max(left, right);
+        System.out.println("Right: " + right);
+        System.out.println("Left:  " + left);
+        
+
+        return absMax(left, right) * DrivetrainSettings.Encoders.NEO_YIELD;
     }
 
     /**
@@ -312,10 +339,18 @@ public class Drivetrain extends SubsystemBase {
      * @param rotation amount that it turns
      */
     public void curvatureDrive(double speed, double rotation) {
-        if (speed < DrivetrainSettings.QUICKTURN_THRESHOLD) {
+        if (Math.abs(speed) < DrivetrainSettings.QUICKTURN_THRESHOLD) {
             curvatureDrive(speed, rotation * DrivetrainSettings.QUICKTURN_SPEED, true);
         } else {
             curvatureDrive(speed, rotation, false);
         }
+    }
+
+    public void setIsAligned(boolean aligned) {
+        isAligned = aligned;
+    }
+
+    public boolean getIsAligned() {
+        return isAligned;
     }
 }

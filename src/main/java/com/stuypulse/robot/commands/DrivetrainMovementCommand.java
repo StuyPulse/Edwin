@@ -1,6 +1,8 @@
 package com.stuypulse.robot.commands;
 
+import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.stuylib.math.SLMath;
 
 /**
  * Extends off of the DrivetrainPIDAlignmentCommand and uses its controllers to
@@ -46,24 +48,32 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
             this.justTurning = true;
         }
 
+        private double getGyroAngle() {
+            return drivetrain.getGyroAngle();
+        }
+
+        private double getDistance() {
+            return DrivetrainSettings.Encoders.USE_GREYHILLS ? drivetrain.getGreyhillDistance() : drivetrain.getNEODistance();
+        }
+
         /**
          * Set goals based on when the command is initialized
          */
         public void init() {
-            goalAngle = drivetrain.getGyroAngle() + angle;
-            goalDistance = drivetrain.getGreyhillDistance() + distance;
+            goalAngle = getGyroAngle() + angle;
+            goalDistance = getDistance() + distance;
         }
 
         public double getSpeedError() {
             if (justTurning) {
                 return 0.0;
             } else {
-                return goalDistance - drivetrain.getGreyhillDistance();
+                return goalDistance - getDistance();
             }
         }
 
         public double getAngleError() {
-            return goalAngle - drivetrain.getGyroAngle();
+            return goalAngle - getGyroAngle();
         }
     }
 
@@ -95,16 +105,20 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 		}
     }
 
+    // Speed the drivetrain should move
+    private double speed;
+
     /**
      * Creates command that moves drivetrain very specific amounts
      * 
      * @param drivetrain the drivetrain you want to move
      * @param angle      the angle you want it to turn before moving (this may*
      *                   affect distance)
-     * @param distance   the distance you want it to travel
+     * @param distance   the distance you want it to travel (feet)
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle, double distance) {
         super(drivetrain, new Aligner(drivetrain, angle, distance));
+        speed = 1.0;
     }
 
     /**
@@ -115,5 +129,17 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle) {
         super(drivetrain, new Aligner(drivetrain, angle));
+        speed = 1.0;
+    }
+
+    // Set the speed of the movement command
+    public DrivetrainMovementCommand setSpeed(double speed) {
+        this.speed = speed;
+        return this;
+    }
+
+    // Scale the speed
+    public double getSpeed() {
+        return SLMath.limit(super.getSpeed(), speed);
     }
 }

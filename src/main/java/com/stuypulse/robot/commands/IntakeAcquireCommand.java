@@ -13,11 +13,6 @@ public class IntakeAcquireCommand extends CommandBase {
   }
 
   @Override
-  public void initialize() {
-    intake.extend();
-  }
-
-  @Override
   public void execute() {
       intake.acquire();
   }

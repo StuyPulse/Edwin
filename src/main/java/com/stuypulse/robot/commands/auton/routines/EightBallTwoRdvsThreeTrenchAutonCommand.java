@@ -5,6 +5,7 @@ import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
+import com.stuypulse.robot.commands.FeedBallsInAutoCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.IntakeAcquireForeverCommand;
 import com.stuypulse.robot.commands.IntakeExtendCommand;
@@ -21,6 +22,7 @@ import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.robot.util.LEDController.Color;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -57,7 +59,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setSpeed(0.65).setTimeout(0.5),
 
             new LEDSetCommand(Color.LIME_FLASH, controller),
-            new DrivetrainMovementCommand(drivetrain, -30).setTimeout(3.0),
+            new DrivetrainMovementCommand(drivetrain, -30).setTimeout(1.5),
             
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_RDVS).setTimeout(15),
@@ -71,7 +73,10 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             // new DrivetrainMovementCommand(drivetrain, 0, -5.0),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setTimeout(15.0),
+            new ParallelDeadlineGroup(
+                new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setTimeout(4.0),
+                new FeedBallsInAutoCommand(funnel, chimney)
+            ),
             
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             new ParallelCommandGroup(

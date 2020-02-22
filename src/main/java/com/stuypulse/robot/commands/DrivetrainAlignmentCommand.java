@@ -8,6 +8,7 @@ import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.filters.MovingAverage;
+import com.stuypulse.stuylib.streams.filters.RateLimit;
 import com.stuypulse.stuylib.util.StopWatch;
 
 /**
@@ -67,13 +68,16 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.speed = speed;
         this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER.doubleValue()));
         this.speed.setVelocityFilter(new MovingAverage(5));
-        this.speed.setOutputFilter(new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue()));
+        // this.speed.setOutputFilter(new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue()));
+        this.speed.setOutputFilter(new RateLimit(1.0 / (Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue() * 50.0)));
+
 
         // Initialize PID Controller for Angle
         this.angle = angle;
         this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
-        this.speed.setVelocityFilter(new MovingAverage(5));
-        this.angle.setOutputFilter(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue()));
+        this.angle.setVelocityFilter(new MovingAverage(5));
+        // this.angle.setOutputFilter(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue()));
+        this.angle.setOutputFilter(new RateLimit(1.0 / (Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue() * 50.0)));
 
         // Target distance for the Alignment Command
         this.aligner = aligner;

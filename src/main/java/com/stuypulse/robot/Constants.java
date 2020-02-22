@@ -181,6 +181,7 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
+            double LIMELIGHT_MAX_SPEED = 0.6;
             double MAX_SPEED_ERROR = toFeet(3);
             double MAX_SPEED_VEL = toFeet(6.0);
             double SPEED_DEADBAND = 0;

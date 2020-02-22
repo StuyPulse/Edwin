@@ -105,9 +105,6 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 		}
     }
 
-    // Speed the drivetrain should move
-    private double speed;
-
     /**
      * Creates command that moves drivetrain very specific amounts
      * 
@@ -118,7 +115,6 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle, double distance) {
         super(drivetrain, new Aligner(drivetrain, angle, distance));
-        speed = 1.0;
     }
 
     /**
@@ -129,17 +125,5 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle) {
         super(drivetrain, new Aligner(drivetrain, angle));
-        speed = 1.0;
-    }
-
-    // Set the speed of the movement command
-    public DrivetrainMovementCommand setSpeed(double speed) {
-        this.speed = speed;
-        return this;
-    }
-
-    // Scale the speed
-    public double getSpeed() {
-        return SLMath.limit(super.getSpeed(), speed);
     }
 }

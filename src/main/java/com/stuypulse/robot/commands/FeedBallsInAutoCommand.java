@@ -32,5 +32,4 @@ public class FeedBallsInAutoCommand extends CommandBase {
         chimney.stop();
     }
  
-
 }

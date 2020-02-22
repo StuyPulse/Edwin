@@ -152,10 +152,8 @@ public class RobotContainer {
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
 
-    operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
-
-    driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)).setNeverFinish());
-    driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish());
+    driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setNeverFinish());
+    driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setNeverFinish());
 
     /**
      * 

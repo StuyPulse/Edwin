@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Timer;
 public class LEDController {
 
     private static PWMSparkMax controller;
-    private boolean partyMode;
 
     public LEDController(int port) {
         controller = new PWMSparkMax(port);
@@ -21,14 +20,7 @@ public class LEDController {
     }
 
     public enum Color {
-        RAINBOW,
-        SINELON,
-        CONFETTI,
-        BEAT,
-        TWINKLE,
-        WAVE,
-
-        ORANGE_SOLID,
+        ORANGE_SOLID, 
         GREEN_SOLID,
         BLUE_SOLID,
         PURPLE_SOLID,
@@ -47,25 +39,6 @@ public class LEDController {
 
     public void setColor(Color color) {
         switch (color) {
-            case RAINBOW:
-                setValue(-0.97);
-                break;
-            case SINELON:
-                setValue(-0.77);
-                break;
-            case CONFETTI:
-                setValue(-0.87);
-                break;
-            case BEAT:
-                setValue(-0.67);
-                break;
-            case TWINKLE:
-                setValue(-0.53);
-                break;
-            case WAVE:
-                setValue(-0.43);
-                break;
-
             case ORANGE_SOLID:
                 setValue(0.65);
                 break;
@@ -122,41 +95,6 @@ public class LEDController {
                 break;
             case OFF:
                 setValue(0.99);
-                break;
-        }
-    }
-
-    public void togglePartyMode() {
-        partyMode = !partyMode;
-    }
-
-    public boolean inPartyMode() {
-        return partyMode;
-    }
-
-    public void startParty() {
-        int rand = (int)(Math.random() * 6);
-        switch (rand) {
-            case 0:
-                setColor(Color.RAINBOW);
-                break;
-            case 1:
-                setColor(Color.SINELON);
-                break;
-            case 2:
-                setColor(Color.CONFETTI);
-                break;
-            case 3:
-                setColor(Color.BEAT);
-                break;
-            case 4:
-                setColor(Color.TWINKLE);
-                break;
-            case 5:
-                setColor(Color.WAVE);
-                break;
-            default:
-                setColor(Color.OFF);
                 break;
         }
     }

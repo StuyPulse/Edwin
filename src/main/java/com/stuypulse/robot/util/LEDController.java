@@ -51,6 +51,7 @@ public class LEDController {
             case PURPLE_SOLID:
                 setValue(0.91);
                 break;
+
             case WHITE_SOLID:
                 setValue(0.93);
                 break;

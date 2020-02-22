@@ -25,6 +25,7 @@ import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
 import com.stuypulse.robot.commands.IntakeDeacquireCommand;
 import com.stuypulse.robot.commands.IntakeRetractCommand;
+import com.stuypulse.robot.commands.LEDTogglePartyModeCommand;
 import com.stuypulse.robot.commands.ReverseShooterCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.commands.ShooterDefaultCommand;

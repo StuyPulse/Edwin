@@ -31,7 +31,8 @@ public class LEDControl implements Runnable {
             } catch(InterruptedException e) {
                 System.out.println("oof" + e);
             }
-            if (driver.getRawTopButton() || driver.getRawLeftButton()) {
+
+        if (driver.getRawTopButton() || driver.getRawLeftButton()) {
                 controller.setColor(Color.YELLOW_SOLID);
                 System.out.println("ALIGNING - yellow solid");
             } else if(drivetrain.getIsAligned()) {
@@ -69,6 +70,7 @@ public class LEDControl implements Runnable {
                 } else {
                     controller.setColor(Color.OFF);
                     System.out.println("NOTHING DETECTED - off");
+
                 }
             }
         }

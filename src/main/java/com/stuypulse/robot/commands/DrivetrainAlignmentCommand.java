@@ -8,6 +8,7 @@ import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.filters.MovingAverage;
+
 import com.stuypulse.stuylib.util.StopWatch;
 
 /**
@@ -73,7 +74,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.speed = speed;
         this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER.doubleValue()));
         this.speed.setVelocityFilter(new MovingAverage(5));
+
         this.speed.setOutputFilter(new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue()));
+
 
         // Initialize PID Controller for Angle
         this.angle = angle;
@@ -132,6 +135,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public double getSpeed() {
         // Only start driving if the angle is aligned first.
         if(angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR * 2.0, Alignment.Angle.MAX_ANGLE_VEL * 2.0)) {
+
             double error = aligner.getSpeedError();
     
             if(Math.abs(error) < Alignment.Speed.SPEED_DEADBAND) { 
@@ -141,6 +145,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             }
 
             return SLMath.limit(speed.update(error), this.maxSpeed) * Alignment.Speed.MAX_SPEED.doubleValue();
+
         } else {
             return 0;
         }

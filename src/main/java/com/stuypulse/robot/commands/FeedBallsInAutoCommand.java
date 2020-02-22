@@ -5,7 +5,7 @@ import com.stuypulse.robot.subsystems.Funnel;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class FeedBallsInAutoCommand extends CommandBase{
+public class FeedBallsInAutoCommand extends CommandBase {
 
     private final Funnel funnel;
     private final Chimney chimney;
@@ -26,4 +26,10 @@ public class FeedBallsInAutoCommand extends CommandBase{
         return chimney.getUpperChimneyValue();
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        funnel.stop();
+        chimney.stop();
+    }
+ 
 }

@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands.auton.routines;
 
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Alignment;
+
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
@@ -37,6 +38,7 @@ public class ShootThreeMoveTowardShooterAutonCommand extends SequentialCommandGr
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(2.0),
+
             new DrivetrainStopCommand(drivetrain),
 
             new LEDSetCommand(Color.RED_SOLID, controller),

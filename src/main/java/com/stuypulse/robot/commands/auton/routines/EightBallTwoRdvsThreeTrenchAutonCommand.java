@@ -41,6 +41,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new LEDSetCommand(Color.WHITE_SOLID, controller),
             new IntakeExtendCommand(intake),
             new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH),
+
             new WaitCommand(1.0),
             new IntakeAcquireForeverCommand(intake),
 
@@ -81,6 +82,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(15.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
+
             new ParallelCommandGroup(
                 new FeedBallsCommand(shooter, funnel, chimney),
                 new IntakeAcquireCommand(intake)

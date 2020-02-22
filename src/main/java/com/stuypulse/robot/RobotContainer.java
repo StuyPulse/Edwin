@@ -25,6 +25,7 @@ import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
 import com.stuypulse.robot.commands.IntakeDeacquireCommand;
 import com.stuypulse.robot.commands.IntakeRetractCommand;
+import com.stuypulse.robot.commands.LEDTogglePartyModeCommand;
 import com.stuypulse.robot.commands.ReverseShooterCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.commands.ShooterDefaultCommand;
@@ -150,6 +151,8 @@ public class RobotContainer {
     operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
+
+    operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
 
     driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)).setNeverFinish());
     driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish());

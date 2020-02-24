@@ -178,9 +178,12 @@ public interface Constants {
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
+          
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
+            double LIMELIGHT_MAX_SPEED = 0.6;
+
             double MAX_SPEED_ERROR = toFeet(3);
             double MAX_SPEED_VEL = toFeet(6.0);
             double SPEED_DEADBAND = 0;
@@ -207,7 +210,9 @@ public interface Constants {
 
             // Low pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);
+
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
+
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 2.5;

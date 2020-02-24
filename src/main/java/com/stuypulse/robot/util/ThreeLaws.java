@@ -1,5 +1,9 @@
 package frc.util;
 
+/**
+ * @author Jason, Frank, Justin
+*/
+
 public interface ThreeLaws {
 
     public void firstLaw();
@@ -241,6 +245,5 @@ static int groups_to_user(gid_t __user *grouplist,
 */
 
 
- 
- //@copyright: Jason, Justin, Frank, Henry
+
        

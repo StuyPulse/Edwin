@@ -61,7 +61,7 @@ public class SixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommandGrou
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(0.6).setTimeout(2.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(4);
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(4),
           
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new ParallelCommandGroup(

@@ -33,7 +33,7 @@ public class LEDControl implements Runnable {
             }
             
             if (!controller.inPartyMode()) {
-                if ((driver.getRawTopButton() || driver.getRawLeftButton()) && !drivetrain.getIsAligned()) {
+                if ((driver.getRawTopButton() || driver.getRawLeftButton())) {
                     controller.setColor(Color.YELLOW_SOLID);
                 } else if(drivetrain.getIsAligned()) {
                     controller.setColor(Color.LIME_FLASH);

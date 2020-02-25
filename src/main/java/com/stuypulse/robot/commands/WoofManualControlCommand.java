@@ -19,12 +19,17 @@ public class WoofManualControlCommand extends CommandBase {
 
     @Override
     public void execute() {
-        woof.turn(gamepad.getRightX());
+        if (Math.abs(gamepad.getRightX()) > 0.1) {
+            woof.turn(gamepad.getRightX());
+        } else {
+            woof.stop();
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
         woof.stop();
+        woof.resetEncoderValue();
     }
 
 }

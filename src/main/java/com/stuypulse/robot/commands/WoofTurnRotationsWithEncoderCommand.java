@@ -40,5 +40,6 @@ public class WoofTurnRotationsWithEncoderCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         woof.stop();
+        woof.resetEncoderValue();
     }
 }

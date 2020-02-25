@@ -26,9 +26,9 @@ import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
 import com.stuypulse.robot.commands.IntakeDeacquireCommand;
 import com.stuypulse.robot.commands.IntakeRetractCommand;
 import com.stuypulse.robot.commands.LEDTogglePartyModeCommand;
-import com.stuypulse.robot.commands.ReverseShooterCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
 import com.stuypulse.robot.commands.ShooterDefaultCommand;
+import com.stuypulse.robot.commands.ShooterReverseCommand;
 import com.stuypulse.robot.commands.ShooterStopCommand;
 import com.stuypulse.robot.commands.WoofManualControlCommand;
 import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
@@ -147,7 +147,7 @@ public class RobotContainer {
     // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter)).whenPressed(new ShooterControlCommand(shooter, 0, ShooterMode.NONE));
 
-    operator.getStartButton().whileHeld(new ReverseShooterCommand(shooter));
+    operator.getStartButton().whileHeld(new ShooterReverseCommand(shooter));
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
 

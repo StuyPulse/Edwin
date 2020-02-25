@@ -257,6 +257,8 @@ public interface Constants {
             SmartNumber FF = new SmartNumber("Shooter FF", 0.000195);
 
             double BANGBANG_SPEED = 0.2;
+
+            double REVERSE_SPEED = -0.25;
         }
 
         public interface Feeder {

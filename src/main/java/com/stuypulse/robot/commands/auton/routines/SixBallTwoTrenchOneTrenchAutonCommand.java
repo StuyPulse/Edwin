@@ -10,7 +10,6 @@ import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.IntakeAcquireForeverCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
-
 import com.stuypulse.robot.commands.IntakeExtendCommand;
 import com.stuypulse.robot.commands.LEDSetCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;
@@ -25,7 +24,6 @@ import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.robot.util.LEDController.Color;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 

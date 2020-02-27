@@ -6,7 +6,6 @@ import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
-import com.stuypulse.robot.commands.FeedBallsInAutoCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.IntakeAcquireForeverCommand;
 import com.stuypulse.robot.commands.IntakeExtendCommand;

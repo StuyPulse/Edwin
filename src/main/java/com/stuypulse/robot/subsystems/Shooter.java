@@ -159,6 +159,11 @@ public class Shooter extends SubsystemBase {
         return this.targetShooterVelocity.get();
     }
 
+    public void reverse() {
+        shooterMotors.set(Constants.Shooting.Shooter.REVERSE_SPEED);
+        feederMotor.set(Constants.Shooting.Shooter.REVERSE_SPEED);
+    }
+
     public void stopShooter() {
         shooterMotors.stopMotor();
     }

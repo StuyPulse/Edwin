@@ -240,7 +240,7 @@ public interface Constants {
         double GEAR = 2.0 / 3.0;
 
         double INITATION_LINE_RPM = 2075;
-        double TRENCH_RPM = 2900;
+        double TRENCH_RPM = 3000;
         double FAR_RPM = 5300.0;
 
         double TOLERANCE = 100;
@@ -257,6 +257,8 @@ public interface Constants {
             SmartNumber FF = new SmartNumber("Shooter FF", 0.000195);
 
             double BANGBANG_SPEED = 0.2;
+
+            double REVERSE_SPEED = -0.25;
         }
 
         public interface Feeder {
@@ -326,7 +328,7 @@ public interface Constants {
      * Woof Constants
      *********************************************************************************************/
     double WOOF_TURN_SPEED = 1.0;
-    double WOOF_TARGET_ENCODER_VALUE = 30;
+    double WOOF_TARGET_ENCODER_VALUE = 600;
 
     double CYAN_RED = 0.2;
     double CYAN_GREEN = 0.56;

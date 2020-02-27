@@ -31,7 +31,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
     public BlueSixBallTwoTrenchOneTrenchAutonCommand(Drivetrain drivetrain, Shooter shooter, Funnel funnel, Chimney chimney, Intake intake, LEDController controller) {
 
         final double DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET = 5 * 1.208;
-        final double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = 5 * 1.208 + 0.5;
+        final double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = 5 * 1.208;
         final double ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES = 15 * 1.208;
         final double DRIVETRAIN_SPEED_LIMIT = 0.55;
 

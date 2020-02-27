@@ -222,7 +222,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 5);
+            double GOAL_HEIGHT = toFeet(7, 2);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);

@@ -141,7 +141,7 @@ public interface Constants {
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(197 - 24);
+        double TRENCH_DISTANCE = toFeet(197 - 24 + 6 + 6);
         double INITATION_LINE_DISTANCE = toFeet(82);
 
         double MIN_DISTANCE = toFeet(3, 0);

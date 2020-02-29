@@ -210,18 +210,22 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Command is finished if all of the errors are small enough
     public boolean isFinished() {
         // If you do not want the command to automatically finish
-        if(neverFinish) {
-            return false;
-        }
+       
 
         // Check if the aligner hasn't run for long enough
-        if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
-            return false;
-        }
+        
 
         // Time out for aligning
         if(timer.getTime() > timeout && timeout > 0) {
             return true;
+        }
+
+        if(neverFinish) {
+            return false;
+        }
+
+        if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
+            return false;
         }
 
         return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 

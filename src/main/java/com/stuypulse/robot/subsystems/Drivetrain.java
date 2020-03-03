@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.util.TankDriveEncoder;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -193,8 +194,8 @@ public class Drivetrain extends SubsystemBase {
     /**
      * @return get the angle of the robot
      */
-    public double getGyroAngle() {
-        return navx.getAngle();
+    public Angle getGyroAngle() {
+        return Angle.degrees(navx.getAngle());
     }
 
     /**
@@ -281,6 +282,14 @@ public class Drivetrain extends SubsystemBase {
      */
     public void resetGreyhill() {
         greyhills.reset();
+    }
+
+    public double getDistance() {
+        if(DrivetrainSettings.Encoders.USE_GREYHILLS) {
+            return getGreyhillDistance();
+        } else {
+            return getNEODistance();
+        }
     }
 
     /**

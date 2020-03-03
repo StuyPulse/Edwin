@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
 
 /**
@@ -25,17 +26,17 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 
         private Drivetrain drivetrain;
 
-        private double angle;
+        private Angle angle;
         private double distance;
         private boolean justTurning;
 
-        private double goalAngle;
+        private Angle goalAngle;
         private double goalDistance;
 
         public Aligner(Drivetrain drivetrain, double angle, double distance) {
             this.drivetrain = drivetrain;
 
-            this.angle = angle;
+            this.angle = Angle.degrees(angle);
             this.distance = distance;
             this.justTurning = false;
 
@@ -48,7 +49,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
             this.justTurning = true;
         }
 
-        private double getGyroAngle() {
+        private Angle getGyroAngle() {
             return drivetrain.getGyroAngle();
         }
 
@@ -60,7 +61,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
          * Set goals based on when the command is initialized
          */
         public void init() {
-            goalAngle = getGyroAngle() + angle;
+            goalAngle = getGyroAngle().add(angle);
             goalDistance = getDistance() + distance;
         }
 
@@ -72,8 +73,8 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
             }
         }
 
-        public double getAngleError() {
-            return goalAngle - getGyroAngle();
+        public Angle getAngleError() {
+            return goalAngle.sub(getGyroAngle());
         }
     }
 

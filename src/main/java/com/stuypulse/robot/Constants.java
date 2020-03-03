@@ -149,6 +149,8 @@ public interface Constants {
 
         double MIN_ALIGNMENT_TIME = 0.25;
 
+        double UPDATE_PERIOD = 0.4;
+
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
         SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
@@ -164,20 +166,19 @@ public interface Constants {
             SmartNumber D = new SmartNumber("SpeedD", 0.02); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
-            PIDController SPEED_CONTROLLER = new PIDController();
-
             public static PIDController getPID() {
-                SPEED_CONTROLLER.setP(P.get());
-                SPEED_CONTROLLER.setI(I.get());
-                SPEED_CONTROLLER.setD(D.get());
-                return SPEED_CONTROLLER;
+                PIDController out = new PIDController();
+                out.setP(P.get());
+                out.setI(I.get());
+                out.setD(D.get());
+                return out;
             }
 
             // Bang Bang speed when measuring PID Values
             double BANGBANG_SPEED = 0.6; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0);
           
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
@@ -196,13 +197,12 @@ public interface Constants {
             SmartNumber D = new SmartNumber("AngleD", 0.0023);
 
             // Get PID Controller
-            PIDController ANGLE_CONTROLLER = new PIDController();
-
             public static PIDController getPID() {
-                ANGLE_CONTROLLER.setP(P.get());
-                ANGLE_CONTROLLER.setI(I.get());
-                ANGLE_CONTROLLER.setD(D.get());
-                return ANGLE_CONTROLLER;
+                PIDController out = new PIDController();
+                out.setP(P.get());
+                out.setI(I.get());
+                out.setD(D.get());
+                return out;
             }
 
             // Bang Bang speed when measuring PID Values

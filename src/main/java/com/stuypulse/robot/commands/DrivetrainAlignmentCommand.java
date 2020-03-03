@@ -4,10 +4,11 @@ import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
+import com.stuypulse.stuylib.streams.filters.IStreamFilterGroup;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
-import com.stuypulse.stuylib.streams.filters.MovingAverage;
 import com.stuypulse.stuylib.util.StopWatch;
 
 /**
@@ -32,7 +33,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         public default double getSpeedError() { return 0.0; };
 
         // The amount of angular error
-        public default double getAngleError() { return 0.0; };
+        public default Angle getAngleError() { return Angle.degrees(0); };
     }
 
     // Max speed for the robot
@@ -45,11 +46,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Distance that the command will try to align with
     private Aligner aligner;
 
-    // Used to check timeout of alignment
-    private StopWatch timer;
+    private double targetDistance;
+    private Angle targetAngle;
 
-    // Maximum amount of time to align
-    private double timeout;
+    // Used to check timeout of alignment
+    private StopWatch pollingTimer;
+    private StopWatch timer;
 
     // Return false in isFinished
     private boolean neverFinish;
@@ -71,25 +73,18 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Initialize PID Controller for Speed
         this.speed = speed;
-        this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER.doubleValue()));
-        this.speed.setVelocityFilter(new MovingAverage(5));
-        this.speed.setOutputFilter(new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue()));
-
 
         // Initialize PID Controller for Angle
         this.angle = angle;
-        this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
-        //this.angle.setVelocityFilter(new MovingAverage(5));
-        this.angle.setOutputFilter(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue()));
 
         // Target distance for the Alignment Command
         this.aligner = aligner;
 
+        // Timer used to check when to update the errors
+        this.pollingTimer = new StopWatch();
+
         // Used to check the alignment time.
         this.timer = new StopWatch();
-
-        // By default there is no timeout
-        this.timeout = -1;
 
         // Normally end the command once aligned
         this.neverFinish = false;
@@ -103,12 +98,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
      */
     public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner) {
         this(drivetrain, aligner, Alignment.Speed.getPID(), Alignment.Angle.getPID());
-    }
-
-    // Set the maximum amount of time that the alignment should take
-    public DrivetrainAlignmentCommand setTimeout(double timeout) {
-        this.timeout = timeout;
-        return this;
     }
 
     // Get the Speed Controller
@@ -128,22 +117,18 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.maxSpeed = speed;
         return this;
     }
+    
+    //
+    public void updateTargets() {
+        targetDistance = drivetrain.getDistance() + aligner.getSpeedError();
+        targetAngle = drivetrain.getGyroAngle().add(aligner.getAngleError());
+    }
 
     // Update the speed if the angle is aligned
     public double getSpeed() {
         // Only start driving if the angle is aligned first.
         if(angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR * 2.0, Alignment.Angle.MAX_ANGLE_VEL * 2.0)) {
-
-            double error = aligner.getSpeedError();
-    
-            if(Math.abs(error) < Alignment.Speed.SPEED_DEADBAND) { 
-                error = 0;
-            } else {
-                error -= Math.copySign(Alignment.Speed.SPEED_DEADBAND, error);
-            }
-
-            return SLMath.limit(speed.update(error), this.maxSpeed) * Alignment.Speed.MAX_SPEED.doubleValue();
-
+            return speed.update(targetDistance - drivetrain.getDistance());
         } else {
             return 0;
         }
@@ -151,24 +136,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Update angle based on angle error
     public double getAngle() {
-        double error = aligner.getAngleError();
-        error = Math.copySign(Math.abs(error) % 360, error);
-
-        if(error > 180) { 
-            error -= 360;
-        }
-
-        if(error < -180) { 
-            error += 360;
-        }
-    
-        if(Math.abs(error) < Alignment.Angle.ANGLE_DEADBAND) { 
-            error = 0;
-        } else {
-            error -= Math.copySign(Alignment.Angle.ANGLE_DEADBAND, error);
-        }
-
-        return SLMath.limit(angle.update(error), -1, 1);
+        return angle.update(targetAngle.sub(drivetrain.getGyroAngle()).toDegrees());
     }
 
     // Alignment must use low gear
@@ -192,6 +160,18 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public void initialize() {
         aligner.init();
         timer.reset();
+
+        this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER.doubleValue()));
+        this.speed.setOutputFilter(new IStreamFilterGroup(
+            (x) -> SLMath.limit(x, maxSpeed),
+            new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue())
+        ));
+
+        this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
+        this.angle.setOutputFilter(new IStreamFilterGroup(
+            (x) -> SLMath.limit(x, maxSpeed),
+            new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue())
+        ));
     }
 
     public void execute() {
@@ -199,11 +179,21 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Update PID controllers with new values   
         if(angle instanceof PIDController) {
-            angle = Alignment.Angle.getPID();
+            ((PIDController)angle).setP(Alignment.Angle.P.doubleValue());
+            ((PIDController)angle).setI(Alignment.Angle.I.doubleValue());
+            ((PIDController)angle).setD(Alignment.Angle.D.doubleValue());
         }
 
         if(speed instanceof PIDController) {
-            speed = Alignment.Speed.getPID();
+            ((PIDController)speed).setP(Alignment.Speed.P.doubleValue());
+            ((PIDController)speed).setI(Alignment.Speed.I.doubleValue());
+            ((PIDController)speed).setD(Alignment.Speed.D.doubleValue());
+        }
+
+        // Update targets if time has come
+        if(pollingTimer.getTime() > Alignment.UPDATE_PERIOD) {
+            updateTargets();
+            pollingTimer.reset();
         }
     }
 
@@ -217,11 +207,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         // Check if the aligner hasn't run for long enough
         if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
             return false;
-        }
-
-        // Time out for aligning
-        if(timer.getTime() > timeout && timeout > 0) {
-            return true;
         }
 
         return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 

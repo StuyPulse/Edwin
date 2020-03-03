@@ -44,11 +44,11 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
             new WaitCommand(1.0),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setSpeed(DRIVETRAIN_SPEED_LIMIT).withTimeout(3),
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setMaxSpeed(DRIVETRAIN_SPEED_LIMIT).withTimeout(3),
             // new DrivetrainMovementCommand(drivetrain, 0, -DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setTimeout(1.5),
            
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(3.5),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(3.5),
 
             
             new LEDSetCommand(Color.RED_SOLID, controller),
@@ -57,10 +57,10 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             // new DrivetrainMovementCommand(drivetrain, ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES, 0).setTimeout(1.0),
             // new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(0.5).setTimeout(1.0),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(DRIVETRAIN_SPEED_LIMIT).withTimeout(2.0),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setMaxSpeed(DRIVETRAIN_SPEED_LIMIT).withTimeout(2.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(4),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(4),
           
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new ParallelCommandGroup(

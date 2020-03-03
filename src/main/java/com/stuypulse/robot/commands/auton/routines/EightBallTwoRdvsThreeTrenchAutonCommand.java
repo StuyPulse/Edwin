@@ -48,7 +48,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 0.8),
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setSpeed(0.9).withTimeout(15.0),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setMaxSpeed(0.9).withTimeout(15.0),
         
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_RDVS).withTimeout(1.0),
@@ -57,7 +57,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             // new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH),
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setSpeed(0.65).withTimeout(1.5),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setMaxSpeed(0.65).withTimeout(1.5),
 
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, -30).withTimeout(0.75),
@@ -70,7 +70,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new ParallelDeadlineGroup(
-                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).setSpeed(0.6).withTimeout(3.0),
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).setMaxSpeed(0.6).withTimeout(3.0),
                 //new FeedBallsInAutoCommand(funnel, chimney)
                 new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 0.5)
             ),
@@ -78,7 +78,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             // new DrivetrainMovementCommand(drivetrain, 0, -5.0),
 
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(15.0),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(15.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
 

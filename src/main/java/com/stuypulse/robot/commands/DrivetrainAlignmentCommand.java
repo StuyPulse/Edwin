@@ -46,6 +46,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Distance that the command will try to align with
     private Aligner aligner;
 
+    // Use encoder values with alignment command
+    private boolean useEncoders;
     private double targetDistance;
     private Angle targetAngle;
 
@@ -81,6 +83,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.aligner = aligner;
 
         // Timer used to check when to update the errors
+        this.useEncoders = false;
+        this.targetAngle = Angle.degrees(0);
+        this.targetDistance = 0;
         this.pollingTimer = new StopWatch();
 
         // Used to check the alignment time.
@@ -113,7 +118,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     }
 
     // Set the speed of the movement command
-    public DrivetrainAlignmentCommand setSpeed(double speed) {
+    public DrivetrainAlignmentCommand setMaxSpeed(double speed) {
         this.maxSpeed = speed;
         return this;
     }
@@ -121,6 +126,11 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Make the command never finish
     public DrivetrainAlignmentCommand setNeverFinish() {
         this.neverFinish = true;
+        return this;
+    }
+
+    public DrivetrainAlignmentCommand setUseEncoders() {
+        this.useEncoders = true;
         return this;
     }
 
@@ -150,21 +160,39 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         targetAngle = drivetrain.getGyroAngle().add(aligner.getAngleError());
     }
 
+    // Get the speed error
+    public double getSpeedError() {
+        if(this.useEncoders) {
+            return targetDistance - drivetrain.getDistance();
+        } else {
+            return aligner.getSpeedError();
+        }
+    }
+
+    // Get the speed error
+    public Angle getAngleError() {
+        if(this.useEncoders) {
+            return targetAngle.sub(drivetrain.getGyroAngle());
+        } else {
+            return aligner.getAngleError();
+        }
+    }
+
     // Update the speed if the angle is aligned
     public double getSpeed() {
         // Only start driving if the angle is aligned first.
         if(angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL)) {
-            return speed.update(targetDistance - drivetrain.getDistance());
+            return speed.update(this.getSpeedError());
         } else {
             double s = 2 - Math.abs(angle.getError()) / Alignment.Angle.MAX_ANGLE_ERROR;
             s = SLMath.limit(s, 0, 1.0);
-            return speed.update(targetDistance - drivetrain.getDistance()) * s;
+            return speed.update(this.getSpeedError()) * s;
         }
     }
 
     // Update angle based on angle error
     public double getAngle() {
-        return angle.update(targetAngle.sub(drivetrain.getGyroAngle()).toDegrees());
+        return angle.update(getAngleError().toDegrees());
     }
 
     // Alignment must use low gear

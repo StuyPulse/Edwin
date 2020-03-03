@@ -38,7 +38,7 @@ public class ShootThreeMoveTowardIntakeAutonCommand extends SequentialCommandGro
             new WaitCommand(2),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(2.0),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(2.0),
 
             new DrivetrainStopCommand(drivetrain),
 

@@ -149,7 +149,7 @@ public interface Constants {
 
         double MIN_ALIGNMENT_TIME = 0.8;
 
-        double UPDATE_PERIOD = 0.2;
+        double UPDATE_PERIOD = 0.1;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);

@@ -141,7 +141,7 @@ public interface Constants {
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(198);
+        double TRENCH_DISTANCE = toFeet(197 - 24 + 6 + 6);
         double INITATION_LINE_DISTANCE = toFeet(82);
 
         double MIN_DISTANCE = toFeet(3, 0);
@@ -222,7 +222,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 5);
+            double GOAL_HEIGHT = toFeet(7, 2);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);
@@ -304,7 +304,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     // TODO: Test
-    double FUNNEL_SPEED = 1;
+    double FUNNEL_SPEED = 0.8;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;

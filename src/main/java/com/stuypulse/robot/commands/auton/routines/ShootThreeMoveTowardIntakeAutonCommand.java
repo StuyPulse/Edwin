@@ -38,7 +38,7 @@ public class ShootThreeMoveTowardIntakeAutonCommand extends SequentialCommandGro
             new WaitCommand(2),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(2.0),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(2.0),
 
             new DrivetrainStopCommand(drivetrain),
 
@@ -51,7 +51,7 @@ public class ShootThreeMoveTowardIntakeAutonCommand extends SequentialCommandGro
             new IntakeAcquireForeverCommand(intake),
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_MOVE_TOWARD_INTAKE).setTimeout(2.0),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_MOVE_TOWARD_INTAKE).withTimeout(2.0),
             
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new IntakeAcquireCommand(intake) // makes intake stop once auton ends

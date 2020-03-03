@@ -37,7 +37,7 @@ public class ShootThreeMoveTowardShooterAutonCommand extends SequentialCommandGr
             new WaitCommand(2),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(2.0),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(2.0),
 
             new DrivetrainStopCommand(drivetrain),
 
@@ -45,7 +45,7 @@ public class ShootThreeMoveTowardShooterAutonCommand extends SequentialCommandGr
             new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 3.0),
             
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_MOVE_TOWARD_SHOOTER).setTimeout(1.0),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_MOVE_TOWARD_SHOOTER).withTimeout(1.0),
             
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new IntakeAcquireSetupCommand(intake)

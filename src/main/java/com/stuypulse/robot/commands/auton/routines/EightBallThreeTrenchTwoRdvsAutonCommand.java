@@ -16,8 +16,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class EightBallThreeTrenchTwoRdvsAutonCommand extends SequentialCommandGroup {
     public EightBallThreeTrenchTwoRdvsAutonCommand(Drivetrain drivetrain) {
         addCommands(
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_TO_TRENCH),
             //new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH),
             new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_TO_TRENCH),

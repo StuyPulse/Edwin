@@ -34,8 +34,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new IntakeAcquireCommand(intake),
             new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS),
             new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_POINT_TO_THREE_BALL),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.DISTANCE_FROM_TRENCH_TO_GOAL)),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner(Constants.DISTANCE_FROM_TRENCH_TO_GOAL)),
             new DrivetrainStopCommand(drivetrain)
             
             //Shoot 3

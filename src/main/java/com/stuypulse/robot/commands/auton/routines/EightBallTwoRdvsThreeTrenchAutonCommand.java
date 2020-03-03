@@ -48,29 +48,29 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 0.8),
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setSpeed(0.9).setTimeout(15.0),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setSpeed(0.9).withTimeout(15.0),
         
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_RDVS).setTimeout(1.0),
+            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_RDVS).withTimeout(1.0),
 
             // new LEDSetCommand(Color.GREEN_SOLID, controller),
             // new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH),
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setSpeed(0.65).setTimeout(1.5),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setSpeed(0.65).withTimeout(1.5),
 
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, -30).setTimeout(0.75),
+            new DrivetrainMovementCommand(drivetrain, -30).withTimeout(0.75),
             
             new LEDSetCommand(Color.RED_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_RDVS).setTimeout(15),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_RDVS).withTimeout(15),
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_TRENCH).setTimeout(1.0),
+            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_TRENCH).withTimeout(1.0),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new ParallelDeadlineGroup(
-                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).setSpeed(0.6).setTimeout(3.0),
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).setSpeed(0.6).withTimeout(3.0),
                 //new FeedBallsInAutoCommand(funnel, chimney)
                 new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 0.5)
             ),
@@ -78,7 +78,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             // new DrivetrainMovementCommand(drivetrain, 0, -5.0),
 
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(15.0),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(15.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
 

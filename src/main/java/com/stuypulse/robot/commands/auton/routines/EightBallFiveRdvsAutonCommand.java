@@ -16,8 +16,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class EightBallFiveRdvsAutonCommand extends SequentialCommandGroup {
     public EightBallFiveRdvsAutonCommand(Drivetrain drivetrain, Intake intake) {
         addCommands(
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner(Constants.SHOOT_FROM_START_TO_GOAL)),
             // TODO: Add shoot 3
             new DriveCommand(drivetrain, 1),
 
@@ -29,8 +28,7 @@ public class EightBallFiveRdvsAutonCommand extends SequentialCommandGroup {
             new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_THREE_BALL_TO_TWO_BALL, Constants.DISTANCE_FROM_THREE_BALL_TO_TWO_BALL),
             new DrivetrainMovementCommand(drivetrain, 180),
             new DrivetrainStopCommand(drivetrain),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(20)),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner())
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner(20))
             // Add Shoot code
             );
     }

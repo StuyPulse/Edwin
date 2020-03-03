@@ -44,11 +44,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
             new WaitCommand(1.0),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-<<<<<<< HEAD:src/main/java/com/stuypulse/robot/commands/auton/routines/SixBallTwoTrenchOneTrenchAutonCommand.java
-            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setSpeed(0.6).withTimeout(3),
-=======
-            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setSpeed(DRIVETRAIN_SPEED_LIMIT).setTimeout(3),
->>>>>>> cb826a172e9f44d18c4d842596216acb176865dd:src/main/java/com/stuypulse/robot/commands/auton/routines/BlueSixBallTwoTrenchOneTrenchAutonCommand.java
+            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setSpeed(DRIVETRAIN_SPEED_LIMIT).withTimeout(3),
             // new DrivetrainMovementCommand(drivetrain, 0, -DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setTimeout(1.5),
            
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
@@ -61,11 +57,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             // new DrivetrainMovementCommand(drivetrain, ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES, 0).setTimeout(1.0),
             // new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(0.5).setTimeout(1.0),
-<<<<<<< HEAD:src/main/java/com/stuypulse/robot/commands/auton/routines/SixBallTwoTrenchOneTrenchAutonCommand.java
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(0.6).withTimeout(2.0),
-=======
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(DRIVETRAIN_SPEED_LIMIT).setTimeout(2.0),
->>>>>>> cb826a172e9f44d18c4d842596216acb176865dd:src/main/java/com/stuypulse/robot/commands/auton/routines/BlueSixBallTwoTrenchOneTrenchAutonCommand.java
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(DRIVETRAIN_SPEED_LIMIT).withTimeout(2.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
             new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(4),

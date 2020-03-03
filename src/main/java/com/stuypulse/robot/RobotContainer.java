@@ -36,6 +36,7 @@ import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallTwoRdvsThreeTrenchAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.FiveBallTwoRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.MobilityTowardIntakeAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.MobilityTowardShooterAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardIntakeAutonCommand;
@@ -197,6 +198,7 @@ public class RobotContainer {
 
     autonChooser.addOption("Eight Ball: Two Rdvs, then Three Trench", new EightBallTwoRdvsThreeTrenchAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
 
+    autonChooser.addOption("Five Ball: Two Rdvs", new FiveBallTwoRdvsAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
 
     autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
     autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));

@@ -48,7 +48,7 @@ public class RedSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommandG
             // new DrivetrainMovementCommand(drivetrain, 0, -DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setTimeout(1.5),
            
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setNeverFinish().setTimeout(4.5),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(4.5),
 
             
             new LEDSetCommand(Color.RED_SOLID, controller),
@@ -60,7 +60,7 @@ public class RedSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommandG
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setSpeed(DRIVETRAIN_SPEED_LIMIT).setTimeout(2.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setNeverFinish().setTimeout(5),
+            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(5),
           
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new ParallelCommandGroup(

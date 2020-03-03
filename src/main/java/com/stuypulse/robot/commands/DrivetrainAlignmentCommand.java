@@ -118,38 +118,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return this;
     }
     
-    //
-    public void updateTargets() {
-        targetDistance = drivetrain.getDistance() + aligner.getSpeedError();
-        targetAngle = drivetrain.getGyroAngle().add(aligner.getAngleError());
-    }
-
-    // Update the speed if the angle is aligned
-    public double getSpeed() {
-        // Only start driving if the angle is aligned first.
-        if(angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR * 2.0, Alignment.Angle.MAX_ANGLE_VEL * 2.0)) {
-            return speed.update(targetDistance - drivetrain.getDistance());
-        } else {
-            return 0;
-        }
-    }
-
-    // Update angle based on angle error
-    public double getAngle() {
-        return angle.update(targetAngle.sub(drivetrain.getGyroAngle()).toDegrees());
-    }
-
-    // Alignment must use low gear
-    public Drivetrain.Gear getGear() {
-        return Drivetrain.Gear.LOW;
-    }
-
-    // Aligning doesn't need to use curvature drive
-    // Arcade drive is better for non humans
-    public boolean useCurvatureDrive() {
-        return false;
-    }
-
     // Make the command never finish
     public DrivetrainAlignmentCommand setNeverFinish() {
         this.neverFinish = true;
@@ -172,6 +140,42 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             (x) -> SLMath.limit(x, maxSpeed),
             new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue())
         ));
+
+        updateTargets();
+    }
+
+    // Update the targets with new alignment data
+    public void updateTargets() {
+        targetDistance = drivetrain.getDistance() + aligner.getSpeedError();
+        targetAngle = drivetrain.getGyroAngle().add(aligner.getAngleError());
+    }
+
+    // Update the speed if the angle is aligned
+    public double getSpeed() {
+        // Only start driving if the angle is aligned first.
+        if(angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL)) {
+            return speed.update(targetDistance - drivetrain.getDistance());
+        } else {
+            double s = 2 - Math.abs(angle.getError()) / Alignment.Angle.MAX_ANGLE_ERROR;
+            s = SLMath.limit(s, 0, 1.0);
+            return speed.update(targetDistance - drivetrain.getDistance()) * s;
+        }
+    }
+
+    // Update angle based on angle error
+    public double getAngle() {
+        return angle.update(targetAngle.sub(drivetrain.getGyroAngle()).toDegrees());
+    }
+
+    // Alignment must use low gear
+    public Drivetrain.Gear getGear() {
+        return Drivetrain.Gear.LOW;
+    }
+
+    // Aligning doesn't need to use curvature drive
+    // Arcade drive is better for non humans
+    public boolean useCurvatureDrive() {
+        return false;
     }
 
     public void execute() {

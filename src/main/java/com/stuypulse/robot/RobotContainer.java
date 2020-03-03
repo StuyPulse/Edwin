@@ -19,7 +19,9 @@ import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
 import com.stuypulse.robot.commands.DrivetrainDriveCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
+import com.stuypulse.robot.commands.DrivetrainInnerGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
+import com.stuypulse.robot.commands.FeedBallsAutomaticCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
@@ -159,7 +161,11 @@ public class RobotContainer {
     driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED));
     driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED));
     driver.getRightButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(0));
+    driver.getDPadRight().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()).setNeverFinish());
     
+    driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     /**
      * 
      */

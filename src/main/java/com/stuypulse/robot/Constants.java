@@ -141,13 +141,13 @@ public interface Constants {
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(198);
+        double TRENCH_DISTANCE = toFeet(197 - 24 + 6 + 6);
         double INITATION_LINE_DISTANCE = toFeet(82);
 
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
-        double MIN_ALIGNMENT_TIME = 0.25;
+        double MIN_ALIGNMENT_TIME = 0.25 + 0.25;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
@@ -222,7 +222,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 5);
+            double GOAL_HEIGHT = toFeet(7, 2);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);
@@ -304,7 +304,7 @@ public interface Constants {
      * Funnel Constants
      *********************************************************************************************/
     // TODO: Test
-    double FUNNEL_SPEED = 1;
+    double FUNNEL_SPEED = 0.8;
     double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
     double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;

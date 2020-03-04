@@ -29,12 +29,13 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGroup {
 
     public EightBallTwoRdvsThreeTrenchAutonCommand(Intake intake, Shooter shooter, Funnel funnel, Chimney chimney, Drivetrain drivetrain, LEDController  controller) {
-        final double DISTANCE_TO_RDVS_IN_FEET = 7.25;
+        final double DISTANCE_TO_RDVS_IN_FEET = 7.75;
         final double ANGLE_TO_RDVS = 85.0;
         final double DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET = 1.6;
         final double DISTANCE_TO_BACKUP_AFTER_RDVS = -6.25;
         final double ANGLE_TO_TRENCH = -50.0;
         final double DISTANCE_TO_ACQUIRE_TRENCH_BALLS = 8.5;
+        final double ANGLE_TO_WIGGLE = 10.0;
 
         addCommands(
             new LEDSetCommand(Color.WHITE_SOLID, controller),
@@ -58,6 +59,9 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setSpeed(0.65).setTimeout(1.5),
+
+            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_WIGGLE).setTimeout(1.0),
+            new DrivetrainMovementCommand(drivetrain, -ANGLE_TO_WIGGLE).setTimeout(1.0),
 
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, -30).setTimeout(0.75),

@@ -46,7 +46,7 @@ public class FiveBallTwoRdvsAutonCommand extends SequentialCommandGroup {
             new IntakeAcquireForeverCommand(intake),
 
             new LEDSetCommand(Color.RED_SOLID, controller),
-            new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 1.0),
+            new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 1.0),
 
             new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH),
             new WaitCommand(0.5),
@@ -75,7 +75,7 @@ public class FiveBallTwoRdvsAutonCommand extends SequentialCommandGroup {
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
             new ParallelCommandGroup(
-                new FeedBallsCommand(shooter, funnel, chimney),
+                new FeedBallsCommand(funnel, chimney),
                 new IntakeAcquireCommand(intake)
             )
         );

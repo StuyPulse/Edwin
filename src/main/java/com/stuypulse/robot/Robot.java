@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
   public void updateDashboard() {
     compress = SmartDashboard.getBoolean("Start Compressing", true);
     SmartDashboard.putNumber("Robot Air Pressure", pneumatics.getPressure() / 1000.0);
+
+    SmartDashboard.putBoolean("Upper Chimney Sensor", robotContainer.getChimney().getUpperChimneyValue());
   }
 
   /**

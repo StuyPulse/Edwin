@@ -42,7 +42,7 @@ public class ShootThreeMoveTowardShooterAutonCommand extends SequentialCommandGr
             new DrivetrainStopCommand(drivetrain),
 
             new LEDSetCommand(Color.RED_SOLID, controller),
-            new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 3.0),
+            new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 3.0),
             
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_MOVE_TOWARD_SHOOTER).setTimeout(1.0),

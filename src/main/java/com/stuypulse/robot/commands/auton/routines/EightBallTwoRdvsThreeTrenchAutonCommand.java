@@ -46,7 +46,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new IntakeAcquireForeverCommand(intake),
 
             new LEDSetCommand(Color.RED_SOLID, controller),
-            new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 0.8),
+            new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 0.8),
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setSpeed(0.9).setTimeout(15.0),
@@ -76,7 +76,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new ParallelDeadlineGroup(
                 new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).setSpeed(0.6).setTimeout(3.0),
                 //new FeedBallsInAutoCommand(funnel, chimney)
-                new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 0.5)
+                new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 0.5)
             ),
 
             // new DrivetrainMovementCommand(drivetrain, 0, -5.0),
@@ -87,7 +87,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new LEDSetCommand(Color.BLUE_SOLID, controller),
 
             new ParallelCommandGroup(
-                new FeedBallsCommand(shooter, funnel, chimney),
+                new FeedBallsCommand(funnel, chimney),
                 new IntakeAcquireCommand(intake)
             )
         );

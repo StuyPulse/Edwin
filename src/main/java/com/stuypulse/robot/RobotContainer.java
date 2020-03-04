@@ -154,18 +154,21 @@ public class RobotContainer {
 
     operator.getStartButton().whileHeld(new ShooterReverseCommand(shooter));
 
-    operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
+    operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
     operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
 
-    driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED));
-    driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED));
-    driver.getRightButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(0));
+    driver.getLeftButton()
+        .whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED))
+        .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    driver.getTopButton()
+        .whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED))
+        .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    driver.getRightButton()
+        .whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(0))
+        .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     driver.getDPadRight().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainInnerGoalAligner()).setNeverFinish());
-    
-    driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+
     /**
      * 
      */
@@ -238,6 +241,10 @@ public class RobotContainer {
 
   public Funnel getFunnel() {
     return funnel;
+  }
+
+  public Chimney getChimney() {
+    return chimney;
   }
 
   public Gamepad getDriver() {

@@ -43,7 +43,7 @@ public class ShootThreeMoveTowardIntakeAutonCommand extends SequentialCommandGro
             new DrivetrainStopCommand(drivetrain),
 
             new LEDSetCommand(Color.RED_SOLID, controller),
-            new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 3.0),
+            new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 3.0),
 
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             new IntakeExtendCommand(intake),

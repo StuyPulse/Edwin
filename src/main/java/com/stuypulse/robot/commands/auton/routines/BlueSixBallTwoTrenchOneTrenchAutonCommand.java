@@ -52,7 +52,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
 
             
             new LEDSetCommand(Color.RED_SOLID, controller),
-            new TimeoutCommand(new FeedBallsCommand(shooter, funnel, chimney), 1.0),
+            new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 1.0),
             
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             // new DrivetrainMovementCommand(drivetrain, ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES, 0).setTimeout(1.0),
@@ -64,7 +64,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
           
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new ParallelCommandGroup(
-                new FeedBallsCommand(shooter, funnel, chimney),
+                new FeedBallsCommand(funnel, chimney),
                 new IntakeAcquireCommand(intake)
             )
         );

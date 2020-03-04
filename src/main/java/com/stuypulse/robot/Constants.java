@@ -147,18 +147,14 @@ public interface Constants {
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
-        double MIN_ALIGNMENT_TIME = 0.8;
-
-        double UPDATE_PERIOD = 0.2;
+        double MIN_ALIGNMENT_TIME = 2.0;
+        double INTERPOLATION_PERIOD = 0.3;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
         SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
 
         public interface Speed {
-
-            // Speed the Drivetrain Moves
-            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Preset PID Values
             SmartNumber P = new SmartNumber("SpeedP", 0.35); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
@@ -183,7 +179,7 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
-            double LIMELIGHT_MAX_SPEED = 1;
+            double LIMELIGHT_MAX_SPEED = 0.8;
 
             double MAX_SPEED_ERROR = toFeet(3);
             double MAX_SPEED_VEL = toFeet(6.0);

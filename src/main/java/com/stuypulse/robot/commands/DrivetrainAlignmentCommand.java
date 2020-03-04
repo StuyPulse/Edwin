@@ -47,7 +47,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     private Aligner aligner;
 
     // Use encoder values with alignment command
-    private boolean useEncoders;
+    private boolean useInterpolation;
     private double targetDistance;
     private Angle targetAngle;
 
@@ -83,7 +83,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.aligner = aligner;
 
         // Timer used to check when to update the errors
-        this.useEncoders = false;
+        this.useInterpolation = false;
         this.targetAngle = Angle.degrees(0);
         this.targetDistance = 0;
         this.pollingTimer = new StopWatch();
@@ -129,8 +129,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return this;
     }
 
-    public DrivetrainAlignmentCommand setUseEncoders() {
-        this.useEncoders = true;
+    public DrivetrainAlignmentCommand useInterpolation() {
+        this.useInterpolation = true;
         return this;
     }
 
@@ -162,7 +162,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Get the speed error
     public double getSpeedError() {
-        if(this.useEncoders) {
+        if(this.useInterpolation) {
             return targetDistance - drivetrain.getDistance();
         } else {
             return aligner.getSpeedError();
@@ -171,7 +171,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Get the speed error
     public Angle getAngleError() {
-        if(this.useEncoders) {
+        if(this.useInterpolation) {
             return targetAngle.sub(drivetrain.getGyroAngle());
         } else {
             return aligner.getAngleError();
@@ -223,7 +223,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         }
 
         // Update targets if time has come
-        if(pollingTimer.getTime() > Alignment.UPDATE_PERIOD) {
+        if(pollingTimer.getTime() > Alignment.INTERPOLATION_PERIOD) {
             updateTargets();
             pollingTimer.reset();
         }

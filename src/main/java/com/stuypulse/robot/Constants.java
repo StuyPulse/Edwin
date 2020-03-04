@@ -149,7 +149,7 @@ public interface Constants {
 
         double MIN_ALIGNMENT_TIME = 0.8;
 
-        double UPDATE_PERIOD = 0.1;
+        double UPDATE_PERIOD = 0.2;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
@@ -183,7 +183,7 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
-            double LIMELIGHT_MAX_SPEED = 0.6;
+            double LIMELIGHT_MAX_SPEED = 0.8;
 
             double MAX_SPEED_ERROR = toFeet(3);
             double MAX_SPEED_VEL = toFeet(6.0);

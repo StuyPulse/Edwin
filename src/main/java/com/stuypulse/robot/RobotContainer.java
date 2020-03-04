@@ -168,7 +168,7 @@ public class RobotContainer {
     driver.getLeftButton()
         .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE).setNeverFinish());
     driver.getTopButton().whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE).setNeverFinish());
-    driver.getTopButton()
+    driver.getRightButton()
         .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE).setNeverFinish().setMaxSpeed(0));
 
     /**

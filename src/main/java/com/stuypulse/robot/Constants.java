@@ -161,9 +161,9 @@ public interface Constants {
             SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.3); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber P = new SmartNumber("SpeedP", 0.35); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.02); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber D = new SmartNumber("SpeedD", 0.09); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -183,7 +183,7 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // What is an acceptable error
-            double LIMELIGHT_MAX_SPEED = 0.8;
+            double LIMELIGHT_MAX_SPEED = 1;
 
             double MAX_SPEED_ERROR = toFeet(3);
             double MAX_SPEED_VEL = toFeet(6.0);
@@ -211,7 +211,6 @@ public interface Constants {
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);
 
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
-
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 2.5;

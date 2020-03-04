@@ -3,17 +3,7 @@ package com.stuypulse.robot.commands.auton.routines;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Alignment;
 
-import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
-import com.stuypulse.robot.commands.DrivetrainGoalAligner;
-import com.stuypulse.robot.commands.DrivetrainMovementCommand;
-import com.stuypulse.robot.commands.DrivetrainStopCommand;
-import com.stuypulse.robot.commands.FeedBallsCommand;
-import com.stuypulse.robot.commands.IntakeAcquireCommand;
-import com.stuypulse.robot.commands.IntakeAcquireForeverCommand;
-import com.stuypulse.robot.commands.IntakeExtendCommand;
-import com.stuypulse.robot.commands.LEDSetCommand;
-import com.stuypulse.robot.commands.ShooterControlCommand;
-import com.stuypulse.robot.commands.TimeoutCommand;
+import com.stuypulse.robot.commands.*;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
@@ -38,7 +28,7 @@ public class ShootThreeMoveTowardIntakeAutonCommand extends SequentialCommandGro
             new WaitCommand(2),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.INITATION_LINE_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(2.0),
+            new DrivetrainGoalCommand(drivetrain, Constants.Alignment.INITATION_LINE_DISTANCE).withTimeout(2.0),
 
             new DrivetrainStopCommand(drivetrain),
 

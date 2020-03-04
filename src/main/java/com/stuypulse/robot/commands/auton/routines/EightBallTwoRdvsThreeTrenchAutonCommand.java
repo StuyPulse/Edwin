@@ -2,16 +2,7 @@ package com.stuypulse.robot.commands.auton.routines;
 
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Alignment;
-import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
-import com.stuypulse.robot.commands.DrivetrainGoalAligner;
-import com.stuypulse.robot.commands.DrivetrainMovementCommand;
-import com.stuypulse.robot.commands.FeedBallsCommand;
-import com.stuypulse.robot.commands.IntakeAcquireCommand;
-import com.stuypulse.robot.commands.IntakeAcquireForeverCommand;
-import com.stuypulse.robot.commands.IntakeExtendCommand;
-import com.stuypulse.robot.commands.LEDSetCommand;
-import com.stuypulse.robot.commands.ShooterControlCommand;
-import com.stuypulse.robot.commands.TimeoutCommand;
+import com.stuypulse.robot.commands.*;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
@@ -78,7 +69,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             // new DrivetrainMovementCommand(drivetrain, 0, -5.0),
 
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(15.0),
+            new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).withTimeout(15.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
 

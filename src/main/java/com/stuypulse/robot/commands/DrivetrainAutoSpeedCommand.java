@@ -30,8 +30,8 @@ public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
     public void execute() {
         super.execute();
 
-        if (getSpeedController() instanceof PIDCalculator) {
-            PIDController calculated = ((PIDCalculator) getSpeedController()).getPIDController(
+        if (speed instanceof PIDCalculator) {
+            PIDController calculated = ((PIDCalculator) speed).getPIDController(
                     Alignment.AUTOTUNE_P.doubleValue(), 
                     Alignment.AUTOTUNE_I.doubleValue(),
                     Alignment.AUTOTUNE_D.doubleValue()

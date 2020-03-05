@@ -40,11 +40,11 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     private double maxSpeed;
 
     // Controllers for Alignment
-    private Controller speed;
-    private Controller angle;
+    protected Controller speed;
+    protected Controller angle;
 
     // Distance that the command will try to align with
-    private Aligner aligner;
+    protected Aligner aligner;
 
     // Use encoder values with alignment command
     private boolean useInterpolation;
@@ -55,8 +55,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     private StopWatch pollingTimer;
     private StopWatch timer;
 
-    // Return false in isFinished
-    private boolean neverFinish;
+    // Misc Settings
+    private boolean continuous; // Removes check for velocity
+    private boolean neverFinish; // Waits to be interrupted
 
     /**
      * This creates a command that aligns the robot
@@ -84,15 +85,16 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Timer used to check when to update the errors
         this.useInterpolation = false;
+        this.pollingTimer = new StopWatch();
         this.targetAngle = Angle.degrees(0);
         this.targetDistance = 0;
-        this.pollingTimer = new StopWatch();
 
         // Used to check the alignment time.
         this.timer = new StopWatch();
 
         // Normally end the command once aligned
         this.neverFinish = false;
+        this.continuous = false;
     }
 
     /**
@@ -103,18 +105,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
      */
     public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner) {
         this(drivetrain, aligner, Alignment.Speed.getPID(), Alignment.Angle.getPID());
-    }
-
-    // Get the Speed Controller
-    // Used by sub classes to get information
-    protected Controller getSpeedController() {
-        return speed;
-    }
-
-    // Get the Angle controller
-    // Used by sub classes to get information
-    protected Controller getAngleController() {
-        return angle;
     }
 
     // Set the speed of the movement command
@@ -129,6 +119,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return this;
     }
 
+    // Make command not check for velocity when finishing
+    public DrivetrainAlignmentCommand setContinuous() {
+        this.continuous = true;
+        return this;
+    }
+
+    // Uses encoders to interpolate alignmnet data
     public DrivetrainAlignmentCommand useInterpolation() {
         this.useInterpolation = true;
         return this;
@@ -152,6 +149,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         ));
 
         updateTargets();
+        pollingTimer.reset();
     }
 
     // Update the targets with new alignment data
@@ -160,7 +158,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         targetAngle = drivetrain.getGyroAngle().add(aligner.getAngleError());
     }
 
-    // Get the speed error
+    // Get distance left to travel
     public double getSpeedError() {
         if(this.useInterpolation) {
             return targetDistance - drivetrain.getDistance();
@@ -169,7 +167,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         }
     }
 
-    // Get the speed error
+    // Get angle left to turn
     public Angle getAngleError() {
         if(this.useInterpolation) {
             return targetAngle.sub(drivetrain.getGyroAngle());
@@ -178,19 +176,14 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         }
     }
 
-    // Update the speed if the angle is aligned
+    // Speed robot should move
     public double getSpeed() {
-        // Only start driving if the angle is aligned first.
-        if(angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL)) {
-            return speed.update(this.getSpeedError());
-        } else {
-            double s = 2 - Math.abs(angle.getError()) / Alignment.Angle.MAX_ANGLE_ERROR;
-            s = SLMath.limit(s, 0, 1.0);
-            return speed.update(this.getSpeedError()) * s;
-        }
+        // The more unaligned the robot is, the less it moves
+        double s = 1.5 - Math.abs(angle.getError()) / Alignment.Angle.MAX_ANGLE_ERROR;
+        return speed.update(this.getSpeedError()) * SLMath.limit(s, 0, 1.0);
     }
 
-    // Update angle based on angle error
+    // Angle robot has to turn
     public double getAngle() {
         return angle.update(getAngleError().toDegrees());
     }
@@ -206,6 +199,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return false;
     }
 
+    // Execute loop while also updating PID controllers
     public void execute() {
         super.execute();
 
@@ -241,8 +235,14 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             return false;
         }
 
-        return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
-             && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+        // If continuous, do not check for velocity
+        if(this.continuous) {
+            return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR) 
+                 && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR));
+        } else {
+            return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
+                 && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+        }
     }
 
     // Turn limelight off when no longer aligning due to rules

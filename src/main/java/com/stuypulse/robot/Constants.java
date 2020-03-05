@@ -141,8 +141,8 @@ public interface Constants {
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(203);
-        double INITATION_LINE_DISTANCE = toFeet(90);
+        double TRENCH_DISTANCE = toFeet(199);
+        double INITATION_LINE_DISTANCE = toFeet(88);
 
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
@@ -214,7 +214,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 7);
+            double GOAL_HEIGHT = toFeet(7, 6);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);

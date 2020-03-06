@@ -148,7 +148,7 @@ public interface Constants {
         double MAX_DISTANCE = toFeet(54, 0);
 
         double MIN_ALIGNMENT_TIME = 2.0;
-        double INTERPOLATION_PERIOD = 0.3;
+        double INTERPOLATION_PERIOD = 0.25;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
@@ -157,9 +157,9 @@ public interface Constants {
         public interface Speed {
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.35); // 0.30 (OLD "TESTED" VALUE)
+            SmartNumber P = new SmartNumber("SpeedP", 0.3); // 0.30 (OLD "TESTED" VALUE)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.09); // 0.02 (OLD "TESTED" VALUE)
+            SmartNumber D = new SmartNumber("SpeedD", 0.02); // 0.02 (OLD "TESTED" VALUE)
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -171,14 +171,14 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values
-            double BANGBANG_SPEED = 0.6;
+            double BANGBANG_SPEED = 0.5;
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0);
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // Max speed for limelight to move
-            double LIMELIGHT_MAX_SPEED = 0.8;
+            double LIMELIGHT_MAX_SPEED = 0.75;
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3);
@@ -201,7 +201,7 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values
-            double BANGBANG_SPEED = 0.35;
+            double BANGBANG_SPEED = 0.4;
 
             // Low pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);

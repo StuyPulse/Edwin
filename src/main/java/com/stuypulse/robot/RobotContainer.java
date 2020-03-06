@@ -79,7 +79,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
   // Subsystems
   private final Chimney chimney = new Chimney();

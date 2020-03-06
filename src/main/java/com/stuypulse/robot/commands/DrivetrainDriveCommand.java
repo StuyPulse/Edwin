@@ -7,7 +7,9 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.stuylib.input.Gamepad;
 
 import com.stuypulse.stuylib.streams.IStream;
+import com.stuypulse.stuylib.streams.filters.IStreamFilter;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
+import com.stuypulse.stuylib.streams.filters.SpeedProfile;
 import com.stuypulse.stuylib.streams.FilteredIStream;
 import com.stuypulse.stuylib.math.SLMath;
 
@@ -54,7 +56,9 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
         // Create an IStream that filters the raw speed from the controller
         this.speed = new FilteredIStream(this.rawSpeed, 
             (x) -> SLMath.deadband(x, DrivetrainSettings.SPEED_DEADBAND),
-            (x) -> SLMath.spow(x, DrivetrainSettings.SPEED_POWER), 
+            (x) -> SLMath.spow(x, DrivetrainSettings.SPEED_POWER),
+            
+            //new SpeedProfile(2.5 / 50.0, 1.0 / 420.0)
             new LowPassFilter(DrivetrainSettings.SPEED_FILTER)
         );
 

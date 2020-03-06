@@ -26,20 +26,20 @@ public class FeedBallsAutomaticCommand extends CommandBase {
             chimney.liftUp();
             funnel.funnel();
         } else {
-            if(chimney.getLowerChimneyValue() && !chimney.getUpperChimneyValue()) {
+            if(!chimney.getUpperChimneyValue()) { // && chimney.getLowerChimneyValue()) {
                 chimney.liftUp();
                 funnel.funnel();
-            } else if(chimney.getLowerChimneyValue() && chimney.getUpperChimneyValue()) {
-                chimney.liftDown();
-                funnel.stop();
-            } else if(!chimney.getLowerChimneyValue() && chimney.getUpperChimneyValue()) {
-                chimney.stop();
-                funnel.stop();
-            } else if(!chimney.getLowerChimneyValue() && chimney.getUpperChimneyValue()) {
+            } else {
                 chimney.stop();
                 funnel.stop();
             }
         }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        chimney.stop();
+        funnel.stop();
     }
 
 }

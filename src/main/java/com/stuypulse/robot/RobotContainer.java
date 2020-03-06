@@ -21,6 +21,7 @@ import com.stuypulse.robot.commands.DrivetrainDriveCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainGoalCommand;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
+import com.stuypulse.robot.commands.FeedBallsAutomaticCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
@@ -37,6 +38,7 @@ import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallTwoRdvsThreeTrenchAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.FiveBallTwoRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.MobilityTowardIntakeAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.MobilityTowardShooterAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardIntakeAutonCommand;
@@ -165,12 +167,15 @@ public class RobotContainer {
 
     operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
 
-    driver.getLeftButton()
-        .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE).setNeverFinish());
-    driver.getTopButton().whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE).setNeverFinish());
-    driver.getRightButton()
-        .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE).setNeverFinish().setMaxSpeed(0));
+    driver.getLeftButton().whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, false).setNeverFinish());
+    driver.getTopButton().whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, false).setNeverFinish());
 
+    driver.getDPadLeft().whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, true).setNeverFinish());
+    driver.getDPadUp().whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, true).setNeverFinish());
+    
+    // driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    // driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     /**
      * 
      */
@@ -204,22 +209,17 @@ public class RobotContainer {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
     autonChooser.addOption("Mobility Toward Intake", new MobilityTowardIntakeAutonCommand(drivetrain, ledController));
     autonChooser.addOption("Mobility Toward Shooter", new MobilityTowardShooterAutonCommand(drivetrain, ledController));
-    autonChooser.addOption("Shoot Three, Move Toward Intake",
-        new ShootThreeMoveTowardIntakeAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
-    autonChooser.addOption("Shoot Three, Move Toward Shooter",
-        new ShootThreeMoveTowardShooterAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
-    autonChooser.addOption("RED Six Ball: Two, then One Trench",
-        new RedSixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
-    autonChooser.addOption("BLUE Six Ball: Two, then One Trench",
-        new BlueSixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
+    autonChooser.addOption("Shoot Three, Move Toward Intake", new ShootThreeMoveTowardIntakeAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
+    autonChooser.addOption("Shoot Three, Move Toward Shooter", new ShootThreeMoveTowardShooterAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
+    autonChooser.addOption("RED Six Ball: Two, then One Trench", new RedSixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
+    autonChooser.addOption("BLUE Six Ball: Two, then One Trench", new BlueSixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
 
-    autonChooser.addOption("Eight Ball: Two Rdvs, then Three Trench",
-        new EightBallTwoRdvsThreeTrenchAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
+    autonChooser.addOption("Eight Ball: Two Rdvs, then Three Trench", new EightBallTwoRdvsThreeTrenchAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
 
-    autonChooser.addOption("Six Ball Three Rdvs",
-        new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
-    autonChooser.addOption("Six Ball Three Trench",
-        new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
+    autonChooser.addOption("Five Ball: Two Rdvs", new FiveBallTwoRdvsAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
+
+    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
+    autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
     autonChooser.addOption("Eight Ball Five Rdvs", new EightBallFiveRdvsAutonCommand(drivetrain, intake));
     autonChooser.addOption("Eight Ball Three Trench Two Rdvs", new EightBallThreeTrenchTwoRdvsAutonCommand(drivetrain));
 

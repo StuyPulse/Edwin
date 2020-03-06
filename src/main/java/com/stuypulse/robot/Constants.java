@@ -141,15 +141,14 @@ public interface Constants {
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(197 - 24 + 6 + 6);
-        double INITATION_LINE_DISTANCE = toFeet(82);
+        double TRENCH_DISTANCE = toFeet(199);
+        double INITATION_LINE_DISTANCE = toFeet(88);
 
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
-        double MIN_ALIGNMENT_TIME = 0.8;
-
-        double UPDATE_PERIOD = 0.2;
+        double MIN_ALIGNMENT_TIME = 2.0;
+        double INTERPOLATION_PERIOD = 0.3;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
@@ -157,13 +156,10 @@ public interface Constants {
 
         public interface Speed {
 
-            // Speed the Drivetrain Moves
-            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
-
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.3); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber P = new SmartNumber("SpeedP", 0.35); // 0.30 (OLD "TESTED" VALUE)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.02); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
+            SmartNumber D = new SmartNumber("SpeedD", 0.09); // 0.02 (OLD "TESTED" VALUE)
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -175,16 +171,16 @@ public interface Constants {
             }
 
             // Bang Bang speed when measuring PID Values
-            double BANGBANG_SPEED = 0.6; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
+            double BANGBANG_SPEED = 0.6;
 
             // Low Pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0);
-          
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
-            // What is an acceptable error
+            // Max speed for limelight to move
             double LIMELIGHT_MAX_SPEED = 0.8;
 
+            // What is an acceptable error
             double MAX_SPEED_ERROR = toFeet(3);
             double MAX_SPEED_VEL = toFeet(6.0);
         }
@@ -209,9 +205,7 @@ public interface Constants {
 
             // Low pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);
-
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
-
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 2.5;
@@ -220,7 +214,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 2);
+            double GOAL_HEIGHT = toFeet(7, 6);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);

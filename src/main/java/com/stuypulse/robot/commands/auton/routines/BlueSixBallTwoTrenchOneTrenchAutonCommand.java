@@ -3,17 +3,7 @@ package com.stuypulse.robot.commands.auton.routines;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Alignment;
 
-import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
-import com.stuypulse.robot.commands.DrivetrainGoalAligner;
-import com.stuypulse.robot.commands.DrivetrainMovementCommand;
-import com.stuypulse.robot.commands.FeedBallsCommand;
-import com.stuypulse.robot.commands.IntakeAcquireCommand;
-import com.stuypulse.robot.commands.IntakeAcquireForeverCommand;
-import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
-import com.stuypulse.robot.commands.IntakeExtendCommand;
-import com.stuypulse.robot.commands.LEDSetCommand;
-import com.stuypulse.robot.commands.ShooterControlCommand;
-import com.stuypulse.robot.commands.TimeoutCommand;
+import com.stuypulse.robot.commands.*;
 import com.stuypulse.robot.subsystems.Chimney;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Funnel;
@@ -32,7 +22,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
 
         final double DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET = 5 * 1.208;
         final double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = 5 * 1.208 + 0.5;
-        final double ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES = 15 * 1.208;
+        final double ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES = 15;
         final double DRIVETRAIN_SPEED_LIMIT = 0.55;
 
         addCommands(
@@ -48,7 +38,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
             // new DrivetrainMovementCommand(drivetrain, 0, -DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setTimeout(1.5),
            
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(3.5),
+            new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).withTimeout(3.5),
 
             
             new LEDSetCommand(Color.RED_SOLID, controller),
@@ -60,7 +50,7 @@ public class BlueSixBallTwoTrenchOneTrenchAutonCommand extends SequentialCommand
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET).setMaxSpeed(DRIVETRAIN_SPEED_LIMIT).withTimeout(2.0),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setMaxSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).withTimeout(4),
+            new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).withTimeout(4),
           
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new ParallelCommandGroup(

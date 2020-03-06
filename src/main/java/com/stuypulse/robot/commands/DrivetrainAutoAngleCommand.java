@@ -26,8 +26,8 @@ public class DrivetrainAutoAngleCommand extends DrivetrainAlignmentCommand {
     public void execute() {
         super.execute();
         
-        if (getAngleController() instanceof PIDCalculator) {
-            PIDController calculated = ((PIDCalculator) getAngleController()).getPIDController(
+        if (angle instanceof PIDCalculator) {
+            PIDController calculated = ((PIDCalculator) angle).getPIDController(
                     Alignment.AUTOTUNE_P.doubleValue(), 
                     Alignment.AUTOTUNE_I.doubleValue(),
                     Alignment.AUTOTUNE_D.doubleValue()

@@ -1,7 +1,7 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.util.CVFuncs;
+import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
@@ -10,23 +10,19 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
  * instructions to the drivetrain on how it should move to align with the
  * target.
  */
-public class DrivetrainInnerGoalAligner implements DrivetrainAlignmentCommand.Aligner {
+public class DrivetrainInnerGoalAligner extends DrivetrainGoalAligner {
 
     private LowPassFilter filter = new LowPassFilter(0.2);
 
-    public DrivetrainInnerGoalAligner() {
+    public DrivetrainInnerGoalAligner(double distance) {
+        super(distance);
     }
 
-    public void init() {
-        // Turn on LEDs for CV
-        Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
-    }
-
-    public double getAngleError() {
+    public Angle getAngleError() {
         if(Limelight.hasValidTarget()) {
-            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue() + filter.get(CVFuncs.txOffset());
+            return super.getAngleError().add(Angle.degrees(filter.get(CVFuncs.txOffset())));
         } else {
-            return 0;
+            return Angle.degrees(0);
         }
     }
 }

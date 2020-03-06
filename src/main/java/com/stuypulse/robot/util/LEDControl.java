@@ -38,8 +38,8 @@ public class LEDControl implements Runnable {
                 } else if(drivetrain.getIsAligned()) {
                     controller.setColor(Color.LIME_FLASH);
                     drivetrain.setIsAligned(false);
-                } else if(intake.isBallDetected() && controller.getValue() != 0.99) {
-                    controller.setColor(Color.BLUE_SOLID);
+                } else if(intake.isBallDetected()) {
+                    controller.setColor(Color.GREEN_SOLID);
                 } else {
                     if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
                         if (shooter.isAtTargetVelocity()) {

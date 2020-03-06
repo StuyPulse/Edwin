@@ -4,6 +4,7 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
+import com.stuypulse.robot.commands.DrivetrainGoalCommand;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.IntakeAcquireCommand;
@@ -52,26 +53,26 @@ public class FiveBallTwoRdvsAutonCommand extends SequentialCommandGroup {
             new WaitCommand(0.5),
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setSpeed(0.9).setTimeout(15.0),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setMaxSpeed(0.9).withTimeout(15.0),
         
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_RDVS).setTimeout(1.0),
+            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_RDVS).withTimeout(1.0),
 
             // new LEDSetCommand(Color.GREEN_SOLID, controller),
             // new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH),
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setSpeed(0.65).setTimeout(1.5),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET).setMaxSpeed(0.65).withTimeout(1.5),
 
-            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_WIGGLE).setTimeout(1.0),
-            new DrivetrainMovementCommand(drivetrain, -ANGLE_TO_WIGGLE).setTimeout(1.0),
+            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_WIGGLE).withTimeout(1.0),
+            new DrivetrainMovementCommand(drivetrain, -ANGLE_TO_WIGGLE).withTimeout(1.0),
 
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_RDVS).setTimeout(1.5),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_RDVS).withTimeout(1.5),
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, -ANGLE_TO_RDVS).setTimeout(0.75),
+            new DrivetrainMovementCommand(drivetrain, -ANGLE_TO_RDVS).withTimeout(0.75),
         
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Constants.Alignment.TRENCH_DISTANCE)).setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED).setTimeout(15.0),
+            new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).withTimeout(15.0),
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
             new ParallelCommandGroup(

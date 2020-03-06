@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.Alignment;
+import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
@@ -50,11 +51,11 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
         }
     }
 
-    public double getAngleError() {
+    public Angle getAngleError() {
         if(Limelight.hasValidTarget()) {
-            return Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue();
+            return Angle.degrees(Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue());
         } else {
-            return 0;
+            return Angle.degrees(0);
         }
     }
 

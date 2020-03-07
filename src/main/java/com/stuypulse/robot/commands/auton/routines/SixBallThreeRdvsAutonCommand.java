@@ -37,39 +37,39 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).withTimeout(5.0),
 
-            new LEDSetCommand(Color.WHITE_SOLID, controller),
+            new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_WIGGLE).withTimeout(0.15),
            
-            new LEDSetCommand(Color.ORANGE_SOLID, controller),
+            new LEDSetCommand(Color.GREEN_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, -2 * ANGLE_TO_WIGGLE).withTimeout(0.3),
             
-            new LEDSetCommand(Color.WHITE_SOLID, controller),
+            new LEDSetCommand(Color.BLUE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_WIGGLE).withTimeout(0.15),
 
-            new LEDSetCommand(Color.YELLOW_SOLID, controller),
+            new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET).withTimeout(5.0),
 
-            new LEDSetCommand(Color.GREEN_SOLID, controller),
+            new LEDSetCommand(Color.RED_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_SHOOT_TWO_BALLS),
 
-            new LEDSetCommand(Color.BLUE_SOLID, controller),
+            new LEDSetCommand(Color.ORANGE_SOLID, controller),
             new ParallelDeadlineGroup(
                 new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(2.0),
                 new FeedBallsInAutoCommand(funnel, chimney)
             ),
 
-            new LEDSetCommand(Color.PURPLE_SOLID, controller),
+            new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new FeedBallsCommand(funnel, chimney).withTimeout(2.0),
 
-            new LEDSetCommand(Color.RED_SOLID, controller),
+            new LEDSetCommand(Color.GREEN_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET),
             
-            new LEDSetCommand(Color.ORANGE_SOLID, controller),
+            new LEDSetCommand(Color.BLUE_SOLID, controller),
             new ParallelDeadlineGroup(
                 new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(15.0),
                 new FeedBallsInAutoCommand(funnel, chimney)
             ),
-            new LEDSetCommand(Color.YELLOW_SOLID, controller),
+            new LEDSetCommand(Color.GREEN_SOLID, controller),
             new ParallelCommandGroup(
                 new FeedBallsCommand(funnel, chimney),
                 new IntakeAcquireCommand(intake)

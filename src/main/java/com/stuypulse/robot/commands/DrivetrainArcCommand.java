@@ -36,11 +36,11 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
          */
         public void init() {
             startAngle = drivetrain.getGyroAngle().toDegrees();
-            startDistance = drivetrain.getGreyhillDistance();
+            startDistance = drivetrain.getDistance();
         }
 
         public double getSpeedError() {
-            return startDistance + distance - drivetrain.getGreyhillDistance();
+            return startDistance + distance - drivetrain.getDistance();
         }
 
         public Angle getAngleError() {

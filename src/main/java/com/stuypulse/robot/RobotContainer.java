@@ -15,6 +15,7 @@ import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
 import com.stuypulse.robot.commands.ClimberSetupCommand;
 import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
+import com.stuypulse.robot.commands.DrivetrainArcCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
 import com.stuypulse.robot.commands.DrivetrainDriveCommand;
@@ -193,6 +194,10 @@ public class RobotContainer {
      */
 
     if (DEBUG) {
+      driver.getRightBumper().whileHeld(new DrivetrainArcCommand(drivetrain, 90, 8));
+      driver.getLeftBumper().whileHeld(new DrivetrainArcCommand(drivetrain, -90, 8));
+      
+
       // Auto alignment for angle and speed and update pid values
       debug.getLeftButton().whileHeld(
           new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));

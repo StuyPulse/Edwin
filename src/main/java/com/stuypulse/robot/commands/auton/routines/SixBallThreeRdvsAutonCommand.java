@@ -64,11 +64,11 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
                 new FeedBallsInAutoCommand(funnel, chimney)
             ),
 
-            new LEDSetCommand(Color.YELLOW_SOLID, controller),
-            new FeedBallsCommand(funnel, chimney).withTimeout(2.0),
-
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET).withTimeout(1.5),
+            new ParallelCommandGroup(
+                new FeedBallsCommand(funnel, chimney).withTimeout(2.0),
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET).withTimeout(1.5)
+            ),
 
             new LEDSetCommand(Color.RAINBOW, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_LAST_BALL),

@@ -26,7 +26,7 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
         final double DISTANCE_TO_ACQUIRE_RDVS_BALLS_IN_FEET = 2.0;
         final double DISTANCE_TO_BACKUP_AFTER_RDVS = -6.5;
         final double ANGLE_TO_TRENCH = -55.0;
-        final double DISTANCE_TO_ACQUIRE_TRENCH_BALLS = 9.15;
+        final double DISTANCE_TO_ACQUIRE_TRENCH_BALLS = 9.25;
         final double ANGLE_TO_WIGGLE = 10.0;
 
         addCommands(
@@ -69,14 +69,14 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new DrivetrainMovementCommand(drivetrain, -30).withTimeout(0.75),
             
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_RDVS).setContinuous().withTimeout(3.5),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_RDVS).withTimeout(3.5),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_TRENCH).withTimeout(1.0),
 
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             new ParallelDeadlineGroup(
-                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).setContinuous().withTimeout(3.0),
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).withTimeout(3.0),
                 //new FeedBallsInAutoCommand(funnel, chimney)
                 new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 0.5)
             ),

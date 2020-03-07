@@ -1,5 +1,10 @@
 package com.stuypulse.robot.commands;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.concurrent.ArrayBlockingDeque;
+
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.control.Controller;
@@ -8,6 +13,7 @@ import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.filters.IStreamFilter;
+import com.stuypulse.stuylib.util.StopWatch;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -20,12 +26,26 @@ public class ShooterDefaultCommand extends CommandBase {
     public Controller shootController;
     public Controller feedController;
 
+    private double speedAtStartTargetChange;
+
+    private ArrayDeque<Double> targetSpeeds;
+    private double initError;  //Error before target speed change
+    private double previousTarget;  //Last thing target was set to
+    private double deadtime;
+    private StopWatch lambdaTimer;
+    private double gp;
+
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad, Controller shootController,
         Controller feedController) {
         this.shooter = shooter;
         this.gamepad = gamepad;
         this.shootController = shootController;
         this.feedController = feedController;
+
+        this.targetSpeeds = new ArrayDeque<>(2);
+        this.previousTarget = 0;
+        this.deadtime = 0;
+        this.gp = 0;
 
         addRequirements(this.shooter);
     }
@@ -90,9 +110,23 @@ public class ShooterDefaultCommand extends CommandBase {
         // Target speed to go at
         double speed = shooter.getCurrentShooterVelocityInRPM();
         double target = shooter.getTargetVelocity();
+        double previousTarget = targetSpeeds.getFirst();
 
         // The error from current speed to target
         double error = target - speed;
+        double processGain = initError / (previousTarget - target);
+
+        if(targetSpeeds.peekLast() != target) {
+            targetSpeeds.addLast(target);
+            previousTarget = targetSpeeds.getFirst();
+            deadtime = 0;
+            initError = error;
+            lambdaTimer.reset();
+        } else if(initError != error && deadtime == 0) {
+            deadtime = lambdaTimer.getTime();
+        } else if(error == 0) {
+            
+        }
 
         // Speed to set the motor plus feed forward
         double output = shootController.update(error);

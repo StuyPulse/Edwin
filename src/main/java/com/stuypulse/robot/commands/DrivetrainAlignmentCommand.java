@@ -96,7 +96,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         // Normally end the command once aligned
         this.neverFinish = false;
         this.continuous = false;
-        this.minTime = false;
+        this.minTime = true;
     }
 
     /**

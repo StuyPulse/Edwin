@@ -161,11 +161,13 @@ public class RobotContainer {
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter))
         .whenPressed(new ShooterControlCommand(shooter, 0, ShooterMode.NONE));
 
-    operator.getStartButton().whileHeld(new ShooterReverseCommand(shooter));
+    operator.getSelectButton().whileHeld(new ShooterReverseCommand(shooter));
 
     operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
     operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
+
+    operator.getStartButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
 
     driver.getLeftButton()
       .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, false).setNeverFinish())

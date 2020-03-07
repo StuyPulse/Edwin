@@ -23,7 +23,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
         final double ANGLE_TO_WIGGLE = -10.0;
         final double ANGLE_TO_SHOOT_TWO_BALLS = 45.0;
         final double DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET = -1.0;
-        final double DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET = 1.65;
+        final double DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET = 1.75;
         final double ANGLE_TO_LAST_BALL = -20.0;
         
         addCommands(
@@ -67,7 +67,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new LEDSetCommand(Color.GREEN_SOLID, controller),
             new ParallelCommandGroup(
                 new FeedBallsCommand(funnel, chimney).withTimeout(2.0),
-                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET).withTimeout(1.5)
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET).withTimeout(2.0)
             ),
 
             new LEDSetCommand(Color.RAINBOW, controller),

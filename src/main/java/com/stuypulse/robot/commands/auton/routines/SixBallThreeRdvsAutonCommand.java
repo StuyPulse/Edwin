@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
     public SixBallThreeRdvsAutonCommand(Drivetrain drivetrain, Intake intake, Funnel funnel, Chimney chimney, Shooter shooter, LEDController controller) {
-        final double DISTANCE_TO_RDVS_IN_FEET = 8.75;
+        final double DISTANCE_TO_RDVS_IN_FEET = 7.75;
         final double ANGLE_TO_WIGGLE = -10.0;
         final double ANGLE_TO_SHOOT_TWO_BALLS = 45.0;
         final double DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET = -1.0;

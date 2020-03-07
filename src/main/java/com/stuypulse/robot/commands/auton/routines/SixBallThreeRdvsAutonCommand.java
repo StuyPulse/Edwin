@@ -28,7 +28,6 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
         
         addCommands(
             new LEDSetCommand(Color.WHITE_SOLID, controller),
-            new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH),
             new IntakeExtendCommand(intake),
 
             new WaitCommand(0.1),
@@ -36,7 +35,13 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new IntakeAcquireForeverCommand(intake),
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).withTimeout(5.0),
+            new ParallelCommandGroup(
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).withTimeout(5.0),
+                new SequentialCommandGroup(
+                    new WaitCommand(1.5),
+                    new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH)
+                )
+            ),
 
             new LEDSetCommand(Color.YELLOW_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_WIGGLE).withTimeout(0.3),

@@ -152,7 +152,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
         this.angle.setOutputFilter(new IStreamFilterGroup(
-            (x) -> SLMath.limit(x, maxSpeed),
             new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue())
         ));
 

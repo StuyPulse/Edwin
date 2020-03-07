@@ -74,7 +74,10 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_LAST_BALL),
 
             new LEDSetCommand(Color.WAVE, controller),
-            new DrivetrainMovementCommand(drivetrain, -ANGLE_TO_LAST_BALL),
+            new DrivetrainMovementCommand(drivetrain, -2 * ANGLE_TO_LAST_BALL),
+            
+            new LEDSetCommand(Color.SINELON, controller),
+            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_LAST_BALL),
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
             new ParallelDeadlineGroup(

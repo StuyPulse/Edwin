@@ -23,7 +23,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
         final double ANGLE_TO_WIGGLE = -10.0;
         final double ANGLE_TO_SHOOT_TWO_BALLS = 45.0;
         final double DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET = -1.0;
-        final double DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET = 1.75;
+        final double DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET = 1.95;
         final double ANGLE_TO_LAST_BALL = -20.0;
         
         addCommands(

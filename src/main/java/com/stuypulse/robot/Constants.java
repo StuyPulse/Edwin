@@ -220,7 +220,7 @@ public interface Constants {
                 double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
                 double PITCH = 25;
-                SmartNumber YAW = new SmartNumber("Limelight Yaw", -3.25);
+                SmartNumber YAW = new SmartNumber("Limelight Yaw", 0.0); //3.25
             }
         }
     }

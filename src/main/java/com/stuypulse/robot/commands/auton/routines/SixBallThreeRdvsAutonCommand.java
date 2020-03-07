@@ -55,7 +55,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
             new ParallelDeadlineGroup(
-                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(2.0),
+                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(1.0),
                 new FeedBallsInAutoCommand(funnel, chimney)
             ),
 
@@ -73,7 +73,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             
             new LEDSetCommand(Color.BLUE_SOLID, controller),
             new ParallelDeadlineGroup(
-                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(15.0),
+                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(1.0),
                 new FeedBallsInAutoCommand(funnel, chimney)
             ),
             new LEDSetCommand(Color.GREEN_SOLID, controller),

@@ -8,31 +8,62 @@ import com.stuypulse.robot.subsystems.Funnel;
 import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
+import com.stuypulse.robot.util.LEDController;
+import com.stuypulse.robot.util.LEDController.Color;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
 public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
-    public SixBallThreeRdvsAutonCommand(Drivetrain drivetrain, Intake intake, Funnel funnel, Chimney chimney, Shooter shooter) {
+    public SixBallThreeRdvsAutonCommand(Drivetrain drivetrain, Intake intake, Funnel funnel, Chimney chimney, Shooter shooter, LEDController controller) {
+        final double DISTANCE_TO_RDVS_IN_FEET = 7.0;
+        final double ANGLE_TO_SHOOT_TWO_BALLS = 45.0;
+        final double DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET = -1.0;
+        final double DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET = 2.0;
+        
         addCommands(
-            new ShooterControlCommand(shooter, Constants.Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE),
-            new DrivetrainGoalCommand(drivetrain, Constants.SHOOT_FROM_START_TO_GOAL),
-            
-            //Shoot 3
-            //new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter),
-            new DrivetrainMovementCommand(drivetrain, 0, 12),
+            new LEDSetCommand(Color.WHITE_SOLID, controller),
+            new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH),
+            new IntakeExtendCommand(intake),
 
-            //Move forward
-            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FROM_START_TO_RDVS),
-            new DrivetrainMovementCommand(drivetrain, Constants.ANGLE_FROM_START_POINT_TO_THREE_BALL),
-            new IntakeAcquireCommand(intake),
-            new DrivetrainMovementCommand(drivetrain, 0, Constants.DISTANCE_FOR_THREE_BALLS_IN_RDVS),
-            new DrivetrainMovementCommand(drivetrain, -Constants.ANGLE_FROM_START_POINT_TO_THREE_BALL),
-            new DrivetrainGoalCommand(drivetrain, Constants.DISTANCE_FROM_TRENCH_TO_GOAL, false),
-            new DrivetrainStopCommand(drivetrain)
+            new WaitCommand(0.1),
+            new LEDSetCommand(Color.RED_SOLID, controller),
+            new IntakeAcquireForeverCommand(intake),
+
+            new LEDSetCommand(Color.ORANGE_SOLID, controller),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET),
+
+            new LEDSetCommand(Color.YELLOW_SOLID, controller),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET),
+
+            new LEDSetCommand(Color.GREEN_SOLID, controller),
+            new DrivetrainMovementCommand(drivetrain, ANGLE_TO_SHOOT_TWO_BALLS),
+
+            new LEDSetCommand(Color.BLUE_SOLID, controller),
+            new ParallelDeadlineGroup(
+                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(15.0),
+                new FeedBallsInAutoCommand(funnel, chimney)
+            ),
+
+            new LEDSetCommand(Color.PURPLE_SOLID, controller),
+            new FeedBallsCommand(funnel, chimney).withTimeout(2.0),
+
+            new LEDSetCommand(Color.RED_SOLID, controller),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET),
             
-            //Shoot 3
-            //new FeedAndShootBallsAtTargetVelocityCommand(3, funnel, chimney, shooter)
+            new LEDSetCommand(Color.ORANGE_SOLID, controller),
+            new ParallelDeadlineGroup(
+                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(15.0),
+                new FeedBallsInAutoCommand(funnel, chimney)
+            ),
+            new LEDSetCommand(Color.YELLOW_SOLID, controller),
+            new ParallelCommandGroup(
+                new FeedBallsCommand(funnel, chimney),
+                new IntakeAcquireCommand(intake)
+            )
             );
     }
 }

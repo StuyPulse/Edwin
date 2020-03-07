@@ -75,16 +75,15 @@ public class EightBallTwoRdvsThreeTrenchAutonCommand extends SequentialCommandGr
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_TRENCH).withTimeout(1.0),
 
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new ParallelDeadlineGroup(
-                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).withTimeout(3.0),
-                //new FeedBallsInAutoCommand(funnel, chimney)
-                new TimeoutCommand(new FeedBallsCommand(funnel, chimney), 0.5)
-            ),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_ACQUIRE_TRENCH_BALLS).withTimeout(3.0),
 
             // new DrivetrainMovementCommand(drivetrain, 0, -5.0),
 
             new LEDSetCommand(Color.BLUE_SOLID, controller),
-            new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).withTimeout(15.0),
+            new ParallelDeadlineGroup(
+                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).withTimeout(15.0),
+                new FeedBallsInAutoCommand(funnel, chimney)
+            ),
             
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
             new ParallelCommandGroup(

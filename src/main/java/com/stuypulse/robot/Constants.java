@@ -147,7 +147,7 @@ public interface Constants {
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
-        double MIN_ALIGNMENT_TIME = 2.0;
+        double MIN_ALIGNMENT_TIME = 1.0;
         double INTERPOLATION_PERIOD = 0.25;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
@@ -178,11 +178,11 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
             // Max speed for limelight to move
-            double LIMELIGHT_MAX_SPEED = 0.75;
+            double LIMELIGHT_MAX_SPEED = 0.9;
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(3);
-            double MAX_SPEED_VEL = toFeet(6.0);
+            double MAX_SPEED_ERROR = toFeet(3.0);
+            double MAX_SPEED_VEL = toFeet(9.0);
         }
 
         public interface Angle {
@@ -208,8 +208,8 @@ public interface Constants {
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 2.5;
-            double MAX_ANGLE_VEL = 6.0;
+            double MAX_ANGLE_ERROR = 3;
+            double MAX_ANGLE_VEL = 20.0;
         }
 
         public interface Measurements {

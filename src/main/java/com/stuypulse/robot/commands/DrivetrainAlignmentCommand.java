@@ -58,6 +58,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Misc Settings
     private boolean continuous; // Removes check for velocity
     private boolean neverFinish; // Waits to be interrupted
+    private boolean minTime; // Waits to be interrupted
 
     /**
      * This creates a command that aligns the robot
@@ -95,6 +96,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         // Normally end the command once aligned
         this.neverFinish = false;
         this.continuous = false;
+        this.minTime = false;
     }
 
     /**
@@ -122,6 +124,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Make command not check for velocity when finishing
     public DrivetrainAlignmentCommand setContinuous() {
         this.continuous = true;
+        return this;
+    }
+
+    // Make command not check for velocity when finishing
+    public DrivetrainAlignmentCommand useMinTime() {
+        this.minTime = true;
         return this;
     }
 
@@ -231,14 +239,14 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         }
 
         // Check if the aligner hasn't run for long enough
-        if(timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
+        if(this.minTime && timer.getTime() < Alignment.MIN_ALIGNMENT_TIME) {
             return false;
         }
 
         // If continuous, do not check for velocity
         if(this.continuous) {
-            return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR) 
-                 && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR));
+            return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR * 2.5) 
+                 && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR * 1.5));
         } else {
             return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL) 
                  && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));

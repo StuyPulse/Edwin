@@ -28,7 +28,7 @@ public class ShooterDefaultCommand extends CommandBase {
 
     private double speedAtStartTargetChange;
 
-    private ArrayDeque<Double> targetSpeeds;
+    private ArrayBlockingDeque<Double> targetSpeeds;
     private double initError;  //Error before target speed change
     private double previousTarget;  //Last thing target was set to
     private double deadtime;

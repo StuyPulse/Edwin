@@ -36,7 +36,7 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
             new ParallelCommandGroup(
-                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).withTimeout(5.0),
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setMaxSpeed(0.8).withTimeout(5.0),
                 new SequentialCommandGroup(
                     new WaitCommand(1.5),
                     new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH)

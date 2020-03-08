@@ -3,7 +3,7 @@ package com.stuypulse.robot.commands;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.concurrent.ArrayBlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.robot.subsystems.Shooter;
@@ -28,12 +28,13 @@ public class ShooterDefaultCommand extends CommandBase {
 
     private double speedAtStartTargetChange;
 
-    private ArrayBlockingDeque<Double> targetSpeeds;
+    private ArrayDeque<Double> targetSpeeds;
     private double initError;  //Error before target speed change
     private double previousTarget;  //Last thing target was set to
     private double deadtime;
     private StopWatch lambdaTimer;
     private double gp;
+    private double timeConst;
 
     public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad, Controller shootController,
         Controller feedController) {
@@ -46,6 +47,7 @@ public class ShooterDefaultCommand extends CommandBase {
         this.previousTarget = 0;
         this.deadtime = 0;
         this.gp = 0;
+        this.timeConst = 0;
 
         addRequirements(this.shooter);
     }
@@ -117,15 +119,18 @@ public class ShooterDefaultCommand extends CommandBase {
         double processGain = initError / (previousTarget - target);
 
         if(targetSpeeds.peekLast() != target) {
+            try { targetSpeeds.removeFirst(); }
+            catch(NoSuchElementException e) {}
             targetSpeeds.addLast(target);
             previousTarget = targetSpeeds.getFirst();
             deadtime = 0;
             initError = error;
+            timeConst = 0;
             lambdaTimer.reset();
         } else if(initError != error && deadtime == 0) {
             deadtime = lambdaTimer.getTime();
-        } else if(error == 0) {
-            
+        } else if(error <= initError * .63) {
+            timeConst = lambdaTimer.getTime() - deadtime;
         }
 
         // Speed to set the motor plus feed forward

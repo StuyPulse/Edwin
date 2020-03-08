@@ -97,9 +97,9 @@ public class Shooter extends SubsystemBase {
 
     public double getRawMedianShooterVelocity() {
         double[] speeds = {
-            leftShooterEncoder.getVelocity(), 
+            leftShooterEncoder.getVelocity(),
             middleShooterEncoder.getVelocity(),
-            rightShooterEncoder.getVelocity() 
+            rightShooterEncoder.getVelocity()
         };
 
         Arrays.sort(speeds);

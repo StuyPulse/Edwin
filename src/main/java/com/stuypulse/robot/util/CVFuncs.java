@@ -6,8 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package com.stuypulse.robot.util;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import com.stuypulse.robot.Constants.Alignment;
 
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.*;
@@ -15,6 +18,10 @@ import org.opencv.core.*;
  * Add your docs here.
  */
 public class CVFuncs {
+	public static boolean hasValidVertices(){
+		double[][] data = Limelight.getVertices();
+		return data.length > 0 && data[0].length > 3;
+	}
     public static double txOffset(){
         double[][] data = Limelight.getVertices();
         double srx = 0;
@@ -35,7 +42,34 @@ public class CVFuncs {
             // System.out.println(s1x+"|"+slx+"|"+srx+"|"+(slx-srx)+"\n-------");
         }
         return srx-slx;
-    }
+	}
+	public static double cvtAngleToDistance(double ty){
+		if(Limelight.hasValidTarget()) {
+            double goal_pitch = ty + Alignment.Measurements.Limelight.PITCH;
+            double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
+            double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
+					    	   - Alignment.Measurements.Limelight.DISTANCE;
+			return goal_dist;
+		}
+		return -1;
+	}
+	public static double cvtPixelToAngle(double p){
+		double cvtNormalize = (1/120) * (119.5 - p);
+		//Vertical FOV is 45.7 deg
+		double vph = 2.0*Math.tan(Math.toRadians(45.7 /2));
+		double y = vph/2 * cvtNormalize;
+		return Math.atan2(1,y);
+	}
+	public static double cvtYPixelToDistance(double p){
+		return cvtAngleToDistance(cvtPixelToAngle(p));
+	}
+	public static double newOffset(){
+		if(hasValidVertices()){
+			double a = cvtAngleToDistance(Limelight.getTargetYAngle());
+			System.out.println(a);
+		}
+		return 0.0;
+	}
 	public static Mat[] estimatePose() {
 		List<Point3> objectPointsList = new ArrayList<Point3>();
 		objectPointsList.add(new Point3(-19.625, 0, 0));

@@ -21,12 +21,12 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
     public SixBallThreeRdvsAutonCommand(Drivetrain drivetrain, Intake intake, Funnel funnel, Chimney chimney, Shooter shooter, LEDController controller) {
         final double DISTANCE_TO_RDVS_IN_FEET = 7.1;
         final double ANGLE_TO_WIGGLE = -10.0;
-        final double ANGLE_TO_SHOOT_TWO_BALLS = 45.0;
+        final double ANGLE_TO_SHOOT_TWO_BALLS = 30.0;
         final double DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET = -1.0;
         final double DISTANCE_TO_BACKUP_AFTER_SHOOTING = -3.0;
         final double DISTANCE_TO_ACQUIRE_LAST_BALL_IN_FEET = 3.0;
         final double ANGLE_TO_LAST_BALL = -30.0;
-        final double ANGLE_TO_SHOOT_LAST_BALL = 45.0;
+        final double ANGLE_TO_SHOOT_LAST_BALL = 30.0;
         
         addCommands(
             new LEDSetCommand(Color.WHITE_SOLID, controller),
@@ -38,9 +38,9 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
             new ParallelCommandGroup(
-                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setMaxSpeed(0.6).withTimeout(5.0),
+                new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_RDVS_IN_FEET).setMaxSpeed(0.6).withTimeout(2.0),
                 new SequentialCommandGroup(
-                    new WaitCommand(1.5),
+                    new WaitCommand(0.75),
                     new ShooterControlCommand(shooter, Constants.Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH)
                 )
             ),
@@ -55,19 +55,19 @@ public class SixBallThreeRdvsAutonCommand extends SequentialCommandGroup {
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_WIGGLE).withTimeout(0.3),
 
             new LEDSetCommand(Color.PURPLE_SOLID, controller),
-            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET).withTimeout(5.0),
+            new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_FROM_RDVS_IN_FEET).withTimeout(2.0),
 
             new LEDSetCommand(Color.RED_SOLID, controller),
             new DrivetrainMovementCommand(drivetrain, ANGLE_TO_SHOOT_TWO_BALLS),
 
             new LEDSetCommand(Color.ORANGE_SOLID, controller),
             new ParallelDeadlineGroup(
-                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(3.0),
+                new DrivetrainGoalCommand(drivetrain, Constants.Alignment.TRENCH_DISTANCE).setMaxSpeed(0.0).withTimeout(1.5),
                 new FeedBallsInAutoCommand(funnel, chimney)
             ),
 
             new LEDSetCommand(Color.GREEN_SOLID, controller),
-            new FeedBallsCommand(funnel, chimney).withTimeout(2.0),
+            new FeedBallsCommand(funnel, chimney).withTimeout(1.0),
 
             new LEDSetCommand(Color.SINELON, controller),
             new DrivetrainMovementCommand(drivetrain, 0, DISTANCE_TO_BACKUP_AFTER_SHOOTING),

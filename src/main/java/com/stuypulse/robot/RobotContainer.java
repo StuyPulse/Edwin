@@ -93,7 +93,7 @@ public class RobotContainer {
 
   private final LEDController ledController = new LEDController(0);
 
-  private final WPIGamepad driver = new Logitech.XMode(Ports.Gamepad.DRIVER);
+  private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
   private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
   private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
 

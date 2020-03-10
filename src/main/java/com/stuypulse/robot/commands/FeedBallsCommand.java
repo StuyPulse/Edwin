@@ -12,7 +12,7 @@ public class FeedBallsCommand extends ParallelCommandGroup {
 
     // private final Shooter shooter;
 
-    public FeedBallsCommand(Shooter shooter, Funnel funnel, Chimney chimney) {
+    public FeedBallsCommand(Funnel funnel, Chimney chimney) {
 
         addCommands(
             new FunnelFunnelCommand(funnel),

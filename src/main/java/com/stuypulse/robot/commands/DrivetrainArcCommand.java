@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.stuylib.math.Angle;
 
 /**
  */
@@ -34,16 +35,16 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
          * Set goals based on when the command is initialized
          */
         public void init() {
-            startAngle = drivetrain.getGyroAngle();
-            startDistance = drivetrain.getGreyhillDistance();
+            startAngle = drivetrain.getGyroAngle().toDegrees();
+            startDistance = drivetrain.getDistance();
         }
 
         public double getSpeedError() {
-            return startDistance + distance - drivetrain.getGreyhillDistance();
+            return startDistance + distance - drivetrain.getDistance();
         }
 
-        public double getAngleError() {
-            return startAngle + (angle * (1.0 - getSpeedError() / distance)) - drivetrain.getGyroAngle();
+        public Angle getAngleError() {
+            return Angle.degrees(startAngle + (angle * (1.0 - getSpeedError() / distance))).add(drivetrain.getGyroAngle());
         }
     }
 

@@ -31,7 +31,7 @@ public class Chimney extends SubsystemBase {
         return lowerSensor.get();
     }
     public boolean getUpperChimneyValue() {
-        return upperSensor.get();
+        return !upperSensor.get();
     }
 
     // MOVE THE MOTORS

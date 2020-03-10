@@ -15,11 +15,14 @@ import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
 import com.stuypulse.robot.commands.ClimberSetupCommand;
 import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
+import com.stuypulse.robot.commands.DrivetrainArcCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
 import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
 import com.stuypulse.robot.commands.DrivetrainDriveCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
+import com.stuypulse.robot.commands.DrivetrainGoalCommand;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
+import com.stuypulse.robot.commands.FeedBallsAutomaticCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
 import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
@@ -36,6 +39,7 @@ import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.EightBallTwoRdvsThreeTrenchAutonCommand;
+import com.stuypulse.robot.commands.auton.routines.FiveBallTwoRdvsAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.MobilityTowardIntakeAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.MobilityTowardShooterAutonCommand;
 import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardIntakeAutonCommand;
@@ -76,10 +80,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
-
-  //Subsystems
+  // Subsystems
   private final Chimney chimney = new Chimney();
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
@@ -110,7 +113,8 @@ public class RobotContainer {
     // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
     woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-    // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel,
+    // operator));
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
 
   }
@@ -124,9 +128,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && operator.getLeftY() <= -Math.abs(operator.getLeftX()))).whileHeld(new ClimberRobotClimbCommand(climber, intake));
-    // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX()) >= Math.abs(operator.getLeftY()))).whileHeld(new ClimberMoveYoyoCommand(climber, operator));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
+        && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
+        && operator.getLeftY() <= -Math.abs(operator.getLeftX())))
+            .whileHeld(new ClimberRobotClimbCommand(climber, intake));
+    // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >=
+    // Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX())
+    // >= Math.abs(operator.getLeftY()))).whileHeld(new
+    // ClimberMoveYoyoCommand(climber, operator));
 
     operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
     operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
@@ -142,32 +152,57 @@ public class RobotContainer {
     // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
 
     operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM, ShooterMode.SHOOT_FROM_FAR));
-    operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE));
-    operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH));
+    operator.getDPadDown().whenPressed(
+        new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE));
+    operator.getDPadLeft()
+        .whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH));
     // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
     // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
     // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
-    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter)).whenPressed(new ShooterControlCommand(shooter, 0, ShooterMode.NONE));
+    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter))
+        .whenPressed(new ShooterControlCommand(shooter, 0, ShooterMode.NONE));
 
-    operator.getStartButton().whileHeld(new ShooterReverseCommand(shooter));
+    operator.getSelectButton().whileHeld(new ShooterReverseCommand(shooter));
 
-    operator.getBottomButton().whileHeld(new FeedBallsCommand(shooter, funnel, chimney));
+    operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
     operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
 
-    driver.getLeftButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED));
-    driver.getTopButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(Alignment.Speed.LIMELIGHT_MAX_SPEED));
-    driver.getRightButton().whileHeld(new DrivetrainAlignmentCommand(drivetrain, new DrivetrainGoalAligner(Alignment.TRENCH_DISTANCE)).setNeverFinish().setSpeed(0));
+    operator.getStartButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+
+    driver.getLeftButton()
+      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, false).setNeverFinish())
+      .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+
+    driver.getTopButton()
+      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, false).setNeverFinish())
+      .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));;
+
+    driver.getDPadLeft()
+      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, true).setNeverFinish())
+      .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     
+    driver.getDPadUp()
+    .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, true).setNeverFinish())
+    .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    
+    // driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    // driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
+    // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     /**
      * 
      */
 
     if (DEBUG) {
+      driver.getRightBumper().whileHeld(new DrivetrainArcCommand(drivetrain, 90, 8));
+      driver.getLeftBumper().whileHeld(new DrivetrainArcCommand(drivetrain, -90, 8));
+      
+
       // Auto alignment for angle and speed and update pid values
-      debug.getLeftButton()
-          .whileHeld(new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
-      debug.getTopButton().whileHeld(new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainGoalAligner(Alignment.INITATION_LINE_DISTANCE)));
+      debug.getLeftButton().whileHeld(
+          new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
+      debug.getTopButton().whileHeld(
+          new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
 
       debug.getRightButton().whileHeld(new ShooterDefaultCommand(shooter, debug,
           new PIDCalculator(Shooting.Shooter.BANGBANG_SPEED), new PIDCalculator(Shooting.Feeder.BANGBANG_SPEED)));
@@ -181,10 +216,11 @@ public class RobotContainer {
       debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
       debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
     }
-  } 
-    public LEDController getLEDController() {
-      return ledController;
-    }
+  }
+
+  public LEDController getLEDController() {
+    return ledController;
+  }
 
   public void initSmartDashboard() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
@@ -197,12 +233,15 @@ public class RobotContainer {
 
     autonChooser.addOption("Eight Ball: Two Rdvs, then Three Trench", new EightBallTwoRdvsThreeTrenchAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
 
+    autonChooser.addOption("Five Ball: Two Rdvs", new FiveBallTwoRdvsAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
+    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter, ledController));
 
-    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter));
+    autonChooser.addOption("ONES THAT WE HAVEN'T TESTED YET BELOW", new DoNothingAutonCommand(ledController));
+
     autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
     autonChooser.addOption("Eight Ball Five Rdvs", new EightBallFiveRdvsAutonCommand(drivetrain, intake));
     autonChooser.addOption("Eight Ball Three Trench Two Rdvs", new EightBallThreeTrenchTwoRdvsAutonCommand(drivetrain));
-    
+
     SmartDashboard.putData("Autonomous", autonChooser);
   }
 
@@ -230,6 +269,10 @@ public class RobotContainer {
 
   public Funnel getFunnel() {
     return funnel;
+  }
+
+  public Chimney getChimney() {
+    return chimney;
   }
 
   public Gamepad getDriver() {

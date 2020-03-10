@@ -7,8 +7,10 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.stuylib.input.Gamepad;
 
 import com.stuypulse.stuylib.streams.IStream;
+import com.stuypulse.stuylib.streams.filters.IStreamFilter;
+import com.stuypulse.stuylib.streams.filters.LowPassFilter;
+import com.stuypulse.stuylib.streams.filters.SpeedProfile;
 import com.stuypulse.stuylib.streams.FilteredIStream;
-import com.stuypulse.stuylib.streams.filters.OrderedLowPassFilter;
 import com.stuypulse.stuylib.math.SLMath;
 
 /**
@@ -54,15 +56,17 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
         // Create an IStream that filters the raw speed from the controller
         this.speed = new FilteredIStream(this.rawSpeed, 
             (x) -> SLMath.deadband(x, DrivetrainSettings.SPEED_DEADBAND),
-            (x) -> SLMath.spow(x, DrivetrainSettings.SPEED_POWER), 
-            new OrderedLowPassFilter(DrivetrainSettings.SPEED_FILTER, DrivetrainSettings.SPEED_ORDER)
+            (x) -> SLMath.spow(x, DrivetrainSettings.SPEED_POWER),
+            
+            //new SpeedProfile(2.5 / 50.0, 1.0 / 420.0)
+            new LowPassFilter(DrivetrainSettings.SPEED_FILTER)
         );
 
         // Create an IStream that filters the raw angle from the controller
         this.angle = new FilteredIStream(this.rawAngle, 
             (x) -> SLMath.deadband(x, DrivetrainSettings.ANGLE_DEADBAND),
             (x) -> SLMath.spow(x, DrivetrainSettings.ANGLE_POWER), 
-            new OrderedLowPassFilter(DrivetrainSettings.ANGLE_FILTER, DrivetrainSettings.ANGLE_ORDER)
+            new LowPassFilter(DrivetrainSettings.ANGLE_FILTER)
         );
     }
 

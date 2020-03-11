@@ -43,9 +43,9 @@ public class CVFuncs {
         }
         return srx-slx;
 	}
-	public static double cvtAngleToDistance(double ty){
+	public static double getDistance(){
 		if(Limelight.hasValidTarget()) {
-            double goal_pitch = ty + Alignment.Measurements.Limelight.PITCH;
+            double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
             double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
             double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
 					    	   - Alignment.Measurements.Limelight.DISTANCE;
@@ -56,17 +56,38 @@ public class CVFuncs {
 	public static double cvtPixelToAngle(double p){
 		double cvtNormalize = (1/120) * (119.5 - p);
 		//Vertical FOV is 45.7 deg
-		double vph = 2.0*Math.tan(Math.toRadians(45.7 /2));
-		double y = vph/2 * cvtNormalize;
-		return Math.atan2(1,y);
-	}
-	public static double cvtYPixelToDistance(double p){
-		return cvtAngleToDistance(cvtPixelToAngle(p));
+		double vph = 2.0*Math.tan(Math.toRadians(59.6 /2));
+		double x = vph/2 * cvtNormalize;
+		return Math.atan2(1,x);
 	}
 	public static double newOffset(){
 		if(hasValidVertices()){
-			double a = cvtAngleToDistance(Limelight.getTargetYAngle());
-			System.out.println(a);
+            double[][] data = Limelight.getVertices();
+            double d = getDistance();
+            double outer_dist = 3.13131483318;
+            double inner_dist = 19.625 - outer_dist;
+            double hole_dist = 29.25;
+            System.out.println(inner_dist);
+            double l_ang = Math.toRadians(cvtPixelToAngle(data[0][3]));
+            double r_ang = Math.toRadians(cvtPixelToAngle(data[0][2]));
+            double l_tmp = Math.sin(l_ang);
+            double r_tmp = Math.sin(r_ang);
+            System.out.println("Left Angle:"+l_ang);
+            System.out.println("Right Angle:"+r_ang);
+            double lsin = Math.asin(d*l_tmp/inner_dist);
+            double rsin = Math.asin(d*r_tmp/inner_dist);
+            double rGoodAngle = Math.PI - r_ang - rsin; 
+            double lGoodAngle = Math.PI - l_ang - lsin;
+            System.out.println("Possible Obtuse Angle:" + Math.toDegrees(lGoodAngle));
+            System.out.println("Possible Obtuse Angle:" + Math.toDegrees(rGoodAngle));
+            double goodAngle = (3*Math.PI/2) - Math.max(lGoodAngle,rGoodAngle);
+            System.out.println("Obtuse Angle:" + Math.toDegrees(goodAngle));
+            double realDistInner = Math.sqrt((hole_dist * hole_dist) + 
+                                              (d * d) - 
+                                              (2 * d * hole_dist * Math.cos(goodAngle))
+                                            );
+            double out = Math.asin(Math.sin(goodAngle) * hole_dist / realDistInner);
+            return Math.toDegrees(out);
 		}
 		return 0.0;
 	}

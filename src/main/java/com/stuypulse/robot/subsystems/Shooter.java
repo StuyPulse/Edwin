@@ -118,7 +118,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getCurrentShooterVelocityInRPM() {
-        double speed = getRawMedianShooterVelocity();
+        double speed = 0;
+        speed += Math.abs(leftShooterEncoder.getVelocity());
+        speed += Math.abs(middleShooterEncoder.getVelocity());
+        speed += Math.abs(rightShooterEncoder.getVelocity());
+        speed /= 3.0;
         currentShooterVelocity.set(speed);
         return speed;
     }

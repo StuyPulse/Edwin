@@ -213,14 +213,30 @@ public class Drivetrain extends SubsystemBase {
      * @return distance left side of drivetrain has moved
      */
     public double getLeftNEODistance() {
-        return leftNEO.getPosition() * DrivetrainSettings.Encoders.LEFT_NEO_YEILD;
+        double out = leftNEO.getPosition() * DrivetrainSettings.Encoders.LEFT_NEO_YEILD;
+        
+        if(gear == Gear.HIGH) {
+            out *= DrivetrainSettings.Encoders.NEO_HIGH_GEAR;
+        } else {
+            out *= DrivetrainSettings.Encoders.NEO_LOW_GEAR;
+        }
+
+        return out;
     }
 
     /**
      * @return distance right side of drivetrain has moved
      */
     public double getRightNEODistance() {
-        return rightNEO.getPosition() * DrivetrainSettings.Encoders.RIGHT_NEO_YEILD;
+        double out = rightNEO.getPosition() * DrivetrainSettings.Encoders.RIGHT_NEO_YEILD;
+        
+        if(gear == Gear.HIGH) {
+            out *= DrivetrainSettings.Encoders.NEO_HIGH_GEAR;
+        } else {
+            out *= DrivetrainSettings.Encoders.NEO_LOW_GEAR;
+        }
+
+        return out;
     }
 
     private double absMax(double a, double b) {

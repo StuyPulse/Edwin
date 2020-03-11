@@ -133,22 +133,24 @@ public interface Constants {
             double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION)
                     * REAL_YIELD;
 
-            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
+
+            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE;
             double NEO_YIELD = 0.98277777777777;
             double LEFT_NEO_YEILD = 1.0;
             double RIGHT_NEO_YEILD = -1.0;
+            double NEO_LOW_GEAR = 1.0 / 16.71;
+            double NEO_HIGH_GEAR = 1.0 / 7.71;
         }
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(199);
-        double INITATION_LINE_DISTANCE = toFeet(88);
+        double TRENCH_DISTANCE = toFeet(197 - 24 + 6 + 6);
+        double INITATION_LINE_DISTANCE = toFeet(82);
 
         double MIN_DISTANCE = toFeet(3, 0);
         double MAX_DISTANCE = toFeet(54, 0);
 
-        double MIN_ALIGNMENT_TIME = 1.0;
-        double INTERPOLATION_PERIOD = 0.25;
+        double MIN_ALIGNMENT_TIME = 0.25 + 0.25;
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
@@ -156,33 +158,38 @@ public interface Constants {
 
         public interface Speed {
 
+            // Speed the Drivetrain Moves
+            SmartNumber MAX_SPEED = new SmartNumber("SpeedMax", 1); // 0.5 (ADJUSTED FOR LOWER MAX_SPEED)
+
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.3); // 0.30 (OLD "TESTED" VALUE)
+            SmartNumber P = new SmartNumber("SpeedP", 0.3); // 0.75 (ADJUSTED FOR LOWER MAX_SPEED)
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.02); // 0.02 (OLD "TESTED" VALUE)
+            SmartNumber D = new SmartNumber("SpeedD", 0.02); // 0.18 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Get PID Controller
+            PIDController SPEED_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                PIDController out = new PIDController();
-                out.setP(P.get());
-                out.setI(I.get());
-                out.setD(D.get());
-                return out;
+                SPEED_CONTROLLER.setP(P.get());
+                SPEED_CONTROLLER.setI(I.get());
+                SPEED_CONTROLLER.setD(D.get());
+                return SPEED_CONTROLLER;
             }
 
             // Bang Bang speed when measuring PID Values
-            double BANGBANG_SPEED = 0.5;
+            double BANGBANG_SPEED = 0.6; // 1.0 (ADJUSTED FOR LOWER MAX_SPEED)
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0.06);
+          
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
 
-            // Max speed for limelight to move
-            double LIMELIGHT_MAX_SPEED = 0.9;
-
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(3.0);
-            double MAX_SPEED_VEL = toFeet(9.0);
+            double LIMELIGHT_MAX_SPEED = 0.6;
+
+            double MAX_SPEED_ERROR = toFeet(3);
+            double MAX_SPEED_VEL = toFeet(6.0);
+            double SPEED_DEADBAND = 0;
         }
 
         public interface Angle {
@@ -192,35 +199,39 @@ public interface Constants {
             SmartNumber D = new SmartNumber("AngleD", 0.0023);
 
             // Get PID Controller
+            PIDController ANGLE_CONTROLLER = new PIDController();
+
             public static PIDController getPID() {
-                PIDController out = new PIDController();
-                out.setP(P.get());
-                out.setI(I.get());
-                out.setD(D.get());
-                return out;
+                ANGLE_CONTROLLER.setP(P.get());
+                ANGLE_CONTROLLER.setI(I.get());
+                ANGLE_CONTROLLER.setD(D.get());
+                return ANGLE_CONTROLLER;
             }
 
             // Bang Bang speed when measuring PID Values
-            double BANGBANG_SPEED = 0.4;
+            double BANGBANG_SPEED = 0.35;
 
             // Low pass Filter Time Constant for controller
             SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);
+
             SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
 
+
             // What is an acceptable error
-            double MAX_ANGLE_ERROR = 3;
-            double MAX_ANGLE_VEL = 20.0;
+            double MAX_ANGLE_ERROR = 2.5;
+            double MAX_ANGLE_VEL = 6.0;
+            double ANGLE_DEADBAND = 0;
         }
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6);
+            double GOAL_HEIGHT = toFeet(7, 2);
 
             public interface Limelight {
                 double HEIGHT = toFeet(2, 10);
                 double DISTANCE = toFeet(0, 0);
                 double PITCH = 25;
-                SmartNumber YAW = new SmartNumber("Limelight Yaw", 2.0);
+                SmartNumber YAW = new SmartNumber("Limelight Yaw", 3.25);
             }
         }
     }
@@ -356,7 +367,7 @@ public interface Constants {
     /*********************************************************************************************
      * Intake Constants
      *********************************************************************************************/
-    double INTAKE_MOTOR_SPEED = 0.8;
+    double INTAKE_MOTOR_SPEED = 1.0;
 
     /*********************************************************************************************
      * CHIMNEY Motor & Sensor Ports

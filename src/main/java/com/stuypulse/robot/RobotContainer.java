@@ -128,9 +128,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftStick().magnitude()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
         && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
+    new ButtonWrapper(() -> (Math.abs(operator.getLeftStick().magnitude()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
         && operator.getLeftY() <= -Math.abs(operator.getLeftX())))
             .whileHeld(new ClimberRobotClimbCommand(climber, intake));
     // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >=
@@ -143,8 +143,8 @@ public class RobotContainer {
     operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
     // operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
 
-    operator.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
-    operator.getRightTrigger().whileHeld(new IntakeAcquireSetupCommand(intake));
+    operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
+    operator.getRightTriggerButton().whileHeld(new IntakeAcquireSetupCommand(intake));
 
     // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
     operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));

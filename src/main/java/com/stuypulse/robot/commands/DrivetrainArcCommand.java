@@ -44,7 +44,7 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
         }
 
         public Angle getAngleError() {
-            return Angle.degrees(startAngle + (angle * (1.0 - getSpeedError() / distance))).add(drivetrain.getGyroAngle());
+            return Angle.fromDegrees(startAngle + (angle * (1.0 - getSpeedError() / distance))).add(drivetrain.getGyroAngle());
         }
     }
 

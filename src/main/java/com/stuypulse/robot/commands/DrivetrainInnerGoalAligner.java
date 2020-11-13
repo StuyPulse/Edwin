@@ -20,9 +20,9 @@ public class DrivetrainInnerGoalAligner extends DrivetrainGoalAligner {
 
     public Angle getAngleError() {
         if(Limelight.hasValidTarget()) {
-            return super.getAngleError().add(Angle.degrees(filter.get(CVFuncs.txOffset())));
+            return super.getAngleError().add(Angle.fromDegrees(filter.get(CVFuncs.txOffset())));
         } else {
-            return Angle.degrees(0);
+            return Angle.fromDegrees(0);
         }
     }
 }

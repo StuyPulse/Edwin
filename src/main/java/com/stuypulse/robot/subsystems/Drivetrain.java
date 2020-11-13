@@ -195,7 +195,7 @@ public class Drivetrain extends SubsystemBase {
      * @return get the angle of the robot
      */
     public Angle getGyroAngle() {
-        return Angle.degrees(navx.getAngle());
+        return Angle.fromDegrees(navx.getAngle());
     }
 
     /**

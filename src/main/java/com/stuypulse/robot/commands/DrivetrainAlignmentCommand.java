@@ -7,7 +7,7 @@ import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.limelight.Limelight;
-import com.stuypulse.stuylib.streams.filters.IStreamFilterGroup;
+import com.stuypulse.stuylib.streams.filters.IFilterGroup;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
 
@@ -33,7 +33,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         public default double getSpeedError() { return 0.0; };
 
         // The amount of angular error
-        public default Angle getAngleError() { return Angle.degrees(0); };
+        public default Angle getAngleError() { return Angle.fromDegrees(0); };
     }
 
     // Max speed for the robot
@@ -87,7 +87,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         // Timer used to check when to update the errors
         this.useInterpolation = false;
         this.pollingTimer = new StopWatch();
-        this.targetAngle = Angle.degrees(0);
+        this.targetAngle = Angle.fromDegrees(0);
         this.targetDistance = 0;
 
         // Used to check the alignment time.
@@ -145,13 +145,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         timer.reset();
 
         this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER.doubleValue()));
-        this.speed.setOutputFilter(new IStreamFilterGroup(
+        this.speed.setOutputFilter(new IFilterGroup(
             (x) -> SLMath.limit(x, maxSpeed),
             new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER.doubleValue())
         ));
 
         this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER.doubleValue()));
-        this.angle.setOutputFilter(new IStreamFilterGroup(
+        this.angle.setOutputFilter(new IFilterGroup(
             new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER.doubleValue())
         ));
 

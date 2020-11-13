@@ -7,7 +7,7 @@ import com.stuypulse.robot.commands.DrivetrainCommand;
 import com.stuypulse.stuylib.input.Gamepad;
 
 import com.stuypulse.stuylib.streams.IStream;
-import com.stuypulse.stuylib.streams.filters.IStreamFilter;
+import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.filters.SpeedProfile;
 import com.stuypulse.stuylib.streams.FilteredIStream;
@@ -45,7 +45,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         // Create an IStream that gets the speed from the controller
         this.rawSpeed = () -> {
-            return this.gamepad.getRawRightTriggerAxis() - this.gamepad.getRawLeftTriggerAxis();
+            return this.gamepad.getRightTrigger() - this.gamepad.getLeftTrigger();
         };
 
         // Create an IStream that gets the angle from the controller

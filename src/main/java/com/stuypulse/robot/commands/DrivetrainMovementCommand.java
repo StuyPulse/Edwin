@@ -36,7 +36,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
         public Aligner(Drivetrain drivetrain, double angle, double distance) {
             this.drivetrain = drivetrain;
 
-            this.angle = Angle.degrees(angle);
+            this.angle = Angle.fromDegrees(angle);
             this.distance = distance;
             this.justTurning = false;
 

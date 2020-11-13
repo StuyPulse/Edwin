@@ -10,8 +10,8 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
 import com.stuypulse.stuylib.network.SmartNumber;
-import com.stuypulse.stuylib.streams.filters.IStreamFilter;
-import com.stuypulse.stuylib.streams.filters.IStreamFilterGroup;
+import com.stuypulse.stuylib.streams.filters.IFilter;
+import com.stuypulse.stuylib.streams.filters.IFilterGroup;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -133,12 +133,12 @@ public class Shooter extends SubsystemBase {
         return speed;
     }
 
-    private IStreamFilter shooterFilter = new IStreamFilterGroup(
+    private IFilter shooterFilter = new IFilterGroup(
         (x) -> Math.max(0.0, x),
         (x) -> (targetShooterVelocity.doubleValue() < 100) ? 0.0 : x
     );
 
-    private IStreamFilter feederFilter = new IStreamFilterGroup(
+    private IFilter feederFilter = new IFilterGroup(
         (x) -> Math.max(0.0, x),
         (x) -> (targetShooterVelocity.doubleValue() < 100) ? 0.0 : x
     );

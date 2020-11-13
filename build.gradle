@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2020.2.2"
+    id "edu.wpi.first.GradleRIO" version "2021.1.1-beta-1"
 }
 
 allprojects {
@@ -13,7 +13,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 def ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main"
-final String STUYLIB_VERSION = 'v2020.1.9.4'
+final String STUYLIB_VERSION = 'v2021.0-beta'
 final boolean COMPOSITE_BUILD = true;
 
 // Define my targets (RoboRIO) and artifacts (deployable files)

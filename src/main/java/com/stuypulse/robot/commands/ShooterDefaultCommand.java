@@ -7,13 +7,13 @@ import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.math.SLMath;
-import com.stuypulse.stuylib.streams.filters.IStreamFilter;
+import com.stuypulse.stuylib.streams.filters.IFilter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ShooterDefaultCommand extends CommandBase {
-    public static final IStreamFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, Shooting.I_LIMIT.doubleValue());
-    public static final IStreamFilter RESET_FILTER = (x) -> 0;
+    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, Shooting.I_LIMIT.doubleValue());
+    public static final IFilter RESET_FILTER = (x) -> 0;
 
     public Shooter shooter;
     public WPIGamepad gamepad;

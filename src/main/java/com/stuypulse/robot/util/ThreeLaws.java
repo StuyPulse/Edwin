@@ -1,4 +1,4 @@
-package frc.util;
+package com.stuypulse.robot.util;
 
 /**
  * @author Jason, Frank, Justin

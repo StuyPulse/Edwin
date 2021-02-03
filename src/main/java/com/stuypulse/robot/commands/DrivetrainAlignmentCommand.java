@@ -162,7 +162,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Update the targets with new alignment data
     public void updateTargets() {
         targetDistance = drivetrain.getDistance() + aligner.getSpeedError();
-        targetAngle = drivetrain.getGyroAngle().add(aligner.getAngleError());
+        targetAngle = drivetrain.getAngle().add(aligner.getAngleError());
     }
 
     // Get distance left to travel
@@ -177,7 +177,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Get angle left to turn
     public Angle getAngleError() {
         if(this.useInterpolation) {
-            return targetAngle.sub(drivetrain.getGyroAngle());
+            return targetAngle.sub(drivetrain.getAngle());
         } else {
             return aligner.getAngleError();
         }
@@ -209,19 +209,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Execute loop while also updating PID controllers
     public void execute() {
         super.execute();
-
-        // Update PID controllers with new values   
-        if(angle instanceof PIDController) {
-            ((PIDController)angle).setP(Alignment.Angle.P.doubleValue());
-            ((PIDController)angle).setI(Alignment.Angle.I.doubleValue());
-            ((PIDController)angle).setD(Alignment.Angle.D.doubleValue());
-        }
-
-        if(speed instanceof PIDController) {
-            ((PIDController)speed).setP(Alignment.Speed.P.doubleValue());
-            ((PIDController)speed).setI(Alignment.Speed.I.doubleValue());
-            ((PIDController)speed).setD(Alignment.Speed.D.doubleValue());
-        }
 
         // Update targets if time has come
         if(pollingTimer.getTime() > Alignment.INTERPOLATION_PERIOD) {

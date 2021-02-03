@@ -7,60 +7,15 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.Constants.Alignment;
-import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.robot.Constants.Shooting;
-import com.stuypulse.robot.commands.ChimneyDownCommand;
-import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
-import com.stuypulse.robot.commands.ClimberSetupCommand;
-import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
-import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
-import com.stuypulse.robot.commands.DrivetrainArcCommand;
-import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
-import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
-import com.stuypulse.robot.commands.DrivetrainDriveCommand;
-import com.stuypulse.robot.commands.DrivetrainGoalAligner;
-import com.stuypulse.robot.commands.DrivetrainGoalCommand;
-import com.stuypulse.robot.commands.DrivetrainMovementCommand;
-import com.stuypulse.robot.commands.FeedBallsAutomaticCommand;
-import com.stuypulse.robot.commands.FeedBallsCommand;
-import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
-import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
-import com.stuypulse.robot.commands.IntakeDeacquireCommand;
-import com.stuypulse.robot.commands.IntakeRetractCommand;
-import com.stuypulse.robot.commands.LEDTogglePartyModeCommand;
-import com.stuypulse.robot.commands.ShooterControlCommand;
-import com.stuypulse.robot.commands.ShooterDefaultCommand;
-import com.stuypulse.robot.commands.ShooterReverseCommand;
-import com.stuypulse.robot.commands.ShooterStopCommand;
-import com.stuypulse.robot.commands.WoofManualControlCommand;
-import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
-import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.EightBallTwoRdvsThreeTrenchAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.FiveBallTwoRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.MobilityTowardIntakeAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.MobilityTowardShooterAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardIntakeAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardShooterAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.RedSixBallTwoTrenchOneTrenchAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.BlueSixBallTwoTrenchOneTrenchAutonCommand;
+import com.stuypulse.robot.Constants.*;
+import com.stuypulse.robot.commands.*;
+import com.stuypulse.robot.commands.auton.routines.*;
 
-import com.stuypulse.robot.subsystems.Chimney;
-import com.stuypulse.robot.subsystems.Climber;
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Funnel;
-import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.subsystems.Shooter;
-import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
-import com.stuypulse.robot.subsystems.Woof;
+import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.util.LEDController;
+
 import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.WPIGamepad;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
 import com.stuypulse.stuylib.input.gamepads.PS4;
@@ -93,9 +48,9 @@ public class RobotContainer {
 
   private final LEDController ledController = new LEDController(0);
 
-  private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
-  private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
-  private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+  private final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+  private final Gamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
+  private final Gamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
 
   private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
@@ -115,7 +70,7 @@ public class RobotContainer {
     woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
     // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel,
     // operator));
-    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
+    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter));
 
   }
 
@@ -151,16 +106,16 @@ public class RobotContainer {
 
     // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
 
-    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM, ShooterMode.SHOOT_FROM_FAR));
+    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM, Shooter.ShooterMode.SHOOT_FROM_FAR));
     operator.getDPadDown().whenPressed(
-        new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE));
+        new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM, Shooter.ShooterMode.SHOOT_FROM_INITIATION_LINE));
     operator.getDPadLeft()
-        .whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH));
+        .whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM, Shooter.ShooterMode.SHOOT_FROM_TRENCH));
     // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
     // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
     // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter))
-        .whenPressed(new ShooterControlCommand(shooter, 0, ShooterMode.NONE));
+        .whenPressed(new ShooterControlCommand(shooter, 0, Shooter.ShooterMode.NONE));
 
     operator.getSelectButton().whileHeld(new ShooterReverseCommand(shooter));
 
@@ -204,7 +159,7 @@ public class RobotContainer {
       debug.getTopButton().whileHeld(
           new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
 
-      debug.getRightButton().whileHeld(new ShooterDefaultCommand(shooter, debug,
+      debug.getRightButton().whileHeld(new ShooterDefaultCommand(shooter,
           new PIDCalculator(Shooting.Shooter.BANGBANG_SPEED), new PIDCalculator(Shooting.Feeder.BANGBANG_SPEED)));
 
       // Steal driving abilities from the driver

@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.Shooting;
+import com.stuypulse.robot.Constants.Ports.Gamepad;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDCalculator;
@@ -16,52 +17,27 @@ public class ShooterDefaultCommand extends CommandBase {
     public static final IFilter RESET_FILTER = (x) -> 0;
 
     public Shooter shooter;
-    public WPIGamepad gamepad;
     public Controller shootController;
     public Controller feedController;
 
-    public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad, Controller shootController,
-        Controller feedController) {
+    public ShooterDefaultCommand(Shooter shooter, Controller shootController,Controller feedController) {
         this.shooter = shooter;
-        this.gamepad = gamepad;
         this.shootController = shootController;
         this.feedController = feedController;
 
         addRequirements(this.shooter);
     }
 
-    public ShooterDefaultCommand(Shooter shooter, WPIGamepad gamepad) {
-        this(shooter, gamepad, new PIDController(), new PIDController());
-    }
-
-    public void updatePID() {
-        if (shootController instanceof PIDController) {
-            PIDController controller = (PIDController) shootController;
-
-            controller.setP(Shooting.Shooter.P.get());
-            controller.setI(Shooting.Shooter.I.get());
-            controller.setD(Shooting.Shooter.D.get());
-
-            if(controller.isDone(Shooting.I_RANGE.doubleValue())) {
-                controller.setIntegratorFilter(INTEGRAL_FILTER);
-            } else {
-                controller.setIntegratorFilter(RESET_FILTER);
-            }
-        }
-
-        if (feedController instanceof PIDController) {
-            PIDController controller = (PIDController) feedController;
-
-            controller.setP(Shooting.Feeder.P.get());
-            controller.setI(Shooting.Feeder.I.get());
-            controller.setD(Shooting.Feeder.D.get());
-
-            if(controller.isDone(Shooting.I_RANGE.doubleValue())) {
-                controller.setIntegratorFilter(INTEGRAL_FILTER);
-            } else {
-                controller.setIntegratorFilter(RESET_FILTER);
-            }
-        }
+    public ShooterDefaultCommand(Shooter shooter) {
+        this(shooter, new PIDController(
+            Shooting.Shooter.P,
+            Shooting.Shooter.I,
+            Shooting.Shooter.D
+        ), new PIDController(
+            Shooting.Feeder.P,
+            Shooting.Feeder.I,
+            Shooting.Feeder.D
+        ));
     }
 
     public void updateAutoPID() {
@@ -100,15 +76,6 @@ public class ShooterDefaultCommand extends CommandBase {
 
         // Set the shooter to that
         shooter.setShooterSpeed(output);
-
-        if(gamepad != null) {
-            double rumbleMag = Math.abs(speed - target);
-            rumbleMag = Shooting.TOLERANCE - rumbleMag;
-            rumbleMag = Math.max(error, 0.0);
-            rumbleMag /= Shooting.TOLERANCE;
-
-            gamepad.setRumble(rumbleMag);
-        }
     }
 
     public void updateFeeder() {
@@ -129,10 +96,6 @@ public class ShooterDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
-
-        // If using PID, get its PID values
-        updatePID();
-
         // If using AutoPID, report its values
         updateAutoPID();
 

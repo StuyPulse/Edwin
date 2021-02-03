@@ -92,10 +92,6 @@ public interface Constants {
         // How much to slow down quick turn
         double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
 
-        // Cool Rumble
-        boolean COOL_RUMBLE = true;
-        double COOL_RUMBLE_MAG = 1;
-
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
         double ANGLE_DEADBAND = 0.1;
@@ -106,19 +102,18 @@ public interface Constants {
         double SPEED_FILTER = 0.5;
         double ANGLE_FILTER = 0.05;
 
-        int SPEED_ORDER = 1;
-        int ANGLE_ORDER = 1;
-
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
 
         // If the motors are inverted
         boolean IS_INVERTED = true;
 
+        // The voltage multipliers for each side
+        double RIGHT_VOLTAGE_MUL = 1.0;
+        double LEFT_VOLTAGE_MUL = 1.0;
+
         // Encoder Constants
         public interface Encoders {
-
-            boolean USE_GREYHILLS = false;
 
             double WHEEL_DIAMETER = 0.5;
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
@@ -128,10 +123,6 @@ public interface Constants {
 
             // The difference between theoretical and actual distance
             double REAL_YIELD = -1.0; // * (10.0 / 3.125) * (1.18 / 3.125);
-
-            double GREYHILL_PULSES_PER_REVOLUTION = 256 * 4.0;
-            double GREYHILL_FEET_PER_PULSE = ((WHEEL_CIRCUMFERENCE * OUTER_GEAR_RATIO) / GREYHILL_PULSES_PER_REVOLUTION)
-                    * REAL_YIELD;
 
             double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
             double NEO_YIELD = 0.98277777777777;
@@ -163,11 +154,7 @@ public interface Constants {
 
             // Get PID Controller
             public static PIDController getPID() {
-                PIDController out = new PIDController();
-                out.setP(P.get());
-                out.setI(I.get());
-                out.setD(D.get());
-                return out;
+                return new PIDController(P, I, D);
             }
 
             // Bang Bang speed when measuring PID Values
@@ -193,11 +180,7 @@ public interface Constants {
 
             // Get PID Controller
             public static PIDController getPID() {
-                PIDController out = new PIDController();
-                out.setP(P.get());
-                out.setI(I.get());
-                out.setD(D.get());
-                return out;
+                return new PIDController(P, I, D);
             }
 
             // Bang Bang speed when measuring PID Values

@@ -14,68 +14,15 @@ public class ShooterReachTargetVelocityCommand extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println(shooter.isAtTargetVelocity());
-        System.out.println(shooter.getCurrentShooterVelocityInRPM());
+        System.out.println(shooter.isReady());
+        System.out.println(shooter.getShooterRPM());
     }
 
     @Override
     public boolean isFinished() {
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
-        System.out.println("AT TARGET VELOCITY");
+        System.err.println("AT TARGET VELOCITY");
 
-        return shooter.isAtTargetVelocity();
+        return shooter.isReady();
     }
 
 }

@@ -14,7 +14,7 @@ public class ShooterDetectBallShotCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return !shooter.isAtTargetVelocity();
+        return !shooter.isReady();
     }
 
 }

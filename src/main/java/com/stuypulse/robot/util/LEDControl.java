@@ -42,19 +42,19 @@ public class LEDControl implements Runnable {
                     controller.setColor(Color.GREEN_SOLID);
                 } else {
                     if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
-                        if (shooter.isAtTargetVelocity()) {
+                        if (shooter.isReady()) {
                             controller.setColor(Color.WHITE_SOLID);
                         } else {
                             controller.setColor(Color.WHITE_PULSE);
                         }
                     } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
-                        if (shooter.isAtTargetVelocity()) {
+                        if (shooter.isReady()) {
                             controller.setColor(Color.PINK_SOLID);
                         } else {
                             controller.setColor(Color.PINK_PULSE);
                         }
                     } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
-                        if (shooter.isAtTargetVelocity()) {
+                        if (shooter.isReady()) {
                             controller.setColor(Color.RED_SOLID);
                         } else {
                             controller.setColor(Color.RED_PULSE);

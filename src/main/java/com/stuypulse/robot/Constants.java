@@ -124,10 +124,11 @@ public interface Constants {
             // The difference between theoretical and actual distance
             double REAL_YIELD = -1.0; // * (10.0 / 3.125) * (1.18 / 3.125);
 
-            double NEO_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
-            double NEO_YIELD = 0.98277777777777;
-            double LEFT_NEO_YEILD = 1.0;
-            double RIGHT_NEO_YEILD = -1.0;
+            double LOW_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
+            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // TODO: Find this value out
+            double YIELD = 0.98277777777777;
+            double LEFT_YEILD = 1.0;
+            double RIGHT_YEILD = -1.0;
         }
     }
 

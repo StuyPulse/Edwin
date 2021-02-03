@@ -70,7 +70,6 @@ public class RobotContainer {
     woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
     // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel,
     // operator));
-    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter));
 
   }
 
@@ -117,8 +116,6 @@ public class RobotContainer {
     operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter))
         .whenPressed(new ShooterControlCommand(shooter, 0, Shooter.ShooterMode.NONE));
 
-    operator.getSelectButton().whileHeld(new ShooterReverseCommand(shooter));
-
     operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
     operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
@@ -158,9 +155,6 @@ public class RobotContainer {
           new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
       debug.getTopButton().whileHeld(
           new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
-
-      debug.getRightButton().whileHeld(new ShooterDefaultCommand(shooter,
-          new PIDCalculator(Shooting.Shooter.BANGBANG_SPEED), new PIDCalculator(Shooting.Feeder.BANGBANG_SPEED)));
 
       // Steal driving abilities from the driver
       debug.getBottomButton().whileHeld(new DrivetrainDriveCommand(drivetrain, debug));

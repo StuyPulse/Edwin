@@ -28,7 +28,6 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 
         private Angle angle;
         private double distance;
-        private boolean justTurning;
 
         private Angle goalAngle;
         private double goalDistance;
@@ -38,23 +37,20 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 
             this.angle = Angle.fromDegrees(angle);
             this.distance = distance;
-            this.justTurning = false;
 
             init();
         }
 
         public Aligner(Drivetrain drivetrain, double angle) {
             this(drivetrain, angle, 0.0);
-
-            this.justTurning = true;
         }
 
         private Angle getGyroAngle() {
-            return drivetrain.getGyroAngle();
+            return drivetrain.getAngle();
         }
 
         private double getDistance() {
-            return DrivetrainSettings.Encoders.USE_GREYHILLS ? drivetrain.getGreyhillDistance() : drivetrain.getNEODistance();
+            return drivetrain.getDistance();
         }
 
         /**
@@ -66,11 +62,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
         }
 
         public double getSpeedError() {
-            if (justTurning) {
-                return 0.0;
-            } else {
-                return goalDistance - getDistance();
-            }
+            return goalDistance - getDistance();
         }
 
         public Angle getAngleError() {

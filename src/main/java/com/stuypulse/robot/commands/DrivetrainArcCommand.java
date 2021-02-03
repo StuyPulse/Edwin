@@ -35,7 +35,7 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
          * Set goals based on when the command is initialized
          */
         public void init() {
-            startAngle = drivetrain.getGyroAngle().toDegrees();
+            startAngle = drivetrain.getAngle().toDegrees();
             startDistance = drivetrain.getDistance();
         }
 
@@ -44,7 +44,7 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
         }
 
         public Angle getAngleError() {
-            return Angle.fromDegrees(startAngle + (angle * (1.0 - getSpeedError() / distance))).add(drivetrain.getGyroAngle());
+            return Angle.fromDegrees(startAngle + (angle * (1.0 - getSpeedError() / distance))).add(drivetrain.getAngle());
         }
     }
 

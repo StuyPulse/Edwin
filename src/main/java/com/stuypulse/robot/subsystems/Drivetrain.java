@@ -88,7 +88,6 @@ public class Drivetrain extends SubsystemBase {
         leftMotors[1].setIdleMode(IdleMode.kCoast);
         rightMotors[0].setIdleMode(IdleMode.kBrake);
         rightMotors[1].setIdleMode(IdleMode.kCoast);
-        setNEODistancePerRotation(DrivetrainSettings.Encoders.NEO_DISTANCE_PER_ROTATION);
         setLowGear();
     }
 
@@ -146,9 +145,15 @@ public class Drivetrain extends SubsystemBase {
 
     // Sets the current gear the robot is in
     public void setGear(Gear gear) {
-        if (this.gear != gear) {
-            this.gear = gear;
-            gearShift.set(this.gear == Gear.HIGH);
+        this.gear = gear;
+        if(this.gear == Gear.HIGH) {
+            gearShift.set(true);
+            setNEODistancePerRotation(DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
+            reset();
+        } else {
+            gearShift.set(false);
+            setNEODistancePerRotation(DrivetrainSettings.Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
+            reset();
         }
     }
 
@@ -188,11 +193,11 @@ public class Drivetrain extends SubsystemBase {
 
     // Distance
     public double getLeftDistance() {
-        return leftNEO.getPosition() * DrivetrainSettings.Encoders.LEFT_NEO_YEILD;
+        return leftNEO.getPosition() * DrivetrainSettings.Encoders.LEFT_YEILD;
     }
 
     public double getRightDistance() {
-        return rightNEO.getPosition() * DrivetrainSettings.Encoders.RIGHT_NEO_YEILD;
+        return rightNEO.getPosition() * DrivetrainSettings.Encoders.RIGHT_YEILD;
     }
 
     public double getDistance() {
@@ -201,15 +206,21 @@ public class Drivetrain extends SubsystemBase {
 
     // Velocity
     public double getLeftVelocity() {
-        return leftNEO.getVelocity() * DrivetrainSettings.Encoders.LEFT_NEO_YEILD;
+        return leftNEO.getVelocity() * DrivetrainSettings.Encoders.LEFT_YEILD;
     }
 
     public double getRightVelocity() {
-        return rightNEO.getVelocity() * DrivetrainSettings.Encoders.RIGHT_NEO_YEILD;
+        return rightNEO.getVelocity() * DrivetrainSettings.Encoders.RIGHT_YEILD;
     }
 
     public double getVelocity() {
         return (getLeftVelocity() + getRightVelocity()) / 2.0;
+    }
+
+    public void reset() {
+        resetNavX();
+        leftNEO.setPosition(0);
+        rightNEO.setPosition(0);
     }
 
     /*********************

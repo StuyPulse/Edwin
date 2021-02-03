@@ -1,23 +1,24 @@
 package com.stuypulse.robot.subsystems;
 
-import java.util.Arrays;
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.Shooting;
-import com.stuypulse.stuylib.network.SmartNumber;
+import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.streams.filters.IFilter;
-import com.stuypulse.stuylib.streams.filters.IFilterGroup;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.stuypulse.stuylib.math.SLMath;
+
 public class Shooter extends SubsystemBase {
+
+    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, Shooting.I_LIMIT.doubleValue());
 
     public enum ShooterMode {
         NONE, 
@@ -44,11 +45,11 @@ public class Shooter extends SubsystemBase {
     // SpeedControllerGroup
     private final SpeedControllerGroup shooterMotors;
 
-    // SmartNumbers for SmartDashboard
-    private SmartNumber targetShooterVelocity;
-    private SmartNumber currentShooterVelocity;
+    // Target RPM
+    private double targetRPM;
 
-    private SmartNumber currentFeederVelocity;
+    private Controller shooterController;
+    private Controller feederController; 
 
     private ShooterMode mode = ShooterMode.NONE;
 
@@ -72,14 +73,21 @@ public class Shooter extends SubsystemBase {
         feederMotor.setInverted(true);
         feederEncoder = new CANEncoder(feederMotor);
 
+        // PID Stuff
+        shooterController = new PIDController(
+            Shooting.Shooter.P,
+            Shooting.Shooter.I,
+            Shooting.Shooter.D
+        ).setIntegratorFilter(INTEGRAL_FILTER);
+
+        feederController = new PIDController(
+            Shooting.Feeder.P,
+            Shooting.Feeder.I,
+            Shooting.Feeder.D
+        ).setIntegratorFilter(INTEGRAL_FILTER);
+
         // Hood Stuff
         hoodSolenoid = new Solenoid(Ports.HOOD_SOLENOID);
-
-        // Target Vel Stuff
-        targetShooterVelocity = new SmartNumber("Shooter Target Vel", 30);
-        currentShooterVelocity = new SmartNumber("Shooter Current Vel", -1);
-
-        currentFeederVelocity = new SmartNumber("Feeder Current Vel", -1);
 
         // Setting Modes Stuff
         rightShooterMotor.setIdleMode(IdleMode.kCoast);
@@ -95,82 +103,54 @@ public class Shooter extends SubsystemBase {
         feederMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
     }
 
-    public double getRawMedianShooterVelocity() {
-        double[] speeds = {
-            leftShooterEncoder.getVelocity(), 
-            middleShooterEncoder.getVelocity(),
-            rightShooterEncoder.getVelocity() 
-        };
+    /************
+     * SHOOTING *
+     ************/
 
-        Arrays.sort(speeds);
-
-        return speeds[1];
+    public double getShooterRPM() {
+        return (leftShooterEncoder.getVelocity() + 
+                middleShooterEncoder.getVelocity() +
+                rightShooterEncoder.getVelocity()) / 3.0;
     }
 
-    public double getRawMaxShooterVelocity() {
-        return Math.max(leftShooterEncoder.getVelocity(),
-                Math.max(middleShooterEncoder.getVelocity(), rightShooterEncoder.getVelocity()));
-    }
-
-    public double getRawMinShooterVelocity() {
-        return Math.min(leftShooterEncoder.getVelocity(),
-                Math.min(middleShooterEncoder.getVelocity(), rightShooterEncoder.getVelocity()));
-    }
-
-    public double getCurrentShooterVelocityInRPM() {
-        double speed = getRawMedianShooterVelocity();
-        currentShooterVelocity.set(speed);
-        return speed;
-    }
-
-    public double getRawFeederVelocity() {
+    public double getFeederRPM() {
         return feederEncoder.getVelocity();
     }
 
-    public double getCurrentFeederVelocityInRPM() {
-        double speed = getRawFeederVelocity();
-        currentFeederVelocity.set(speed);
-        return speed;
+    public void setTargetRPM(double target) {
+        this.targetRPM = target;
+    }
+ 
+    public boolean isReady() {
+        return shooterController.isDone(100) &&
+               feederController.isDone(100);
     }
 
-    private IFilter shooterFilter = new IFilterGroup(
-        (x) -> Math.max(0.0, x),
-        (x) -> (targetShooterVelocity.doubleValue() < 100) ? 0.0 : x
-    );
-
-    private IFilter feederFilter = new IFilterGroup(
-        (x) -> Math.max(0.0, x),
-        (x) -> (targetShooterVelocity.doubleValue() < 100) ? 0.0 : x
-    );
-
-    public void setShooterSpeed(double speed) {
-        shooterMotors.set(shooterFilter.get(speed));
-    }
-
-    public void setFeederSpeed(double speed) {
-        feederMotor.set(feederFilter.get(speed));
-    }
-
-    public void setTargetVelocity(double targetVelocity) {
-        this.targetShooterVelocity.set(targetVelocity);
-    }
-
-    public double getTargetVelocity() {
-        return this.targetShooterVelocity.get();
-    }
-
-    public void reverse() {
-        shooterMotors.set(Constants.Shooting.Shooter.REVERSE_SPEED);
-        feederMotor.set(Constants.Shooting.Shooter.REVERSE_SPEED);
-    }
-
-    public void stopShooter() {
+    public void stop() {
         shooterMotors.stopMotor();
-    }
-
-    public void stopFeeder() {
         feederMotor.stopMotor();
     }
+
+    @Override
+    public void periodic() {
+        if(targetRPM > 100) {
+            double shootSpeed = shooterController.update(targetRPM, getShooterRPM());
+            shootSpeed += targetRPM * Shooting.Shooter.FF.get();
+
+            double feederSpeed = feederController.update(targetRPM, getFeederRPM());
+            feederSpeed += targetRPM * Shooting.Feeder.FF.get();
+
+            shooterMotors.set(shootSpeed);
+            feederMotor.set(feederSpeed);
+        } else {
+            stop();
+        }
+
+    }
+
+    /********
+     * HOOD *
+     ********/
 
     public void extendHoodSolenoid() {
         hoodSolenoid.set(true);
@@ -184,15 +164,15 @@ public class Shooter extends SubsystemBase {
         retractHoodSolenoid();
     }
 
+    /****************
+     * SHOOTER MODE *
+     ****************/
+
     public void setShooterMode(ShooterMode mode) {
         this.mode = mode;
     }
 
     public ShooterMode getShooterMode() {
         return mode;
-    }
-
-    public boolean isAtTargetVelocity() {
-        return (Math.abs(getTargetVelocity() - getCurrentShooterVelocityInRPM()) <= Constants.Shooting.TOLERANCE);
     }
 }

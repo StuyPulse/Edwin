@@ -4,7 +4,6 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
 import com.stuypulse.robot.commands.DrivetrainGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainGoalCommand;
-import com.stuypulse.robot.commands.DrivetrainInnerGoalAligner;
 import com.stuypulse.robot.commands.DrivetrainMovementCommand;
 import com.stuypulse.robot.commands.DrivetrainStopCommand;
 import com.stuypulse.robot.commands.ShooterControlCommand;

@@ -14,7 +14,6 @@ import com.stuypulse.robot.commands.auton.routines.*;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.util.LEDController;
 
-import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.Logitech;
@@ -126,21 +125,13 @@ public class RobotContainer {
     operator.getStartButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
 
     driver.getLeftButton()
-      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, false).setNeverFinish())
+      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE).setNeverFinish())
       .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
 
     driver.getTopButton()
-      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, false).setNeverFinish())
-      .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));;
-
-    driver.getDPadLeft()
-      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, true).setNeverFinish())
+      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE).setNeverFinish())
       .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    
-    driver.getDPadUp()
-    .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, true).setNeverFinish())
-    .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    
+
     // driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     // driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
     // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));

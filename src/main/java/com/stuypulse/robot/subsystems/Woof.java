@@ -7,19 +7,14 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.util.ColorSensor;
 
 public class Woof extends SubsystemBase {
     private CANSparkMax motor;
     private CANEncoder encoder;
-    // private ColorSensor sensor;
 
     public Woof() {
-        
-        // sensor = new ColorSensor();
         motor = new CANSparkMax(Constants.WOOF_MOTOR_PORT, MotorType.kBrushless);
         encoder = new CANEncoder(motor);
-        // encoder.setPositionConversionFactor(0.05);
     }
 
     public void turn(double speed) {

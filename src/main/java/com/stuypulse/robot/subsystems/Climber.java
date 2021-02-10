@@ -4,7 +4,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.stuypulse.robot.Constants;
@@ -16,13 +15,11 @@ public class Climber extends SubsystemBase {
 
     private Solenoid liftSolenoid;
 
-    // private DigitalInput limitSwitch;
 
     public Climber() {
         liftMotor = new CANSparkMax(Constants.CLIMBER_LIFT_MOTOR_PORT, MotorType.kBrushless);
         yoyoMotor = new CANSparkMax(Constants.CLIMBER_YOYO_MOTOR_PORT, MotorType.kBrushless);
         liftSolenoid = new Solenoid(Constants.CLIMBER_LIFT_SOLENOID_CHANNEL);
-        // limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH_CHANNEL);
 
         liftMotor.setInverted(true);
     }

@@ -25,25 +25,23 @@ public class Intake extends SubsystemBase {
         motor.setInverted(true);
     }
 
+    /*** Extend / Retract ***/
     public void extend() {
-        // if (solenoid.get() == Value.kReverse) {
-            solenoid.set(Value.kReverse);
-        // }
+        solenoid.set(Value.kReverse);
     }
 
     public void retract() {
-        // if (solenoid.get() == Value.kForward) {
-            solenoid.set(Value.kForward);
-        // }
+        solenoid.set(Value.kForward);
     }
 
-    // public void toggle() {
-    //     if (solenoid.get() == Value.kForward) {
-    //         retract();
-    //     } else {
-    //         extend();
-    //     }
-    // }
+    /*** Extend / Retract ***/
+    public void setMotor(final double speed) {
+        motor.set(speed);
+    }
+
+    public void stop() {
+        motor.stopMotor();
+    }
 
     public void acquire() {
         setMotor(Constants.INTAKE_MOTOR_SPEED);
@@ -51,14 +49,6 @@ public class Intake extends SubsystemBase {
 
     public void deacquire() {
         setMotor(-Constants.INTAKE_MOTOR_SPEED);
-    }
-
-    public void stop() {
-        motor.stopMotor();
-    }
-
-    public void setMotor(final double speed) {
-        motor.set(speed);
     }
 
     public boolean isBallDetected() {

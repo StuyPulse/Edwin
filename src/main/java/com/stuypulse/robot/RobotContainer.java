@@ -42,6 +42,7 @@ public class RobotContainer {
   private final Climber climber = new Climber();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Funnel funnel = new Funnel();
+  private final Pump pump = new Pump();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Woof woof = new Woof();
@@ -58,19 +59,21 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    // Configure the button bindings
+    configureDefaultCommands();
+    configureButtonBindings();
+    configureAutons();
+  }
 
+  private void configureDefaultCommands() {
     // Default driving command that uses gamepad
     drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
-
-    // Configure the button bindings
-    configureButtonBindings();
 
     // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
 
     woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
     // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel,
     // operator));
-
   }
 
   /**
@@ -167,11 +170,7 @@ public class RobotContainer {
     }
   }
 
-  public LEDController getLEDController() {
-    return ledController;
-  }
-
-  public void initSmartDashboard() {
+  public void configureAutons() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
     autonChooser.addOption("Mobility Toward Intake", new MobilityTowardIntakeAutonCommand(drivetrain, ledController));
     autonChooser.addOption("Mobility Toward Shooter", new MobilityTowardShooterAutonCommand(drivetrain, ledController));
@@ -202,6 +201,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return autonChooser.getSelected();
+  }
+
+  public LEDController getLEDController() {
+    return ledController;
   }
 
   public Drivetrain getDrivetrain() {

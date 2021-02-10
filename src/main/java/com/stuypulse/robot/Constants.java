@@ -118,9 +118,6 @@ public interface Constants {
             double WHEEL_DIAMETER = 0.5;
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
-            // Ratio of the smaller gear to the larger gear
-            double OUTER_GEAR_RATIO = 24.0 / 60.0;
-
             // The difference between theoretical and actual distance
             double REAL_YIELD = -1.0; // * (10.0 / 3.125) * (1.18 / 3.125);
 

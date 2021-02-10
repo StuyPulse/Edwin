@@ -12,6 +12,7 @@ import com.stuypulse.stuylib.streams.filters.IFilter;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.stuylib.math.SLMath;
@@ -122,8 +123,8 @@ public class Shooter extends SubsystemBase {
     }
  
     public boolean isReady() {
-        return shooterController.isDone(100) &&
-               feederController.isDone(100);
+        return shooterController.isDone(Shooting.TOLERANCE) &&
+               feederController.isDone(Shooting.TOLERANCE);
     }
 
     public void stop() {
@@ -174,5 +175,24 @@ public class Shooter extends SubsystemBase {
 
     public ShooterMode getShooterMode() {
         return mode;
+    }
+
+    /************************
+     * SENDABLE INFORMATION *
+     ************************/
+
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+
+        builder.addDoubleProperty(
+            "Shooter RPM", 
+            () -> getShooterRPM(), 
+            (x) -> {});
+    
+        
+        builder.addDoubleProperty(
+            "Feeder RPM", 
+            () -> getFeederRPM(), 
+            (x) -> {});
     }
 }

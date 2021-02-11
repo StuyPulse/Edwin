@@ -44,7 +44,8 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
         }
 
         public Angle getAngleError() {
-            return Angle.fromDegrees(startAngle + (angle * (1.0 - getSpeedError() / distance))).add(drivetrain.getAngle());
+            return Angle.fromDegrees(startAngle + (angle * (1.0 - getSpeedError() / distance)))
+                    .add(drivetrain.getAngle());
         }
     }
 
@@ -53,9 +54,9 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
 
     /**
      * @param drivetrain drivetrain used to move around
-     * @param angle amount turned throughout arc
-     * @param distance length of the arc
-     * @param speed the speed that the drivetrain moves at
+     * @param angle      amount turned throughout arc
+     * @param distance   length of the arc
+     * @param speed      the speed that the drivetrain moves at
      */
     public DrivetrainArcCommand(Drivetrain drivetrain, double angle, double distance, double speed) {
         super(drivetrain, new Aligner(drivetrain, angle, distance));
@@ -64,8 +65,8 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
 
     /**
      * @param drivetrain drivetrain used to move around
-     * @param angle amount turned throughout arc
-     * @param distance length of the arc
+     * @param angle      amount turned throughout arc
+     * @param distance   length of the arc
      */
     public DrivetrainArcCommand(Drivetrain drivetrain, double angle, double distance) {
         this(drivetrain, angle, distance, 1.0);

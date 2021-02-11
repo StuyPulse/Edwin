@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.robot.Constants.Shooting;
+import com.stuypulse.robot.Constants.ShooterSettings;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.streams.filters.IFilter;
@@ -19,13 +19,10 @@ import com.stuypulse.stuylib.math.SLMath;
 
 public class Shooter extends SubsystemBase {
 
-    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, Shooting.I_LIMIT.doubleValue());
+    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, ShooterSettings.I_LIMIT.doubleValue());
 
     public enum ShooterMode {
-        NONE, 
-        SHOOT_FROM_INITIATION_LINE, 
-        SHOOT_FROM_TRENCH, 
-        SHOOT_FROM_FAR
+        NONE, SHOOT_FROM_INITIATION_LINE, SHOOT_FROM_TRENCH, SHOOT_FROM_FAR
     };
 
     // Motors
@@ -50,7 +47,7 @@ public class Shooter extends SubsystemBase {
     private double targetRPM;
 
     private Controller shooterController;
-    private Controller feederController; 
+    private Controller feederController;
 
     private ShooterMode mode = ShooterMode.NONE;
 
@@ -62,9 +59,9 @@ public class Shooter extends SubsystemBase {
 
         leftShooterMotor.setInverted(true);
 
-        leftShooterEncoder = new CANEncoder(leftShooterMotor);
-        rightShooterEncoder = new CANEncoder(rightShooterMotor);
-        middleShooterEncoder = new CANEncoder(middleShooterMotor);
+        leftShooterEncoder = leftShooterMotor.getEncoder();
+        rightShooterEncoder = rightShooterMotor.getEncoder();
+        middleShooterEncoder = middleShooterMotor.getEncoder();
 
         shooterMotors = new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
 
@@ -72,23 +69,17 @@ public class Shooter extends SubsystemBase {
         feederMotor = new CANSparkMax(Ports.Shooter.FEEDER, MotorType.kBrushless);
 
         feederMotor.setInverted(true);
-        feederEncoder = new CANEncoder(feederMotor);
+        feederEncoder = feederMotor.getEncoder();
 
         // PID Stuff
-        shooterController = new PIDController(
-            Shooting.Shooter.P,
-            Shooting.Shooter.I,
-            Shooting.Shooter.D
-        ).setIntegratorFilter(INTEGRAL_FILTER);
+        shooterController = new PIDController(ShooterSettings.Shooter.P, ShooterSettings.Shooter.I,
+                ShooterSettings.Shooter.D).setIntegratorFilter(INTEGRAL_FILTER);
 
-        feederController = new PIDController(
-            Shooting.Feeder.P,
-            Shooting.Feeder.I,
-            Shooting.Feeder.D
-        ).setIntegratorFilter(INTEGRAL_FILTER);
+        feederController = new PIDController(ShooterSettings.Feeder.P, ShooterSettings.Feeder.I,
+                ShooterSettings.Feeder.D).setIntegratorFilter(INTEGRAL_FILTER);
 
         // Hood Stuff
-        hoodSolenoid = new Solenoid(Ports.HOOD_SOLENOID);
+        hoodSolenoid = new Solenoid(Ports.Shooter.HOOD_SOLENOID);
 
         // Setting Modes Stuff
         rightShooterMotor.setIdleMode(IdleMode.kCoast);
@@ -97,11 +88,11 @@ public class Shooter extends SubsystemBase {
 
         feederMotor.setIdleMode(IdleMode.kCoast);
 
-        rightShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
-        leftShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
-        middleShooterMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+        rightShooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+        leftShooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+        middleShooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
-        feederMotor.setSmartCurrentLimit(Shooting.CURRENT_LIMIT);
+        feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
     }
 
     /************
@@ -109,9 +100,8 @@ public class Shooter extends SubsystemBase {
      ************/
 
     public double getShooterRPM() {
-        return (leftShooterEncoder.getVelocity() + 
-                middleShooterEncoder.getVelocity() +
-                rightShooterEncoder.getVelocity()) / 3.0;
+        return (leftShooterEncoder.getVelocity() + middleShooterEncoder.getVelocity()
+                + rightShooterEncoder.getVelocity()) / 3.0;
     }
 
     public double getFeederRPM() {
@@ -121,10 +111,10 @@ public class Shooter extends SubsystemBase {
     public void setTargetRPM(double target) {
         this.targetRPM = target;
     }
- 
+
     public boolean isReady() {
-        return shooterController.isDone(Shooting.TOLERANCE) &&
-               feederController.isDone(Shooting.TOLERANCE);
+        return shooterController.isDone(ShooterSettings.TOLERANCE)
+                && feederController.isDone(ShooterSettings.TOLERANCE);
     }
 
     public void stop() {
@@ -134,12 +124,12 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(targetRPM > 100) {
+        if (targetRPM > 100) {
             double shootSpeed = shooterController.update(targetRPM, getShooterRPM());
-            shootSpeed += targetRPM * Shooting.Shooter.FF.get();
+            shootSpeed += targetRPM * ShooterSettings.Shooter.FF.get();
 
             double feederSpeed = feederController.update(targetRPM, getFeederRPM());
-            feederSpeed += targetRPM * Shooting.Feeder.FF.get();
+            feederSpeed += targetRPM * ShooterSettings.Feeder.FF.get();
 
             shooterMotors.set(shootSpeed);
             feederMotor.set(feederSpeed);
@@ -185,14 +175,23 @@ public class Shooter extends SubsystemBase {
         super.initSendable(builder);
 
         builder.addDoubleProperty(
+            "Target RPM", 
+            () -> targetRPM, 
+            (x) -> setTargetRPM(x));
+
+        builder.addDoubleProperty(
             "Shooter RPM", 
             () -> getShooterRPM(), 
             (x) -> {});
-    
-        
+
         builder.addDoubleProperty(
             "Feeder RPM", 
             () -> getFeederRPM(), 
             (x) -> {});
+
+        builder.addBooleanProperty(
+            "Hood Extended", 
+            () -> hoodSolenoid.get(), 
+            (x) -> hoodSolenoid.set(x));
     }
 }

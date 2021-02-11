@@ -7,7 +7,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.Constants.ChimneySettings;
 
 public class Chimney extends SubsystemBase {
 
@@ -19,10 +20,10 @@ public class Chimney extends SubsystemBase {
     private DigitalInput upperSensor;
 
     public Chimney() {
-        motor = new CANSparkMax(Constants.CHIMNEY_LIFT_MOTOR_PORT, MotorType.kBrushless);
+        motor = new CANSparkMax(Ports.Chimney.LIFT_MOTOR_PORT, MotorType.kBrushless);
 
-        lowerSensor = new DigitalInput(Constants.CHIMNEY_LOWER_SENSOR_PORT);
-        upperSensor = new DigitalInput(Constants.CHIMNEY_UPPER_SENSOR_PORT);
+        lowerSensor = new DigitalInput(Ports.Chimney.LOWER_SENSOR_PORT);
+        upperSensor = new DigitalInput(Ports.Chimney.UPPER_SENSOR_PORT);
 
         motor.setIdleMode(IdleMode.kCoast);
     }
@@ -31,17 +32,18 @@ public class Chimney extends SubsystemBase {
     public boolean getLowerChimneyValue() {
         return lowerSensor.get();
     }
+
     public boolean getUpperChimneyValue() {
         return !upperSensor.get();
     }
 
     // MOVE THE MOTORS
     public void liftUp() {
-        motor.set(Constants.CHIMNEY_LIFT_UP_SPEED);
+        motor.set(ChimneySettings.LIFT_UP_SPEED);
     }
 
     public void liftDown() {
-        motor.set(-Constants.CHIMNEY_LIFT_UP_SPEED);
+        motor.set(-ChimneySettings.LIFT_UP_SPEED);
     }
 
     public void stop() {

@@ -11,7 +11,7 @@ import com.stuypulse.robot.subsystems.Funnel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FunnelFunnelCommand extends CommandBase {
-    
+
     private final Funnel funnel;
 
     public FunnelFunnelCommand(Funnel funnel) {
@@ -25,8 +25,8 @@ public class FunnelFunnelCommand extends CommandBase {
     }
 
     @Override
-	public boolean isFinished() {
-      return false;
+    public boolean isFinished() {
+        return false;
     }
 
     @Override

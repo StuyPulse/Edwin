@@ -28,19 +28,19 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
     }
 
     public double getSpeedError() {
-        if(Limelight.hasValidTarget()) {
+        if (Limelight.hasValidTarget()) {
             double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
             double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
             double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
                     - Alignment.Measurements.Limelight.DISTANCE;
-    
+
             currentDistance.set(goal_dist);
             targetDistance.set(distance);
             distanceError.set(goal_dist - distance);
 
-            if(goal_dist < Alignment.MIN_DISTANCE) {
+            if (goal_dist < Alignment.MIN_DISTANCE) {
                 return 0;
-            } else if(goal_dist > Alignment.MAX_DISTANCE) {
+            } else if (goal_dist > Alignment.MAX_DISTANCE) {
                 return 0;
             }
 
@@ -52,7 +52,7 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
     }
 
     public Angle getAngleError() {
-        if(Limelight.hasValidTarget()) {
+        if (Limelight.hasValidTarget()) {
             return Angle.fromDegrees(Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue());
         } else {
             return Angle.fromDegrees(0);

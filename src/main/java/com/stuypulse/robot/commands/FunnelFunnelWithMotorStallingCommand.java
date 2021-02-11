@@ -13,7 +13,7 @@ import com.stuypulse.stuylib.input.gamepads.Logitech;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
-    
+
     private final Funnel funnel;
     private final Logitech operatorGamepad;
 
@@ -30,14 +30,14 @@ public class FunnelFunnelWithMotorStallingCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(funnel.isStalling())
+        if (funnel.isStalling())
             operatorGamepad.setRumble(1);
         funnel.funnel();
     }
 
     @Override
-	public boolean isFinished() {
-      return false;
+    public boolean isFinished() {
+        return false;
     }
 
     @Override

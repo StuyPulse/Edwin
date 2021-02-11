@@ -29,7 +29,7 @@ public class WoofManualControlCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         woof.stop();
-        woof.resetEncoderValue();
+        woof.reset();
     }
 
 }

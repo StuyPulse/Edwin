@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class TimeoutCommand extends ParallelRaceGroup {
 
     public TimeoutCommand(CommandBase command, double timeout) {
-        addCommands(
-            command,
-            new WaitCommand(timeout) //timeout in seconds
+        addCommands(command, new WaitCommand(timeout) // timeout in seconds
         );
     }
 

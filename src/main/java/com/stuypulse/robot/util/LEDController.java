@@ -21,27 +21,19 @@ public class LEDController {
     }
 
     public enum Color {
-        RAINBOW,
-        SINELON,
-        CONFETTI,
-        BEAT,
-        TWINKLE,
-        WAVE,
+        RAINBOW, SINELON, CONFETTI, BEAT, TWINKLE, WAVE,
 
-        ORANGE_SOLID,
-        GREEN_SOLID,
-        BLUE_SOLID,
-        PURPLE_SOLID,
+        ORANGE_SOLID, GREEN_SOLID, BLUE_SOLID, PURPLE_SOLID,
 
-        WHITE_SOLID,  // Shoot from initation line
-        PINK_SOLID,   // Shoot from trench
-        RED_SOLID,    // Shoot from far
-        WHITE_PULSE,  // Charging shot from initation line
-        PINK_PULSE,   // Charging shot from trench
-        RED_PULSE,    // Charging shot from far
+        WHITE_SOLID, // Shoot from initation line
+        PINK_SOLID, // Shoot from trench
+        RED_SOLID, // Shoot from far
+        WHITE_PULSE, // Charging shot from initation line
+        PINK_PULSE, // Charging shot from trench
+        RED_PULSE, // Charging shot from far
         YELLOW_SOLID, // Aligning
-        LIME_FLASH,   // Aligned
-        BLUE_FLASH,   // Ball detected in intake
+        LIME_FLASH, // Aligned
+        BLUE_FLASH, // Ball detected in intake
         OFF
     }
 
@@ -112,8 +104,8 @@ public class LEDController {
                 if (getValue() != 0.99) {
                     setValue(0.73);
                     Timer.delay(0.5);
-                    setValue(0.99); 
-                } 
+                    setValue(0.99);
+                }
                 break;
             case BLUE_FLASH:
                 setValue(0.87);
@@ -135,7 +127,7 @@ public class LEDController {
     }
 
     public void startParty() {
-        int rand = (int)(Math.random() * 6);
+        int rand = (int) (Math.random() * 6);
         switch (rand) {
             case 0:
                 setColor(Color.RAINBOW);

@@ -2,14 +2,11 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
-import com.stuypulse.robot.commands.DrivetrainCommand;
 
 import com.stuypulse.stuylib.input.Gamepad;
 
 import com.stuypulse.stuylib.streams.IStream;
-import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
-import com.stuypulse.stuylib.streams.filters.SpeedProfile;
 import com.stuypulse.stuylib.streams.FilteredIStream;
 import com.stuypulse.stuylib.math.SLMath;
 
@@ -55,28 +52,26 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         // Create an IStream that filters the raw speed from the controller
         this.speed = new FilteredIStream(this.rawSpeed, 
-            (x) -> SLMath.deadband(x, DrivetrainSettings.SPEED_DEADBAND),
-            (x) -> SLMath.spow(x, DrivetrainSettings.SPEED_POWER),
-            
-            //new SpeedProfile(2.5 / 50.0, 1.0 / 420.0)
-            new LowPassFilter(DrivetrainSettings.SPEED_FILTER)
-        );
+                (x) -> SLMath.deadband(x, DrivetrainSettings.SPEED_DEADBAND),
+                (x) -> SLMath.spow(x, DrivetrainSettings.SPEED_POWER),
+
+                // new SpeedProfile(2.5 / 50.0, 1.0 / 420.0)
+                new LowPassFilter(DrivetrainSettings.SPEED_FILTER));
 
         // Create an IStream that filters the raw angle from the controller
         this.angle = new FilteredIStream(this.rawAngle, 
-            (x) -> SLMath.deadband(x, DrivetrainSettings.ANGLE_DEADBAND),
-            (x) -> SLMath.spow(x, DrivetrainSettings.ANGLE_POWER), 
-            new LowPassFilter(DrivetrainSettings.ANGLE_FILTER)
-        );
+                (x) -> SLMath.deadband(x, DrivetrainSettings.ANGLE_DEADBAND),
+                (x) -> SLMath.spow(x, DrivetrainSettings.ANGLE_POWER),
+                new LowPassFilter(DrivetrainSettings.ANGLE_FILTER));
     }
 
     // Check DPad for enabling or disableing filters
     private boolean checkDPad() {
-        if(gamepad.getRawDPadUp()) {
+        if (gamepad.getRawDPadUp()) {
             return (useFiltering = true);
         }
 
-        if(gamepad.getRawDPadDown()) {
+        if (gamepad.getRawDPadDown()) {
             return (useFiltering = false);
         }
 
@@ -87,7 +82,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     public double getSpeed() {
         double s = speed.get();
 
-        if(!checkDPad()) {
+        if (!checkDPad()) {
             s = rawSpeed.get();
         }
 
@@ -98,7 +93,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     public double getAngle() {
         double a = angle.get();
 
-        if(!checkDPad()) {
+        if (!checkDPad()) {
             a = rawAngle.get();
         }
 
@@ -107,7 +102,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     // If the drivetrain goes into high or low gear
     public Drivetrain.Gear getGear() {
-        if(gamepad.getRawBottomButton()) {
+        if (gamepad.getRawBottomButton()) {
             return Drivetrain.Gear.LOW;
         } else {
             return Drivetrain.Gear.HIGH;

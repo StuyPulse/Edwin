@@ -1,7 +1,6 @@
 package com.stuypulse.robot.commands;
 
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.ClimberSettings;
 import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.robot.subsystems.Intake;
 
@@ -18,14 +17,10 @@ public class ClimberSetupCommand extends SequentialCommandGroup {
         this.climber = climber;
 
         addCommands(
-            new ClimberReleaseBrakeCommand(climber),
-            new WaitCommand(Constants.CLIMBER_SETUP_WAIT_TIME),
-            new ParallelRaceGroup(
-                new ClimberWindWinchSlowCommand(climber),
-                new WaitCommand(0.1)
-            ),
-            new ClimberUnwindWinchCommand(climber)
-        );
+            new ClimberReleaseBrakeCommand(climber), 
+            new WaitCommand(ClimberSettings.SETUP_WAIT_TIME),
+            new ParallelRaceGroup(new ClimberWindWinchSlowCommand(climber), new WaitCommand(0.1)),
+            new ClimberUnwindWinchCommand(climber));
     }
 
     @Override

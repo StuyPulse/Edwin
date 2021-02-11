@@ -18,5 +18,5 @@ public class LEDTogglePartyModeCommand extends InstantCommand {
         if (controller.inPartyMode())
             controller.startParty();
     }
-    
+
 }

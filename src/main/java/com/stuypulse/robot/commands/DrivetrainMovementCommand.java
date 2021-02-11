@@ -1,9 +1,7 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.stuylib.math.Angle;
-import com.stuypulse.stuylib.math.SLMath;
 
 /**
  * Extends off of the DrivetrainPIDAlignmentCommand and uses its controllers to
@@ -77,11 +75,11 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 
         /**
          * @param drivetrain drivetrain used to move
-         * @param distance number of feet used to turn
+         * @param distance   number of feet used to turn
          */
-		public DriveCommand(Drivetrain drivetrain, double distance) {
-			super(drivetrain, 0, distance);
-		}
+        public DriveCommand(Drivetrain drivetrain, double distance) {
+            super(drivetrain, 0, distance);
+        }
     }
 
     /**
@@ -91,11 +89,11 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
 
         /**
          * @param drivetrain drivetrain used to turn
-         * @param angle angle that you want to turn
+         * @param angle      angle that you want to turn
          */
-		public TurnCommand(Drivetrain drivetrain, double angle) {
-			super(drivetrain, angle);
-		}
+        public TurnCommand(Drivetrain drivetrain, double angle) {
+            super(drivetrain, angle);
+        }
     }
 
     /**

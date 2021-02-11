@@ -1,7 +1,5 @@
 package com.stuypulse.robot.subsystems;
 
-import java.util.Arrays;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -17,6 +15,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -25,11 +28,6 @@ public class Drivetrain extends SubsystemBase {
     public static enum Gear {
         HIGH, LOW
     };
-
-    // Turn a list of speed controllers into a speed controller group
-    private static SpeedControllerGroup makeControllerGroup(SpeedController... controllers) {
-        return new SpeedControllerGroup(controllers[0], Arrays.copyOfRange(controllers, 1, controllers.length));
-    }
 
     // An array of motors on the left and right side of the drive train
     private CANSparkMax[] leftMotors;
@@ -47,6 +45,10 @@ public class Drivetrain extends SubsystemBase {
     // NAVX for Gyro
     private AHRS navx;
 
+    // Odometry
+    private DifferentialDriveOdometry odometry;
+
+    // State Variable
     private boolean isAligned;
 
     public Drivetrain() {
@@ -70,14 +72,18 @@ public class Drivetrain extends SubsystemBase {
 
         // Make differential drive object
         drivetrain = new DifferentialDrive(
-            makeControllerGroup(leftMotors),
-            makeControllerGroup(rightMotors)
+            new SpeedControllerGroup(leftMotors), 
+            new SpeedControllerGroup(rightMotors)
         );
 
+        // Add Gear Shifter
         gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
         navx = new AHRS(SPI.Port.kMXP);
+
+        // Initialize Odometry
+        odometry = new DifferentialDriveOdometry(DrivetrainSettings.Odometry.STARTING_ANGLE, DrivetrainSettings.Odometry.STARTING_POSITION);
 
         // Configure Motors and Other Things
         setInverted(DrivetrainSettings.IS_INVERTED);
@@ -144,7 +150,7 @@ public class Drivetrain extends SubsystemBase {
     // Sets the current gear the robot is in
     public void setGear(Gear gear) {
         this.gear = gear;
-        if(this.gear == Gear.HIGH) {
+        if (this.gear == Gear.HIGH) {
             gearShift.set(true);
             setNEODistancePerRotation(DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
             reset();
@@ -165,7 +171,6 @@ public class Drivetrain extends SubsystemBase {
         setGear(Gear.HIGH);
     }
 
-    
     /********
      * NAVX *
      ********/
@@ -184,7 +189,6 @@ public class Drivetrain extends SubsystemBase {
         navx.reset();
     }
 
-    
     /*********************
      * ENCODER FUNCTIONS *
      *********************/
@@ -215,10 +219,57 @@ public class Drivetrain extends SubsystemBase {
         return (getLeftVelocity() + getRightVelocity()) / 2.0;
     }
 
-    public void reset() {
+    /**********************
+     * ODOMETRY FUNCTIONS *
+     **********************/
+
+    private void updateOdometry() {
+        odometry.update(
+            getRotation2d(), 
+            getLeftDistance(), 
+            getRightDistance()
+        );
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(
+            getLeftVelocity(),
+            getRightVelocity()
+        );
+    }
+
+    public Rotation2d getRotation2d() {
+        // TODO: check if this needs to be negative
+        return getAngle().negative().getRotation2d();
+    }
+
+    public Pose2d getPose() {
+        updateOdometry();
+        return odometry.getPoseMeters();
+    }
+
+    @Override
+    public void periodic() {
+        updateOdometry();
+    }
+
+    private void resetOdometer(Pose2d start) {
+        odometry.resetPosition(start, DrivetrainSettings.Odometry.STARTING_ANGLE);
+    }
+
+    /************************
+     * OVERALL SENSOR RESET *
+     ************************/
+
+    public void reset(Pose2d location) {
         resetNavX();
         leftNEO.setPosition(0);
         rightNEO.setPosition(0);
+        resetOdometer(location);
+    }
+
+    public void reset() {
+        reset(DrivetrainSettings.Odometry.STARTING_POSITION);
     }
 
     /*********************
@@ -230,27 +281,19 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public double getLeftVoltage() {
-        double volts = 0.0;
-        for(SpeedController motor : leftMotors) {
-            volts += motor.get() * getBatteryVoltage() / DrivetrainSettings.LEFT_VOLTAGE_MUL;
-        }
-        return volts / leftMotors.length;
+        return leftMotors[0].get() * getBatteryVoltage() / DrivetrainSettings.LEFT_VOLTAGE_MUL;
     }
 
     public double getRightVoltage() {
-        double volts = 0.0;
-        for(SpeedController motor : rightMotors) {
-            volts += motor.get() * getBatteryVoltage() / DrivetrainSettings.RIGHT_VOLTAGE_MUL;
-        }
-        return volts / leftMotors.length;
+        return rightMotors[0].get() * getBatteryVoltage() / DrivetrainSettings.RIGHT_VOLTAGE_MUL;
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        for(SpeedController motor : leftMotors) {
+        for (SpeedController motor : leftMotors) {
             motor.setVoltage(leftVolts * DrivetrainSettings.LEFT_VOLTAGE_MUL);
         }
 
-        for(SpeedController motor : rightMotors) {
+        for (SpeedController motor : rightMotors) {
             motor.setVoltage(rightVolts * DrivetrainSettings.RIGHT_VOLTAGE_MUL);
         }
 
@@ -263,7 +306,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Stops drivetrain from moving
     public void stop() {
-        tankDrive(0, 0);
+        drivetrain.stopMotor();
     }
 
     // Drives using tank drive
@@ -301,4 +344,85 @@ public class Drivetrain extends SubsystemBase {
     public boolean getIsAligned() {
         return isAligned;
     }
+
+    /************************
+     * SENDABLE INFORMATION *
+     ************************/
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+
+        // Gears
+        builder.addStringProperty(
+            "Current Gear", 
+            () -> getGear().equals(Gear.HIGH) ? "High Gear" : "Low Gear", 
+            (x) -> {});
+
+        // Odometer
+        builder.addDoubleProperty(
+            "Odometer X Position (f)", 
+            () -> getPose().getX(), 
+            (x) -> {});
+
+        builder.addDoubleProperty(
+            "Odometer Y Position (f)", 
+            () -> getPose().getY(), 
+            (x) -> {});
+
+        builder.addDoubleProperty(
+            "Odometer Rotation (deg)", 
+            () -> getPose().getRotation().getDegrees(), 
+            (x) -> {});
+            
+        // Voltage
+        builder.addDoubleProperty(
+            "Motor Voltage Left (V)", 
+            () -> getLeftVoltage(), 
+            (x) -> {});
+
+        builder.addDoubleProperty(
+            "Motor Voltage Right (V)", 
+            () -> getRightVoltage(), 
+            (x) -> {});
+
+        // Encoders Distance
+        builder.addDoubleProperty(
+            "Distance Traveled (f)", 
+            () -> getDistance(), 
+            (x) -> {});
+
+        builder.addDoubleProperty(
+            "Distance Traveled Left (f)",
+            () -> getLeftDistance(), 
+            (x) -> {});
+
+        builder.addDoubleProperty(
+            "Distance Traveled Right (f)", 
+            () -> getRightDistance(), 
+            (x) -> {});
+
+        // Encoders Velocity (you can't use f/s because "/" is used for folders)
+        builder.addDoubleProperty(
+            "Velocity (f per s)", 
+            () -> getVelocity(), 
+            (x) -> {});
+
+        builder.addDoubleProperty(
+            "Velocity Left (f per s)", 
+            () -> getLeftVelocity(), 
+            (x) -> {});
+
+        builder.addDoubleProperty(
+            "Velocity Right (f per s)", 
+            () -> getRightVelocity(), 
+            (x) -> {});
+
+        // NavX
+        builder.addDoubleProperty(
+            "Angle NavX (deg)", 
+            () -> getAngle().toDegrees(), 
+            (x) -> {});
+    }
+
 }

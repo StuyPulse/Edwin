@@ -10,7 +10,7 @@ public class ChimneyStopCommand extends CommandBase {
 
     public ChimneyStopCommand(Chimney chimney) {
         this.chimney = chimney;
-        
+
         addRequirements(chimney);
     }
 

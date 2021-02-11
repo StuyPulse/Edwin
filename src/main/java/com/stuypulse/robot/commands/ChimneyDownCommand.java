@@ -10,7 +10,7 @@ public class ChimneyDownCommand extends CommandBase {
 
     public ChimneyDownCommand(Chimney chimney) {
         this.chimney = chimney;
-        
+
         addRequirements(chimney);
     }
 
@@ -23,5 +23,5 @@ public class ChimneyDownCommand extends CommandBase {
     public void end(boolean interrupted) {
         chimney.stop();
     }
-    
+
 }

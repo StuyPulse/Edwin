@@ -32,7 +32,7 @@ public class DrivetrainAutoSpeedCommand extends DrivetrainAlignmentCommand {
 
         if (speed instanceof PIDCalculator) {
             PIDController calculated = ((PIDCalculator) speed).getPDController();
-            
+
             Alignment.Speed.P.set(calculated.getP());
             Alignment.Speed.I.set(calculated.getI());
             Alignment.Speed.D.set(calculated.getD());

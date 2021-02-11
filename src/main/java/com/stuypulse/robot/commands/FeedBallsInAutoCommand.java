@@ -31,5 +31,5 @@ public class FeedBallsInAutoCommand extends CommandBase {
         funnel.stop();
         chimney.stop();
     }
- 
+
 }

@@ -1,16 +1,14 @@
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.WoofSettings;
 import com.stuypulse.robot.subsystems.Woof;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class WoofTurnRotationsWithEncoderCommand extends CommandBase {
 
     private final Woof woof;
 
-    
     /**
      * Creates a new ExampleCommand.
      *
@@ -23,23 +21,22 @@ public class WoofTurnRotationsWithEncoderCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        woof.resetEncoderValue();
+        woof.reset();
     }
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("Woof Encoder Value", woof.getEncoderValue());
-        woof.turn(Constants.WOOF_TURN_SPEED);
+        woof.turn(WoofSettings.TURN_SPEED);
     }
 
     @Override
     public boolean isFinished() {
-            return woof.getEncoderValue() >= Constants.WOOF_TARGET_ENCODER_VALUE;
+        return woof.getRotations() >= WoofSettings.TARGET_ENCODER_VALUE;
     }
 
     @Override
     public void end(boolean interrupted) {
         woof.stop();
-        woof.resetEncoderValue();
+        woof.reset();
     }
 }

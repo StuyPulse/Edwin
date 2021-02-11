@@ -13,18 +13,18 @@ public class MotorStalling implements Runnable {
 
     private MotorStall[] subsystemArray;
 
-    public MotorStalling(MotorStall... subsystems) { 
+    public MotorStalling(MotorStall... subsystems) {
         subsystemArray = subsystems;
     }
 
     public void checkStall() {
-        while(true) {
+        while (true) {
             Timer.delay(0.2);
-            for(MotorStall subsystem : subsystemArray) {
+            for (MotorStall subsystem : subsystemArray) {
                 double start_encoder_value = Math.abs(subsystem.getStartEncoderVal());
                 double current_encoder_value = Math.abs(subsystem.getCurrentEncoderVal());
                 double change_distance = Math.abs(current_encoder_value - start_encoder_value);
-                if(subsystem.getStallCounter() >= 5)
+                if (subsystem.getStallCounter() >= 5)
                     subsystem.setStalled(true);
                 if (change_distance <= subsystem.getEncoderApproachStallThreshold() && subsystem.isRunning())
                     subsystem.incrementStallCounter();
@@ -37,10 +37,10 @@ public class MotorStalling implements Runnable {
         }
 
     }
-    
+
     @Override
     public void run() {
         checkStall();
     }
-    
+
 }

@@ -22,4 +22,4 @@ public class ClimberWindWinchCommand extends CommandBase {
     public void end(boolean interrupted) {
         climber.stopClimber();
     }
-} 
+}

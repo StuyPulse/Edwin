@@ -34,7 +34,7 @@ public abstract class DrivetrainCommand extends CommandBase {
     public void execute() {
         drivetrain.setGear(this.getGear());
 
-        if(useCurvatureDrive()) {
+        if (useCurvatureDrive()) {
             drivetrain.curvatureDrive(this.getSpeed(), this.getAngle());
         } else {
             drivetrain.arcadeDrive(this.getSpeed(), this.getAngle());

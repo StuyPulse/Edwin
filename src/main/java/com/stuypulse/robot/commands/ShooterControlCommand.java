@@ -21,10 +21,10 @@ public class ShooterControlCommand extends InstantCommand {
         shooter.setTargetRPM(targetRPM);
         shooter.setShooterMode(mode);
 
-        if(mode == ShooterMode.SHOOT_FROM_TRENCH || mode == ShooterMode.SHOOT_FROM_FAR) {
+        if (mode == ShooterMode.SHOOT_FROM_TRENCH || mode == ShooterMode.SHOOT_FROM_FAR) {
             shooter.retractHoodSolenoid();
         }
-        if(mode == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
+        if (mode == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
             shooter.extendHoodSolenoid();
         }
     }

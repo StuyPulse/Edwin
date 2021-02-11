@@ -8,6 +8,9 @@
 
 package com.stuypulse.robot;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorMatch;
 import com.stuypulse.stuylib.control.PIDController;
@@ -46,11 +49,6 @@ public interface Constants {
         return toFeet(0, inches);
     }
 
-    public interface Pneumatics {
-        int ANALOG_PRESSURE_SWITCH_PORT = 0;
-        double ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5.0;
-    }
-
     public interface Ports {
 
         public interface Gamepad {
@@ -74,15 +72,52 @@ public interface Constants {
             int GEAR_SHIFT = 0;
         }
 
-        int HOOD_SOLENOID = 1;
-
         public interface Shooter {
+            int HOOD_SOLENOID = 1;
+
             int LEFT = 12;
             int MIDDLE = 13;
             int RIGHT = 14;
 
             int FEEDER = 11;
         }
+
+        public interface Climber {
+            int LIFT_MOTOR_PORT = 15;
+            int YOYO_MOTOR_PORT = 17;
+
+            int LIFT_SOLENOID_CHANNEL = 2;
+            int YOYO_SOLENOID_CHANNEL = 3;
+
+            int LIMIT_SWITCH_CHANNEL = -1;
+        }
+
+        public interface Woof {
+            int MOTOR_PORT = 16;
+            int SENSOR_PORT = -1;
+        }
+
+        public interface Intake {
+            int MOTOR_PORT = 18;
+            // int SOLENOID_PORT_A = 6;
+            int SOLENOID_PORT_A = 4;
+            int SOLENOID_PORT_B = 5;
+            int SENSOR_PORT = 4;
+            // int SOLENOID_PORT_B = 7;
+        }
+
+        public interface Chimney {
+            int LIFT_MOTOR_PORT = 8;
+            int LOWER_SENSOR_PORT = 5;
+            int UPPER_SENSOR_PORT = 6;
+        }
+
+        public interface Pneumatics {
+            int ANALOG_PRESSURE_SWITCH_PORT = 0;
+            double ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY = 5.0;
+        }
+
+        int FUNNEL = 9;
     }
 
     public interface DrivetrainSettings {
@@ -90,7 +125,7 @@ public interface Constants {
         double QUICKTURN_THRESHOLD = 0.05;
 
         // How much to slow down quick turn
-        double QUICKTURN_SPEED = 0.5; // TODO: Go Over This With Driver
+        double QUICKTURN_SPEED = 0.5;
 
         // Low Pass Filter and deadband for Driver Controls
         double SPEED_DEADBAND = 0.1;
@@ -112,14 +147,18 @@ public interface Constants {
         double RIGHT_VOLTAGE_MUL = 1.0;
         double LEFT_VOLTAGE_MUL = 1.0;
 
+        public interface Odometry {
+            Translation2d STARTING_TRANSLATION = new Translation2d();
+            Rotation2d STARTING_ANGLE = new Rotation2d();
+
+            Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
+        }
+
         // Encoder Constants
         public interface Encoders {
 
             double WHEEL_DIAMETER = 0.5;
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-
-            // The difference between theoretical and actual distance
-            double REAL_YIELD = -1.0; // * (10.0 / 3.125) * (1.18 / 3.125);
 
             double LOW_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
             double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // TODO: Find this value out
@@ -146,9 +185,9 @@ public interface Constants {
         public interface Speed {
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.3); // 0.30 (OLD "TESTED" VALUE)
+            SmartNumber P = new SmartNumber("SpeedP", 0.3);
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.02); // 0.02 (OLD "TESTED" VALUE)
+            SmartNumber D = new SmartNumber("SpeedD", 0.02);
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -206,7 +245,7 @@ public interface Constants {
         }
     }
 
-    public interface Shooting {
+    public interface ShooterSettings {
 
         int CURRENT_LIMIT = 45;
 
@@ -248,155 +287,108 @@ public interface Constants {
         }
     }
 
-    /*********************************************************************************************
-     * Funnel Motor Port
-     *********************************************************************************************/
-    int FUNNEL_MOTOR_PORT = 9;
+    public interface ClimberSettings {
+        double MOVE_DEADBAND = 0.25;
 
-    /*********************************************************************************************
-     * Climber Motor Ports
-     *********************************************************************************************/
-    int CLIMBER_LIFT_MOTOR_PORT = 15;
-    int CLIMBER_YOYO_MOTOR_PORT = 17;
+        double EXPONENT = 1 / 3;
 
-    int CLIMBER_LIFT_SOLENOID_CHANNEL = 2;
-    int CLIMBER_YOYO_SOLENOID_CHANNEL = 3;
+        double MOVE_SLOW_SPEED = 0.1;
 
-    int CLIMBER_LIMIT_SWITCH_CHANNEL = -1;
+        double MOVE_LIFT_UP_SPEED = 1.0;
+        double MOVE_LIFT_DOWN_SPEED = -1.0;
+        double SETUP_WAIT_TIME = 0.2;
+        double SCALE = 0.5;
+    }
 
-    /*********************************************************************************************
-     * Climber Motor Constants
-     *********************************************************************************************/
-    double CLIMBER_MOVE_DEADBAND = 0.25;
+    public interface FunnelSettings {
+        double FUNNEL_SPEED = 0.8;
+        double UNFUNNEL_SPEED = -FUNNEL_SPEED;
 
-    double CLIMBER_EXPONENT = 1 / 3;
+        double ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
+    }
 
-    double CLIMBER_MOVE_SLOW_SPEED = 0.1;
+    public interface WoofSettings {
+        double TURN_SPEED = 1.0;
+        double TARGET_ENCODER_VALUE = 600;
+    }
 
-    /*********************************************************************************************
-     * Funnel Constants
-     *********************************************************************************************/
-    // TODO: Test
-    double FUNNEL_SPEED = 0.8;
-    double UNFUNNEL_SPEED = -FUNNEL_SPEED;
+    public interface IntakeSettings {
+        double MOTOR_SPEED = 0.8;
+    }
 
-    double FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
+    public interface ChimneySettings {
+        double LIFT_UP_SPEED = 1.0;
+        double ENCODER_RADIUS = -1;
+        double BALL_PER_ROTATIONS = -0.5;
+    }
 
-    /*********************************************************************************************
-     * Climber Constants
-     *********************************************************************************************/
-    // TODO: Test speeds
-    double MOVE_LIFT_UP_SPEED = 1.0;
-    double MOVE_LIFT_DOWN_SPEED = -1.0;
-    double CLIMBER_SETUP_WAIT_TIME = 0.2;
-    double CLIMBER_SCALE = 0.5;
+    public interface Colors {
+        double CYAN_RED = 0.2;
+        double CYAN_GREEN = 0.56;
+        double CYAN_BLUE = 0.3;
 
-    /*********************************************************************************************
-     * Woof Ports
-     *********************************************************************************************/
-    int WOOF_MOTOR_PORT = 16;
-    int WOOF_SENSOR_PORT = -1;
+        double GREEN_RED = 0.25;
+        double GREEN_GREEN = 0.65;
+        double GREEN_BLUE = 0.17;
 
-    /*********************************************************************************************
-     * Woof Constants
-     *********************************************************************************************/
-    double WOOF_TURN_SPEED = 1.0;
-    double WOOF_TARGET_ENCODER_VALUE = 600;
+        double RED_RED = 0.60;
+        double RED_GREEN = 0.35;
+        double RED_BLUE = 0.1;
 
-    double CYAN_RED = 0.2;
-    double CYAN_GREEN = 0.56;
-    double CYAN_BLUE = 0.3;
+        double YELLOW_RED = 0.30;
+        double YELLOW_GREEN = 0.50;
+        double YELLOW_BLUE = 0.1;
 
-    double GREEN_RED = 0.25;
-    double GREEN_GREEN = 0.65;
-    double GREEN_BLUE = 0.17;
-
-    double RED_RED = 0.60;
-    double RED_GREEN = 0.35;
-    double RED_BLUE = 0.1;
-
-    double YELLOW_RED = 0.30;
-    double YELLOW_GREEN = 0.50;
-    double YELLOW_BLUE = 0.1;
-
-    Color CYAN_TARGET = ColorMatch.makeColor(Constants.CYAN_RED, Constants.CYAN_GREEN, Constants.CYAN_BLUE);
-    Color GREEN_TARGET = ColorMatch.makeColor(Constants.GREEN_RED, Constants.GREEN_GREEN, Constants.GREEN_BLUE);
-    Color RED_TARGET = ColorMatch.makeColor(Constants.RED_RED, Constants.RED_GREEN, Constants.RED_BLUE);
-    Color YELLOW_TARGET = ColorMatch.makeColor(Constants.YELLOW_RED, Constants.YELLOW_GREEN, Constants.YELLOW_BLUE);
-
-    /*********************************************************************************************
-     * Intake Ports
-     *********************************************************************************************/
-    int INTAKE_MOTOR_PORT = 18;
-    // int INTAKE_SOLENOID_PORT_A = 6;
-    int INTAKE_SOLENOID_PORT_A = 4;
-    int INTAKE_SOLENOID_PORT_B = 5;
-    int INTAKE_SENSOR_PORT = 4;
-    // int INTAKE_SOLENOID_PORT_B = 7;
-
-    /*********************************************************************************************
-     * Intake Constants
-     *********************************************************************************************/
-    double INTAKE_MOTOR_SPEED = 0.8;
-
-    /*********************************************************************************************
-     * CHIMNEY Motor & Sensor Ports
-     *********************************************************************************************/
-    int CHIMNEY_LIFT_MOTOR_PORT = 8;
-    int CHIMNEY_LOWER_SENSOR_PORT = 5;
-    int CHIMNEY_UPPER_SENSOR_PORT = 6;
-
-    /*********************************************************************************************
-     * CHIMNEY Constants
-     *********************************************************************************************/
-    double CHIMNEY_LIFT_UP_SPEED = 1.0;
-    double CHIMNEY_ENCODER_RADIUS = -1;
-    double CHIMNEY_BALL_PER_ROTATIONS = -0.5;
-
-    // AUTOS
+        Color CYAN_TARGET = ColorMatch.makeColor(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
+        Color GREEN_TARGET = ColorMatch.makeColor(Colors.GREEN_RED, Colors.GREEN_GREEN, Colors.GREEN_BLUE);
+        Color RED_TARGET = ColorMatch.makeColor(Colors.RED_RED, Colors.RED_GREEN, Colors.RED_BLUE);
+        Color YELLOW_TARGET = ColorMatch.makeColor(Colors.YELLOW_RED, Colors.YELLOW_GREEN, Colors.YELLOW_BLUE);
+    }
 
     // TODO check all values for correctlynessly
-    /*********************************************************************************************
-     * Movement Auton Command
-     *********************************************************************************************/
-    double DISTANCE_TO_MOVE_AT_START = 3.25; // feet
+    public interface AutoSettings {
+        /*********************************************************************************************
+         * Movement Auton Command
+         *********************************************************************************************/
+        double DISTANCE_TO_MOVE_AT_START = 3.25; // feet
 
-    /*********************************************************************************************
-     * Shoot Three (At Start) Auton Command
-     *********************************************************************************************/
-    double SHOOT_FROM_START_TO_GOAL = 10;
+        /*********************************************************************************************
+         * Shoot Three (At Start) Auton Command
+         *********************************************************************************************/
+        double SHOOT_FROM_START_TO_GOAL = 10;
 
-    /*********************************************************************************************
-     * Shoot at start and take 3 balls from trench
-     *********************************************************************************************/
-    double ANGLE_FROM_START_TO_TRENCH = 37.7;
-    double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = 5;
-    double DISTANCE_FROM_BALL_TO_BALL = 36;
-    double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
+        /*********************************************************************************************
+         * Shoot at start and take 3 balls from trench
+         *********************************************************************************************/
+        double ANGLE_FROM_START_TO_TRENCH = 37.7;
+        double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = 5;
+        double DISTANCE_FROM_BALL_TO_BALL = 36;
+        double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
 
-    /*********************************************************************************************
-     * Shoot three at start, get 3 balls from trench, and then take 2 balls from
-     * rdvs
-     *********************************************************************************************/
-    double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
-    double DISTANCE_FROM_TRENCH_TO_RDVS = 109.85;
-    double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; // estimation between 0 - 54.12
-    double DISTANCE_BETWEEN_TWO_BALL = 16.57;
-    double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = 40; // estimation according to field markings
+        /*********************************************************************************************
+         * Shoot three at start, get 3 balls from trench, and then take 2 balls from
+         * rdvs
+         *********************************************************************************************/
+        double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
+        double DISTANCE_FROM_TRENCH_TO_RDVS = 109.85;
+        double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; // estimation between 0 - 54.12
+        double DISTANCE_BETWEEN_TWO_BALL = 16.57;
+        double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = 40; // estimation according to field
+                                                                                   // markings
 
-    /*********************************************************************************************
-     * Shoot three at start and get 3 balls from rdvs
-     *********************************************************************************************/
+        /*********************************************************************************************
+         * Shoot three at start and get 3 balls from rdvs
+         *********************************************************************************************/
 
-    double DISTANCE_FROM_START_TO_RDVS = 107.83;
-    double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; // estimation from common knowledge
-    double DISTANCE_FOR_THREE_BALLS_IN_RDVS = 36; // estimate. Probably higher
+        double DISTANCE_FROM_START_TO_RDVS = 107.83;
+        double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; // estimation from common knowledge
+        double DISTANCE_FOR_THREE_BALLS_IN_RDVS = 36; // estimate. Probably higher
 
-    /*********************************************************************************************
-     * Shoot three at start, and then get 5 balls from rdvs
-     *********************************************************************************************/
+        /*********************************************************************************************
+         * Shoot three at start, and then get 5 balls from rdvs
+         *********************************************************************************************/
 
-    double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
-    double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
-
+        double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
+        double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
+    }
 }

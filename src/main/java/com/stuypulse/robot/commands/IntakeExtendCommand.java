@@ -4,7 +4,7 @@ import com.stuypulse.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.InstantCommand;;
 
 public class IntakeExtendCommand extends InstantCommand {
-  
+
   private final Intake intake;
 
   public IntakeExtendCommand(Intake intake) {
@@ -14,6 +14,6 @@ public class IntakeExtendCommand extends InstantCommand {
 
   @Override
   public void initialize() {
-      intake.extend();
+    intake.extend();
   }
 }

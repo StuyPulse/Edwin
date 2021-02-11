@@ -2,11 +2,13 @@ package com.stuypulse.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.Constants.IntakeSettings;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -17,11 +19,11 @@ public class Intake extends SubsystemBase {
     private DigitalInput sensor;
 
     public Intake() {
-        motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-        solenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_A, Constants.INTAKE_SOLENOID_PORT_B);
+        motor = new CANSparkMax(Ports.Intake.MOTOR_PORT, MotorType.kBrushless);
+        solenoid = new DoubleSolenoid(Ports.Intake.SOLENOID_PORT_A, Ports.Intake.SOLENOID_PORT_B);
 
-        sensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
-        
+        sensor = new DigitalInput(Ports.Intake.SENSOR_PORT);
+
         motor.setInverted(true);
     }
 
@@ -44,15 +46,29 @@ public class Intake extends SubsystemBase {
     }
 
     public void acquire() {
-        setMotor(Constants.INTAKE_MOTOR_SPEED);
+        setMotor(IntakeSettings.MOTOR_SPEED);
     }
 
     public void deacquire() {
-        setMotor(-Constants.INTAKE_MOTOR_SPEED);
+        setMotor(-IntakeSettings.MOTOR_SPEED);
     }
 
     public boolean isBallDetected() {
         return !sensor.get();
+    }
+
+    /************************
+     * SENDABLE INFORMATION *
+     ************************/
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+
+        builder.addBooleanProperty(
+            "Ball Detected", 
+            () -> isBallDetected(), 
+            (x) -> {});
     }
 
 }

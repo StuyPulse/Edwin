@@ -28,17 +28,17 @@ public class LEDControl implements Runnable {
         while (true) {
             try {
                 Thread.sleep(250);
-            } catch(InterruptedException e) {
+            } catch (InterruptedException e) {
                 System.out.println("oof" + e);
             }
-            
+
             if (!controller.inPartyMode()) {
                 if ((driver.getRawTopButton() || driver.getRawLeftButton())) {
                     controller.setColor(Color.YELLOW_SOLID);
-                } else if(drivetrain.getIsAligned()) {
+                } else if (drivetrain.getIsAligned()) {
                     controller.setColor(Color.LIME_FLASH);
                     drivetrain.setIsAligned(false);
-                } else if(intake.isBallDetected()) {
+                } else if (intake.isBallDetected()) {
                     controller.setColor(Color.GREEN_SOLID);
                 } else {
                     if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {

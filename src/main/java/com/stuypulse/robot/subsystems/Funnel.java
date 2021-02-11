@@ -4,9 +4,12 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.stuypulse.robot.Constants;
+import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.robot.Constants.FunnelSettings;
+
 import com.stuypulse.robot.util.MotorStall;
 
 public class Funnel extends SubsystemBase implements MotorStall {
@@ -21,16 +24,16 @@ public class Funnel extends SubsystemBase implements MotorStall {
     private boolean isRunning;
 
     public Funnel() {
-        motor = new CANSparkMax(Constants.FUNNEL_MOTOR_PORT, MotorType.kBrushless);
+        motor = new CANSparkMax(Ports.FUNNEL, MotorType.kBrushless);
         encoder = motor.getEncoder();
     }
 
     public void funnel() {
-        motor.set(Constants.FUNNEL_SPEED);
+        motor.set(FunnelSettings.FUNNEL_SPEED);
     }
 
     public void unfunnel() {
-        motor.set(Constants.UNFUNNEL_SPEED);
+        motor.set(FunnelSettings.UNFUNNEL_SPEED);
     }
 
     public void stop() {
@@ -49,7 +52,7 @@ public class Funnel extends SubsystemBase implements MotorStall {
 
     @Override
     public double getEncoderApproachStallThreshold() {
-        return Constants.FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD;
+        return FunnelSettings.ENCODER_APPROACH_STALL_THRESHOLD;
     }
 
     @Override
@@ -90,6 +93,15 @@ public class Funnel extends SubsystemBase implements MotorStall {
     @Override
     public void setRunning(boolean val) {
         isRunning = val;
+    }
+
+    /************************
+     * SENDABLE INFORMATION *
+     ************************/
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
     }
 
 }

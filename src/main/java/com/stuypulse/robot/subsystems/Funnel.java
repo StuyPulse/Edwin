@@ -12,6 +12,7 @@ import com.stuypulse.robot.Constants.FunnelSettings;
 
 import com.stuypulse.robot.util.MotorStall;
 
+// TODO: Figure out what MoterStall is supposed to do, and if we need it
 public class Funnel extends SubsystemBase implements MotorStall {
 
     private final CANSparkMax motor;

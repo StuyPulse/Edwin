@@ -431,6 +431,12 @@ public class Drivetrain extends SubsystemBase {
             "Angle NavX (deg)", 
             () -> getAngle().toDegrees(), 
             (x) -> {});
+
+        // Current State
+        builder.addBooleanProperty(
+            "Is Aligned", 
+            () -> getIsAligned(), 
+            (x) -> {});
     }
 
 }

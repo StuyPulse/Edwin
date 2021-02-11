@@ -1,5 +1,7 @@
 package com.stuypulse.robot.subsystems;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -19,7 +21,9 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -47,6 +51,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Odometry
     private DifferentialDriveOdometry odometry;
+    private Field2d field;
 
     // State Variable
     private boolean isAligned;
@@ -84,6 +89,7 @@ public class Drivetrain extends SubsystemBase {
 
         // Initialize Odometry
         odometry = new DifferentialDriveOdometry(DrivetrainSettings.Odometry.STARTING_ANGLE, DrivetrainSettings.Odometry.STARTING_POSITION);
+        field = new Field2d();
 
         // Configure Motors and Other Things
         setInverted(DrivetrainSettings.IS_INVERTED);
@@ -251,6 +257,8 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();
+        field.setRobotPose(getPose());
+        SmartDashboard.putData("Field", field);
     }
 
     private void resetOdometer(Pose2d start) {

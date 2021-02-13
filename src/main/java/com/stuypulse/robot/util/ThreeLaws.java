@@ -2,7 +2,6 @@ package com.stuypulse.robot.util;
 
 /**
  * 2020
- * 
  * @author Jason, Frank, Justin
  */
 

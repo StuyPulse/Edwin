@@ -133,13 +133,12 @@ public interface Constants {
         boolean IS_INVERTED = true;
 
         // The voltage multipliers for each side
-        double RIGHT_VOLTAGE_MUL = 1.0; 
+        double RIGHT_VOLTAGE_MUL = -1.0; 
         double LEFT_VOLTAGE_MUL = 1.0;
         
         //TODO: fill in 
         double TRACK_WIDTH = Units.inchesToMeters(30);
-        // im confused 
-        //L P4T pay for truce 
+ 
         interface Motion {
 
             DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(TRACK_WIDTH);
@@ -150,15 +149,16 @@ public interface Constants {
                 FeedForward.A
             );
             
-            //TODO: fill in
+            // TODO: fill in
             interface FeedForward {
                 double S = 0;
                 double V = 0;
                 double A = 0;
             }
 
+            // TODO: fill in
             interface PID {
-                double P = 0.0125;
+                double P = 0;
                 double I = 0;
                 double D = 0;
             }

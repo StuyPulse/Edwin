@@ -67,8 +67,8 @@ public class Drivetrain extends SubsystemBase {
         };
 
         // Create list of encoders based on motors
-        leftNEO = leftMotors[1].getEncoder();
-        rightNEO = rightMotors[1].getEncoder();
+        leftNEO = leftMotors[0].getEncoder();
+        rightNEO = rightMotors[0].getEncoder();
 
         leftNEO.setPosition(0);
         rightNEO.setPosition(0);
@@ -96,7 +96,7 @@ public class Drivetrain extends SubsystemBase {
         leftMotors[1].setIdleMode(IdleMode.kCoast);
         rightMotors[0].setIdleMode(IdleMode.kBrake);
         rightMotors[1].setIdleMode(IdleMode.kCoast);
-        setLowGear();
+        setHighGear();
     }
 
     /***********************

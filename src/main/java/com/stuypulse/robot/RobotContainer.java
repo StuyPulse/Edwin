@@ -52,9 +52,7 @@ public class RobotContainer {
 
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
+
     public RobotContainer() {
         // Configure the button bindings
         configureDefaultCommands();
@@ -62,23 +60,13 @@ public class RobotContainer {
         configureAutons();
     }
 
-    private void configureDefaultCommands() {
-        // Default driving command that uses gamepad
+
+    private void configureDefaultCommands() { 
         drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
-
-        // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
-
         woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-        // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel,
-        // operator));
     }
 
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     * created by instantiating a {@link GenericHID} or one of its subclasses
-     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-     * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
+
     private void configureButtonBindings() {
 
         operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
@@ -140,9 +128,6 @@ public class RobotContainer {
         // funnel, operator));
         // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
         // funnel, operator));
-        /**
-         * 
-         */
 
         if (DEBUG) {
             driver.getRightBumper().whileHeld(new DrivetrainArcCommand(drivetrain, 90, 8));
@@ -162,6 +147,7 @@ public class RobotContainer {
             debug.getDPadDown().whenPressed(new InstantCommand(() -> { pump.stop(); }));
         }
     }
+
 
     public void configureAutons() {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));

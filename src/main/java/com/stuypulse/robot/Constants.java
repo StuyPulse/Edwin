@@ -8,10 +8,18 @@
 
 package com.stuypulse.robot;
 
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
+
+import edu.wpi.first.wpilibj.util.Units;
+
+import java.nio.file.Path;
+
 import com.revrobotics.ColorMatch;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -28,26 +36,7 @@ import com.stuypulse.stuylib.network.SmartNumber;
  */
 public interface Constants {
 
-    /**
-     * Lets us turn feet and inches into just feet for measurements
-     * 
-     * @param feet   feet
-     * @param inches inches
-     * @return value in feet
-     */
-    public static double toFeet(int feet, double inches) {
-        return ((double) feet) + (inches / 12.0);
-    }
-
-    /**
-     * Lets us turn feet and inches into just feet for measurements
-     * 
-     * @param inches inches
-     * @return value in feet
-     */
-    public static double toFeet(double inches) {
-        return toFeet(0, inches);
-    }
+    Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
     public interface Ports {
 
@@ -144,9 +133,37 @@ public interface Constants {
         boolean IS_INVERTED = true;
 
         // The voltage multipliers for each side
-        double RIGHT_VOLTAGE_MUL = 1.0;
+        double RIGHT_VOLTAGE_MUL = 1.0; 
         double LEFT_VOLTAGE_MUL = 1.0;
+        
+        //TODO: fill in 
+        double TRACK_WIDTH = Units.inchesToMeters(30);
+        // im confused 
+        //L P4T pay for truce 
+        interface Motion {
 
+            DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(TRACK_WIDTH);
+
+            SimpleMotorFeedforward MOTOR_FEED_FORWARD = new SimpleMotorFeedforward(
+                FeedForward.S,
+                FeedForward.V, 
+                FeedForward.A
+            );
+            
+            //TODO: fill in
+            interface FeedForward {
+                double S = 0;
+                double V = 0;
+                double A = 0;
+            }
+
+            interface PID {
+                double P = 0.0125;
+                double I = 0;
+                double D = 0;
+            }
+        }
+        
         public interface Odometry {
             Translation2d STARTING_TRANSLATION = new Translation2d();
             Rotation2d STARTING_ANGLE = new Rotation2d();
@@ -157,7 +174,7 @@ public interface Constants {
         // Encoder Constants
         public interface Encoders {
 
-            double WHEEL_DIAMETER = 0.5;
+            double WHEEL_DIAMETER = Units.inchesToMeters(6);
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
             double LOW_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
@@ -169,11 +186,11 @@ public interface Constants {
     }
 
     public interface Alignment {
-        double TRENCH_DISTANCE = toFeet(199);
-        double INITATION_LINE_DISTANCE = toFeet(88);
+        double TRENCH_DISTANCE = Units.inchesToMeters(199);
+        double INITATION_LINE_DISTANCE = Units.inchesToMeters(88);
 
-        double MIN_DISTANCE = toFeet(3, 0);
-        double MAX_DISTANCE = toFeet(54, 0);
+        double MIN_DISTANCE = Units.feetToMeters(3);
+        double MAX_DISTANCE = Units.feetToMeters(54);
 
         double MIN_ALIGNMENT_TIME = 1.0;
         double INTERPOLATION_PERIOD = 0.25;
@@ -185,9 +202,9 @@ public interface Constants {
         public interface Speed {
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.3);
+            SmartNumber P = new SmartNumber("SpeedP", 0.984252);
             SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.02);
+            SmartNumber D = new SmartNumber("SpeedD", 0.0656168);
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -205,15 +222,15 @@ public interface Constants {
             double LIMELIGHT_MAX_SPEED = 0.9;
 
             // What is an acceptable error
-            double MAX_SPEED_ERROR = toFeet(3.0);
-            double MAX_SPEED_VEL = toFeet(9.0);
+            double MAX_SPEED_ERROR = Units.inchesToMeters(3.0);
+            double MAX_SPEED_VEL = Units.inchesToMeters(9.0);
         }
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0.022);
+            SmartNumber P = new SmartNumber("AngleP", 0.072178478);
             SmartNumber I = new SmartNumber("AngleI", 0);
-            SmartNumber D = new SmartNumber("AngleD", 0.0023);
+            SmartNumber D = new SmartNumber("AngleD", 0.00754593176);
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -234,15 +251,15 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = toFeet(7, 6);
+            double GOAL_HEIGHT = Units.feetToMeters(7) + Units.inchesToMeters(6);
 
             public interface Limelight {
-                double HEIGHT = toFeet(2, 10);
-                double DISTANCE = toFeet(0, 0);
+                double HEIGHT = Units.feetToMeters(2) + Units.inchesToMeters(10);
+                double DISTANCE = Units.feetToMeters(0);
                 double PITCH = 25;
                 SmartNumber YAW = new SmartNumber("Limelight Yaw", 2.0);
             }
-        }
+        }  
     }
 
     public interface ShooterSettings {
@@ -350,45 +367,45 @@ public interface Constants {
         /*********************************************************************************************
          * Movement Auton Command
          *********************************************************************************************/
-        double DISTANCE_TO_MOVE_AT_START = 3.25; // feet
+        double DISTANCE_TO_MOVE_AT_START = Units.feetToMeters(3.25); // feet
 
         /*********************************************************************************************
          * Shoot Three (At Start) Auton Command
          *********************************************************************************************/
-        double SHOOT_FROM_START_TO_GOAL = 10;
+        double SHOOT_FROM_START_TO_GOAL = Units.feetToMeters(10);
 
         /*********************************************************************************************
          * Shoot at start and take 3 balls from trench
          *********************************************************************************************/
-        double ANGLE_FROM_START_TO_TRENCH = 37.7;
-        double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = 5;
-        double DISTANCE_FROM_BALL_TO_BALL = 36;
-        double DISTANCE_FROM_TRENCH_TO_GOAL = 20;
+        double ANGLE_FROM_START_TO_TRENCH = Units.feetToMeters(37.7);
+        double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = Units.feetToMeters(5);
+        double DISTANCE_FROM_BALL_TO_BALL = Units.feetToMeters(36);
+        double DISTANCE_FROM_TRENCH_TO_GOAL = Units.feetToMeters(20);
 
         /*********************************************************************************************
          * Shoot three at start, get 3 balls from trench, and then take 2 balls from
          * rdvs
          *********************************************************************************************/
         double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
-        double DISTANCE_FROM_TRENCH_TO_RDVS = 109.85;
+        double DISTANCE_FROM_TRENCH_TO_RDVS = Units.feetToMeters(109.85);
         double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; // estimation between 0 - 54.12
-        double DISTANCE_BETWEEN_TWO_BALL = 16.57;
-        double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = 40; // estimation according to field
-                                                                                   // markings
+        double DISTANCE_BETWEEN_TWO_BALL = Units.feetToMeters(16.57);
+        double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = Units.feetToMeters(40); // estimation according to field
+                                                                                                       // markings
 
         /*********************************************************************************************
          * Shoot three at start and get 3 balls from rdvs
          *********************************************************************************************/
 
-        double DISTANCE_FROM_START_TO_RDVS = 107.83;
+        double DISTANCE_FROM_START_TO_RDVS = Units.feetToMeters(107.83);
         double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; // estimation from common knowledge
-        double DISTANCE_FOR_THREE_BALLS_IN_RDVS = 36; // estimate. Probably higher
+        double DISTANCE_FOR_THREE_BALLS_IN_RDVS = Units.feetToMeters(36); // estimate. Probably higher
 
         /*********************************************************************************************
          * Shoot three at start, and then get 5 balls from rdvs
          *********************************************************************************************/
 
         double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
-        double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = 25.42;
+        double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = Units.feetToMeters(25.42);
     }
 }

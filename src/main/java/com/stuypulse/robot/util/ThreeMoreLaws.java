@@ -9,7 +9,7 @@ public interface ThreeMoreLaws {
 	/**
 	 * Does anyone want to go out on valentines we don't have to do anything
 	 * serious, I'll pay for you, I just want to have the company of someone by my
-	 * side again
+	 * side again.
 	 * 
 	 * | YES | NO |
 	 * Yes
@@ -4606,5 +4606,10 @@ I had virtually no rehearsal for that.
  
 	 */
 	public void thirdLaw();
+
+	/*
+	No Soldier shall, in time of peace be quartered in any house, without the consent of the Owner, nor in time of war, but in a manner to be prescribed by law.
+	*/
+
 
 }

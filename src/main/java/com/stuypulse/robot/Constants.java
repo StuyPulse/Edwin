@@ -161,10 +161,10 @@ public interface Constants {
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
             double LOW_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
-            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE; // TODO: Find this value out
-            double YIELD = 0.98277777777777;
+            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 7.6199); // TODO: Find this value out
             double LEFT_YEILD = 1.0;
             double RIGHT_YEILD = -1.0;
+            
         }
     }
 

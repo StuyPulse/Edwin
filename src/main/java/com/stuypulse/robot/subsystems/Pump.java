@@ -32,6 +32,11 @@ public class Pump extends SubsystemBase {
         return 250.0 * (pressureGauge.getValue() / Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY) - 25.0;
     }
 
+    public void set(boolean compressing) {
+        if (compressing) compress();
+        else stop();
+    }
+
     /************************
      * SENDABLE INFORMATION *
      ************************/
@@ -47,11 +52,8 @@ public class Pump extends SubsystemBase {
 
         builder.addBooleanProperty(
             "Start Compressing", 
-            () -> compressor.enabled(), 
-            (x) -> { 
-                if(x) compress();
-                else stop();
-            });
+            compressor::enabled, 
+            this::set);
     }
 
 }

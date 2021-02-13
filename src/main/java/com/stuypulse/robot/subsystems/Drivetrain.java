@@ -1,7 +1,5 @@
 package com.stuypulse.robot.subsystems;
 
-import javax.swing.text.StyleContext.SmallAttributeSet;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -180,11 +178,6 @@ public class Drivetrain extends SubsystemBase {
     /********
      * NAVX *
      ********/
-
-    // Gets NavX object
-    public AHRS getNavX() {
-        return navx;
-    }
 
     // Gets current Angle of the Robot
     public Angle getAngle() {

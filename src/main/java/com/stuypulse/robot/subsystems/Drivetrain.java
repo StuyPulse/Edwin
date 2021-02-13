@@ -153,15 +153,17 @@ public class Drivetrain extends SubsystemBase {
 
     // Sets the current gear the robot is in
     public void setGear(Gear gear) {
-        this.gear = gear;
-        if (this.gear == Gear.HIGH) {
-            gearShift.set(true);
-            setNEODistancePerRotation(DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
-            reset();
-        } else {
-            gearShift.set(false);
-            setNEODistancePerRotation(DrivetrainSettings.Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
-            reset();
+        if(this.gear != gear) {
+            this.gear = gear;
+            if (this.gear == Gear.HIGH) {
+                gearShift.set(true);
+                setNEODistancePerRotation(DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
+                reset();
+            } else {
+                gearShift.set(false);
+                setNEODistancePerRotation(DrivetrainSettings.Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
+                reset();
+            }
         }
     }
 

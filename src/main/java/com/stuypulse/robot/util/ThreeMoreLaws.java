@@ -21,8 +21,6 @@ public interface ThreeMoreLaws {
 	 * high school at my dream institution ! :smiley: and I was wondering if you
 	 * guys can tell me about the school :smiley: anybody have any tips and info
 	 * about stuy? :grin: :thumbsup: i love stuy :smiley: stuy #1! :grin::thumbsup:
-	 * 
-	 * memes mindifuli.tk clik no skam i pramise seems legit
 	 */
 	public void secondLaw();
 

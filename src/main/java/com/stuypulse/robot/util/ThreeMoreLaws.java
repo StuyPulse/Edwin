@@ -22,18 +22,6 @@ public interface ThreeMoreLaws {
 	 * guys can tell me about the school :smiley: anybody have any tips and info
 	 * about stuy? :grin: :thumbsup: i love stuy :smiley: stuy #1! :grin::thumbsup:
 	 * 
-	 * 
-	 * 
-	 * Your ideas aren't too hot either, Mr. F*ck anyone's ideas. Who the hell are
-	 * you to give me a D+ on an idea? what's an "A""" in your standards hmm? just
-	 * keeping it how it is? Adding MORE hoppers and cheaters? not to mention the
-	 * new LAGGERS in every server. or something that's totally ridiculous and
-	 * useless? I'm just trying to suggest ideas that could be tweaked or something
-	 * to think about. You're honestly one of the most toxic people that plays pit.
-	 * At least Hazelis knows how to give constructive criticism instead of this
-	 * "F#CK NO" bullsh*t. and she didn't even shoot any of my ideas down. Makes
-	 * sense that she's in the conclave and you're not.
-	 * 
 	 * memes mindifuli.tk clik no skam i pramise seems legit
 	 */
 	public void secondLaw();

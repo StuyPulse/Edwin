@@ -27,7 +27,9 @@ public class SlalomPathAutonCommand extends DrivetrainRamseteCommand {
         // or else it will throw an error
         // henglo
         super(
-            drivetrain, Filesystem.getDeployDirectory("SlalomPath/Slalom.wpilib.json").robotRelative()
+            drivetrain, "SlalomPath/Slalom.wpilib.json"
         );
+
+        robotRelative();
     } 
 }

@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class SlalomPathAutonCommand extends DrivetrainRamseteCommand {
 
-    private Drivetrain drivetrain;
-    
+     
     public SlalomPathAutonCommand(Drivetrain drivetrain) {
         // idk
         // anthony said something like Filesystem.getDeployDirectory

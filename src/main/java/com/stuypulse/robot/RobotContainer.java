@@ -151,8 +151,7 @@ public class RobotContainer {
 
     public void configureAutons() {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
-
-        
+        autonChooser.addOption("Slalom Path", new SlalomPathAutonCommand(drivetrain));
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }

@@ -1,7 +1,7 @@
 # Bounce Path members :D 
 - Elaine Ye :))
 - Andrew Liu
-- Henry 
+- Henry Cen
 - Ivan Chen
 - Jason Zhou
 - Mark Zhu

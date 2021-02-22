@@ -9,7 +9,7 @@
 
 ## Our path
 
-* ![Barrel Racing](barrel-racing.jpg)
+* ![Barrel Racing](barrel-racing.png)
 * this is not an updated screenshot 
 
 ## TODO

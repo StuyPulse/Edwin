@@ -6,3 +6,13 @@
 * Kirill Vesialo
 * Benjamin Goldfisher
 * Dylan Hai
+
+## Our path
+
+* ![Barrel Racing](barrel-racing.jpg)
+* this is not an updated screenshot 
+
+## TODO
+
+* Add the code auton that runs the barrel racing path
+* Move pathweaver/PathWeaver into pathweaver/BarrelRacing/PathWeaver

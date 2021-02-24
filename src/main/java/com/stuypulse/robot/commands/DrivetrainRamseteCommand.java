@@ -1,4 +1,3 @@
-
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings.Motion;

@@ -6,3 +6,4 @@
 - Jason Zhou
 - Mark Zhu
 - Reya Miller
+- Vincent Wang

@@ -1,7 +1,5 @@
 package com.stuypulse.robot.commands.auton.routines;
 
-import java.sql.DriverAction;
-
 import com.stuypulse.robot.commands.DrivetrainRamseteCommand;
 import com.stuypulse.robot.subsystems.Drivetrain;
 

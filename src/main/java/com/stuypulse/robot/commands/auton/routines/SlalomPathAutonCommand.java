@@ -1,34 +1,17 @@
 package com.stuypulse.robot.commands.auton.routines;
 
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.commands.DrivetrainRamseteCommand;
 
-import edu.wpi.first.wpilibj2.Filesystem.getDeployDirectory;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.Filesystem;
 
 public class SlalomPathAutonCommand extends DrivetrainRamseteCommand {
-
-     
     public SlalomPathAutonCommand(Drivetrain drivetrain) {
-        // idk
-        // anthony said something like Filesystem.getDeployDirectory
-        // ohhh
-        //I feel useless- Eric
-        /* 
-        WHAT THIS IS:
-        If you look on the side there's a folder called "deploy"
-        I believe Filesystem.getDeployDirectory just gets inserts the path to the deploy folder before whatever
-        string you input.
-        Then all you have to do is 
-        wrt
-        
-        */
-        // apparently you have to put the super statement in the beginning of the constructor
-        // or else it will throw an error
-        // henglo
         super(
-            drivetrain, "SlalomPath/Slalom.wpilib.json"
-        );
+            drivetrain, Filesystem.getDeployDirectory() + "SlalomPath/Slalom.wpilib.json"
+        ); 
 
-        robotRelative();
+        robotRelative(); 
     } 
+    
 }

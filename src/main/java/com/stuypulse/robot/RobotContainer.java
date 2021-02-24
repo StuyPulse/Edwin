@@ -151,7 +151,7 @@ public class RobotContainer {
 
     public void configureAutons() {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
-
+        autonChooser.addOption("Bounce Path", new BouncePathAutonCommand(drivetrain));
         
 
         SmartDashboard.putData("Autonomous", autonChooser);

@@ -46,9 +46,7 @@ public class RobotContainer {
 
     private final LEDController ledController = new LEDController(0);
 
-    private final Gamepad driver = new Xbox(Ports.Gamepad.DRIVER);
-    private final Gamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
-    private final Gamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+    private final Gamepad tester = new PS4(Ports.Gamepad.TESTER);
 
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
@@ -62,90 +60,41 @@ public class RobotContainer {
 
 
     private void configureDefaultCommands() { 
-        drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
-        woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
+        drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, tester));
+        woof.setDefaultCommand(new WoofManualControlCommand(woof, tester));
     }
 
 
     private void configureButtonBindings() {
 
-        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-        new Button(
-                () -> (Math.abs(operator.getLeftStick().magnitude()) >= Math.pow(ClimberSettings.MOVE_DEADBAND, 2)
-                        && operator.getLeftY() >= Math.abs(operator.getLeftX())))
-                                .whileHeld(new ClimberSetupCommand(climber, intake));
-        new Button(
-                () -> (Math.abs(operator.getLeftStick().magnitude()) >= Math.pow(ClimberSettings.MOVE_DEADBAND, 2)
-                        && operator.getLeftY() <= -Math.abs(operator.getLeftX())))
-                                .whileHeld(new ClimberRobotClimbCommand(climber, intake));
-        // new Button(() -> (Math.abs(operator.getLeftMag()) >=
-        // Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX())
-        // >= Math.abs(operator.getLeftY()))).whileHeld(new
-        // ClimberMoveYoyoCommand(climber, operator));
+        // Climber Control
+        tester.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        tester.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
+        tester.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
-        operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-        operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
-        operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
-        // operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
+        // Funnel and Chimney
+        tester.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
+        tester.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+        tester.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+        tester.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, tester));
 
-        operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
-        operator.getRightTriggerButton().whileHeld(new IntakeAcquireSetupCommand(intake));
+        // Intake Controlls
+        tester.getTopButton().whenPressed(new IntakeRetractCommand(intake));
+        tester.getLeftBumper().whileHeld(new IntakeDeacquireCommand(intake));
+        tester.getRightBumper().whileHeld(new IntakeAcquireSetupCommand(intake));
 
-        // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
-        operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
-
-        // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
-
-        operator.getDPadUp().whenPressed(
-                new ShooterControlCommand(shooter, ShooterSettings.FAR_RPM, Shooter.ShooterMode.SHOOT_FROM_FAR));
-        operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, ShooterSettings.INITATION_LINE_RPM,
-                Shooter.ShooterMode.SHOOT_FROM_INITIATION_LINE));
-        operator.getDPadLeft().whenPressed(
-                new ShooterControlCommand(shooter, ShooterSettings.TRENCH_RPM, Shooter.ShooterMode.SHOOT_FROM_TRENCH));
-        // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
-        // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
-        // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
-        operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter))
+        // Shooter Speed Control
+        tester.getDPadUp().whenPressed(new ShooterStopCommand(shooter))
                 .whenPressed(new ShooterControlCommand(shooter, 0, Shooter.ShooterMode.NONE));
+        tester.getDPadRight().whenPressed(new ShooterControlCommand(shooter, ShooterSettings.INITATION_LINE_RPM,
+                Shooter.ShooterMode.SHOOT_FROM_INITIATION_LINE));
+        tester.getDPadLeft().whenPressed(
+                new ShooterControlCommand(shooter, ShooterSettings.TRENCH_RPM, Shooter.ShooterMode.SHOOT_FROM_TRENCH));
 
-        operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-
-        operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
-
-        operator.getStartButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-        driver.getLeftButton()
-                .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE).setNeverFinish())
-                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-        driver.getTopButton()
+        // Alignment Control
+        tester.getDPadDown()
                 .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE).setNeverFinish())
-                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-        // driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
-        // funnel, operator));
-        // driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
-        // funnel, operator));
-        // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
-        // funnel, operator));
-
-        if (DEBUG) {
-            driver.getRightBumper().whileHeld(new DrivetrainArcCommand(drivetrain, 90, 8));
-            driver.getLeftBumper().whileHeld(new DrivetrainArcCommand(drivetrain, -90, 8));
-
-            // Auto alignment for angle and speed and update pid values
-            debug.getLeftButton().whileHeld(new DrivetrainAutoAngleCommand(drivetrain,
-                    new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
-            debug.getTopButton().whileHeld(new DrivetrainAutoSpeedCommand(drivetrain,
-                    new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
-
-            // Steal driving abilities from the driver
-            debug.getBottomButton().whileHeld(new DrivetrainDriveCommand(drivetrain, debug));
-
-            // DPad controls for 90 degree turns and 2.5 ft steps
-            debug.getDPadUp().whenPressed(new InstantCommand(() -> { pump.compress(); }));
-            debug.getDPadDown().whenPressed(new InstantCommand(() -> { pump.stop(); }));
-        }
+                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, tester));
     }
 
 
@@ -194,7 +143,7 @@ public class RobotContainer {
     }
 
     public Gamepad getDriver() {
-        return driver;
+        return tester;
     }
 
 }

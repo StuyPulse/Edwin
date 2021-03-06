@@ -15,13 +15,13 @@ import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.util.LEDController;
 
 import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
 import com.stuypulse.stuylib.input.gamepads.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -70,15 +70,15 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-        new ButtonWrapper(
+        new Button(
                 () -> (Math.abs(operator.getLeftStick().magnitude()) >= Math.pow(ClimberSettings.MOVE_DEADBAND, 2)
                         && operator.getLeftY() >= Math.abs(operator.getLeftX())))
                                 .whileHeld(new ClimberSetupCommand(climber, intake));
-        new ButtonWrapper(
+        new Button(
                 () -> (Math.abs(operator.getLeftStick().magnitude()) >= Math.pow(ClimberSettings.MOVE_DEADBAND, 2)
                         && operator.getLeftY() <= -Math.abs(operator.getLeftX())))
                                 .whileHeld(new ClimberRobotClimbCommand(climber, intake));
-        // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >=
+        // new Button(() -> (Math.abs(operator.getLeftMag()) >=
         // Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX())
         // >= Math.abs(operator.getLeftY()))).whileHeld(new
         // ClimberMoveYoyoCommand(climber, operator));

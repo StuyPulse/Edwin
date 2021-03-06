@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Limelight.setLEDMode(Limelight.LEDMode.PIPELINE);
+        Limelight.getInstance().setLEDMode(Limelight.LEDMode.PIPELINE);
     }
 
     /**

@@ -151,7 +151,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER));
         this.speed.setOutputFilter(
             new IFilterGroup(
-                (x) -> SLMath.limit(x, maxSpeed),
+                (x) -> SLMath.clamp(x, maxSpeed),
                 new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER)
             )
         );
@@ -195,7 +195,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public double getSpeed() {
         // The more unaligned the robot is, the less it moves
         double s = 1.5 - Math.abs(angle.getError()) / Alignment.Angle.MAX_ANGLE_ERROR;
-        return speed.update(this.getSpeedError()) * SLMath.limit(s, 0, 1.0);
+        return speed.update(this.getSpeedError()) * SLMath.clamp(s, 0, 1.0);
     }
 
     // Angle robot has to turn
@@ -249,6 +249,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Turn limelight off when no longer aligning due to rules
     public void end(boolean interrupted) {
-        Limelight.setLEDMode(Limelight.LEDMode.FORCE_OFF);
+        Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_OFF);
     }
 }

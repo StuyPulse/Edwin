@@ -19,7 +19,7 @@ import com.stuypulse.stuylib.math.SLMath;
 
 public class Shooter extends SubsystemBase {
 
-    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.limit(x, ShooterSettings.I_LIMIT.doubleValue());
+    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.clamp(x, ShooterSettings.I_LIMIT.doubleValue());
 
     public enum ShooterMode {
         NONE, SHOOT_FROM_INITIATION_LINE, SHOOT_FROM_TRENCH, SHOOT_FROM_FAR

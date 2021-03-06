@@ -24,12 +24,12 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
 
     public void init() {
         // Turn on LEDs for CV
-        Limelight.setLEDMode(Limelight.LEDMode.FORCE_ON);
+        Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_ON);
     }
 
     public double getSpeedError() {
-        if (Limelight.hasValidTarget()) {
-            double goal_pitch = Limelight.getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
+        if (Limelight.getInstance().getValidTarget()) {
+            double goal_pitch = Limelight.getInstance().getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
             double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
             double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
                     - Alignment.Measurements.Limelight.DISTANCE;
@@ -52,8 +52,8 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
     }
 
     public Angle getAngleError() {
-        if (Limelight.hasValidTarget()) {
-            return Angle.fromDegrees(Limelight.getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue());
+        if (Limelight.getInstance().getValidTarget()) {
+            return Angle.fromDegrees(Limelight.getInstance().getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue());
         } else {
             return Angle.fromDegrees(0);
         }

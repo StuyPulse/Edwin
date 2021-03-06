@@ -9,22 +9,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pump extends SubsystemBase {
 
+    private boolean enabled;
     private final Compressor compressor;
     private final AnalogInput pressureGauge;
 
     public Pump() {
+        enabled = false;
         compressor = new Compressor();
         pressureGauge = new AnalogInput(Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_PORT);
     }
 
     // Start Compressing the Robot
     public void compress() {
-        compressor.start();
+        enabled = true;
     }
 
     // Stop Compressing
     public void stop() {
-        compressor.stop();
+        enabled = false;
     }
 
     // Get the current pressure of te pneumatics
@@ -32,9 +34,26 @@ public class Pump extends SubsystemBase {
         return 250.0 * (pressureGauge.getValue() / Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY) - 25.0;
     }
 
+    // Set the compressor
     public void set(boolean compressing) {
-        if (compressing) compress();
-        else stop();
+        enabled = compressing;
+    }
+
+    // Get the compressor
+    public boolean get() {
+        return enabled;
+    }
+
+    // Update the compressor to the current value
+    @Override
+    public void periodic() {
+        super.periodic();
+
+        if(get()) {
+            compressor.start();
+        } else {
+            compressor.stop();
+        }
     }
 
     /************************
@@ -52,7 +71,7 @@ public class Pump extends SubsystemBase {
 
         builder.addBooleanProperty(
             "Start Compressing", 
-            compressor::enabled, 
+            this::get, 
             this::set);
     }
 

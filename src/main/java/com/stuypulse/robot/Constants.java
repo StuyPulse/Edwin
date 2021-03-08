@@ -111,20 +111,20 @@ public interface Constants {
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        double QUICKTURN_THRESHOLD = 0.05;
+        SmartNumber QUICKTURN_THRESHOLD = new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
 
         // How much to slow down quick turn
-        double QUICKTURN_SPEED = 0.5;
+        SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 0.5);
 
         // Low Pass Filter and deadband for Driver Controls
-        double SPEED_DEADBAND = 0.1;
-        double ANGLE_DEADBAND = 0.1;
+        SmartNumber SPEED_DEADBAND = new SmartNumber("Driver Settings/Speed Deadband", 0.1);
+        SmartNumber ANGLE_DEADBAND = new SmartNumber("Driver Settings/Turn Deadband", 0.1);
 
-        double SPEED_POWER = 1.0;
-        double ANGLE_POWER = 1.0;
+        SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
+        SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        double SPEED_FILTER = 0.5;
-        double ANGLE_FILTER = 0.05;
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.1);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.1);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
@@ -178,7 +178,7 @@ public interface Constants {
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
             double LOW_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
-            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 7.6199); // TODO: Find this value out
+            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71); // TODO: Find this value out
             double LEFT_YEILD = 1.0;
             double RIGHT_YEILD = -1.0;
             
@@ -195,16 +195,16 @@ public interface Constants {
         double MIN_ALIGNMENT_TIME = 1.0;
         double INTERPOLATION_PERIOD = 0.25;
 
-        SmartNumber AUTOTUNE_P = new SmartNumber("Auto Tune P", 0.8);
-        SmartNumber AUTOTUNE_I = new SmartNumber("Auto Tune I", 0.0);
-        SmartNumber AUTOTUNE_D = new SmartNumber("Auto Tune D", 0.1);
+        SmartNumber AUTOTUNE_P = new SmartNumber("Drivetrain/Alignment/Auto Tune/P", 0.8);
+        SmartNumber AUTOTUNE_I = new SmartNumber("Drivetrain/Alignment/Auto Tune/I", 0.0);
+        SmartNumber AUTOTUNE_D = new SmartNumber("Drivetrain/Alignment/Auto Tune/D", 0.1);
 
         public interface Speed {
 
             // Preset PID Values
-            SmartNumber P = new SmartNumber("SpeedP", 0.984252);
-            SmartNumber I = new SmartNumber("SpeedI", 0);
-            SmartNumber D = new SmartNumber("SpeedD", 0.0656168);
+            SmartNumber P = new SmartNumber("Drivetrain/Alignment/Speed/P", 0.984252);
+            SmartNumber I = new SmartNumber("Drivetrain/Alignment/Speed/I", 0);
+            SmartNumber D = new SmartNumber("Drivetrain/Alignment/Speed/D", 0.0656168);
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -215,8 +215,8 @@ public interface Constants {
             double BANGBANG_SPEED = 0.5;
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Speed In Filter", 0);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Speed Out Filter", 0.2);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Speed/In Filter", 0);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Speed/Out Filter", 0.2);
 
             // Max speed for limelight to move
             double LIMELIGHT_MAX_SPEED = 0.9;
@@ -228,9 +228,9 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("AngleP", 0.072178478);
-            SmartNumber I = new SmartNumber("AngleI", 0);
-            SmartNumber D = new SmartNumber("AngleD", 0.00754593176);
+            SmartNumber P = new SmartNumber("Drivetrain/Alignment/Angle/P", 0.072178478);
+            SmartNumber I = new SmartNumber("Drivetrain/Alignment/Angle/I", 0);
+            SmartNumber D = new SmartNumber("Drivetrain/Alignment/Angle/D", 0.00754593176);
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -241,8 +241,8 @@ public interface Constants {
             double BANGBANG_SPEED = 0.4;
 
             // Low pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Angle In Filter", 0.00);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Angle Out Filter", 0.06);
+            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Angle/In Filter", 0.00);
+            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Angle/Out Filter", 0.06);
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 3;
@@ -274,16 +274,16 @@ public interface Constants {
 
         double TOLERANCE = 100;
 
-        SmartNumber I_LIMIT = new SmartNumber("Shooter / Feeder I Limit", 400);
-        SmartNumber I_RANGE = new SmartNumber("Shooter / Feeder I Range", 400);
+        SmartNumber I_LIMIT = new SmartNumber("Shooter/I Limit", 400);
+        SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 400);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Shooter P", 0.001234);
-            SmartNumber I = new SmartNumber("Shooter I", 0.003559);
-            SmartNumber D = new SmartNumber("Shooter D", 0.000107);
-            SmartNumber FF = new SmartNumber("Shooter FF", 0.000195);
+            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.001234);
+            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.003559);
+            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.000107);
+            SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0.000195);
 
             double BANGBANG_SPEED = 0.2;
 
@@ -295,10 +295,10 @@ public interface Constants {
 
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Feeder P", 0.000944);
-            SmartNumber I = new SmartNumber("Feeder I", 0.002550);
-            SmartNumber D = new SmartNumber("Feeder D", 0.000087);
-            SmartNumber FF = new SmartNumber("Feeder FF", 0.000205);
+            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.000944);
+            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.002550);
+            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.000087);
+            SmartNumber FF = new SmartNumber("Shooter/Feeder/FF", 0.000205);
 
             double BANGBANG_SPEED = 0.2;
         }

@@ -1,10 +1,9 @@
 package com.stuypulse.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants.Ports;
@@ -30,18 +29,9 @@ public class Funnel extends SubsystemBase {
         motor.stopMotor();
     }
 
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
-
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-
-        builder.addDoubleProperty(
-            "Motor Speed", 
-            motor::get, 
-            motor::set);
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putNumber("Funnel/Motor Speed", motor.get());
     }
-
 }

@@ -3,7 +3,7 @@ package com.stuypulse.robot.subsystems;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
@@ -44,33 +44,14 @@ public class ColorSensor extends SubsystemBase {
         }
     }
 
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
-
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red", getRawDetectedColor().red);
+        SmartDashboard.putNumber("Color Sensor/Raw Detected Color Blue", getRawDetectedColor().blue);
+        SmartDashboard.putNumber("Color Sensor/Raw Detected Color Green", getRawDetectedColor().green);
 
-        builder.addDoubleProperty(
-            "Raw Detected Color Red", 
-            () -> getRawDetectedColor().red, 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Raw Detected Color Green", 
-            () -> getRawDetectedColor().green, 
-            (x) -> {});
-                
-        builder.addDoubleProperty(
-            "Raw Detected Color Blue", 
-            () -> getRawDetectedColor().blue, 
-            (x) -> {});
-
-        builder.addStringProperty(
-            "Detected Color", 
-            () -> getDetectedColor(), 
-            (x) -> {});
+        SmartDashboard.putString("Color Sensor/Detected Color", getDetectedColor());
     }
 
 }

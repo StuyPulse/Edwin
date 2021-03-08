@@ -8,7 +8,7 @@ import com.stuypulse.robot.Constants.IntakeSettings;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -25,6 +25,10 @@ public class Intake extends SubsystemBase {
         sensor = new DigitalInput(Ports.Intake.SENSOR_PORT);
 
         motor.setInverted(true);
+
+        // Add Children to Subsystem
+        addChild("Double Solenoid", solenoid);
+        addChild("Sensor", sensor);
     }
 
     /*** Extend / Retract ***/
@@ -57,18 +61,9 @@ public class Intake extends SubsystemBase {
         return !sensor.get();
     }
 
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
-
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-
-        builder.addBooleanProperty(
-            "Ball Detected", 
-            () -> isBallDetected(), 
-            (x) -> {});
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putBoolean("Intake/Ball Detected", isBallDetected());
     }
-
 }

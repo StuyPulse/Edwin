@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -97,6 +96,12 @@ public class Drivetrain extends SubsystemBase {
         rightMotors[0].setIdleMode(IdleMode.kBrake);
         rightMotors[1].setIdleMode(IdleMode.kCoast);
         setHighGear();
+
+        // Add Children to Subsystem
+        addChild("Gear Shift", gearShift);
+        addChild("Differential Drive", drivetrain);
+        addChild("NavX", navx);
+        addChild("Field Map", field);
     }
 
     /***********************
@@ -249,13 +254,6 @@ public class Drivetrain extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
-    @Override
-    public void periodic() {
-        updateOdometry();
-        field.setRobotPose(getPose());
-        SmartDashboard.putData("Field", field);
-    }
-
     private void resetOdometer(Pose2d start) {
         odometry.resetPosition(start, DrivetrainSettings.Odometry.STARTING_ANGLE);
     }
@@ -329,8 +327,8 @@ public class Drivetrain extends SubsystemBase {
 
     // Drives using curvature drive algorithm with automatic quick turn
     public void curvatureDrive(double speed, double rotation) {
-        if (Math.abs(speed) < DrivetrainSettings.QUICKTURN_THRESHOLD) {
-            curvatureDrive(speed, rotation * DrivetrainSettings.QUICKTURN_SPEED, true);
+        if (Math.abs(speed) < DrivetrainSettings.QUICKTURN_THRESHOLD.get()) {
+            curvatureDrive(speed, rotation * DrivetrainSettings.QUICKTURN_SPEED.get(), true);
         } else {
             curvatureDrive(speed, rotation, false);
         }
@@ -348,90 +346,34 @@ public class Drivetrain extends SubsystemBase {
         return isAligned;
     }
 
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
+    /*********************
+     * DEBUG INFORMATION *
+     *********************/
 
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
+    public void periodic() {
+        updateOdometry();
+        field.setRobotPose(getPose());
+        
+        // Smart Dashboard Information
+        SmartDashboard.putData("Drivetrain/Field", field);
+        SmartDashboard.putString("Drivetrain/Current Gear", getGear().equals(Gear.HIGH) ? "High Gear" : "Low Gear");
+        SmartDashboard.putNumber("Drivetrain/Odometer X Position (m)", getPose().getX());
+        SmartDashboard.putNumber("Drivetrain/Odometer Y Position (m)", getPose().getY());
+        SmartDashboard.putNumber("Drivetrain/Odometer Rotation (deg)", getPose().getRotation().getDegrees());
+        
+        SmartDashboard.putNumber("Drivetrain/Motor Voltage Left (V)", getLeftVoltage());
+        SmartDashboard.putNumber("Drivetrain/Motor Voltage Right (V)", getRightVoltage());
 
-        // Gears
-        builder.addStringProperty(
-            "Current Gear", 
-            () -> getGear().equals(Gear.HIGH) ? "High Gear" : "Low Gear", 
-            (x) -> {});
+        SmartDashboard.putNumber("Drivetrain/Distance Traveled (m)", getDistance());
+        SmartDashboard.putNumber("Drivetrain/Distance Traveled Left (m)", getLeftDistance());
+        SmartDashboard.putNumber("Drivetrain/Distance Traveled Right (m)", getRightDistance());
+        
+        SmartDashboard.putNumber("Drivetrain/Velocity (m per s)", getVelocity());
+        SmartDashboard.putNumber("Drivetrain/Velocity Left (m per s)", getLeftVelocity());
+        SmartDashboard.putNumber("Drivetrain/Velocity Right (m per s)", getRightVelocity());
 
-        // Odometer
-        builder.addDoubleProperty(
-            "Odometer X Position (f)", 
-            () -> getPose().getX(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Odometer Y Position (f)", 
-            () -> getPose().getY(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Odometer Rotation (deg)", 
-            () -> getPose().getRotation().getDegrees(), 
-            (x) -> {});
-            
-        // Voltage
-        builder.addDoubleProperty(
-            "Motor Voltage Left (V)", 
-            () -> getLeftVoltage(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Motor Voltage Right (V)", 
-            () -> getRightVoltage(), 
-            (x) -> {});
-
-        // Encoders Distance
-        builder.addDoubleProperty(
-            "Distance Traveled (f)", 
-            () -> getDistance(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Distance Traveled Left (f)",
-            () -> getLeftDistance(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Distance Traveled Right (f)", 
-            () -> getRightDistance(), 
-            (x) -> {});
-
-        // Encoders Velocity (you can't use f/s because "/" is used for folders)
-        builder.addDoubleProperty(
-            "Velocity (f per s)", 
-            () -> getVelocity(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Velocity Left (f per s)", 
-            () -> getLeftVelocity(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Velocity Right (f per s)", 
-            () -> getRightVelocity(), 
-            (x) -> {});
-
-        // NavX
-        builder.addDoubleProperty(
-            "Angle NavX (deg)", 
-            () -> getAngle().toDegrees(), 
-            (x) -> {});
-
-        // Current State
-        builder.addBooleanProperty(
-            "Is Aligned", 
-            () -> getIsAligned(), 
-            (x) -> {});
+        SmartDashboard.putNumber("Drivetrain/Angle NavX (deg)", getAngle().toDegrees());
+        SmartDashboard.putBoolean("Drivetrain/Is Aligned", getIsAligned());
     }
-
 }

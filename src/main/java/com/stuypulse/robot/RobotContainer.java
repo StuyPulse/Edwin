@@ -17,6 +17,7 @@ import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.*;
 
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,14 +47,16 @@ public class RobotContainer {
 
     private final LEDController ledController = new LEDController(0);
 
-    private final Gamepad driver = new Xbox(Ports.Gamepad.DRIVER);
-    private final Gamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
-    private final Gamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+    public final Gamepad debug = new AutoGamepad(Ports.Gamepad.DEBUGGER);
 
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
 
     public RobotContainer() {
+        LiveWindow.disableAllTelemetry();
+
         // Configure the button bindings
         configureDefaultCommands();
         configureButtonBindings();

@@ -1,6 +1,6 @@
 package com.stuypulse.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -20,6 +20,9 @@ public class Woof extends SubsystemBase {
         motor = new CANSparkMax(Ports.Woof.MOTOR_PORT, MotorType.kBrushless);
         encoder = motor.getEncoder();
         colorSensor = new ColorSensor();
+
+        // Add Children to Subsystem
+        addChild("Color Sensor", colorSensor);
     }
 
     // Controlling the motor
@@ -50,18 +53,9 @@ public class Woof extends SubsystemBase {
         return colorSensor;
     }
 
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
-
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-
-        builder.addDoubleProperty(
-            "Woof Rotations", 
-            () -> getRotations(), 
-            (x) -> {});
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putNumber("Woof/Woof Rotations", getRotations());
     }
-
 }

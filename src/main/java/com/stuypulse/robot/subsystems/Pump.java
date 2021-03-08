@@ -1,59 +1,54 @@
 package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.robot.Constants.Ports;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pump extends SubsystemBase {
 
+    private final SmartBoolean enabled;
     private final Compressor compressor;
     private final AnalogInput pressureGauge;
 
     public Pump() {
+        enabled = new SmartBoolean("Pump/Compressor Enabled", false);
         compressor = new Compressor();
         pressureGauge = new AnalogInput(Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_PORT);
+
+        // Add Children to Subsystem
+        addChild("Compressor", compressor);
+        addChild("Pressure Gauge", pressureGauge);
     }
 
     // Start Compressing the Robot
     public void compress() {
-        compressor.start();
+        this.set(true);
     }
 
     // Stop Compressing
     public void stop() {
-        compressor.stop();
+        this.set(false);
     }
 
-    // Get the current pressure of te pneumatics
+    // Get the current pressure of the pneumatics
     public double getPressure() {
         return 250.0 * (pressureGauge.getValue() / Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY) - 25.0;
     }
 
+    // Set the compressor to on or off
     public void set(boolean compressing) {
-        if (compressing) compress();
-        else stop();
+        enabled.set(compressing);
     }
-
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
 
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
+    public void periodic() {
+        compressor.setClosedLoopControl(enabled.get());
 
-        builder.addDoubleProperty(
-            "Robot Air Pressure", 
-            () -> getPressure() / 1000.0, 
-            (x) -> {});
-
-        builder.addBooleanProperty(
-            "Start Compressing", 
-            compressor::enabled, 
-            this::set);
+        // SmartDashboard
+        SmartDashboard.putNumber("Pump/Robot Air Pressure", getPressure() / 1000.0);
     }
-
 }

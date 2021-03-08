@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.ChimneySettings;
@@ -26,6 +26,10 @@ public class Chimney extends SubsystemBase {
         upperSensor = new DigitalInput(Ports.Chimney.UPPER_SENSOR_PORT);
 
         motor.setIdleMode(IdleMode.kCoast);
+
+        // Add Children to Subsystem
+        addChild("Lower Sensor", lowerSensor);
+        addChild("Upper Sensor", upperSensor);
     }
 
     // IR SENSOR VALUES
@@ -50,19 +54,10 @@ public class Chimney extends SubsystemBase {
         motor.stopMotor();
     }
 
-    // SEND VALUES TO SMART DASHBOARD
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-
-        builder.addBooleanProperty(
-            "Upper Chimney Sensor", 
-            () -> getUpperChimneyValue(), 
-            (x) -> {});
-
-        builder.addBooleanProperty(
-            "Lower Chimney Sensor", 
-            () -> getLowerChimneyValue(), 
-            (x) -> {});
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putBoolean("Chimney/Upper Chimney Sensor", getUpperChimneyValue());
+        SmartDashboard.putBoolean("Chimney/Lower Chimney Sensor", getLowerChimneyValue());
     }
 }

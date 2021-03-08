@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.robot.Constants.Ports;
@@ -24,6 +24,9 @@ public class Climber extends SubsystemBase {
         liftSolenoid = new Solenoid(Ports.Climber.LIFT_SOLENOID_CHANNEL);
 
         liftMotor.setInverted(true);
+
+        // Add Children to Subsystem
+        addChild("Life Solenoid", liftSolenoid);
     }
 
     public void setNeutralMode(IdleMode mode) {
@@ -79,18 +82,10 @@ public class Climber extends SubsystemBase {
         // return limitSwitch.get();
     }
 
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
-
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-
-        builder.addBooleanProperty(
-            "Is At Bottom", 
-            () -> isAtBottom(), 
-            (x) -> {});
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putBoolean("Climber/Is At Bottom", isAtBottom());
     }
 
 }

@@ -17,6 +17,7 @@ import com.stuypulse.robot.util.LEDController;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.*;
 
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,12 +47,14 @@ public class RobotContainer {
 
     private final LEDController ledController = new LEDController(0);
 
-    private final Gamepad tester = new PS4(Ports.Gamepad.TESTER);
+    private final Gamepad tester = new AutoGamepad(Ports.Gamepad.TESTER);
 
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
 
     public RobotContainer() {
+        LiveWindow.disableAllTelemetry();
+
         // Configure the button bindings
         configureDefaultCommands();
         configureButtonBindings();

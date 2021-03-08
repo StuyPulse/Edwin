@@ -12,7 +12,7 @@ import com.stuypulse.stuylib.streams.filters.IFilter;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.stuypulse.stuylib.math.SLMath;
@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase {
     private final CANEncoder leftShooterEncoder;
     private final CANEncoder rightShooterEncoder;
     private final CANEncoder middleShooterEncoder;
-    private CANEncoder feederEncoder;
+    private final CANEncoder feederEncoder;
 
     // Hood Solenoid
     private final Solenoid hoodSolenoid;
@@ -93,6 +93,10 @@ public class Shooter extends SubsystemBase {
         middleShooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
         feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+
+        // Add Children to Subsystem
+        addChild("Hood Solenoid", hoodSolenoid);
+        addChild("Shooter Motors", shooterMotors);
     }
 
     /************
@@ -137,6 +141,11 @@ public class Shooter extends SubsystemBase {
             stop();
         }
 
+        // SmartDashboard
+        SmartDashboard.putNumber("Shooter/Target RPM", targetRPM);
+        SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
+        SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
+        SmartDashboard.putBoolean("Shooter/Hood Extended", hoodSolenoid.get());
     }
 
     /********
@@ -165,33 +174,5 @@ public class Shooter extends SubsystemBase {
 
     public ShooterMode getShooterMode() {
         return mode;
-    }
-
-    /************************
-     * SENDABLE INFORMATION *
-     ************************/
-
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-
-        builder.addDoubleProperty(
-            "Target RPM", 
-            () -> targetRPM, 
-            (x) -> setTargetRPM(x));
-
-        builder.addDoubleProperty(
-            "Shooter RPM", 
-            () -> getShooterRPM(), 
-            (x) -> {});
-
-        builder.addDoubleProperty(
-            "Feeder RPM", 
-            () -> getFeederRPM(), 
-            (x) -> {});
-
-        builder.addBooleanProperty(
-            "Hood Extended", 
-            () -> hoodSolenoid.get(), 
-            (x) -> hoodSolenoid.set(x));
     }
 }

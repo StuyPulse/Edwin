@@ -149,9 +149,9 @@ public interface Constants {
             
             // TODO: fill in
             interface FeedForward {
-                double S = 0;
-                double V = 0;
-                double A = 0;
+                double S = 0.5;
+                double V = 2.0;
+                double A = 1.0;
             }
 
             // TODO: fill in
@@ -176,7 +176,7 @@ public interface Constants {
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
             double LOW_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
-            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71); // TODO: Find this value out
+            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 /  7.73);
             double LEFT_YEILD = 1.0;
             double RIGHT_YEILD = -1.0;
             

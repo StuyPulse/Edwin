@@ -92,9 +92,9 @@ public class Drivetrain extends SubsystemBase {
         setInverted(DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         leftMotors[0].setIdleMode(IdleMode.kBrake);
-        leftMotors[1].setIdleMode(IdleMode.kCoast);
+        leftMotors[1].setIdleMode(IdleMode.kBrake);
         rightMotors[0].setIdleMode(IdleMode.kBrake);
-        rightMotors[1].setIdleMode(IdleMode.kCoast);
+        rightMotors[1].setIdleMode(IdleMode.kBrake);
         setHighGear();
 
         // Add Children to Subsystem

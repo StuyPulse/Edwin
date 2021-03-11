@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
  */
 public class RobotContainer {
 
+    private final boolean SINGLE_CONTROLLER = true;
     private final boolean DEBUG = true;
 
     // Subsystems
@@ -72,7 +73,37 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
 
-        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        if(SINGLE_CONTROLLER) {
+            // Climber Control
+            driver.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+            driver.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
+            driver.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
+
+            // Funnel and Chimney
+            driver.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
+            driver.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+            driver.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+            driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, driver));
+
+            // Intake Controlls
+            driver.getTopButton().whenPressed(new IntakeRetractCommand(intake));
+            driver.getLeftBumper().whileHeld(new IntakeDeacquireCommand(intake));
+            driver.getRightBumper().whileHeld(new IntakeAcquireSetupCommand(intake));
+
+            // Shooter Speed Control
+            driver.getDPadUp().whenPressed(new ShooterStopCommand(shooter))
+                    .whenPressed(new ShooterControlCommand(shooter, 0, Shooter.ShooterMode.NONE));
+            driver.getDPadRight().whenPressed(new ShooterControlCommand(shooter, ShooterSettings.INITATION_LINE_RPM,
+                    Shooter.ShooterMode.SHOOT_FROM_INITIATION_LINE));
+            driver.getDPadLeft().whenPressed(
+                    new ShooterControlCommand(shooter, ShooterSettings.TRENCH_RPM, Shooter.ShooterMode.SHOOT_FROM_TRENCH));
+
+            // Alignment Control
+            driver.getDPadDown()
+                    .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE).setNeverFinish())
+                    .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, driver));
+        } else {
+            operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
         new Button(
                 () -> (Math.abs(operator.getLeftStick().magnitude()) >= Math.pow(ClimberSettings.MOVE_DEADBAND, 2)
                         && operator.getLeftY() >= Math.abs(operator.getLeftX())))
@@ -148,6 +179,7 @@ public class RobotContainer {
             // DPad controls for 90 degree turns and 2.5 ft steps
             debug.getDPadUp().whenPressed(new InstantCommand(() -> { pump.compress(); }));
             debug.getDPadDown().whenPressed(new InstantCommand(() -> { pump.stop(); }));
+        }
         }
     }
 

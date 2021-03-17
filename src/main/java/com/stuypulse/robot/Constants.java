@@ -151,9 +151,9 @@ public interface Constants {
             
             // TODO: fill in
             interface FeedForward {
-                double S = 0.5;
-                double V = 2.0;
-                double A = 1.0;
+                double S = 0.244;
+                double V = 2.1;
+                double A = 0.539;
             }
 
             // TODO: fill in

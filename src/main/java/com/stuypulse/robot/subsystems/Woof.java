@@ -14,15 +14,15 @@ public class Woof extends SubsystemBase {
     // Motor and Encoder
     private CANSparkMax motor;
     private CANEncoder encoder;
-    private ColorSensor colorSensor;
+    //private ColorSensor colorSensor;
 
     public Woof() {
         motor = new CANSparkMax(Ports.Woof.MOTOR_PORT, MotorType.kBrushless);
         encoder = motor.getEncoder();
-        colorSensor = new ColorSensor();
+        //colorSensor = new ColorSensor();
 
         // Add Children to Subsystem
-        addChild("Color Sensor", colorSensor);
+        //  addChild("Color Sensor", colorSensor);
     }
 
     // Controlling the motor
@@ -50,7 +50,8 @@ public class Woof extends SubsystemBase {
     }
 
     public ColorSensor getRawColorSensor() {
-        return colorSensor;
+        //return colorSensor;
+        return null;
     }
 
     @Override

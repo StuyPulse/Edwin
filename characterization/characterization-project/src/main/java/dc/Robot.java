@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -60,7 +61,7 @@ public class Robot extends TimedRobot {
   static private int ENCODER_EPR = 1;
   static private double GEARING = 7.73;
   
-  private double encoderConstant = (1 / GEARING);
+  private double encoderConstant = (1.0 / GEARING);
 
   Joystick stick;
   DifferentialDrive drive;
@@ -101,7 +102,7 @@ public class Robot extends TimedRobot {
     // create new motor and set neutral modes (if needed)
     // setup Brushless spark
     CANSparkMax motor = new CANSparkMax(port, MotorType.kBrushless);
-    motor.restoreFactoryDefaults(); 
+    //motor.restoreFactoryDefaults(); 
     motor.setIdleMode(IdleMode.kBrake);  
     motor.setInverted(inverted);
     
@@ -109,7 +110,7 @@ public class Robot extends TimedRobot {
     if (side != Sides.FOLLOWER) {
     
       
-      CANEncoder encoder = motor.getAlternateEncoder(AlternateEncoderType.kQuadrature, ENCODER_EDGES_PER_REV);
+      CANEncoder encoder = motor.getEncoder();
 
 
 
@@ -120,7 +121,7 @@ public class Robot extends TimedRobot {
         // set right side methods = encoder methods
 
 
-        encoder.setInverted(false);
+        //encoder.setInverted(false);
         rightEncoderPosition = ()
           -> encoder.getPosition() * encoderConstant;
         rightEncoderRate = ()
@@ -128,7 +129,7 @@ public class Robot extends TimedRobot {
 
         break;
       case LEFT:
-        encoder.setInverted(false);
+        //encoder.setInverted(false);
         leftEncoderPosition = ()
           -> encoder.getPosition() * encoderConstant;
         leftEncoderRate = ()
@@ -152,7 +153,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     if (!isReal()) SmartDashboard.putData(new SimEnabler());
 
-    gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
+    gearShift = new Solenoid(0);
     gearShift.set(true);
 
     stick = new Joystick(0);
@@ -161,13 +162,13 @@ public class Robot extends TimedRobot {
     CANSparkMax leftMotor = setupCANSparkMax(7, Sides.LEFT, true);
 
     CANSparkMax leftFollowerID6 = setupCANSparkMax(6, Sides.FOLLOWER, true);
-    leftFollowerID6.follow(leftMotor, true);
+    leftFollowerID6.follow(leftMotor);
         
     
 
     CANSparkMax rightMotor = setupCANSparkMax(4, Sides.RIGHT, true);
     CANSparkMax rightFollowerID3 = setupCANSparkMax(3, Sides.FOLLOWER, true);
-    rightFollowerID3.follow(rightMotor, true);
+    rightFollowerID3.follow(rightMotor);
     drive = new DifferentialDrive(leftMotor, rightMotor);
     drive.setDeadband(0);
 

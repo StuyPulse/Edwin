@@ -48,9 +48,9 @@ public class RobotContainer {
 
     private final LEDController ledController = new LEDController(0);
 
-    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
-    public final Gamepad debug = new AutoGamepad(Ports.Gamepad.DEBUGGER);
+    public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
+    public final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
 
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 

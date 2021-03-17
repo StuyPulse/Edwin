@@ -149,16 +149,14 @@ public interface Constants {
                 FeedForward.A
             );
             
-            // TODO: fill in
             interface FeedForward {
                 double S = 0.244;
                 double V = 2.1;
                 double A = 0.539;
             }
 
-            // TODO: fill in
             interface PID {
-                double P = 0;
+                double P = 0.198;
                 double I = 0;
                 double D = 0;
             }

@@ -10,7 +10,7 @@ import com.stuypulse.robot.subsystems.Drivetrain;
  */
 public class BarrelRacingAuton extends SequentialCommandGroup {
 
-    private static final String BARREL_PATH = "BarrelRacingPath/output/BarrelRacing.wpilib.json";
+    private static final String BARREL_PATH = "BarrelRacingPath/BarrelRacing.wpilib.json";
 
     public BarrelRacingAuton(Drivetrain drivetrain) {
         addCommands(

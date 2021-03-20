@@ -9,7 +9,458 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
-        "tiles": {}
+        "tiles": {
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Speed/D",
+              "_title": "Drivetrain/Alignment/Speed/D"
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Speed/I",
+              "_title": "Drivetrain/Alignment/Speed/I"
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Driver Settings/Quickturn Threshold",
+              "_title": "Driver Settings/Quickturn Threshold"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Speed/P",
+              "_title": "Drivetrain/Alignment/Speed/P"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Pump/Compressor Enabled",
+              "_title": "Pump/Compressor Enabled",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Target RPM",
+              "_title": "Shooter/Target RPM"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Angle/D",
+              "_title": "Drivetrain/Alignment/Angle/D"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Shooter/FF",
+              "_title": "Shooter/Shooter/FF"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Angle/I",
+              "_title": "Drivetrain/Alignment/Angle/I"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Angle/P",
+              "_title": "Drivetrain/Alignment/Angle/P"
+            }
+          },
+          "0,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Autonomous",
+              "_title": "Autonomous"
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/GOAL Current Distance",
+              "_title": "GOAL Current Distance"
+            }
+          },
+          "2,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/GOAL Target Distance",
+              "_title": "GOAL Target Distance"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Auto Tune/D",
+              "_title": "Drivetrain/Alignment/Auto Tune/D"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Motor Voltage Left (V)",
+              "_title": "Drivetrain/Motor Voltage Left (V)"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Auto Tune/I",
+              "_title": "Drivetrain/Alignment/Auto Tune/I"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Funnel/Motor Speed",
+              "_title": "Funnel/Motor Speed"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Distance Traveled Right (m)",
+              "_title": "Drivetrain/Distance Traveled Right (m)"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Auto Tune/P",
+              "_title": "Drivetrain/Alignment/Auto Tune/P"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Driver Settings/Speed Power",
+              "_title": "Driver Settings/Speed Power"
+            }
+          },
+          "0,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Angle/Out Filter",
+              "_title": "Drivetrain/Alignment/Angle/Out Filter"
+            }
+          },
+          "1,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Chimney/Upper Chimney Sensor",
+              "_title": "Chimney/Upper Chimney Sensor",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Odometer Y Position (m)",
+              "_title": "Drivetrain/Odometer Y Position (m)"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Is Aligned",
+              "_title": "Drivetrain/Is Aligned",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Shooter/Hood Extended",
+              "_title": "Shooter/Hood Extended",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Speed/Out Filter",
+              "_title": "Drivetrain/Alignment/Speed/Out Filter"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Driver Settings/Speed Filtering",
+              "_title": "Driver Settings/Speed Filtering"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Driver Settings/Turn Power",
+              "_title": "Driver Settings/Turn Power"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Distance Traveled (m)",
+              "_title": "Drivetrain/Distance Traveled (m)"
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Chimney/Lower Chimney Sensor",
+              "_title": "Chimney/Lower Chimney Sensor",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Feeder RPM",
+              "_title": "Shooter/Feeder RPM"
+            }
+          },
+          "1,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Angle NavX (deg)",
+              "_title": "Drivetrain/Angle NavX (deg)"
+            }
+          },
+          "2,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Feeder/D",
+              "_title": "Shooter/Feeder/D"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Speed/In Filter",
+              "_title": "Drivetrain/Alignment/Speed/In Filter"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Feeder/I",
+              "_title": "Shooter/Feeder/I"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pump/Robot Air Pressure",
+              "_title": "Pump/Robot Air Pressure"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Feeder/P",
+              "_title": "Shooter/Feeder/P"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Driver Settings/Speed Deadband",
+              "_title": "Driver Settings/Speed Deadband"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Angle/In Filter",
+              "_title": "Drivetrain/Alignment/Angle/In Filter"
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Shooter/D",
+              "_title": "Shooter/Shooter/D"
+            }
+          }
+        }
       }
     },
     {
@@ -34,7 +485,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "3,1": {
+          "2,1": {
             "size": [
               5,
               2
@@ -195,7 +646,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "5,2": {
+          "4,1": {
             "size": [
               2,
               1
@@ -210,7 +661,7 @@
               "Visuals/Display value": true
             }
           },
-          "7,2": {
+          "6,1": {
             "size": [
               2,
               1
@@ -225,7 +676,7 @@
               "Visuals/Display value": true
             }
           },
-          "5,3": {
+          "4,2": {
             "size": [
               2,
               1
@@ -240,7 +691,7 @@
               "Visuals/Display value": true
             }
           },
-          "3,2": {
+          "2,1": {
             "size": [
               2,
               1
@@ -255,7 +706,7 @@
               "Visuals/Display value": true
             }
           },
-          "7,3": {
+          "6,2": {
             "size": [
               2,
               1
@@ -270,7 +721,7 @@
               "Visuals/Display value": true
             }
           },
-          "3,3": {
+          "2,2": {
             "size": [
               2,
               1
@@ -285,7 +736,7 @@
               "Visuals/Display value": true
             }
           },
-          "6,1": {
+          "5,0": {
             "size": [
               3,
               1
@@ -300,7 +751,7 @@
               "Visuals/Display value": true
             }
           },
-          "3,1": {
+          "2,0": {
             "size": [
               3,
               1
@@ -308,7 +759,7 @@
             "content": {
               "_type": "Number Slider",
               "_source0": "network_table:///SmartDashboard/Driver Settings/Quickturn Threshold",
-              "_title": "SmartDashboard/Driver Settings/Quickturn Threshold",
+              "_title": "Quickturn Threshold",
               "Slider Settings/Min": 0.0,
               "Slider Settings/Max": 0.2,
               "Slider Settings/Block increment": 0.0625,
@@ -323,12 +774,12 @@
       "autoPopulate": true,
       "autoPopulatePrefix": "network_table:///SmartDashboard/Drivetrain/",
       "widgetPane": {
-        "gridSize": 128.0,
+        "gridSize": 96.0,
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "7,5": {
+          "7,4": {
             "size": [
               2,
               1
@@ -339,7 +790,7 @@
               "_title": "Motor Voltage Left (V)"
             }
           },
-          "5,3": {
+          "3,2": {
             "size": [
               1,
               1
@@ -350,7 +801,7 @@
               "_title": "Alignment/Auto Tune/I"
             }
           },
-          "9,3": {
+          "10,2": {
             "size": [
               2,
               1
@@ -361,7 +812,7 @@
               "_title": "Distance Traveled Right (m)"
             }
           },
-          "5,2": {
+          "3,1": {
             "size": [
               1,
               1
@@ -372,9 +823,9 @@
               "_title": "Alignment/Auto Tune/P"
             }
           },
-          "1,4": {
+          "2,4": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -383,9 +834,9 @@
               "_title": "Alignment/Angle/Out Filter"
             }
           },
-          "8,1": {
+          "10,1": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -394,7 +845,7 @@
               "_title": "Odometer Y Position (m)"
             }
           },
-          "5,0": {
+          "0,0": {
             "size": [
               2,
               2
@@ -407,9 +858,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "3,4": {
+          "4,4": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -418,7 +869,7 @@
               "_title": "Alignment/Speed/Out Filter"
             }
           },
-          "9,2": {
+          "8,2": {
             "size": [
               2,
               1
@@ -429,7 +880,7 @@
               "_title": "Distance Traveled (m)"
             }
           },
-          "9,0": {
+          "8,0": {
             "size": [
               2,
               1
@@ -440,9 +891,9 @@
               "_title": "Angle NavX (deg)"
             }
           },
-          "3,0": {
+          "4,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -451,9 +902,9 @@
               "_title": "Alignment/Speed/In Filter"
             }
           },
-          "1,0": {
+          "2,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -462,10 +913,10 @@
               "_title": "Alignment/Angle/In Filter"
             }
           },
-          "7,0": {
+          "6,0": {
             "size": [
               2,
-              1
+              2
             ],
             "content": {
               "_type": "Text View",
@@ -473,7 +924,7 @@
               "_title": "Current Gear"
             }
           },
-          "9,5": {
+          "9,4": {
             "size": [
               2,
               1
@@ -484,9 +935,9 @@
               "_title": "Motor Voltage Right (V)"
             }
           },
-          "7,1": {
+          "8,1": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -495,7 +946,7 @@
               "_title": "Odometer X Position (m)"
             }
           },
-          "7,4": {
+          "6,3": {
             "size": [
               2,
               1
@@ -506,7 +957,7 @@
               "_title": "Velocity Left (m per s)"
             }
           },
-          "9,1": {
+          "10,0": {
             "size": [
               2,
               1
@@ -517,7 +968,7 @@
               "_title": "Odometer Rotation (deg)"
             }
           },
-          "9,4": {
+          "10,3": {
             "size": [
               2,
               1
@@ -528,7 +979,7 @@
               "_title": "Velocity Right (m per s)"
             }
           },
-          "7,2": {
+          "8,3": {
             "size": [
               2,
               1
@@ -539,7 +990,7 @@
               "_title": "Velocity (m per s)"
             }
           },
-          "7,3": {
+          "6,2": {
             "size": [
               2,
               1
@@ -550,9 +1001,9 @@
               "_title": "Distance Traveled Left (m)"
             }
           },
-          "1,1": {
+          "2,1": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -561,9 +1012,9 @@
               "_title": "Alignment/Angle/P"
             }
           },
-          "3,1": {
+          "4,1": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -572,9 +1023,9 @@
               "_title": "Alignment/Speed/P"
             }
           },
-          "3,2": {
+          "4,2": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -583,9 +1034,9 @@
               "_title": "Alignment/Speed/I"
             }
           },
-          "1,3": {
+          "2,3": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -594,9 +1045,9 @@
               "_title": "Alignment/Angle/D"
             }
           },
-          "3,3": {
+          "4,3": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -605,9 +1056,9 @@
               "_title": "Alignment/Speed/D"
             }
           },
-          "1,2": {
+          "2,2": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -616,7 +1067,7 @@
               "_title": "Alignment/Angle/I"
             }
           },
-          "5,4": {
+          "3,3": {
             "size": [
               1,
               1
@@ -730,7 +1181,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "4,1": {
+          "1,0": {
             "size": [
               4,
               1
@@ -746,7 +1197,7 @@
               "Visuals/Show text": true
             }
           },
-          "7,3": {
+          "8,1": {
             "size": [
               1,
               1
@@ -757,7 +1208,7 @@
               "_title": "Shooter/FF"
             }
           },
-          "4,0": {
+          "5,0": {
             "size": [
               4,
               1
@@ -770,7 +1221,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "4,4": {
+          "1,2": {
             "size": [
               4,
               1
@@ -819,7 +1270,7 @@
               "_title": "Feeder/P"
             }
           },
-          "6,3": {
+          "7,1": {
             "size": [
               1,
               1
@@ -830,7 +1281,7 @@
               "_title": "Shooter/D"
             }
           },
-          "5,3": {
+          "6,1": {
             "size": [
               1,
               1
@@ -841,7 +1292,7 @@
               "_title": "Shooter/I"
             }
           },
-          "4,3": {
+          "5,1": {
             "size": [
               1,
               1
@@ -863,7 +1314,7 @@
               "_title": "Feeder/FF"
             }
           },
-          "4,2": {
+          "1,1": {
             "size": [
               4,
               1

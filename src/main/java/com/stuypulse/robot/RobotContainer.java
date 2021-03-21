@@ -48,9 +48,9 @@ public class RobotContainer {
 
     private final LEDController ledController = new LEDController(0);
 
-    public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new PS4(Ports.Gamepad.OPERATOR);
-    public final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
+    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+    // public final Gamepad debug = new PS4(Ports.Gamepad.DEBUGGER);
 
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
@@ -162,24 +162,6 @@ public class RobotContainer {
         // funnel, operator));
         // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
         // funnel, operator));
-
-        if (DEBUG) {
-            driver.getRightBumper().whileHeld(new DrivetrainArcCommand(drivetrain, 90, 8));
-            driver.getLeftBumper().whileHeld(new DrivetrainArcCommand(drivetrain, -90, 8));
-
-            // Auto alignment for angle and speed and update pid values
-            debug.getLeftButton().whileHeld(new DrivetrainAutoAngleCommand(drivetrain,
-                    new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
-            debug.getTopButton().whileHeld(new DrivetrainAutoSpeedCommand(drivetrain,
-                    new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
-
-            // Steal driving abilities from the driver
-            debug.getBottomButton().whileHeld(new DrivetrainDriveCommand(drivetrain, debug));
-
-            // DPad controls for 90 degree turns and 2.5 ft steps
-            debug.getDPadUp().whenPressed(new InstantCommand(() -> { pump.compress(); }));
-            debug.getDPadDown().whenPressed(new InstantCommand(() -> { pump.stop(); }));
-        }
         }
     }
 

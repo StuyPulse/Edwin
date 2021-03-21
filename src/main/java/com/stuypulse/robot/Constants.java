@@ -137,7 +137,7 @@ public interface Constants {
         double LEFT_VOLTAGE_MUL = 1.0;
         
         // Width of the robot
-        double TRACK_WIDTH = Units.inchesToMeters(30);
+        double TRACK_WIDTH = Units.inchesToMeters(27);
  
         interface Motion {
 
@@ -156,7 +156,7 @@ public interface Constants {
             }
 
             interface PID {
-                double P = 0.198;
+                double P = 0.000;
                 double I = 0;
                 double D = 0;
             }

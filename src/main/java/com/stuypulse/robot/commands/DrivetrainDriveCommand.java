@@ -65,15 +65,17 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     // Check DPad for enabling or disableing filters
     private boolean checkDPad() {
-        if (gamepad.getRawDPadUp()) {
-            return (useFiltering = true);
-        }
+        // if (gamepad.getRawDPadUp()) {
+        //     return (useFiltering = true);
+        // }
 
-        if (gamepad.getRawDPadDown()) {
-            return (useFiltering = false);
-        }
+        // if (gamepad.getRawDPadDown()) {
+        //     return (useFiltering = false);
+        // }
 
-        return useFiltering;
+        // return useFiltering;
+
+        return false;
     }
 
     // Give the IStream's result for speed when the drivetrain wants it
@@ -100,11 +102,13 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     // If the drivetrain goes into high or low gear
     public Drivetrain.Gear getGear() {
-        if (gamepad.getRawBottomButton()) {
-            return Drivetrain.Gear.LOW;
-        } else {
-            return Drivetrain.Gear.HIGH;
-        }
+        return Drivetrain.Gear.HIGH;
+
+        // if (gamepad.getRawBottomButton()) {
+        //     return Drivetrain.Gear.LOW;
+        // } else {
+        //     return Drivetrain.Gear.HIGH;
+        // }
     }
 
     // Humans need curvature drive because they're st00p1d

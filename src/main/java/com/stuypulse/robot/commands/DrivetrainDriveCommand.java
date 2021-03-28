@@ -18,8 +18,6 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     private Gamepad gamepad;
 
-    private boolean useFiltering;
-
     private IStream rawSpeed;
     private IStream rawAngle;
 
@@ -36,9 +34,6 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     public void initialize() {
         super.initialize();
-
-        // Use filtering by default
-        this.useFiltering = true;
 
         // Create an IStream that gets the speed from the controller
         this.rawSpeed = () -> {
@@ -63,28 +58,9 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
                 new LowPassFilter(DrivetrainSettings.ANGLE_FILTER));
     }
 
-    // Check DPad for enabling or disableing filters
-    private boolean checkDPad() {
-        // if (gamepad.getRawDPadUp()) {
-        //     return (useFiltering = true);
-        // }
-
-        // if (gamepad.getRawDPadDown()) {
-        //     return (useFiltering = false);
-        // }
-
-        // return useFiltering;
-
-        return false;
-    }
-
     // Give the IStream's result for speed when the drivetrain wants it
     public double getSpeed() {
         double s = speed.get();
-
-        if (!checkDPad()) {
-            s = rawSpeed.get();
-        }
 
         return s;
     }
@@ -92,11 +68,6 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     // Give the IStream's result for angle when the drivetrain wants it
     public double getAngle() {
         double a = angle.get();
-
-        if (!checkDPad()) {
-            a = rawAngle.get();
-        }
-
         return a;
     }
 

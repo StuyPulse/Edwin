@@ -1,13 +1,18 @@
-package com.stuypulse.robot.subsystems;
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
 
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+package com.stuypulse.robot.subsystems;
 
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
+
 import com.stuypulse.robot.Constants.Colors;
+
+import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ColorSensor extends SubsystemBase {
 
@@ -48,10 +53,11 @@ public class ColorSensor extends SubsystemBase {
     public void periodic() {
         // SmartDashboard
         SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red", getRawDetectedColor().red);
-        SmartDashboard.putNumber("Color Sensor/Raw Detected Color Blue", getRawDetectedColor().blue);
-        SmartDashboard.putNumber("Color Sensor/Raw Detected Color Green", getRawDetectedColor().green);
+        SmartDashboard.putNumber(
+                "Color Sensor/Raw Detected Color Blue", getRawDetectedColor().blue);
+        SmartDashboard.putNumber(
+                "Color Sensor/Raw Detected Color Green", getRawDetectedColor().green);
 
         SmartDashboard.putString("Color Sensor/Detected Color", getDetectedColor());
     }
-
 }

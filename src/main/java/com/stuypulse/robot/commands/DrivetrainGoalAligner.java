@@ -1,24 +1,23 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.stuylib.math.Angle;
-import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
+import com.stuypulse.robot.Constants.Alignment;
+
 /**
- * The drivetrain goal aligner is an aligner that uses the limelight to send
- * instructions to the drivetrain on how it should move to align with the
- * target.
+ * The drivetrain goal aligner is an aligner that uses the limelight to send instructions to the
+ * drivetrain on how it should move to align with the target.
  */
 public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner {
 
-    private static SmartNumber currentDistance = new SmartNumber("GOAL Current Distance");
-    private static SmartNumber targetDistance = new SmartNumber("GOAL Target Distance");
-    private static SmartNumber distanceError = new SmartNumber("GOAL Target Error");
+    private Number distance;
 
-    private double distance;
-
-    public DrivetrainGoalAligner(double distance) {
+    public DrivetrainGoalAligner(Number distance) {
         this.distance = distance;
     }
 
@@ -29,14 +28,14 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
 
     public double getSpeedError() {
         if (Limelight.getInstance().getValidTarget()) {
-            double goal_pitch = Limelight.getInstance().getTargetYAngle() + Alignment.Measurements.Limelight.PITCH;
-            double goal_height = Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
-            double goal_dist = goal_height / Math.tan(Math.toRadians(goal_pitch))
-                    - Alignment.Measurements.Limelight.DISTANCE;
-
-            currentDistance.set(goal_dist);
-            targetDistance.set(distance);
-            distanceError.set(goal_dist - distance);
+            double goal_pitch =
+                    Limelight.getInstance().getTargetYAngle()
+                            + Alignment.Measurements.Limelight.PITCH;
+            double goal_height =
+                    Alignment.Measurements.GOAL_HEIGHT - Alignment.Measurements.Limelight.HEIGHT;
+            double goal_dist =
+                    goal_height / Math.tan(Math.toRadians(goal_pitch))
+                            - Alignment.Measurements.Limelight.DISTANCE;
 
             if (goal_dist < Alignment.MIN_DISTANCE) {
                 return 0;
@@ -45,7 +44,7 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
             }
 
             // Return the error from the target distance
-            return 0 - (goal_dist - distance);
+            return 0 - (goal_dist - distance.doubleValue());
         } else {
             return 0;
         }
@@ -53,10 +52,11 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
 
     public Angle getAngleError() {
         if (Limelight.getInstance().getValidTarget()) {
-            return Angle.fromDegrees(Limelight.getInstance().getTargetXAngle() + Alignment.Measurements.Limelight.YAW.doubleValue());
+            return Angle.fromDegrees(
+                    Limelight.getInstance().getTargetXAngle()
+                            + Alignment.Measurements.Limelight.YAW.doubleValue());
         } else {
             return Angle.fromDegrees(0);
         }
     }
-
 }

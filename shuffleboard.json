@@ -1535,7 +1535,7 @@
               "Visuals/Show text": true
             }
           },
-          "6,5": {
+          "7,2": {
             "size": [
               1,
               1
@@ -1546,7 +1546,7 @@
               "_title": "Feeder/D"
             }
           },
-          "5,5": {
+          "6,2": {
             "size": [
               1,
               1
@@ -1557,7 +1557,7 @@
               "_title": "Feeder/I"
             }
           },
-          "4,5": {
+          "5,2": {
             "size": [
               1,
               1
@@ -1601,7 +1601,7 @@
               "_title": "Shooter/P"
             }
           },
-          "7,5": {
+          "8,2": {
             "size": [
               1,
               1
@@ -1650,6 +1650,139 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Woof/Woof Rotations",
               "_title": "Woof Rotations"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Shooting",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "network_table:///SmartDashboard/Shooting/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "8,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "RED ZONE",
+              "Layout/Number of columns": 1,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "0,1": {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Red Zone/Hood Extended",
+                  "_title": "Red Zone/Hood Extended"
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Red Zone/RPM",
+                  "_title": "Red Zone/RPM"
+                },
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Red Zone/Distance",
+                  "_title": "Red Zone/Distance"
+                }
+              }
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "BLUE ZONE",
+              "Layout/Number of columns": 1,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Blue Zone/Distance",
+                  "_title": "Blue Zone/Distance"
+                },
+                "0,1": {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Blue Zone/Hood Extended",
+                  "_title": "Blue Zone/Hood Extended"
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Blue Zone/RPM",
+                  "_title": "Blue Zone/RPM"
+                }
+              }
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "YELLOW ZONE",
+              "Layout/Number of columns": 1,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Yellow Zone/Distance",
+                  "_title": "Yellow Zone/Distance"
+                },
+                "0,1": {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Yellow Zone/Hood Extended",
+                  "_title": "Yellow Zone/Hood Extended"
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Yellow Zone/RPM",
+                  "_title": "Yellow Zone/RPM"
+                }
+              }
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "GREEN ZONE",
+              "Layout/Number of columns": 1,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Green Zone/Distance",
+                  "_title": "Green Zone/Distance"
+                },
+                "0,1": {
+                  "_type": "Toggle Switch",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Green Zone/Hood Extended",
+                  "_title": "Green Zone/Hood Extended"
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/Green Zone/RPM",
+                  "_title": "Green Zone/RPM"
+                }
+              }
             }
           }
         }

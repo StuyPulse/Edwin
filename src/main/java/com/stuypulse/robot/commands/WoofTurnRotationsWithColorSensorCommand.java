@@ -1,9 +1,14 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.commands;
 
+import com.stuypulse.robot.Constants.WoofSettings;
 import com.stuypulse.robot.subsystems.Woof;
+
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import com.stuypulse.robot.Constants.WoofSettings;
 
 public class WoofTurnRotationsWithColorSensorCommand extends CommandBase {
 
@@ -27,9 +32,9 @@ public class WoofTurnRotationsWithColorSensorCommand extends CommandBase {
         woof.turn(WoofSettings.TURN_SPEED);
         if (previousColor != null && previousColor != woof.getColor()) {
             /**
-             * checks if a previous color exists and that it is not the same as the curent
-             * color if so, increment colorCount, which keeps track of the number of colors
-             * passed so far. 0.125 is equivalent to one color
+             * checks if a previous color exists and that it is not the same as the curent color if
+             * so, increment colorCount, which keeps track of the number of colors passed so far.
+             * 0.125 is equivalent to one color
              */
             colorCount += 0.125;
         }

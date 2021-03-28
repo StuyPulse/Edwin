@@ -1,7 +1,12 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.subsystems;
 
-import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.stuylib.network.SmartBoolean;
+
+import com.stuypulse.robot.Constants.Ports;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
@@ -36,7 +41,10 @@ public class Pump extends SubsystemBase {
 
     // Get the current pressure of the pneumatics
     public double getPressure() {
-        return 250.0 * (pressureGauge.getValue() / Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY) - 25.0;
+        return 250.0
+                        * (pressureGauge.getValue()
+                                / Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY)
+                - 25.0;
     }
 
     // Set the compressor to on or off

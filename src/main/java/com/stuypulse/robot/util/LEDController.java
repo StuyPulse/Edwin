@@ -1,3 +1,7 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.util;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
@@ -21,9 +25,17 @@ public class LEDController {
     }
 
     public enum Color {
-        RAINBOW, SINELON, CONFETTI, BEAT, TWINKLE, WAVE,
+        RAINBOW,
+        SINELON,
+        CONFETTI,
+        BEAT,
+        TWINKLE,
+        WAVE,
 
-        ORANGE_SOLID, GREEN_SOLID, BLUE_SOLID, PURPLE_SOLID,
+        ORANGE_SOLID,
+        GREEN_SOLID,
+        BLUE_SOLID,
+        PURPLE_SOLID,
 
         WHITE_SOLID, // Shoot from initation line
         PINK_SOLID, // Shoot from trench

@@ -1,25 +1,26 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.util;
+
+import com.stuypulse.stuylib.input.Gamepad;
 
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.subsystems.Shooter;
-import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 import com.stuypulse.robot.util.LEDController.Color;
-import com.stuypulse.stuylib.input.Gamepad;
 
 public class LEDControl implements Runnable {
 
     private LEDController controller;
     private Drivetrain drivetrain;
-    private Shooter shooter;
     private Intake intake;
     private Gamepad driver;
 
     public LEDControl(RobotContainer robot) {
         controller = robot.getLEDController();
         drivetrain = robot.getDrivetrain();
-        shooter = robot.getShooter();
         intake = robot.getIntake();
         driver = robot.getDriver();
     }
@@ -41,27 +42,27 @@ public class LEDControl implements Runnable {
                 } else if (intake.isBallDetected()) {
                     controller.setColor(Color.GREEN_SOLID);
                 } else {
-                    if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
-                        if (shooter.isReady()) {
-                            controller.setColor(Color.WHITE_SOLID);
-                        } else {
-                            controller.setColor(Color.WHITE_PULSE);
-                        }
-                    } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
-                        if (shooter.isReady()) {
-                            controller.setColor(Color.PINK_SOLID);
-                        } else {
-                            controller.setColor(Color.PINK_PULSE);
-                        }
-                    } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
-                        if (shooter.isReady()) {
-                            controller.setColor(Color.RED_SOLID);
-                        } else {
-                            controller.setColor(Color.RED_PULSE);
-                        }
-                    } else {
-                        controller.setColor(Color.OFF);
-                    }
+                    controller.setColor(Color.OFF);
+                    // if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_INITIATION_LINE) {
+                    //     if (shooter.isReady()) {
+                    //         controller.setColor(Color.WHITE_SOLID);
+                    //     } else {
+                    //         controller.setColor(Color.WHITE_PULSE);
+                    //     }
+                    // } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_TRENCH) {
+                    //     if (shooter.isReady()) {
+                    //         controller.setColor(Color.PINK_SOLID);
+                    //     } else {
+                    //         controller.setColor(Color.PINK_PULSE);
+                    //     }
+                    // } else if (shooter.getShooterMode() == ShooterMode.SHOOT_FROM_FAR) {
+                    //     if (shooter.isReady()) {
+                    //         controller.setColor(Color.RED_SOLID);
+                    //     } else {
+                    //         controller.setColor(Color.RED_PULSE);
+                    //     }
+                    // } else {
+                    // }
                 }
             }
         }

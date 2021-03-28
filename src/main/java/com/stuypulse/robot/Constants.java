@@ -1,12 +1,13 @@
-
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
 
 package com.stuypulse.robot;
+
+import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.network.SmartNumber;
+
+import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -15,24 +16,16 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
-
 import edu.wpi.first.wpilibj.util.Units;
-
 import java.nio.file.Path;
 
-import com.revrobotics.ColorMatch;
-import com.stuypulse.stuylib.control.PIDController;
-import com.stuypulse.stuylib.network.SmartNumber;
-
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean constants. This class should not be used for any other
- * purpose. All constants should be declared globally (i.e. public static). Do
- * not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
+ * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the constants are needed, to reduce verbosity.
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * constants are needed, to reduce verbosity.
  */
 public interface Constants {
 
@@ -111,7 +104,8 @@ public interface Constants {
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        SmartNumber QUICKTURN_THRESHOLD = new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
+        SmartNumber QUICKTURN_THRESHOLD =
+                new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
 
         // How much to slow down quick turn
         SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 0.5);
@@ -133,22 +127,19 @@ public interface Constants {
         boolean IS_INVERTED = true;
 
         // The voltage multipliers for each side
-        double RIGHT_VOLTAGE_MUL = -1.0; 
+        double RIGHT_VOLTAGE_MUL = -1.0;
         double LEFT_VOLTAGE_MUL = 1.0;
-        
+
         // Width of the robot
         double TRACK_WIDTH = Units.inchesToMeters(27);
- 
+
         interface Motion {
 
             DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(TRACK_WIDTH);
 
-            SimpleMotorFeedforward MOTOR_FEED_FORWARD = new SimpleMotorFeedforward(
-                FeedForward.S,
-                FeedForward.V, 
-                FeedForward.A
-            );
-            
+            SimpleMotorFeedforward MOTOR_FEED_FORWARD =
+                    new SimpleMotorFeedforward(FeedForward.S, FeedForward.V, FeedForward.A);
+
             interface FeedForward {
                 double S = 0.244;
                 double V = 2.1;
@@ -161,7 +152,7 @@ public interface Constants {
                 double D = 0;
             }
         }
-        
+
         public interface Odometry {
             Translation2d STARTING_TRANSLATION = new Translation2d();
             Rotation2d STARTING_ANGLE = new Rotation2d();
@@ -176,10 +167,9 @@ public interface Constants {
             double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
             double LOW_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 16.71);
-            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 /  7.73);
+            double HIGH_GEAR_DISTANCE_PER_ROTATION = WHEEL_CIRCUMFERENCE * (1.0 / 7.73);
             double LEFT_YEILD = 1.0;
             double RIGHT_YEILD = -1.0;
-            
         }
     }
 
@@ -213,8 +203,10 @@ public interface Constants {
             double BANGBANG_SPEED = 0.5;
 
             // Low Pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Speed/In Filter", 0);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Speed/Out Filter", 0.2);
+            SmartNumber IN_SMOOTH_FILTER =
+                    new SmartNumber("Drivetrain/Alignment/Speed/In Filter", 0);
+            SmartNumber OUT_SMOOTH_FILTER =
+                    new SmartNumber("Drivetrain/Alignment/Speed/Out Filter", 0.2);
 
             // Max speed for limelight to move
             double LIMELIGHT_MAX_SPEED = 0.9;
@@ -239,8 +231,10 @@ public interface Constants {
             double BANGBANG_SPEED = 0.4;
 
             // Low pass Filter Time Constant for controller
-            SmartNumber IN_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Angle/In Filter", 0.00);
-            SmartNumber OUT_SMOOTH_FILTER = new SmartNumber("Drivetrain/Alignment/Angle/Out Filter", 0.06);
+            SmartNumber IN_SMOOTH_FILTER =
+                    new SmartNumber("Drivetrain/Alignment/Angle/In Filter", 0.00);
+            SmartNumber OUT_SMOOTH_FILTER =
+                    new SmartNumber("Drivetrain/Alignment/Angle/Out Filter", 0.06);
 
             // What is an acceptable error
             double MAX_ANGLE_ERROR = 3;
@@ -257,7 +251,7 @@ public interface Constants {
                 double PITCH = 25;
                 SmartNumber YAW = new SmartNumber("Limelight Yaw", 2.0);
             }
-        }  
+        }
     }
 
     public interface ShooterSettings {
@@ -354,10 +348,13 @@ public interface Constants {
         double YELLOW_GREEN = 0.50;
         double YELLOW_BLUE = 0.1;
 
-        Color CYAN_TARGET = ColorMatch.makeColor(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
-        Color GREEN_TARGET = ColorMatch.makeColor(Colors.GREEN_RED, Colors.GREEN_GREEN, Colors.GREEN_BLUE);
+        Color CYAN_TARGET =
+                ColorMatch.makeColor(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
+        Color GREEN_TARGET =
+                ColorMatch.makeColor(Colors.GREEN_RED, Colors.GREEN_GREEN, Colors.GREEN_BLUE);
         Color RED_TARGET = ColorMatch.makeColor(Colors.RED_RED, Colors.RED_GREEN, Colors.RED_BLUE);
-        Color YELLOW_TARGET = ColorMatch.makeColor(Colors.YELLOW_RED, Colors.YELLOW_GREEN, Colors.YELLOW_BLUE);
+        Color YELLOW_TARGET =
+                ColorMatch.makeColor(Colors.YELLOW_RED, Colors.YELLOW_GREEN, Colors.YELLOW_BLUE);
     }
 
     // TODO check all values for correctlynessly
@@ -376,6 +373,7 @@ public interface Constants {
          * Shoot at start and take 3 balls from trench
          *********************************************************************************************/
         double ANGLE_FROM_START_TO_TRENCH = Units.feetToMeters(37.7);
+
         double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = Units.feetToMeters(5);
         double DISTANCE_FROM_BALL_TO_BALL = Units.feetToMeters(36);
         double DISTANCE_FROM_TRENCH_TO_GOAL = Units.feetToMeters(20);
@@ -385,25 +383,30 @@ public interface Constants {
          * rdvs
          *********************************************************************************************/
         double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
+
         double DISTANCE_FROM_TRENCH_TO_RDVS = Units.feetToMeters(109.85);
         double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; // estimation between 0 - 54.12
         double DISTANCE_BETWEEN_TWO_BALL = Units.feetToMeters(16.57);
-        double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL = Units.feetToMeters(40); // estimation according to field
-                                                                                                       // markings
+        double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL =
+                Units.feetToMeters(40); // estimation according to field
+        // markings
 
         /*********************************************************************************************
          * Shoot three at start and get 3 balls from rdvs
          *********************************************************************************************/
 
         double DISTANCE_FROM_START_TO_RDVS = Units.feetToMeters(107.83);
+
         double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; // estimation from common knowledge
-        double DISTANCE_FOR_THREE_BALLS_IN_RDVS = Units.feetToMeters(36); // estimate. Probably higher
+        double DISTANCE_FOR_THREE_BALLS_IN_RDVS =
+                Units.feetToMeters(36); // estimate. Probably higher
 
         /*********************************************************************************************
          * Shoot three at start, and then get 5 balls from rdvs
          *********************************************************************************************/
 
         double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
+
         double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = Units.feetToMeters(25.42);
     }
 }

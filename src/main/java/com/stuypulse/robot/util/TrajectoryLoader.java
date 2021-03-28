@@ -1,7 +1,8 @@
-package com.stuypulse.robot.util;
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
 
-import java.io.IOException;
-import java.util.List;
+package com.stuypulse.robot.util;
 
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
@@ -13,14 +14,19 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
-/**
- * @author Yuchen
- */
+import java.io.IOException;
+import java.util.List;
+
+/** @author Yuchen */
 public class TrajectoryLoader {
 
-    private static final Trajectory DEFAULT_TRAJECTORY = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new Rotation2d()), List.of(), new Pose2d(1, 0, new Rotation2d()),
-            new TrajectoryConfig(0.1, 0.1).setKinematics(DrivetrainSettings.Motion.KINEMATICS));
+    private static final Trajectory DEFAULT_TRAJECTORY =
+            TrajectoryGenerator.generateTrajectory(
+                    new Pose2d(0, 0, new Rotation2d()),
+                    List.of(),
+                    new Pose2d(1, 0, new Rotation2d()),
+                    new TrajectoryConfig(0.1, 0.1)
+                            .setKinematics(DrivetrainSettings.Motion.KINEMATICS));
 
     // Function that gets a trajectory from path weaver,
     // but will give a default one if it has an issue

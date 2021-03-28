@@ -1,13 +1,19 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.subsystems;
+
+import com.stuypulse.stuylib.math.Angle;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.stuylib.math.Angle;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
@@ -27,7 +33,8 @@ public class Drivetrain extends SubsystemBase {
 
     // Enum used to store the state of the gear
     public static enum Gear {
-        HIGH, LOW
+        HIGH,
+        LOW
     };
 
     // An array of motors on the left and right side of the drive train
@@ -55,15 +62,17 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         // Add Motors to list
-        leftMotors = new CANSparkMax[] { 
-            new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
-            new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless) 
-        };
+        leftMotors =
+                new CANSparkMax[] {
+                    new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
+                    new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless)
+                };
 
-        rightMotors = new CANSparkMax[] { 
-            new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
-            new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless) 
-        };
+        rightMotors =
+                new CANSparkMax[] {
+                    new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
+                    new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless)
+                };
 
         // Create list of encoders based on motors
         leftNEO = leftMotors[0].getEncoder();
@@ -73,10 +82,10 @@ public class Drivetrain extends SubsystemBase {
         rightNEO.setPosition(0);
 
         // Make differential drive object
-        drivetrain = new DifferentialDrive(
-            new SpeedControllerGroup(leftMotors), 
-            new SpeedControllerGroup(rightMotors)
-        );
+        drivetrain =
+                new DifferentialDrive(
+                        new SpeedControllerGroup(leftMotors),
+                        new SpeedControllerGroup(rightMotors));
 
         // Add Gear Shifter
         gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
@@ -85,7 +94,10 @@ public class Drivetrain extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP);
 
         // Initialize Odometry
-        odometry = new DifferentialDriveOdometry(DrivetrainSettings.Odometry.STARTING_ANGLE, DrivetrainSettings.Odometry.STARTING_POSITION);
+        odometry =
+                new DifferentialDriveOdometry(
+                        DrivetrainSettings.Odometry.STARTING_ANGLE,
+                        DrivetrainSettings.Odometry.STARTING_POSITION);
         field = new Field2d();
 
         // Configure Motors and Other Things
@@ -158,15 +170,17 @@ public class Drivetrain extends SubsystemBase {
 
     // Sets the current gear the robot is in
     public void setGear(Gear gear) {
-        if(this.gear != gear) {
+        if (this.gear != gear) {
             this.gear = gear;
             if (this.gear == Gear.HIGH) {
                 gearShift.set(true);
-                setNEODistancePerRotation(DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
+                setNEODistancePerRotation(
+                        DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
                 reset();
             } else {
                 gearShift.set(false);
-                setNEODistancePerRotation(DrivetrainSettings.Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
+                setNEODistancePerRotation(
+                        DrivetrainSettings.Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
                 reset();
             }
         }
@@ -230,18 +244,11 @@ public class Drivetrain extends SubsystemBase {
      **********************/
 
     private void updateOdometry() {
-        odometry.update(
-            getRotation2d(), 
-            getLeftDistance(), 
-            getRightDistance()
-        );
+        odometry.update(getRotation2d(), getLeftDistance(), getRightDistance());
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(
-            getLeftVelocity(),
-            getRightVelocity()
-        );
+        return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
     }
 
     public Rotation2d getRotation2d() {
@@ -354,21 +361,23 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         updateOdometry();
         field.setRobotPose(getPose());
-        
+
         // Smart Dashboard Information
         SmartDashboard.putData("Drivetrain/Field", field);
-        SmartDashboard.putString("Drivetrain/Current Gear", getGear().equals(Gear.HIGH) ? "High Gear" : "Low Gear");
+        SmartDashboard.putString(
+                "Drivetrain/Current Gear", getGear().equals(Gear.HIGH) ? "High Gear" : "Low Gear");
         SmartDashboard.putNumber("Drivetrain/Odometer X Position (m)", getPose().getX());
         SmartDashboard.putNumber("Drivetrain/Odometer Y Position (m)", getPose().getY());
-        SmartDashboard.putNumber("Drivetrain/Odometer Rotation (deg)", getPose().getRotation().getDegrees());
-        
+        SmartDashboard.putNumber(
+                "Drivetrain/Odometer Rotation (deg)", getPose().getRotation().getDegrees());
+
         SmartDashboard.putNumber("Drivetrain/Motor Voltage Left (V)", getLeftVoltage());
         SmartDashboard.putNumber("Drivetrain/Motor Voltage Right (V)", getRightVoltage());
 
         SmartDashboard.putNumber("Drivetrain/Distance Traveled (m)", getDistance());
         SmartDashboard.putNumber("Drivetrain/Distance Traveled Left (m)", getLeftDistance());
         SmartDashboard.putNumber("Drivetrain/Distance Traveled Right (m)", getRightDistance());
-        
+
         SmartDashboard.putNumber("Drivetrain/Velocity (m per s)", getVelocity());
         SmartDashboard.putNumber("Drivetrain/Velocity Left (m per s)", getLeftVelocity());
         SmartDashboard.putNumber("Drivetrain/Velocity Right (m per s)", getRightVelocity());

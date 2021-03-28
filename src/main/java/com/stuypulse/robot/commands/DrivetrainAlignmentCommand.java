@@ -1,7 +1,9 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.Constants.Alignment;
-import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
@@ -10,34 +12,36 @@ import com.stuypulse.stuylib.streams.filters.IFilterGroup;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
 
+import com.stuypulse.robot.Constants.Alignment;
+import com.stuypulse.robot.subsystems.Drivetrain;
+
 /**
- * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two
- * controllers. This lets you align the robot with whatever controllers you
- * want. Most commonly, a DrivetrainPIDAlignmentCommand is used instead as it
- * automatically provides the controllers for you.
+ * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two controllers. This lets
+ * you align the robot with whatever controllers you want. Most commonly, a
+ * DrivetrainPIDAlignmentCommand is used instead as it automatically provides the controllers for
+ * you.
  */
 public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     /**
-     * This interface allows you to create classes that instruct the drivetrain to
-     * move based off of error for speed and angle. If you use an aligner to define
-     * your class, you can do things like auto tune.
+     * This interface allows you to create classes that instruct the drivetrain to move based off of
+     * error for speed and angle. If you use an aligner to define your class, you can do things like
+     * auto tune.
      */
     public interface Aligner {
         // Called when command initialize is called,
         // Useful for relative encoder commands
-        public default void init() {
-        }
+        public default void init() {}
 
         // The amount of positional error
         public default double getSpeedError() {
             return 0.0;
-        };
+        }
 
         // The amount of angular error
         public default Angle getAngleError() {
             return Angle.fromDegrees(0);
-        };
+        }
     }
 
     // Max speed for the robot
@@ -66,13 +70,14 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     /**
      * This creates a command that aligns the robot
-     * 
+     *
      * @param drivetrain Drivetrain used by command to move
-     * @param distance   target distance for robot to drive to
-     * @param speed      controller used to align distance
-     * @param angle      controller used to align the angle
+     * @param distance target distance for robot to drive to
+     * @param speed controller used to align distance
+     * @param angle controller used to align the angle
      */
-    public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner, Controller speed, Controller angle) {
+    public DrivetrainAlignmentCommand(
+            Drivetrain drivetrain, Aligner aligner, Controller speed, Controller angle) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
@@ -105,9 +110,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     /**
      * This creates a command that aligns the robot
-     * 
+     *
      * @param drivetrain Drivetrain used by command to move
-     * @param distance   target distance for robot to drive to
+     * @param distance target distance for robot to drive to
      */
     public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner) {
         this(drivetrain, aligner, Alignment.Speed.getPID(), Alignment.Angle.getPID());
@@ -150,18 +155,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER));
         this.speed.setOutputFilter(
-            new IFilterGroup(
-                (x) -> SLMath.clamp(x, maxSpeed),
-                new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER)
-            )
-        );
+                new IFilterGroup(
+                        (x) -> SLMath.clamp(x, maxSpeed),
+                        new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER)));
 
         this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER));
         this.angle.setOutputFilter(
-            new IFilterGroup(
-                new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER)
-            )
-        );
+                new IFilterGroup(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER)));
 
         updateTargets();
         pollingTimer.reset();
@@ -243,7 +243,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
                     && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR * 1.5));
         } else {
             return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL)
-                    && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+                    && angle.isDone(
+                            Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
         }
     }
 

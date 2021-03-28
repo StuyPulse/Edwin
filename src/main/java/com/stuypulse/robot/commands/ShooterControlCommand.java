@@ -4,32 +4,23 @@
 
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.stuylib.network.SmartBoolean;
-
 import com.stuypulse.robot.subsystems.Shooter;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class ShooterControlCommand extends InstantCommand {
 
     private final Shooter shooter;
-    private final Number targetRPM;
-    private final SmartBoolean extendHood;
+    private final ShooterMode mode;
 
-    public ShooterControlCommand(Shooter shooter, Number targetRPM, SmartBoolean extendHood) {
+    public ShooterControlCommand(Shooter shooter, ShooterMode mode) {
         this.shooter = shooter;
-        this.targetRPM = targetRPM;
-        this.extendHood = extendHood;
+        this.mode = mode;
     }
 
     @Override
     public void initialize() {
-        shooter.setTargetRPM(this.targetRPM.doubleValue());
-
-        if (this.extendHood.get()) {
-            shooter.extendHoodSolenoid();
-        } else {
-            shooter.retractHoodSolenoid();
-        }
+        this.shooter.setMode(this.mode);
     }
 }

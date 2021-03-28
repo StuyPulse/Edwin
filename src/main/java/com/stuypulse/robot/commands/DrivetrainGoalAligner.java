@@ -27,6 +27,10 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
     }
 
     public double getSpeedError() {
+        if (distance.doubleValue() <= 0) {
+            return 0;
+        }
+
         if (Limelight.getInstance().getValidTarget()) {
             double goal_pitch =
                     Limelight.getInstance().getTargetYAngle()

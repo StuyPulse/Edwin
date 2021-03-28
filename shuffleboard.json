@@ -1627,6 +1627,17 @@
               "Visuals/Num tick marks": 13,
               "Visuals/Show text": true
             }
+          },
+          "1,3": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/Mode",
+              "_title": "Mode"
+            }
           }
         }
       }
@@ -1781,6 +1792,38 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Shooting/Green Zone/RPM",
                   "_title": "Green Zone/RPM"
+                }
+              }
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "DISABLED",
+              "Layout/Number of columns": 1,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "0,2": {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///SmartDashboard/Shooting/DISABLED/Hood Extended",
+                  "_title": "DISABLED/Hood Extended",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                "0,1": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/DISABLED/RPM",
+                  "_title": "DISABLED/RPM"
+                },
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Shooting/DISABLED/Distance",
+                  "_title": "DISABLED/Distance"
                 }
               }
             }

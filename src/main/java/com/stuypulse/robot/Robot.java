@@ -6,8 +6,6 @@ package com.stuypulse.robot;
 
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
-import com.stuypulse.robot.util.LEDControl;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -89,11 +87,6 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
-
-        // new Thread(new MotorStalling(robotContainer.getFunnel())).start();
-        Thread ledThread = new Thread(new LEDControl(robotContainer));
-        ledThread.setPriority(Thread.MIN_PRIORITY);
-        ledThread.start();
     }
 
     /** This function is called periodically during operator control. */

@@ -9,10 +9,9 @@ import com.stuypulse.stuylib.input.gamepads.*;
 
 import com.stuypulse.robot.Constants.*;
 import com.stuypulse.robot.commands.*;
-import com.stuypulse.robot.commands.ShootAlignCommand.ShooterMode;
 import com.stuypulse.robot.commands.auton.routines.*;
 import com.stuypulse.robot.subsystems.*;
-import com.stuypulse.robot.util.LEDController;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 public class RobotContainer {
 
     // Subsystems
+    private final LEDController ledController = new LEDController(0, this);
     private final Chimney chimney = new Chimney();
     private final Climber climber = new Climber();
     private final Drivetrain drivetrain = new Drivetrain();
@@ -38,11 +38,11 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Woof woof = new Woof();
 
-    private final LEDController ledController = new LEDController(0);
-
+    // Gamepads
     public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
     public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
+    // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
     public RobotContainer() {
@@ -65,20 +65,20 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         // Climber Control
-        driver.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-        driver.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
-        driver.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
+        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        operator.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
+        operator.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
         // Funnel and Chimney
-        driver.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-        driver.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
-        driver.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-        driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, driver));
+        operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
+        operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+        operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+        operator.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, driver));
 
         // Intake Controlls
-        driver.getTopButton().whenPressed(new IntakeRetractCommand(intake));
-        driver.getLeftBumper().whileHeld(new IntakeDeacquireCommand(intake));
-        driver.getRightBumper().whileHeld(new IntakeAcquireSetupCommand(intake));
+        operator.getTopButton().whenPressed(new IntakeRetractCommand(intake));
+        operator.getLeftBumper().whileHeld(new IntakeDeacquireCommand(intake));
+        operator.getRightBumper().whileHeld(new IntakeAcquireSetupCommand(intake));
 
         // Shooter Speed Control
         operator.getLeftBumper().whenPressed(new ShooterStopCommand(shooter));
@@ -156,8 +156,8 @@ public class RobotContainer {
 
             operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
-            operator.getRightAnalogButton()
-                    .whenPressed(new LEDTogglePartyModeCommand(ledController));
+            // operator.getRightAnalogButton()
+            //         .whenPressed(new LEDTogglePartyModeCommand(ledController));
 
             operator.getStartButton()
                     .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
@@ -229,5 +229,9 @@ public class RobotContainer {
 
     public Gamepad getDriver() {
         return driver;
+    }
+
+    public Gamepad getOperator() {
+        return operator;
     }
 }

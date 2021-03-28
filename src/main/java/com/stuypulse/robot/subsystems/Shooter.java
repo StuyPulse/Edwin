@@ -7,6 +7,8 @@ package com.stuypulse.robot.subsystems;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.network.SmartBoolean;
+import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IFilter;
 
 import com.revrobotics.CANEncoder;
@@ -20,9 +22,51 @@ import com.stuypulse.robot.Constants.ShooterSettings;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+    public enum ShooterMode {
+        // Disable The Shooter
+        DISABLED(
+                new SmartNumber("Shooting/DISABLED/Distance", -1.0),
+                new SmartNumber("Shooting/DISABLED/RPM", 0),
+                new SmartBoolean("Shooting/DISABLED/Hood Extended", false)),
+
+        // THIS IS THE INITIATION LINE SHOT
+        GREEN_ZONE(
+                new SmartNumber("Shooting/Green Zone/Distance", Units.feetToMeters(7)),
+                new SmartNumber("Shooting/Green Zone/RPM", 2075),
+                new SmartBoolean("Shooting/Green Zone/Hood Extended", true)),
+
+        // TODO: TUNE THIS
+        YELLOW_ZONE(
+                new SmartNumber("Shooting/Yellow Zone/Distance", Units.feetToMeters(11)),
+                new SmartNumber("Shooting/Yellow Zone/RPM", 2500),
+                new SmartBoolean("Shooting/Yellow Zone/Hood Extended", true)),
+
+        // THIS IS THE TRENCH SHOT
+        BLUE_ZONE(
+                new SmartNumber("Shooting/Blue Zone/Distance", Units.feetToMeters(16.5)),
+                new SmartNumber("Shooting/Blue Zone/RPM", 3000),
+                new SmartBoolean("Shooting/Blue Zone/Hood Extended", false)),
+
+        // TODO: TUNE THIS
+        RED_ZONE(
+                new SmartNumber("Shooting/Red Zone/Distance", Units.feetToMeters(21)),
+                new SmartNumber("Shooting/Red Zone/RPM", 3750),
+                new SmartBoolean("Shooting/Red Zone/Hood Extended", false));
+
+        public final SmartNumber distance;
+        public final SmartNumber rpm;
+        public final SmartBoolean extendHood;
+
+        ShooterMode(SmartNumber distance, SmartNumber rpm, SmartBoolean extendHood) {
+            this.distance = distance;
+            this.rpm = rpm;
+            this.extendHood = extendHood;
+        }
+    }
 
     public static final IFilter INTEGRAL_FILTER =
             (x) -> SLMath.clamp(x, ShooterSettings.I_LIMIT.doubleValue());
@@ -46,8 +90,9 @@ public class Shooter extends SubsystemBase {
     private final SpeedControllerGroup shooterMotors;
 
     // Target RPM
-    private double targetRPM;
+    private ShooterMode currentMode;
 
+    // PID Controllers for the shooter and feeder
     private Controller shooterController;
     private Controller feederController;
 
@@ -103,6 +148,9 @@ public class Shooter extends SubsystemBase {
 
         feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
+        // Set Current Shooter Mode to Disabled
+        currentMode = ShooterMode.DISABLED;
+
         // Add Children to Subsystem
         addChild("Hood Solenoid", hoodSolenoid);
         addChild("Shooter Motors", shooterMotors);
@@ -111,6 +159,10 @@ public class Shooter extends SubsystemBase {
     /************
      * SHOOTING *
      ************/
+
+    public double getTargetRPM() {
+        return getMode().rpm.get();
+    }
 
     public double getShooterRPM() {
         return (leftShooterEncoder.getVelocity()
@@ -123,8 +175,12 @@ public class Shooter extends SubsystemBase {
         return feederEncoder.getVelocity();
     }
 
-    public void setTargetRPM(double target) {
-        this.targetRPM = target;
+    public void setMode(ShooterMode mode) {
+        this.currentMode = mode;
+    }
+
+    public ShooterMode getMode() {
+        return this.currentMode;
     }
 
     public boolean isReady() {
@@ -132,29 +188,33 @@ public class Shooter extends SubsystemBase {
                 && feederController.isDone(ShooterSettings.TOLERANCE);
     }
 
-    public void stop() {
-        shooterMotors.stopMotor();
-        feederMotor.stopMotor();
-        setTargetRPM(0);
-    }
-
     @Override
     public void periodic() {
-        if (targetRPM > 100) {
-            double shootSpeed = shooterController.update(targetRPM, getShooterRPM());
-            shootSpeed += targetRPM * ShooterSettings.Shooter.FF.get();
+        // Set the hood according to the mode
+        if (getMode().extendHood.get()) {
+            this.extendHoodSolenoid();
+        } else {
+            this.retractHoodSolenoid();
+        }
 
-            double feederSpeed = feederController.update(targetRPM, getFeederRPM());
-            feederSpeed += targetRPM * ShooterSettings.Feeder.FF.get();
+        // Set the speed according to the mode
+        if (getMode().equals(ShooterMode.DISABLED) || getTargetRPM() < 100) {
+            shooterMotors.stopMotor();
+            feederMotor.stopMotor();
+        } else {
+            double shootSpeed = shooterController.update(getTargetRPM(), getShooterRPM());
+            shootSpeed += getTargetRPM() * ShooterSettings.Shooter.FF.get();
+
+            double feederSpeed = feederController.update(getTargetRPM(), getFeederRPM());
+            feederSpeed += getTargetRPM() * ShooterSettings.Feeder.FF.get();
 
             shooterMotors.set(shootSpeed);
             feederMotor.set(feederSpeed);
-        } else {
-            stop();
         }
 
         // SmartDashboard
-        SmartDashboard.putNumber("Shooter/Target RPM", targetRPM);
+        SmartDashboard.putString("Shooter/Mode", getMode().name());
+        SmartDashboard.putNumber("Shooter/Target RPM", getTargetRPM());
         SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
         SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
         SmartDashboard.putBoolean("Shooter/Hood Extended", hoodSolenoid.get());

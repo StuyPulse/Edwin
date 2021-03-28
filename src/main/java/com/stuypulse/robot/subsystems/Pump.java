@@ -42,7 +42,7 @@ public class Pump extends SubsystemBase {
     // Get the current pressure of the pneumatics
     public double getPressure() {
         return 250.0
-                        * (pressureGauge.getValue()
+                        * (pressureGauge.getAverageVoltage()
                                 / Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_VOLTAGE_SUPPLY)
                 - 25.0;
     }

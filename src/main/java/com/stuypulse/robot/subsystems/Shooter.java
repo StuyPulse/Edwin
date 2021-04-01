@@ -213,7 +213,7 @@ public class Shooter extends SubsystemBase {
             shootSpeed += shooterController.update(getTargetRPM(), getShooterRPM());
 
             double feederSpeed = getTargetRPM() * ShooterSettings.Feeder.FF.get();
-            feederSpeed += feederController.update(getTargetRPM(), getShooterRPM());
+            feederSpeed += feederController.update(getTargetRPM(), getFeederRPM());
 
             // Set the speeds of the motors
             shooterMotor.set(shootSpeed);

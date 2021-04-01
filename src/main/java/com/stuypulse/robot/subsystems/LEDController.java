@@ -5,7 +5,6 @@
 package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.robot.RobotContainer;
-import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -103,33 +102,40 @@ public class LEDController extends SubsystemBase {
             if (intake.isBallDetected()) {
                 this.setColor(LEDColor.RAINBOW);
             } else {
-                // Shooting From Green Zone
-                if (shooter.getMode() == ShooterMode.GREEN_ZONE) {
-                    if (shooter.isReady()) this.setColor(LEDColor.GREEN_SOLID);
-                    else this.setColor(LEDColor.GREEN_PULSE);
-                }
-
-                // Shooting From Yellow Zone
-                else if (shooter.getMode() == ShooterMode.YELLOW_ZONE) {
-                    if (shooter.isReady()) this.setColor(LEDColor.YELLOW_SOLID);
-                    else this.setColor(LEDColor.YELLOW_PULSE);
-                }
-
-                // Shooting From Blue Zone
-                else if (shooter.getMode() == ShooterMode.BLUE_ZONE) {
-                    if (shooter.isReady()) this.setColor(LEDColor.BLUE_SOLID);
-                    else this.setColor(LEDColor.BLUE_PULSE);
-                }
-
-                // Shooting From Red Zone
-                else if (shooter.getMode() == ShooterMode.RED_ZONE) {
-                    if (shooter.isReady()) this.setColor(LEDColor.RED_SOLID);
-                    else this.setColor(LEDColor.RED_PULSE);
-                }
-
-                // Shooting Is Disabled
-                else {
-                    this.setColor(LEDColor.OFF);
+                if (shooter.isReady()) {
+                    switch (shooter.getMode()) {
+                        case GREEN_ZONE:
+                            setColor(LEDColor.GREEN_SOLID);
+                            break;
+                        case YELLOW_ZONE:
+                            setColor(LEDColor.YELLOW_SOLID);
+                            break;
+                        case BLUE_ZONE:
+                            setColor(LEDColor.BLUE_SOLID);
+                            break;
+                        case RED_ZONE:
+                            setColor(LEDColor.RED_SOLID);
+                            break;
+                        default:
+                            setColor(LEDColor.OFF);
+                    }
+                } else {
+                    switch (shooter.getMode()) {
+                        case GREEN_ZONE:
+                            setColor(LEDColor.GREEN_PULSE);
+                            break;
+                        case YELLOW_ZONE:
+                            setColor(LEDColor.YELLOW_PULSE);
+                            break;
+                        case BLUE_ZONE:
+                            setColor(LEDColor.BLUE_PULSE);
+                            break;
+                        case RED_ZONE:
+                            setColor(LEDColor.RED_PULSE);
+                            break;
+                        default:
+                            setColor(LEDColor.OFF);
+                    }
                 }
             }
         }

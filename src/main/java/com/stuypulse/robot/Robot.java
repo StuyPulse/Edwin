@@ -22,6 +22,15 @@ public class Robot extends TimedRobot {
     private RobotContainer robotContainer;
 
     /**
+     * Initialize the robot with a certain run period.
+     *
+     * <p>This will run code every 0.02s, or 50hz
+     */
+    public Robot() {
+        super(0.02);
+    }
+
+    /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
      */
@@ -54,12 +63,12 @@ public class Robot extends TimedRobot {
 
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
-    public void disabledInit() {}
-
-    @Override
-    public void disabledPeriodic() {
+    public void disabledInit() {
         Limelight.getInstance().setLEDMode(Limelight.LEDMode.PIPELINE);
     }
+
+    @Override
+    public void disabledPeriodic() {}
 
     /**
      * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.

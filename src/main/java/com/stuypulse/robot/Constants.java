@@ -267,7 +267,7 @@ public interface Constants {
         double TOLERANCE = 100;
 
         SmartNumber I_LIMIT = new SmartNumber("Shooter/I Limit", 400);
-        SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 400);
+        SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 600);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;

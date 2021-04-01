@@ -20,7 +20,6 @@ import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.ShooterSettings;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -72,22 +71,19 @@ public class Shooter extends SubsystemBase {
             (x) -> SLMath.clamp(x, ShooterSettings.I_LIMIT.doubleValue());
 
     // Motors
-    private final CANSparkMax leftShooterMotor;
-    private final CANSparkMax rightShooterMotor;
-    private final CANSparkMax middleShooterMotor;
+    private final CANSparkMax shooterMotor;
+    private final CANSparkMax shooterFollowerA;
+    private final CANSparkMax shooterFollowerB;
     private final CANSparkMax feederMotor;
 
     // Encoders
-    private final CANEncoder leftShooterEncoder;
-    private final CANEncoder rightShooterEncoder;
-    private final CANEncoder middleShooterEncoder;
+    private final CANEncoder shooterEncoderA;
+    private final CANEncoder shooterEncoderB;
+    private final CANEncoder shooterEncoderC;
     private final CANEncoder feederEncoder;
 
     // Hood Solenoid
     private final Solenoid hoodSolenoid;
-
-    // SpeedControllerGroup
-    private final SpeedControllerGroup shooterMotors;
 
     // Target RPM
     private ShooterMode currentMode;
@@ -98,18 +94,16 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
         // Shooter Stuff
-        leftShooterMotor = new CANSparkMax(Ports.Shooter.LEFT, MotorType.kBrushless);
-        rightShooterMotor = new CANSparkMax(Ports.Shooter.RIGHT, MotorType.kBrushless);
-        middleShooterMotor = new CANSparkMax(Ports.Shooter.MIDDLE, MotorType.kBrushless);
+        shooterMotor = new CANSparkMax(Ports.Shooter.MIDDLE, MotorType.kBrushless);
+        shooterFollowerA = new CANSparkMax(Ports.Shooter.LEFT, MotorType.kBrushless);
+        shooterFollowerB = new CANSparkMax(Ports.Shooter.RIGHT, MotorType.kBrushless);
 
-        leftShooterMotor.setInverted(true);
+        shooterFollowerA.follow(shooterMotor, true);
+        shooterFollowerB.follow(shooterMotor, false);
 
-        leftShooterEncoder = leftShooterMotor.getEncoder();
-        rightShooterEncoder = rightShooterMotor.getEncoder();
-        middleShooterEncoder = middleShooterMotor.getEncoder();
-
-        shooterMotors =
-                new SpeedControllerGroup(leftShooterMotor, rightShooterMotor, middleShooterMotor);
+        shooterEncoderA = shooterMotor.getEncoder();
+        shooterEncoderB = shooterFollowerA.getEncoder();
+        shooterEncoderC = shooterFollowerB.getEncoder();
 
         // Feeder Stuff
         feederMotor = new CANSparkMax(Ports.Shooter.FEEDER, MotorType.kBrushless);
@@ -150,16 +144,15 @@ public class Shooter extends SubsystemBase {
         hoodSolenoid = new Solenoid(Ports.Shooter.HOOD_SOLENOID);
 
         // Setting Modes Stuff
-        rightShooterMotor.setIdleMode(IdleMode.kCoast);
-        leftShooterMotor.setIdleMode(IdleMode.kCoast);
-        middleShooterMotor.setIdleMode(IdleMode.kCoast);
+        shooterMotor.setIdleMode(IdleMode.kCoast);
+        shooterFollowerA.setIdleMode(IdleMode.kCoast);
+        shooterFollowerB.setIdleMode(IdleMode.kCoast);
+
+        shooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+        shooterFollowerA.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+        shooterFollowerB.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
         feederMotor.setIdleMode(IdleMode.kCoast);
-
-        rightShooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
-        leftShooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
-        middleShooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
-
         feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
         // Set Current Shooter Mode to Disabled
@@ -167,7 +160,6 @@ public class Shooter extends SubsystemBase {
 
         // Add Children to Subsystem
         addChild("Hood Solenoid", hoodSolenoid);
-        addChild("Shooter Motors", shooterMotors);
     }
 
     /************
@@ -179,9 +171,9 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getShooterRPM() {
-        return (leftShooterEncoder.getVelocity()
-                        + middleShooterEncoder.getVelocity()
-                        + rightShooterEncoder.getVelocity())
+        return (Math.abs(shooterEncoderA.getVelocity())
+                        + Math.abs(shooterEncoderB.getVelocity())
+                        + Math.abs(shooterEncoderC.getVelocity()))
                 / 3.0;
     }
 
@@ -213,7 +205,7 @@ public class Shooter extends SubsystemBase {
 
         // Set the speed according to the mode
         if (getMode().equals(ShooterMode.DISABLED) || getTargetRPM() < ShooterSettings.TOLERANCE) {
-            shooterMotors.stopMotor();
+            shooterMotor.stopMotor();
             feederMotor.stopMotor();
         } else {
             // Feed forward
@@ -224,7 +216,7 @@ public class Shooter extends SubsystemBase {
             feederSpeed += feederController.update(getTargetRPM(), getShooterRPM());
 
             // Set the speeds of the motors
-            shooterMotors.set(shootSpeed);
+            shooterMotor.set(shootSpeed);
             feederMotor.set(feederSpeed);
         }
 

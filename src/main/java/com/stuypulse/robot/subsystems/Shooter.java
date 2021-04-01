@@ -202,12 +202,22 @@ public class Shooter extends SubsystemBase {
             shooterMotors.stopMotor();
             feederMotor.stopMotor();
         } else {
-            double shootSpeed = shooterController.update(getTargetRPM(), getShooterRPM());
-            shootSpeed += getTargetRPM() * ShooterSettings.Shooter.FF.get();
+            // Feed forward
+            double shootSpeed = getTargetRPM() * ShooterSettings.Shooter.FF.get();
+            double feederSpeed = getTargetRPM() * ShooterSettings.Feeder.FF.get();
+            
+            // PID Loops, check if the error is in the range before using the PID Controller
+            double shootError = getTargetRPM() - getShooterRPM();
+            if(Math.abs(shootError) < ShooterSettings.I_RANGE.doubleValue()) {
+                shootSpeed += shooterController.update(shootError);
+            }
 
-            double feederSpeed = feederController.update(getTargetRPM(), getFeederRPM());
-            feederSpeed += getTargetRPM() * ShooterSettings.Feeder.FF.get();
-
+            double feederError = getTargetRPM() - getFeederRPM();
+            if(Math.abs(feederError) < ShooterSettings.I_RANGE.doubleValue()) {
+                feederSpeed += feederController.update(feederError);
+            }
+            
+            // Set the speeds of the motors
             shooterMotors.set(shootSpeed);
             feederMotor.set(feederSpeed);
         }

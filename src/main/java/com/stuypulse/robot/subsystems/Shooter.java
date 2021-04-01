@@ -123,14 +123,28 @@ public class Shooter extends SubsystemBase {
                                 ShooterSettings.Shooter.P,
                                 ShooterSettings.Shooter.I,
                                 ShooterSettings.Shooter.D)
-                        .setIntegratorFilter(INTEGRAL_FILTER);
+                        .setIntegratorFilter(
+                                (i) -> {
+                                    if (shooterController.isDone(
+                                            ShooterSettings.I_RANGE.doubleValue()))
+                                        return SLMath.clamp(
+                                                i, ShooterSettings.I_LIMIT.doubleValue());
+                                    else return 0;
+                                });
 
         feederController =
                 new PIDController(
                                 ShooterSettings.Feeder.P,
                                 ShooterSettings.Feeder.I,
                                 ShooterSettings.Feeder.D)
-                        .setIntegratorFilter(INTEGRAL_FILTER);
+                        .setIntegratorFilter(
+                                (i) -> {
+                                    if (feederController.isDone(
+                                            ShooterSettings.I_RANGE.doubleValue()))
+                                        return SLMath.clamp(
+                                                i, ShooterSettings.I_LIMIT.doubleValue());
+                                    else return 0;
+                                });
 
         // Hood Stuff
         hoodSolenoid = new Solenoid(Ports.Shooter.HOOD_SOLENOID);
@@ -204,18 +218,10 @@ public class Shooter extends SubsystemBase {
         } else {
             // Feed forward
             double shootSpeed = getTargetRPM() * ShooterSettings.Shooter.FF.get();
+            shootSpeed += shooterController.update(getTargetRPM(), getShooterRPM());
+
             double feederSpeed = getTargetRPM() * ShooterSettings.Feeder.FF.get();
-
-            // PID Loops, check if the error is in the range before using the PID Controller
-            double shootError = getTargetRPM() - getShooterRPM();
-            if (Math.abs(shootError) < ShooterSettings.I_RANGE.doubleValue()) {
-                shootSpeed += shooterController.update(shootError);
-            }
-
-            double feederError = getTargetRPM() - getFeederRPM();
-            if (Math.abs(feederError) < ShooterSettings.I_RANGE.doubleValue()) {
-                feederSpeed += feederController.update(feederError);
-            }
+            feederSpeed += feederController.update(getTargetRPM(), getShooterRPM());
 
             // Set the speeds of the motors
             shooterMotors.set(shootSpeed);

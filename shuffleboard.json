@@ -1638,6 +1638,28 @@
               "_source0": "network_table:///SmartDashboard/Shooter/Mode",
               "_title": "Mode"
             }
+          },
+          "7,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/I Range",
+              "_title": "I Range"
+            }
+          },
+          "5,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/I Limit",
+              "_title": "I Limit"
+            }
           }
         }
       }

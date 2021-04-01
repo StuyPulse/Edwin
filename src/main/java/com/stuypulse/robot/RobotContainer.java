@@ -64,123 +64,45 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        // Climber Control
+        /*** Climber Control ***/
         operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
         operator.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
         operator.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
-        // Funnel and Chimney
+        /*** Funnel and Chimney ***/
+        // The left button gets stuff out of the system
         operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
         operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+
+        // Bottom button puts balls into the shooter
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+
+        // Right button puts balls right underneeth the shooter
         operator.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, driver));
 
-        // Intake Controlls
-        operator.getTopButton().whenPressed(new IntakeRetractCommand(intake));
-        operator.getLeftBumper().whileHeld(new IntakeDeacquireCommand(intake));
-        operator.getRightBumper().whileHeld(new IntakeAcquireSetupCommand(intake));
+        /*** Intake Controlls ***/
+        // Right side is good side that does stuff
+        operator.getRightBumper().whenPressed(new IntakeExtendCommand(intake));
+        operator.getRightTriggerButton().whileHeld(new IntakeAcquireCommand(intake));
 
-        // Shooter Speed Control
-        operator.getLeftBumper().whenPressed(new ShooterStopCommand(shooter));
-        operator.getRightBumper().whenPressed(new ShooterStopCommand(shooter));
+        // Left side is bad side that does opposite stuff
+        operator.getLeftBumper().whenPressed(new IntakeRetractCommand(intake));
+        operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
 
+        /*** Shooter Speed Control ***/
+        // Move left stick to stop shooter
+        new Button(() -> operator.getLeftStick().magnitude() >= 0.2)
+                .whenPressed(new ShooterStopCommand(shooter));
+
+        // Move to different zone
         operator.getDPadUp()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.GREEN_ZONE));
-        operator.getDPadDown()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.YELLOW_ZONE));
-        operator.getDPadLeft()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.BLUE_ZONE));
         operator.getDPadRight()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.YELLOW_ZONE));
+        operator.getDPadDown()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.BLUE_ZONE));
+        operator.getDPadLeft()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.RED_ZONE));
-
-        // This is never true, its just to comment out the old code
-        if (drivetrain == null) {
-            operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-            new Button(
-                            () ->
-                                    (Math.abs(operator.getLeftStick().magnitude())
-                                                    >= Math.pow(ClimberSettings.MOVE_DEADBAND, 2)
-                                            && operator.getLeftY()
-                                                    >= Math.abs(operator.getLeftX())))
-                    .whileHeld(new ClimberSetupCommand(climber, intake));
-            new Button(
-                            () ->
-                                    (Math.abs(operator.getLeftStick().magnitude())
-                                                    >= Math.pow(ClimberSettings.MOVE_DEADBAND, 2)
-                                            && operator.getLeftY()
-                                                    <= -Math.abs(operator.getLeftX())))
-                    .whileHeld(new ClimberRobotClimbCommand(climber, intake));
-            // new Button(() -> (Math.abs(operator.getLeftMag()) >=
-            // Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX())
-            // >= Math.abs(operator.getLeftY()))).whileHeld(new
-            // ClimberMoveYoyoCommand(climber, operator));
-
-            operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-            operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
-            operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
-            // operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
-
-            operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
-            operator.getRightTriggerButton().whileHeld(new IntakeAcquireSetupCommand(intake));
-
-            // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
-            operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
-
-            // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
-
-            //     operator.getDPadUp()
-            //             .whenPressed(
-            //                     new ShooterControlCommand(
-            //                             shooter,
-            //                             ShooterSettings.FAR_RPM,
-            //                             Shooter.ShooterMode.SHOOT_FROM_FAR));
-            //     operator.getDPadDown()
-            //             .whenPressed(
-            //                     new ShooterControlCommand(
-            //                             shooter,
-            //                             ShooterSettings.INITATION_LINE_RPM,
-            //                             Shooter.ShooterMode.SHOOT_FROM_INITIATION_LINE));
-            //     operator.getDPadLeft()
-            //             .whenPressed(
-            //                     new ShooterControlCommand(
-            //                             shooter,
-            //                             ShooterSettings.TRENCH_RPM,
-            //                             Shooter.ShooterMode.SHOOT_FROM_TRENCH));
-            // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
-            // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
-            // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
-            //     operator.getDPadRight()
-            //             .whenPressed(new ShooterStopCommand(shooter))
-            //             .whenPressed(new ShooterControlCommand(shooter, 0,
-            // Shooter.ShooterMode.NONE));
-
-            operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-
-            // operator.getRightAnalogButton()
-            //         .whenPressed(new LEDTogglePartyModeCommand(ledController));
-
-            operator.getStartButton()
-                    .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-            driver.getLeftButton()
-                    .whileHeld(
-                            new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE)
-                                    .setNeverFinish())
-                    .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-            driver.getTopButton()
-                    .whileHeld(
-                            new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE)
-                                    .setNeverFinish())
-                    .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-            // driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
-            // funnel, operator));
-            // driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
-            // funnel, operator));
-            // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney,
-            // funnel, operator));
-        }
     }
 
     public void configureAutons() {

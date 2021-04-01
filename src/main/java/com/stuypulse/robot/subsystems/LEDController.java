@@ -55,10 +55,10 @@ public class LEDController extends SubsystemBase {
             if (pulse) {
                 // Get time in millis, used for pulsing
                 long time = System.currentTimeMillis();
-                time = Math.abs(time % 600L);
+                time = Math.abs(time % 500L);
 
                 // Detect if the color should be on or off
-                if (time >= 500) {
+                if (time >= 400) {
                     return LEDColor.OFF.color;
                 } else {
                     return this.color;

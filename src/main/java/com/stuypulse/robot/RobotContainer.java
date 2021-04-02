@@ -77,9 +77,6 @@ public class RobotContainer {
         // Bottom button puts balls into the shooter
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
-        // Right button puts balls right underneeth the shooter
-        operator.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, driver));
-
         /*** Intake Controlls ***/
         // Right side is good side that does stuff
         operator.getRightBumper().whenPressed(new IntakeExtendCommand(intake));
@@ -103,6 +100,9 @@ public class RobotContainer {
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.BLUE_ZONE));
         operator.getDPadLeft()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.RED_ZONE));
+
+        operator.getRightButton()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.FUEL_ZONE));
     }
 
     public void configureAutons() {

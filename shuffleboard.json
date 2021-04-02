@@ -1375,6 +1375,17 @@
               "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Auto Tune/D",
               "_title": "Alignment/Auto Tune/D"
             }
+          },
+          "4,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Limelight Yaw",
+              "_title": "SmartDashboard/Limelight Yaw"
+            }
           }
         }
       }
@@ -1658,7 +1669,18 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Shooter/I Limit",
-              "_title": "I Limit"
+              "_title": "/SmartDashboard/Shooter/I Limit"
+            }
+          },
+          "3,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/Shooter/Auto Tune",
+              "_title": "Auto Tune"
             }
           }
         }
@@ -1856,7 +1878,7 @@
   ],
   "windowGeometry": {
     "x": 0.0,
-    "y": 0.0,
+    "y": 26.0,
     "width": 1680.0,
     "height": 961.0
   }

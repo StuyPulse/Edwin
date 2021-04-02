@@ -7,7 +7,6 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
-import com.stuypulse.stuylib.network.limelight.Limelight;
 import com.stuypulse.stuylib.streams.filters.IFilterGroup;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
@@ -250,6 +249,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Turn limelight off when no longer aligning due to rules
     public void end(boolean interrupted) {
-        Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_OFF);
+        // Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_OFF);
     }
 }

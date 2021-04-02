@@ -21,40 +21,39 @@ import com.stuypulse.robot.Constants.ShooterSettings;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
     public enum ShooterMode {
-        // Disable The Shooter
         DISABLED(
                 new SmartNumber("Shooting/DISABLED/Distance", -1.0),
                 new SmartNumber("Shooting/DISABLED/RPM", 0),
                 new SmartBoolean("Shooting/DISABLED/Hood Extended", false)),
 
-        // THIS IS THE INITIATION LINE SHOT
         GREEN_ZONE(
-                new SmartNumber("Shooting/Green Zone/Distance", Units.feetToMeters(7)),
-                new SmartNumber("Shooting/Green Zone/RPM", 2075),
+                new SmartNumber("Shooting/Green Zone/Distance", 1.55),
+                new SmartNumber("Shooting/Green Zone/RPM", 2250),
                 new SmartBoolean("Shooting/Green Zone/Hood Extended", true)),
 
-        // TODO: TUNE THIS
         YELLOW_ZONE(
-                new SmartNumber("Shooting/Yellow Zone/Distance", Units.feetToMeters(11)),
-                new SmartNumber("Shooting/Yellow Zone/RPM", 2500),
-                new SmartBoolean("Shooting/Yellow Zone/Hood Extended", true)),
+                new SmartNumber("Shooting/Yellow Zone/Distance", 2.8),
+                new SmartNumber("Shooting/Yellow Zone/RPM", 2700),
+                new SmartBoolean("Shooting/Yellow Zone/Hood Extended", false)),
 
-        // THIS IS THE TRENCH SHOT
         BLUE_ZONE(
-                new SmartNumber("Shooting/Blue Zone/Distance", Units.feetToMeters(16.5)),
-                new SmartNumber("Shooting/Blue Zone/RPM", 3000),
+                new SmartNumber("Shooting/Blue Zone/Distance", 4),
+                new SmartNumber("Shooting/Blue Zone/RPM", 2750),
                 new SmartBoolean("Shooting/Blue Zone/Hood Extended", false)),
 
-        // TODO: TUNE THIS
         RED_ZONE(
-                new SmartNumber("Shooting/Red Zone/Distance", Units.feetToMeters(21)),
-                new SmartNumber("Shooting/Red Zone/RPM", 3750),
-                new SmartBoolean("Shooting/Red Zone/Hood Extended", false));
+                new SmartNumber("Shooting/Red Zone/Distance", 5.5),
+                new SmartNumber("Shooting/Red Zone/RPM", 3000),
+                new SmartBoolean("Shooting/Red Zone/Hood Extended", false)),
+
+        FUEL_ZONE(
+                new SmartNumber("Shooting/Fuel Zone/Distance", 7),
+                new SmartNumber("Shooting/Fuel Zone/RPM", 0),
+                new SmartBoolean("Shooting/Fuel Zone/Hood Extended", false));
 
         public final SmartNumber distance;
         public final SmartNumber rpm;
@@ -178,7 +177,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getFeederRPM() {
-        return feederEncoder.getVelocity();
+        return Math.abs(feederEncoder.getVelocity());
     }
 
     public void setMode(ShooterMode mode) {
@@ -216,8 +215,8 @@ public class Shooter extends SubsystemBase {
             feederSpeed += feederController.update(getTargetRPM(), getFeederRPM());
 
             // Set the speeds of the motors
-            shooterMotor.set(shootSpeed);
-            feederMotor.set(feederSpeed);
+            shooterMotor.setVoltage(shootSpeed);
+            feederMotor.setVoltage(feederSpeed);
         }
 
         // SmartDashboard

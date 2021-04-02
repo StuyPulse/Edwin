@@ -218,9 +218,9 @@ public interface Constants {
 
         public interface Angle {
             // Preset PID Values
-            SmartNumber P = new SmartNumber("Drivetrain/Alignment/Angle/P", 0.072178478);
+            SmartNumber P = new SmartNumber("Drivetrain/Alignment/Angle/P", 0.022);
             SmartNumber I = new SmartNumber("Drivetrain/Alignment/Angle/I", 0);
-            SmartNumber D = new SmartNumber("Drivetrain/Alignment/Angle/D", 0.00754593176);
+            SmartNumber D = new SmartNumber("Drivetrain/Alignment/Angle/D", 0.0023);
 
             // Get PID Controller
             public static PIDController getPID() {
@@ -243,7 +243,7 @@ public interface Constants {
 
         public interface Measurements {
 
-            double GOAL_HEIGHT = Units.feetToMeters(7) + Units.inchesToMeters(6);
+            double GOAL_HEIGHT = Units.inchesToMeters(91);
 
             public interface Limelight {
                 double HEIGHT = Units.feetToMeters(2) + Units.inchesToMeters(10);
@@ -256,7 +256,7 @@ public interface Constants {
 
     public interface ShooterSettings {
 
-        int CURRENT_LIMIT = 45;
+        int CURRENT_LIMIT = 40;
 
         double GEAR = 2.0 / 3.0;
 
@@ -266,18 +266,18 @@ public interface Constants {
 
         double TOLERANCE = 100;
 
-        SmartNumber I_LIMIT = new SmartNumber("Shooter/I Limit", 0.5);
-        SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 600);
+        SmartNumber I_LIMIT = new SmartNumber("Shooter/I Limit", 4);
+        SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 400);
 
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.001234);
-            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.003559);
-            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.000107);
-            SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0.000195);
+            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.011);
+            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.04);
+            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.0013);
+            SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0.0023);
 
-            double BANGBANG_SPEED = 0.2;
+            double BANGBANG_SPEED = 1;
 
             double REVERSE_SPEED = -0.25;
         }
@@ -287,12 +287,12 @@ public interface Constants {
 
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.000944);
-            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.002550);
-            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.000087);
-            SmartNumber FF = new SmartNumber("Shooter/Feeder/FF", 0.000205);
+            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.01);
+            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.03);
+            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.001);
+            SmartNumber FF = new SmartNumber("Shooter/Feeder/FF", 0.00235);
 
-            double BANGBANG_SPEED = 0.2;
+            double BANGBANG_SPEED = 1;
         }
     }
 

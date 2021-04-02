@@ -147,7 +147,7 @@ public interface Constants {
             }
 
             interface PID {
-                double P = 0.000;
+                double P = 0.00358;
                 double I = 0;
                 double D = 0;
             }

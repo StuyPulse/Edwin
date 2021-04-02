@@ -272,9 +272,9 @@ public interface Constants {
         public interface Shooter {
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.011);
-            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.04);
-            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.0013);
+            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.011); // 0.0162989522473
+            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.04); // 0.0820395194249
+            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.0013); // 0.000809536203473
             SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0.0023);
 
             double BANGBANG_SPEED = 1;
@@ -287,9 +287,9 @@ public interface Constants {
 
             double MAX_RPM = 5600.0 * GEAR;
 
-            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.01);
-            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.03);
-            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.001);
+            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.01); // 0.0157904851743
+            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.03); // 0.0652808665387
+            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.001); // 0.000954871753622
             SmartNumber FF = new SmartNumber("Shooter/Feeder/FF", 0.00235);
 
             double BANGBANG_SPEED = 1;

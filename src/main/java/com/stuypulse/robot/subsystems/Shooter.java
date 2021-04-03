@@ -4,12 +4,13 @@
 
 package com.stuypulse.robot.subsystems;
 
-import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IFilter;
+import com.stuypulse.stuylib.streams.filters.TimedRateLimit;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -85,11 +86,15 @@ public class Shooter extends SubsystemBase {
     private final Solenoid hoodSolenoid;
 
     // Target RPM
+    private IFilter targetRPM;
     private ShooterMode currentMode;
 
     // PID Controllers for the shooter and feeder
-    private Controller shooterController;
-    private Controller feederController;
+    private PIDController shooterController;
+    private PIDController feederController;
+
+    private PIDCalculator shooterCalculator;
+    private PIDCalculator feederCalculator;
 
     public Shooter() {
         // Shooter Stuff
@@ -139,6 +144,9 @@ public class Shooter extends SubsystemBase {
                                     else return 0;
                                 });
 
+        shooterCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
+        feederCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
+
         // Hood Stuff
         hoodSolenoid = new Solenoid(Ports.Shooter.HOOD_SOLENOID);
 
@@ -155,6 +163,7 @@ public class Shooter extends SubsystemBase {
         feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
         // Set Current Shooter Mode to Disabled
+        targetRPM = new TimedRateLimit(1000);
         currentMode = ShooterMode.DISABLED;
 
         // Add Children to Subsystem
@@ -165,8 +174,12 @@ public class Shooter extends SubsystemBase {
      * SHOOTING *
      ************/
 
-    public double getTargetRPM() {
+    public double getRawTargetRPM() {
         return getMode().rpm.get();
+    }
+
+    public double getTargetRPM() {
+        return targetRPM.get(getRawTargetRPM());
     }
 
     public double getShooterRPM() {
@@ -202,21 +215,37 @@ public class Shooter extends SubsystemBase {
             this.retractHoodSolenoid();
         }
 
-        // Set the speed according to the mode
-        if (getMode().equals(ShooterMode.DISABLED) || getTargetRPM() < ShooterSettings.TOLERANCE) {
+        // If the shooter is in disabled mode, then just coast
+        if (getMode().equals(ShooterMode.DISABLED)
+                || getRawTargetRPM() < ShooterSettings.TOLERANCE) {
             shooterMotor.stopMotor();
             feederMotor.stopMotor();
-        } else {
+        }
+
+        // Otherwise control the shooter using a control algorithm
+        else {
             // Feed forward
             double shootSpeed = getTargetRPM() * ShooterSettings.Shooter.FF.get();
-            shootSpeed += shooterController.update(getTargetRPM(), getShooterRPM());
-
             double feederSpeed = getTargetRPM() * ShooterSettings.Feeder.FF.get();
-            feederSpeed += feederController.update(getTargetRPM(), getFeederRPM());
 
-            // Set the speeds of the motors
-            shooterMotor.setVoltage(shootSpeed);
-            feederMotor.setVoltage(feederSpeed);
+            // Automatically tune the PID controllers
+            if (ShooterSettings.AUTOTUNE.get()) {
+                shootSpeed += shooterCalculator.update(getTargetRPM(), getShooterRPM());
+                feederSpeed += feederCalculator.update(getTargetRPM(), getFeederRPM());
+
+                shooterController.setPID(shooterCalculator.getPIDController());
+                feederController.setPID(feederCalculator.getPIDController());
+            }
+
+            // Just use normal PID control
+            else {
+                shootSpeed += shooterController.update(getTargetRPM(), getShooterRPM());
+                feederSpeed += feederController.update(getTargetRPM(), getFeederRPM());
+            }
+
+            // Set the speeds of the motors, and prevent bad values
+            shooterMotor.setVoltage(SLMath.clamp(shootSpeed, 0, 12));
+            feederMotor.setVoltage(SLMath.clamp(feederSpeed, 0, 12));
         }
 
         // SmartDashboard

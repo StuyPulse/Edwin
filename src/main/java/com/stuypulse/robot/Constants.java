@@ -5,6 +5,7 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import com.revrobotics.ColorMatch;
@@ -258,35 +259,23 @@ public interface Constants {
 
         int CURRENT_LIMIT = 40;
 
-        double GEAR = 2.0 / 3.0;
-
-        double INITATION_LINE_RPM = 2075;
-        double TRENCH_RPM = 3000;
-        double FAR_RPM = 5300.0;
-
         double TOLERANCE = 100;
 
-        SmartNumber I_LIMIT = new SmartNumber("Shooter/I Limit", 4);
+        SmartBoolean AUTOTUNE = new SmartBoolean("Shooter/Auto Tune", false);
+
+        SmartNumber I_LIMIT = new SmartNumber("Shooter/I Limit", 1.0);
         SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 400);
 
         public interface Shooter {
-            double MAX_RPM = 5600.0 * GEAR;
-
             SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.011); // 0.0162989522473
             SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.04); // 0.0820395194249
             SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.0013); // 0.000809536203473
             SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0.0023);
 
             double BANGBANG_SPEED = 1;
-
-            double REVERSE_SPEED = -0.25;
         }
 
         public interface Feeder {
-            double SPEED_MUL = 1.0;
-
-            double MAX_RPM = 5600.0 * GEAR;
-
             SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.01); // 0.0157904851743
             SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.03); // 0.0652808665387
             SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.001); // 0.000954871753622
@@ -299,7 +288,7 @@ public interface Constants {
     public interface ClimberSettings {
         double MOVE_DEADBAND = 0.25;
 
-        double EXPONENT = 1 / 3;
+        double EXPONENT = 1.0 / 3.0;
 
         double MOVE_SLOW_SPEED = 0.1;
 

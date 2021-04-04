@@ -109,7 +109,7 @@ public interface Constants {
                 new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
 
         // How much to slow down quick turn
-        SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 0.5);
+        SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 0.25);
 
         // Low Pass Filter and deadband for Driver Controls
         SmartNumber SPEED_DEADBAND = new SmartNumber("Driver Settings/Speed Deadband", 0.1);
@@ -118,11 +118,11 @@ public interface Constants {
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.09);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.02);
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.1);
 
         // Current Limit for the motors
-        int CURRENT_LIMIT = 40;
+        int CURRENT_LIMIT = 20;
 
         // If the motors are inverted
         boolean IS_INVERTED = true;
@@ -257,7 +257,7 @@ public interface Constants {
 
     public interface ShooterSettings {
 
-        int CURRENT_LIMIT = 40;
+        int CURRENT_LIMIT = 10;
 
         double TOLERANCE = 100;
 
@@ -267,21 +267,21 @@ public interface Constants {
         SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 400);
 
         public interface Shooter {
-            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.011); // 0.0162989522473
-            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.04); // 0.0820395194249
-            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.0013); // 0.000809536203473
-            SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0.0023);
+            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0); // 0.0162989522473
+            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0); // 0.0820395194249
+            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0); // 0.000809536203473
+            SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0);
 
-            double BANGBANG_SPEED = 1;
+            double BANGBANG_SPEED = 0;
         }
 
         public interface Feeder {
-            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.01); // 0.0157904851743
-            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.03); // 0.0652808665387
-            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.001); // 0.000954871753622
-            SmartNumber FF = new SmartNumber("Shooter/Feeder/FF", 0.00235);
+            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0); // 0.0157904851743
+            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0); // 0.0652808665387
+            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0); // 0.000954871753622
+            SmartNumber FF = new SmartNumber("Shooter/Feeder/FF", 0);
 
-            double BANGBANG_SPEED = 1;
+            double BANGBANG_SPEED = 0;
         }
     }
 

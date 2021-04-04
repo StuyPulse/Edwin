@@ -56,7 +56,8 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
                         this.rawSpeed,
                         (x) -> SLMath.deadband(x, DrivetrainSettings.SPEED_DEADBAND.get()),
                         (x) -> SLMath.spow(x, DrivetrainSettings.SPEED_POWER.get()),
-                        new LowPassFilter(DrivetrainSettings.SPEED_FILTER));
+                        new LowPassFilter(DrivetrainSettings.SPEED_FILTER),
+                        (x) -> x * 0.5);
 
         // Create an IStream that filters the raw angle from the controller
         this.angle =
@@ -64,7 +65,8 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
                         this.rawAngle,
                         (x) -> SLMath.deadband(x, DrivetrainSettings.ANGLE_DEADBAND.get()),
                         (x) -> SLMath.spow(x, DrivetrainSettings.ANGLE_POWER.get()),
-                        new LowPassFilter(DrivetrainSettings.ANGLE_FILTER));
+                        new LowPassFilter(DrivetrainSettings.ANGLE_FILTER),
+                        (x) -> x * 0.5);
     }
 
     // Give the IStream's result for speed when the drivetrain wants it

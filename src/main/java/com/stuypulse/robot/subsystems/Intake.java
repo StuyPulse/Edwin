@@ -1,12 +1,19 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.stuypulse.robot.Constants;
+
+import com.stuypulse.robot.Constants.IntakeSettings;
+import com.stuypulse.robot.Constants.Ports;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -17,52 +24,51 @@ public class Intake extends SubsystemBase {
     private DigitalInput sensor;
 
     public Intake() {
-        motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-        solenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_A, Constants.INTAKE_SOLENOID_PORT_B);
+        motor = new CANSparkMax(Ports.Intake.MOTOR_PORT, MotorType.kBrushless);
+        solenoid = new DoubleSolenoid(Ports.Intake.SOLENOID_PORT_A, Ports.Intake.SOLENOID_PORT_B);
 
-        sensor = new DigitalInput(Constants.INTAKE_SENSOR_PORT);
-        
+        sensor = new DigitalInput(Ports.Intake.SENSOR_PORT);
+
         motor.setInverted(true);
+
+        // Add Children to Subsystem
+        addChild("Double Solenoid", solenoid);
+        addChild("Sensor", sensor);
     }
 
+    /*** Extend / Retract ***/
     public void extend() {
-        // if (solenoid.get() == Value.kReverse) {
-            solenoid.set(Value.kReverse);
-        // }
+        solenoid.set(Value.kReverse);
     }
 
     public void retract() {
-        // if (solenoid.get() == Value.kForward) {
-            solenoid.set(Value.kForward);
-        // }
+        solenoid.set(Value.kForward);
     }
 
-    // public void toggle() {
-    //     if (solenoid.get() == Value.kForward) {
-    //         retract();
-    //     } else {
-    //         extend();
-    //     }
-    // }
-
-    public void acquire() {
-        setMotor(Constants.INTAKE_MOTOR_SPEED);
-    }
-
-    public void deacquire() {
-        setMotor(-Constants.INTAKE_MOTOR_SPEED);
+    /*** Extend / Retract ***/
+    public void setMotor(final double speed) {
+        motor.set(speed);
     }
 
     public void stop() {
         motor.stopMotor();
     }
 
-    public void setMotor(final double speed) {
-        motor.set(speed);
+    public void acquire() {
+        setMotor(IntakeSettings.MOTOR_SPEED);
+    }
+
+    public void deacquire() {
+        setMotor(-IntakeSettings.MOTOR_SPEED);
     }
 
     public boolean isBallDetected() {
         return !sensor.get();
     }
 
+    @Override
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putBoolean("Intake/Ball Detected", isBallDetected());
+    }
 }

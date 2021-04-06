@@ -1,16 +1,19 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.stuylib.math.Angle;
 
-/**
- */
+import com.stuypulse.robot.subsystems.Drivetrain;
+
+/** */
 public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
 
     /**
-     * This aligner uses encoders and the navx on the drivetrain to move the
-     * drivetrain a very specific amount. First it turns to the desired angle and
-     * then it moves the desired amount.
+     * This aligner uses encoders and the navx on the drivetrain to move the drivetrain a very
+     * specific amount. First it turns to the desired angle and then it moves the desired amount.
      */
     public static class Aligner implements DrivetrainAlignmentCommand.Aligner {
 
@@ -31,11 +34,9 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
             init();
         }
 
-        /**
-         * Set goals based on when the command is initialized
-         */
+        /** Set goals based on when the command is initialized */
         public void init() {
-            startAngle = drivetrain.getGyroAngle().toDegrees();
+            startAngle = drivetrain.getAngle().toDegrees();
             startDistance = drivetrain.getDistance();
         }
 
@@ -44,7 +45,8 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
         }
 
         public Angle getAngleError() {
-            return Angle.degrees(startAngle + (angle * (1.0 - getSpeedError() / distance))).add(drivetrain.getGyroAngle());
+            return Angle.fromDegrees(startAngle + (angle * (1.0 - getSpeedError() / distance)))
+                    .add(drivetrain.getAngle());
         }
     }
 
@@ -57,7 +59,8 @@ public class DrivetrainArcCommand extends DrivetrainAlignmentCommand {
      * @param distance length of the arc
      * @param speed the speed that the drivetrain moves at
      */
-    public DrivetrainArcCommand(Drivetrain drivetrain, double angle, double distance, double speed) {
+    public DrivetrainArcCommand(
+            Drivetrain drivetrain, double angle, double distance, double speed) {
         super(drivetrain, new Aligner(drivetrain, angle, distance));
         this.speed = speed;
     }

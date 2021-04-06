@@ -1,282 +1,159 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.Constants.Alignment;
-import com.stuypulse.robot.Constants.Ports;
-import com.stuypulse.robot.Constants.Shooting;
-import com.stuypulse.robot.commands.ChimneyDownCommand;
-import com.stuypulse.robot.commands.ClimberRobotClimbCommand;
-import com.stuypulse.robot.commands.ClimberSetupCommand;
-import com.stuypulse.robot.commands.ClimberToggleLiftBrakeCommand;
-import com.stuypulse.robot.commands.DrivetrainAlignmentCommand;
-import com.stuypulse.robot.commands.DrivetrainArcCommand;
-import com.stuypulse.robot.commands.DrivetrainAutoAngleCommand;
-import com.stuypulse.robot.commands.DrivetrainAutoSpeedCommand;
-import com.stuypulse.robot.commands.DrivetrainDriveCommand;
-import com.stuypulse.robot.commands.DrivetrainGoalAligner;
-import com.stuypulse.robot.commands.DrivetrainGoalCommand;
-import com.stuypulse.robot.commands.DrivetrainMovementCommand;
-import com.stuypulse.robot.commands.FeedBallsAutomaticCommand;
-import com.stuypulse.robot.commands.FeedBallsCommand;
-import com.stuypulse.robot.commands.FunnelUnfunnelCommand;
-import com.stuypulse.robot.commands.IntakeAcquireSetupCommand;
-import com.stuypulse.robot.commands.IntakeDeacquireCommand;
-import com.stuypulse.robot.commands.IntakeRetractCommand;
-import com.stuypulse.robot.commands.LEDTogglePartyModeCommand;
-import com.stuypulse.robot.commands.ShooterControlCommand;
-import com.stuypulse.robot.commands.ShooterDefaultCommand;
-import com.stuypulse.robot.commands.ShooterReverseCommand;
-import com.stuypulse.robot.commands.ShooterStopCommand;
-import com.stuypulse.robot.commands.WoofManualControlCommand;
-import com.stuypulse.robot.commands.WoofTurnRotationsWithEncoderCommand;
-import com.stuypulse.robot.commands.auton.routines.DoNothingAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.EightBallFiveRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.EightBallThreeTrenchTwoRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.EightBallTwoRdvsThreeTrenchAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.FiveBallTwoRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.MobilityTowardIntakeAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.MobilityTowardShooterAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardIntakeAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.ShootThreeMoveTowardShooterAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.SixBallThreeRdvsAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.SixBallThreeTrenchAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.RedSixBallTwoTrenchOneTrenchAutonCommand;
-import com.stuypulse.robot.commands.auton.routines.BlueSixBallTwoTrenchOneTrenchAutonCommand;
-
-import com.stuypulse.robot.subsystems.Chimney;
-import com.stuypulse.robot.subsystems.Climber;
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Funnel;
-import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.subsystems.Shooter;
-import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
-import com.stuypulse.robot.subsystems.Woof;
-import com.stuypulse.robot.util.LEDController;
-import com.stuypulse.stuylib.control.PIDCalculator;
 import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.WPIGamepad;
-import com.stuypulse.stuylib.input.buttons.ButtonWrapper;
-import com.stuypulse.stuylib.input.gamepads.Logitech;
-import com.stuypulse.stuylib.input.gamepads.PS4;
+import com.stuypulse.stuylib.input.gamepads.*;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import com.stuypulse.robot.Constants.*;
+import com.stuypulse.robot.commands.*;
+import com.stuypulse.robot.commands.auton.routines.*;
+import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
+
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls). Instead, the structure of the robot (including subsystems,
- * commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
 
-  private final boolean DEBUG = true;
+    // Subsystems
+    private final LEDController ledController = new LEDController(0, this);
+    private final Chimney chimney = new Chimney();
+    private final Climber climber = new Climber();
+    private final Drivetrain drivetrain = new Drivetrain();
+    private final Funnel funnel = new Funnel();
+    private final Pump pump = new Pump();
+    private final Intake intake = new Intake();
+    private final Shooter shooter = new Shooter();
+    private final Woof woof = new Woof();
 
-  // Subsystems
-  private final Chimney chimney = new Chimney();
-  private final Climber climber = new Climber();
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Funnel funnel = new Funnel();
-  private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
-  private final Woof woof = new Woof();
+    // Gamepads
+    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
-  private final LEDController ledController = new LEDController(0);
+    // Autons
+    private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
-  private final WPIGamepad driver = new PS4(Ports.Gamepad.DRIVER);
-  private final WPIGamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
-  private final WPIGamepad debug = new Logitech.XMode(Ports.Gamepad.DEBUGGER);
+    public RobotContainer() {
+        // Disable telementry to reduce lag
+        LiveWindow.disableAllTelemetry();
 
-  private static SendableChooser<Command> autonChooser = new SendableChooser<>();
+        // Set pump to false to avoid warning
+        pump.set(false);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-
-    // Default driving command that uses gamepad
-    drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
-
-    // Configure the button bindings
-    configureButtonBindings();
-
-    // chimney.setDefaultCommand(new ChimneyStopCommand(chimney));
-
-    woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-    // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel,
-    // operator));
-    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter, null));
-
-  }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-
-    operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
-        && operator.getLeftY() >= Math.abs(operator.getLeftX()))).whileHeld(new ClimberSetupCommand(climber, intake));
-    new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >= Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2)
-        && operator.getLeftY() <= -Math.abs(operator.getLeftX())))
-            .whileHeld(new ClimberRobotClimbCommand(climber, intake));
-    // new ButtonWrapper(() -> (Math.abs(operator.getLeftMag()) >=
-    // Math.pow(Constants.CLIMBER_MOVE_DEADBAND, 2) && Math.abs(operator.getLeftX())
-    // >= Math.abs(operator.getLeftY()))).whileHeld(new
-    // ClimberMoveYoyoCommand(climber, operator));
-
-    operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-    operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
-    operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
-    // operator.getBottomButton().whileHeld(new ChimneyUpCommand(chimney));
-
-    operator.getLeftTrigger().whileHeld(new IntakeDeacquireCommand(intake));
-    operator.getRightTrigger().whileHeld(new IntakeAcquireSetupCommand(intake));
-
-    // operator.getLeftBumper().whenPressed(new WoofSpinToColorCommand(woof));
-    operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
-
-    // operator.getLeftAnalogButton().whenPressed(new ClimberSetupCommand(climber));
-
-    operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, Shooting.FAR_RPM, ShooterMode.SHOOT_FROM_FAR));
-    operator.getDPadDown().whenPressed(
-        new ShooterControlCommand(shooter, Shooting.INITATION_LINE_RPM, ShooterMode.SHOOT_FROM_INITIATION_LINE));
-    operator.getDPadLeft()
-        .whenPressed(new ShooterControlCommand(shooter, Shooting.TRENCH_RPM, ShooterMode.SHOOT_FROM_TRENCH));
-    // operator.getDPadUp().whenPressed(new ShooterControlCommand(shooter, 480));
-    // operator.getDPadDown().whenPressed(new ShooterControlCommand(shooter, 240));
-    // operator.getDPadLeft().whenPressed(new ShooterControlCommand(shooter, 360));
-    operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter))
-        .whenPressed(new ShooterControlCommand(shooter, 0, ShooterMode.NONE));
-
-    operator.getSelectButton().whileHeld(new ShooterReverseCommand(shooter));
-
-    operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-
-    operator.getRightAnalogButton().whenPressed(new LEDTogglePartyModeCommand(ledController));
-
-    operator.getStartButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-    driver.getLeftButton()
-      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, false).setNeverFinish())
-      .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-
-    driver.getTopButton()
-      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, false).setNeverFinish())
-      .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));;
-
-    driver.getDPadLeft()
-      .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.INITATION_LINE_DISTANCE, true).setNeverFinish())
-      .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    
-    driver.getDPadUp()
-    .whileHeld(new DrivetrainGoalCommand(drivetrain, Alignment.TRENCH_DISTANCE, true).setNeverFinish())
-    .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    
-    // driver.getLeftButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    // driver.getTopButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    // driver.getRightButton().whileHeld(new FeedBallsAutomaticCommand(chimney, funnel, operator));
-    /**
-     * 
-     */
-
-    if (DEBUG) {
-      driver.getRightBumper().whileHeld(new DrivetrainArcCommand(drivetrain, 90, 8));
-      driver.getLeftBumper().whileHeld(new DrivetrainArcCommand(drivetrain, -90, 8));
-      
-
-      // Auto alignment for angle and speed and update pid values
-      debug.getLeftButton().whileHeld(
-          new DrivetrainAutoAngleCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
-      debug.getTopButton().whileHeld(
-          new DrivetrainAutoSpeedCommand(drivetrain, new DrivetrainMovementCommand.Aligner(drivetrain, 0, 0)));
-
-      debug.getRightButton().whileHeld(new ShooterDefaultCommand(shooter, debug,
-          new PIDCalculator(Shooting.Shooter.BANGBANG_SPEED), new PIDCalculator(Shooting.Feeder.BANGBANG_SPEED)));
-
-      // Steal driving abilities from the driver
-      debug.getBottomButton().whileHeld(new DrivetrainDriveCommand(drivetrain, debug));
-
-      // DPad controls for 90 degree turns and 2.5 ft steps
-      debug.getDPadUp().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
-      debug.getDPadDown().whenPressed(new DrivetrainMovementCommand(drivetrain, 0, 2.5));
-      debug.getDPadLeft().whenPressed(new DrivetrainMovementCommand(drivetrain, -90));
-      debug.getDPadRight().whenPressed(new DrivetrainMovementCommand(drivetrain, 90));
+        // Configure the button bindings
+        configureDefaultCommands();
+        configureButtonBindings();
+        configureAutons();
     }
-  }
 
-  public LEDController getLEDController() {
-    return ledController;
-  }
+    private void configureDefaultCommands() {
+        drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
+        woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
+    }
 
-  public void initSmartDashboard() {
-    autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
-    autonChooser.addOption("Mobility Toward Intake", new MobilityTowardIntakeAutonCommand(drivetrain, ledController));
-    autonChooser.addOption("Mobility Toward Shooter", new MobilityTowardShooterAutonCommand(drivetrain, ledController));
-    autonChooser.addOption("Shoot Three, Move Toward Intake", new ShootThreeMoveTowardIntakeAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
-    autonChooser.addOption("Shoot Three, Move Toward Shooter", new ShootThreeMoveTowardShooterAutonCommand(drivetrain, shooter, intake, funnel, chimney, ledController));
-    autonChooser.addOption("RED Six Ball: Two, then One Trench", new RedSixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
-    autonChooser.addOption("BLUE Six Ball: Two, then One Trench", new BlueSixBallTwoTrenchOneTrenchAutonCommand(drivetrain, shooter, funnel, chimney, intake, ledController));
+    private void configureButtonBindings() {
+        /*** Climber Control ***/
+        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        operator.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
+        operator.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
-    autonChooser.addOption("Eight Ball: Two Rdvs, then Three Trench", new EightBallTwoRdvsThreeTrenchAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
+        /*** Funnel and Chimney ***/
+        // The left button gets stuff out of the system
+        operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
+        operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
 
-    autonChooser.addOption("Five Ball: Two Rdvs", new FiveBallTwoRdvsAutonCommand(intake, shooter, funnel, chimney, drivetrain, ledController));
-    autonChooser.addOption("Six Ball Three Rdvs", new SixBallThreeRdvsAutonCommand(drivetrain, intake, funnel, chimney, shooter, ledController));
+        // Bottom button puts balls into the shooter
+        operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
-    autonChooser.addOption("ONES THAT WE HAVEN'T TESTED YET BELOW", new DoNothingAutonCommand(ledController));
+        /*** Intake Controlls ***/
+        // Right side is good side that does stuff
+        operator.getRightBumper().whenPressed(new IntakeExtendCommand(intake));
+        operator.getRightTriggerButton().whileHeld(new IntakeAcquireCommand(intake));
 
-    autonChooser.addOption("Six Ball Three Trench", new SixBallThreeTrenchAutonCommand(drivetrain, shooter, funnel, chimney));
-    autonChooser.addOption("Eight Ball Five Rdvs", new EightBallFiveRdvsAutonCommand(drivetrain, intake));
-    autonChooser.addOption("Eight Ball Three Trench Two Rdvs", new EightBallThreeTrenchTwoRdvsAutonCommand(drivetrain));
+        // Left side is bad side that does opposite stuff
+        operator.getLeftBumper().whenPressed(new IntakeRetractCommand(intake));
+        operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
 
-    SmartDashboard.putData("Autonomous", autonChooser);
-  }
+        /*** Shooter Speed Control ***/
+        // Move left stick to stop shooter
+        new Button(() -> operator.getLeftStick().magnitude() >= 0.2)
+                .whenPressed(new ShooterStopCommand(shooter));
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return autonChooser.getSelected();
-  }
+        // Move to different zone
+        operator.getDPadUp()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.GREEN_ZONE));
+        operator.getDPadRight()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.YELLOW_ZONE));
+        operator.getDPadDown()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.BLUE_ZONE));
+        operator.getDPadLeft()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.RED_ZONE));
 
-  public Drivetrain getDrivetrain() {
-    return drivetrain;
-  }
+        operator.getRightButton()
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.FUEL_ZONE));
+    }
 
-  public Intake getIntake() {
-    return intake;
-  }
+    public void configureAutons() {
+        autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
 
-  public Shooter getShooter() {
-    return shooter;
-  }
+        autonChooser.addOption("Bounce Path", new BouncePathAutonCommand(drivetrain));
+        autonChooser.addOption("Barrel Racing Path", new BarrelRacingAuton(drivetrain));
+        autonChooser.addOption("Slalom Path", new SlalomPathAutonCommand(drivetrain));
 
-  public Funnel getFunnel() {
-    return funnel;
-  }
+        SmartDashboard.putData("Autonomous", autonChooser);
+    }
 
-  public Chimney getChimney() {
-    return chimney;
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return autonChooser.getSelected();
+    }
 
-  public Gamepad getDriver() {
-    return driver;
-  }
+    public LEDController getLEDController() {
+        return ledController;
+    }
 
+    public Drivetrain getDrivetrain() {
+        return drivetrain;
+    }
+
+    public Intake getIntake() {
+        return intake;
+    }
+
+    public Shooter getShooter() {
+        return shooter;
+    }
+
+    public Funnel getFunnel() {
+        return funnel;
+    }
+
+    public Chimney getChimney() {
+        return chimney;
+    }
+
+    public Gamepad getDriver() {
+        return driver;
+    }
+
+    public Gamepad getOperator() {
+        return operator;
+    }
 }

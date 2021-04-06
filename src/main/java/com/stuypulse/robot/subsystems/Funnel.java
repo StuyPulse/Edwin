@@ -1,36 +1,32 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.stuypulse.robot.Constants.FunnelSettings;
+import com.stuypulse.robot.Constants.Ports;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.stuypulse.robot.Constants;
-import com.stuypulse.robot.util.MotorStall;
-
-public class Funnel extends SubsystemBase implements MotorStall {
+public class Funnel extends SubsystemBase {
 
     private final CANSparkMax motor;
-    private final CANEncoder encoder;
-
-    private boolean isStalled;
-    private double startEncoderVal;
-    private int stallCounter;
-
-    private boolean isRunning;
 
     public Funnel() {
-        motor = new CANSparkMax(Constants.FUNNEL_MOTOR_PORT, MotorType.kBrushless);
-        encoder = motor.getEncoder();
+        motor = new CANSparkMax(Ports.FUNNEL, MotorType.kBrushless);
     }
 
     public void funnel() {
-        motor.set(Constants.FUNNEL_SPEED);
+        motor.set(FunnelSettings.FUNNEL_SPEED);
     }
 
     public void unfunnel() {
-        motor.set(Constants.UNFUNNEL_SPEED);
+        motor.set(FunnelSettings.UNFUNNEL_SPEED);
     }
 
     public void stop() {
@@ -38,58 +34,8 @@ public class Funnel extends SubsystemBase implements MotorStall {
     }
 
     @Override
-    public void setStalled(boolean value) {
-        isStalled = value;
+    public void periodic() {
+        // SmartDashboard
+        SmartDashboard.putNumber("Funnel/Motor Speed", motor.get());
     }
-
-    @Override
-    public boolean isStalling() {
-        return isStalled;
-    }
-
-    @Override
-    public double getEncoderApproachStallThreshold() {
-        return Constants.FUNNEL_ENCODER_APPROACH_STALL_THRESHOLD;
-    }
-
-    @Override
-    public void setStartEncoderVal(double val) {
-        startEncoderVal = val;
-    }
-
-    @Override
-    public double getStartEncoderVal() {
-        return startEncoderVal;
-    }
-
-    @Override
-    public double getCurrentEncoderVal() {
-        return encoder.getPosition();
-    }
-
-    @Override
-    public int getStallCounter() {
-        return stallCounter;
-    }
-
-    @Override
-    public void incrementStallCounter() {
-        stallCounter++;
-    }
-
-    @Override
-    public void resetStallCounter() {
-        stallCounter = 0;
-    }
-
-    @Override
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    @Override
-    public void setRunning(boolean val) {
-        isRunning = val;
-    }
-
 }

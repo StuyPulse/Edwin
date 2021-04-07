@@ -58,7 +58,7 @@ public class DrivetrainGoalAligner implements DrivetrainAlignmentCommand.Aligner
         if (Limelight.getInstance().getValidTarget()) {
             return Angle.fromDegrees(
                     Limelight.getInstance().getTargetXAngle()
-                            + Alignment.Measurements.Limelight.YAW.doubleValue());
+                            + Alignment.Measurements.Limelight.YAW);
         } else {
             return Angle.fromDegrees(0);
         }

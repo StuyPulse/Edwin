@@ -48,11 +48,11 @@ public class Chimney extends SubsystemBase {
 
     // MOVE THE MOTORS
     public void liftUp() {
-        motor.set(ChimneySettings.LIFT_UP_SPEED);
+        motor.setVoltage(ChimneySettings.LIFT_UP_SPEED);
     }
 
     public void liftDown() {
-        motor.set(-ChimneySettings.LIFT_UP_SPEED);
+        motor.setVoltage(-ChimneySettings.LIFT_UP_SPEED);
     }
 
     public void stop() {

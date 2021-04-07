@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 public class FeedBallsCommand extends ParallelCommandGroup {
 
     public FeedBallsCommand(Funnel funnel, Chimney chimney) {
-        addCommands(new FunnelFunnelCommand(funnel), new ChimneyUpCommand(chimney));
+        // addCommands(new FunnelFunnelCommand(funnel));
+        addCommands(new ChimneyUpCommand(chimney));
     }
 }

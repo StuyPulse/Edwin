@@ -37,23 +37,23 @@ public class Shooter extends SubsystemBase {
                 new SmartBoolean("Shooting/Green Zone/Hood Extended", true)),
 
         YELLOW_ZONE(
-                new SmartNumber("Shooting/Yellow Zone/Distance", 2.8),
+                new SmartNumber("Shooting/Yellow Zone/Distance", 2.85),
                 new SmartNumber("Shooting/Yellow Zone/RPM", 2700),
                 new SmartBoolean("Shooting/Yellow Zone/Hood Extended", false)),
 
         BLUE_ZONE(
-                new SmartNumber("Shooting/Blue Zone/Distance", 4),
+                new SmartNumber("Shooting/Blue Zone/Distance", 4.3),
                 new SmartNumber("Shooting/Blue Zone/RPM", 2750),
                 new SmartBoolean("Shooting/Blue Zone/Hood Extended", false)),
 
         RED_ZONE(
-                new SmartNumber("Shooting/Red Zone/Distance", 5.5),
-                new SmartNumber("Shooting/Red Zone/RPM", 3000),
+                new SmartNumber("Shooting/Red Zone/Distance", 5.75),
+                new SmartNumber("Shooting/Red Zone/RPM", 2950),
                 new SmartBoolean("Shooting/Red Zone/Hood Extended", false)),
 
         FUEL_ZONE(
                 new SmartNumber("Shooting/Fuel Zone/Distance", 7),
-                new SmartNumber("Shooting/Fuel Zone/RPM", 0),
+                new SmartNumber("Shooting/Fuel Zone/RPM", 2000),
                 new SmartBoolean("Shooting/Fuel Zone/Hood Extended", false));
 
         public final SmartNumber distance;
@@ -163,7 +163,7 @@ public class Shooter extends SubsystemBase {
         feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
         // Set Current Shooter Mode to Disabled
-        targetRPM = new TimedRateLimit(1000);
+        targetRPM = new TimedRateLimit(800);
         currentMode = ShooterMode.DISABLED;
 
         // Add Children to Subsystem
@@ -244,8 +244,8 @@ public class Shooter extends SubsystemBase {
             }
 
             // Set the speeds of the motors, and prevent bad values
-            shooterMotor.setVoltage(SLMath.clamp(shootSpeed, 0, 12));
-            feederMotor.setVoltage(SLMath.clamp(feederSpeed, 0, 12));
+            shooterMotor.setVoltage(SLMath.clamp(shootSpeed, -1.0, 16));
+            feederMotor.setVoltage(SLMath.clamp(feederSpeed, -1.0, 16));
         }
 
         // SmartDashboard

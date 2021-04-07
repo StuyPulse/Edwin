@@ -250,7 +250,7 @@ public interface Constants {
                 double HEIGHT = Units.feetToMeters(2) + Units.inchesToMeters(10);
                 double DISTANCE = Units.feetToMeters(0);
                 double PITCH = 25;
-                SmartNumber YAW = new SmartNumber("Limelight Yaw", 2.0);
+                double YAW = 0.0;
             }
         }
     }
@@ -315,7 +315,7 @@ public interface Constants {
     }
 
     public interface ChimneySettings {
-        double LIFT_UP_SPEED = 1.0;
+        double LIFT_UP_SPEED = 10;
         double ENCODER_RADIUS = -1;
         double BALL_PER_ROTATIONS = -0.5;
     }

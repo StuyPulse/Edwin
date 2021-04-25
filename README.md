@@ -1,6 +1,6 @@
 # Edwin
-FRC Robot Code for the 2020 Season
-Testing Status: Robot currently doesn't exist
+FRC Robot Code for the 2020 + 2021 Season
+Testing Status: All of the code works, Motion Profiling, Shooter Control, Target Alignment.
 
 ## Getting Edwin to work with StuyLib
 Just make sure that you have StuyLib and Edwin in the same folder, or ensure internet connecetivity!

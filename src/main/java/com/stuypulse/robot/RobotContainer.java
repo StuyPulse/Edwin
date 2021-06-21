@@ -61,48 +61,50 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
         woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-        chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
+        
+        // NOPE! Not Anymore, It's Annoying.
+        // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
     }
 
     private void configureButtonBindings() {
         /*** Climber Control ***/
-        driver.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-        driver.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
-        driver.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
+        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        operator.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
+        operator.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
         /*** Funnel and Chimney ***/
         // The left button gets stuff out of the system
-        driver.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-        driver.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+        operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
+        operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
 
         // Bottom button puts balls into the shooter
-        driver.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+        operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
 
         /*** Intake Controlls ***/
         // Right side is good side that does stuff
-        driver.getRightBumper().whenPressed(new IntakeExtendCommand(intake));
-        // driver.getRightTriggerButton().whileHeld(new IntakeAcquireCommand(intake));
+        operator.getRightBumper().whenPressed(new IntakeExtendCommand(intake));
+        operator.getRightTriggerButton().whileHeld(new IntakeAcquireCommand(intake));
 
         // Left side is bad side that does opposite stuff
-        driver.getLeftBumper().whenPressed(new IntakeRetractCommand(intake));
-        // driver.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
+        operator.getLeftBumper().whenPressed(new IntakeRetractCommand(intake));
+        operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
 
         /*** Shooter Speed Control ***/
         // Move left stick to stop shooter
-        new Button(() -> driver.getRightStick().magnitude() >= 0.2)
+        new Button(() -> operator.getRightStick().magnitude() >= 0.2)
                 .whenPressed(new ShooterStopCommand(shooter));
 
         // Move to different zone
-        driver.getDPadUp()
+        operator.getDPadUp()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.GREEN_ZONE));
-        driver.getDPadRight()
+        operator.getDPadRight()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.YELLOW_ZONE));
-        driver.getDPadDown()
+        operator.getDPadDown()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.BLUE_ZONE));
-        driver.getDPadLeft()
+        operator.getDPadLeft()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.RED_ZONE));
 
-        driver.getRightButton()
+        operator.getRightButton()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.FUEL_ZONE));
     }
 

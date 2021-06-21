@@ -118,8 +118,8 @@ public interface Constants {
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.09);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.02);
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.05);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
@@ -289,13 +289,13 @@ public interface Constants {
         double MOVE_DEADBAND = 0.25;
 
         double EXPONENT = 1.0 / 3.0;
-
-        double MOVE_SLOW_SPEED = 0.1;
-
-        double MOVE_LIFT_UP_SPEED = 1.0;
-        double MOVE_LIFT_DOWN_SPEED = -1.0;
-        double SETUP_WAIT_TIME = 0.2;
         double SCALE = 0.5;
+
+        SmartNumber MOVE_SLOW_SPEED = new SmartNumber("Climber/Move Slow Speed", 0.1);
+        SmartNumber MOVE_LIFT_UP_SPEED = new SmartNumber("Climber/Move Speed Up", 0.8);
+        SmartNumber MOVE_LIFT_DOWN_SPEED = new SmartNumber("Climber/Move Speed Down", -0.8);
+        
+        double SETUP_WAIT_TIME = 0.2;
     }
 
     public interface FunnelSettings {

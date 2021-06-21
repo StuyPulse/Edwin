@@ -18,13 +18,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climber extends SubsystemBase {
 
     private CANSparkMax liftMotor;
-    private CANSparkMax yoyoMotor;
-
     private Solenoid liftSolenoid;
 
     public Climber() {
         liftMotor = new CANSparkMax(Ports.Climber.LIFT_MOTOR_PORT, MotorType.kBrushless);
-        yoyoMotor = new CANSparkMax(Ports.Climber.YOYO_MOTOR_PORT, MotorType.kBrushless);
         liftSolenoid = new Solenoid(Ports.Climber.LIFT_SOLENOID_CHANNEL);
 
         liftMotor.setInverted(true);
@@ -38,31 +35,23 @@ public class Climber extends SubsystemBase {
     }
 
     public void moveLiftDown() {
-        moveLift(ClimberSettings.MOVE_LIFT_DOWN_SPEED);
+        moveLift(ClimberSettings.MOVE_LIFT_DOWN_SPEED.get());
     }
 
     public void moveLiftUp() {
-        moveLift(ClimberSettings.MOVE_LIFT_UP_SPEED);
+        moveLift(ClimberSettings.MOVE_LIFT_UP_SPEED.get());
     }
 
     public void moveLiftDownSlow() {
-        moveLift(-ClimberSettings.MOVE_SLOW_SPEED);
+        moveLift(-ClimberSettings.MOVE_SLOW_SPEED.get());
     }
 
     public void moveLift(double speed) {
         liftMotor.set(speed);
     }
 
-    public void moveYoyo(double speed) {
-        yoyoMotor.set(speed);
-    }
-
     public void stopClimber() {
         liftMotor.stopMotor();
-    }
-
-    public void stopYoyo() {
-        yoyoMotor.stopMotor();
     }
 
     public void toggleLiftBrake() {
@@ -70,15 +59,11 @@ public class Climber extends SubsystemBase {
     }
 
     public void enableLiftBrake() {
-        if (liftSolenoid.get()) {
-            liftSolenoid.set(false);
-        }
+        liftSolenoid.set(false);
     }
 
     public void releaseLiftBrake() {
-        if (!liftSolenoid.get()) {
-            liftSolenoid.set(true);
-        }
+        liftSolenoid.set(true);
     }
 
     public boolean isAtBottom() {

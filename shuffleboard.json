@@ -858,6 +858,39 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "3,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Climber/Move Slow Speed",
+              "_title": "Move Slow Speed"
+            }
+          },
+          "3,1": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Climber/Move Speed Up",
+              "_title": "Move Speed Up"
+            }
+          },
+          "3,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Climber/Move Speed Down",
+              "_title": "Move Speed Down"
+            }
           }
         }
       }
@@ -1498,8 +1531,8 @@
             "content": {
               "_type": "Graph",
               "_source0": "network_table:///SmartDashboard/Shooter/Target RPM",
-              "_source1": "network_table:///SmartDashboard/Shooter/Feeder RPM",
-              "_source2": "network_table:///SmartDashboard/Shooter/Shooter RPM",
+              "_source1": "network_table:///SmartDashboard/Shooter/Shooter RPM",
+              "_source2": "network_table:///SmartDashboard/Shooter/Feeder RPM",
               "_title": "Shooter RPM",
               "Graph/Visible time": 15.0,
               "Graph/X-axis auto scrolling": true,
@@ -1883,8 +1916,8 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
-    "y": 26.0,
+    "x": 68.0,
+    "y": 25.0,
     "width": 1680.0,
     "height": 961.0
   }

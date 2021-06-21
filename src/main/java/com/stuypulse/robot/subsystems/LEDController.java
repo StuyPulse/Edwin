@@ -5,6 +5,7 @@
 package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +18,6 @@ public class LEDController extends SubsystemBase {
         SINELON(-0.77, false),
         CONFETTI(-0.87, false),
         BEAT(-0.67, false),
-        TWINKLE(-0.53, false),
         WAVE(-0.43, false),
 
         WHITE_SOLID(0.93, false), // Shoot from initation line
@@ -54,10 +54,10 @@ public class LEDController extends SubsystemBase {
             if (pulse) {
                 // Get time in millis, used for pulsing
                 long time = System.currentTimeMillis();
-                time = Math.abs(time % 500L);
+                time = Math.abs(time % 500);
 
                 // Detect if the color should be on or off
-                if (time >= 400) {
+                if (time >= 250) {
                     return LEDColor.OFF.color;
                 } else {
                     return this.color;
@@ -96,42 +96,38 @@ public class LEDController extends SubsystemBase {
     // Update the LED color depending on what is happening with the robot
     public void updateColors() {
         if (robotContainer != null) {
-            Intake intake = robotContainer.getIntake();
+            Gamepad driver = robotContainer.getDriver();
             Shooter shooter = robotContainer.getShooter();
+            Intake intake = robotContainer.getIntake();
 
-            if (intake.isBallDetected()) {
-                this.setColor(LEDColor.RAINBOW);
+            // Fun Driver LEDs
+            /**/ if(driver.getRawDPadUp()) this.setColor(LEDColor.RAINBOW);
+            else if(driver.getRawDPadDown()) this.setColor(LEDColor.SINELON);
+            else if(driver.getRawDPadLeft()) this.setColor(LEDColor.WAVE);
+            else if(driver.getRawDPadRight()) this.setColor(LEDColor.BEAT);
+            
+            // Shooter Modes have their own LEDs
+            else if(intake.isBallDetected()) {
+                this.setColor(LEDColor.LIME_SOLID);
             } else {
                 if (shooter.isReady()) {
                     switch (shooter.getMode()) {
-                        case GREEN_ZONE:
-                            setColor(LEDColor.GREEN_SOLID);
+                        case INITIATION_LINE:
+                            setColor(LEDColor.WHITE_SOLID);
                             break;
-                        case YELLOW_ZONE:
-                            setColor(LEDColor.YELLOW_SOLID);
-                            break;
-                        case BLUE_ZONE:
-                            setColor(LEDColor.BLUE_SOLID);
-                            break;
-                        case RED_ZONE:
-                            setColor(LEDColor.RED_SOLID);
+                        case TRENCH_SHOT:
+                            setColor(LEDColor.ORANGE_SOLID);
                             break;
                         default:
                             setColor(LEDColor.OFF);
                     }
                 } else {
                     switch (shooter.getMode()) {
-                        case GREEN_ZONE:
-                            setColor(LEDColor.GREEN_PULSE);
+                        case INITIATION_LINE:
+                            setColor(LEDColor.WHITE_PULSE);
                             break;
-                        case YELLOW_ZONE:
-                            setColor(LEDColor.YELLOW_PULSE);
-                            break;
-                        case BLUE_ZONE:
-                            setColor(LEDColor.BLUE_PULSE);
-                            break;
-                        case RED_ZONE:
-                            setColor(LEDColor.RED_PULSE);
+                        case TRENCH_SHOT:
+                            setColor(LEDColor.ORANGE_PULSE);
                             break;
                         default:
                             setColor(LEDColor.OFF);

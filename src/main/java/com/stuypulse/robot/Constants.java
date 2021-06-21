@@ -292,8 +292,8 @@ public interface Constants {
         double SCALE = 0.5;
 
         SmartNumber MOVE_SLOW_SPEED = new SmartNumber("Climber/Move Slow Speed", 0.1);
-        SmartNumber MOVE_LIFT_UP_SPEED = new SmartNumber("Climber/Move Speed Up", 0.8);
-        SmartNumber MOVE_LIFT_DOWN_SPEED = new SmartNumber("Climber/Move Speed Down", -0.8);
+        SmartNumber MOVE_LIFT_UP_SPEED = new SmartNumber("Climber/Move Speed Up", 1.0);
+        SmartNumber MOVE_LIFT_DOWN_SPEED = new SmartNumber("Climber/Move Speed Down", -1.0);
         
         double SETUP_WAIT_TIME = 0.2;
     }

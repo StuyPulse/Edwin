@@ -67,45 +67,66 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        /*** Climber Control ***/
-        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-        operator.getSelectButton().whileHeld(new ClimberSetupCommand(climber, intake));
-        operator.getStartButton().whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
+        /***********************/
+        /*** Climber Control ***/
+        /***********************/
+
+        // Setup Climber before Climbing (Move Left Stick Up)
+        new Button(() -> operator.getLeftY() >= 0.5)
+                .whenPressed(new IntakeRetractCommand(intake))
+                .whileHeld(new ClimberSetupCommand(climber, intake));
+
+        // Start Climbing (Move Left Stick Down)
+        new Button(() -> operator.getLeftY() <= -0.5)
+                .whileHeld(new ClimberRobotClimbCommand(climber, intake));
+
+        // Toggle Brake (Push In Left Stick)
+        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+
+
+        /**************************/
         /*** Funnel and Chimney ***/
-        // The left button gets stuff out of the system
+        /**************************/
+
+        // Reverse each component if it gets stuck
         operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-        operator.getLeftButton().whileHeld(new ChimneyDownCommand(chimney));
+        operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
 
         // Bottom button puts balls into the shooter
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-
+        
+        
+        /************************/
         /*** Intake Controlls ***/
-        // Right side is good side that does stuff
-        operator.getRightBumper().whenPressed(new IntakeExtendCommand(intake));
-        operator.getRightTriggerButton().whileHeld(new IntakeAcquireCommand(intake));
+        /************************/
 
-        // Left side is bad side that does opposite stuff
-        operator.getLeftBumper().whenPressed(new IntakeRetractCommand(intake));
+        // Right Trigger Extends Intake and Acquires
+        operator.getRightTriggerButton()
+            .whenPressed(new IntakeExtendCommand(intake))
+            .whileHeld(new IntakeAcquireCommand(intake));
+
+        // Left Trigger Deacquires
         operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
 
+        // Right Button Retracts Intake
+        operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
+
+
+        /*****************************/
         /*** Shooter Speed Control ***/
-        // Move left stick to stop shooter
-        new Button(() -> operator.getRightStick().magnitude() >= 0.2)
-                .whenPressed(new ShooterStopCommand(shooter));
+        /*****************************/
+
+        // Everything that is not meant to shoot, stops the shooter
+        operator.getDPadUp().whenPressed(new ShooterStopCommand(shooter));
+        operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
 
         // Move to different zone
-        operator.getDPadUp()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.GREEN_ZONE));
-        operator.getDPadRight()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.YELLOW_ZONE));
         operator.getDPadDown()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.BLUE_ZONE));
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadLeft()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.RED_ZONE));
-
-        operator.getRightButton()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.FUEL_ZONE));
+                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.TRENCH_SHOT));
+        
     }
 
     public void configureAutons() {

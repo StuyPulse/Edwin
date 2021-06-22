@@ -320,6 +320,10 @@ public interface Constants {
         double BALL_PER_ROTATIONS = -0.5;
     }
 
+    public interface LEDSettings {
+        double BLINK_TIME = 0.5;
+    }
+
     public interface Colors {
         double CYAN_RED = 0.2;
         double CYAN_GREEN = 0.56;

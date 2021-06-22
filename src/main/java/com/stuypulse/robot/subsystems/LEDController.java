@@ -5,8 +5,10 @@
 package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.Constants.LEDSettings;
 import com.stuypulse.stuylib.input.Gamepad;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -52,12 +54,12 @@ public class LEDController extends SubsystemBase {
 
         double get() {
             if (pulse) {
-                // Get time in millis, used for pulsing
-                long time = System.currentTimeMillis();
-                time = Math.abs(time % 500);
+                // // Variables for detecting if we should be blinking or not
+                double cT = Timer.getFPGATimestamp() % (LEDSettings.BLINK_TIME);
+                double oT = (0.5 * LEDSettings.BLINK_TIME);
 
                 // Detect if the color should be on or off
-                if (time >= 250) {
+                if (cT >= oT) {
                     return LEDColor.OFF.color;
                 } else {
                     return this.color;
@@ -105,6 +107,8 @@ public class LEDController extends SubsystemBase {
             else if(driver.getRawDPadDown()) this.setColor(LEDColor.SINELON);
             else if(driver.getRawDPadLeft()) this.setColor(LEDColor.WAVE);
             else if(driver.getRawDPadRight()) this.setColor(LEDColor.BEAT);
+            else if(driver.getRawLeftBumper()) this.setColor(LEDColor.RED_PULSE);
+            else if(driver.getRawRightBumper()) this.setColor(LEDColor.BLUE_PULSE);
             
             // Shooter Modes have their own LEDs
             else if(intake.isBallDetected()) {

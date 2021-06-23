@@ -82,12 +82,11 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     // If the drivetrain goes into high or low gear
     public Drivetrain.Gear getGear() {
-        return Drivetrain.Gear.HIGH;
-        // if (gamepad.getRawBottomButton()) {
-        //     return Drivetrain.Gear.LOW;
-        // } else {
-        //     return Drivetrain.Gear.HIGH;
-        // }
+        if (gamepad.getRawBottomButton()) {
+            return Drivetrain.Gear.LOW;
+        } else {
+            return Drivetrain.Gear.HIGH;
+        }
     }
 
     // Humans need curvature drive because they're st00p1d

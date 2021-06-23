@@ -35,12 +35,11 @@ public class WoofTurnRotationsWithEncoderCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return woof.getRotations() >= WoofSettings.TARGET_ENCODER_VALUE;
+        return woof.getControlPanelRotations() >= WoofSettings.TARGET_CONTROL_PANEL_TURNS;
     }
 
     @Override
     public void end(boolean interrupted) {
         woof.stop();
-        woof.reset();
     }
 }

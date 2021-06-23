@@ -97,9 +97,9 @@ public class RobotContainer {
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
         
         
-        /************************/
-        /*** Intake Controlls ***/
-        /************************/
+        /***********************/
+        /*** Intake Controls ***/
+        /***********************/
 
         // Right Trigger Extends Intake and Acquires
         operator.getRightTriggerButton()
@@ -111,6 +111,14 @@ public class RobotContainer {
 
         // Right Button Retracts Intake
         operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
+
+
+        /*********************/
+        /*** Woof Controls ***/
+        /*********************/
+
+        // Right Bumper Uses Encoder
+        operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
 
 
         /*****************************/

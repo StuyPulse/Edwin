@@ -307,7 +307,14 @@ public interface Constants {
 
     public interface WoofSettings {
         double TURN_SPEED = 1.0;
-        double TARGET_ENCODER_VALUE = 600;
+        
+        double WOOF_GEAR = 20;
+        double CONTROL_PANEL_RATIO = 10;
+        
+        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.1);
+        
+        double TARGET_CONTROL_PANEL_TURNS = 3;
+
     }
 
     public interface IntakeSettings {

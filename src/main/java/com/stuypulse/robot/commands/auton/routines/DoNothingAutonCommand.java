@@ -14,7 +14,7 @@ public class DoNothingAutonCommand extends SequentialCommandGroup {
 
     public DoNothingAutonCommand(LEDController controller) {
         addCommands(
-                new LEDSetCommand(LEDColor.RED_SOLID, controller)
+                new LEDSetCommand(controller, LEDColor.RED_SOLID)
                 // new DrivetrainMovementCommand(drivetrain, 0,
                 // 0).setNeverFinish().withTimeout(15)
                 );

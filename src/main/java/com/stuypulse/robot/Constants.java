@@ -109,11 +109,11 @@ public interface Constants {
                 new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
 
         // How much to slow down quick turn
-        SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 0.5);
+        SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 1.0);
 
         // Low Pass Filter and deadband for Driver Controls
-        SmartNumber SPEED_DEADBAND = new SmartNumber("Driver Settings/Speed Deadband", 0.1);
-        SmartNumber ANGLE_DEADBAND = new SmartNumber("Driver Settings/Turn Deadband", 0.1);
+        SmartNumber SPEED_DEADBAND = new SmartNumber("Driver Settings/Speed Deadband", 0.0);
+        SmartNumber ANGLE_DEADBAND = new SmartNumber("Driver Settings/Turn Deadband", 0.0);
 
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);

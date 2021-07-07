@@ -74,11 +74,11 @@ public class RobotContainer {
 
         // Setup Climber before Climbing (Move Left Stick Up)
         new Button(() -> operator.getLeftY() >= 0.5)
-                .whenPressed(new IntakeRetractCommand(intake))
                 .whileHeld(new ClimberSetupCommand(climber, intake));
 
         // Start Climbing (Move Left Stick Down)
         new Button(() -> operator.getLeftY() <= -0.5)
+                .whenPressed(new IntakeRetractCommand(intake))
                 .whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
         // Toggle Brake (Push In Left Stick)
@@ -139,6 +139,8 @@ public class RobotContainer {
 
     public void configureAutons() {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
+
+        autonChooser.setDefaultOption("Old Six Ball Trench Auton", new OldSixBallTrenchAuton(this));
 
         autonChooser.addOption("Bounce Path", new BouncePathAutonCommand(drivetrain));
         autonChooser.addOption("Barrel Racing Path", new BarrelRacingAuton(drivetrain));

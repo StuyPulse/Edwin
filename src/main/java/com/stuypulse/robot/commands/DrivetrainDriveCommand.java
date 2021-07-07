@@ -71,18 +71,24 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     public double getSpeed() {
         double s = speed.get();
 
+        // Bottom Button is for driving backwards
+        if(gamepad.getRawBottomButton()) {
+            return -s;
+        }
+
         return s;
     }
 
     // Give the IStream's result for angle when the drivetrain wants it
     public double getAngle() {
         double a = angle.get();
+
         return a;
     }
 
     // If the drivetrain goes into high or low gear
     public Drivetrain.Gear getGear() {
-        if (gamepad.getRawBottomButton()) {
+        if (gamepad.getRawRightButton()) {
             return Drivetrain.Gear.LOW;
         } else {
             return Drivetrain.Gear.HIGH;

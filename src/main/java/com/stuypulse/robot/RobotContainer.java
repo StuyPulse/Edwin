@@ -131,9 +131,12 @@ public class RobotContainer {
 
         // Move to different zone
         operator.getDPadDown()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.INITIATION_LINE));
+                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadLeft()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.TRENCH_SHOT));
+                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.TRENCH_SHOT));
+
+        driver.getBottomButton()
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter));
         
     }
 

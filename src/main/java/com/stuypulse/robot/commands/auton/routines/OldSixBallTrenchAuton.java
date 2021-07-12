@@ -43,7 +43,7 @@ public class OldSixBallTrenchAuton extends SequentialCommandGroup {
 
             
             new LEDSetCommand(robot.getLEDController(), LEDColor.RED_SOLID),
-            new TimeoutCommand(new FeedBallsCommand(robot.getFunnel(), robot.getChimney()), 1.0),
+            new FeedBallsCommand(robot.getFunnel(), robot.getChimney()).withTimeout(1.0),
             
             new LEDSetCommand(robot.getLEDController(), LEDColor.GREEN_SOLID),
             // new DrivetrainMovementCommand(drivetrain, ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES, 0).setTimeout(1.0),

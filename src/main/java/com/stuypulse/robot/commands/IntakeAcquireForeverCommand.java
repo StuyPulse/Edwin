@@ -6,9 +6,9 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class IntakeAcquireForeverCommand extends CommandBase {
+public class IntakeAcquireForeverCommand extends InstantCommand {
 
     private final Intake intake;
 
@@ -18,7 +18,7 @@ public class IntakeAcquireForeverCommand extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         intake.acquire();
     }
 }

@@ -141,6 +141,7 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
 
         autonChooser.setDefaultOption("Old Six Ball Trench Auton", new OldSixBallTrenchAuton(this));
+        autonChooser.setDefaultOption("Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
 
         autonChooser.addOption("Bounce Path", new BouncePathAutonCommand(drivetrain));
         autonChooser.addOption("Barrel Racing Path", new BarrelRacingAuton(drivetrain));

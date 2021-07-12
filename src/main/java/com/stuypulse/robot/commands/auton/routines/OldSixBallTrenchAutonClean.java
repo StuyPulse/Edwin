@@ -56,13 +56,16 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
         
         /**
          * Then, it aligns the drivetrain with the target from the 
-         * trench distance.
+         * trench distance. It also starts to bring up the balls in 
+         * parallel.
          */
         addCommands(
             new LEDSetCommand(robot.getLEDController(), LEDColor.ORANGE_SOLID),
 
-            new DrivetrainGoalCommand(
-                robot.getDrivetrain(), 
+            // Have the balls be fed up to the top of the chute while the drivetrain
+            // is aligning. Ends when the alignment ends or after 3.5 seconds.
+            new DrivetrainAlignAndFeedCommand(
+                robot, 
                 Alignment.TRENCH_DISTANCE
             ).withTimeout(3.5)
         ); 
@@ -103,8 +106,9 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
         addCommands(  
             new LEDSetCommand(robot.getLEDController(), LEDColor.BLUE_SOLID),
 
-            new DrivetrainGoalCommand(
-                robot.getDrivetrain(), 
+            // Feed the balls as far up as possible (without shooting) while aligning
+            new DrivetrainAlignAndFeedCommand(
+                robot, 
                 Alignment.TRENCH_DISTANCE
             ).withTimeout(4)
         );

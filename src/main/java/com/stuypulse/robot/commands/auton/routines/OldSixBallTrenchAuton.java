@@ -31,7 +31,7 @@ public class OldSixBallTrenchAuton extends SequentialCommandGroup {
             new IntakeExtendCommand(robot.getIntake()),
             new ShooterControlCommand(robot.getShooter(), ShooterMode.TRENCH_SHOT),
             new WaitCommand(0.1),
-            new IntakeAcquireCommand(robot.getIntake()),
+            new IntakeAcquireForeverCommand(robot.getIntake()),
             new WaitCommand(1.0),
 
             new LEDSetCommand(robot.getLEDController(), LEDColor.YELLOW_SOLID),

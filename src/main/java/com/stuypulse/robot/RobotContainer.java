@@ -61,7 +61,7 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
         woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-        
+
         // NOPE! Not Anymore, It's Annoying.
         // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
     }
@@ -84,7 +84,6 @@ public class RobotContainer {
         // Toggle Brake (Push In Left Stick)
         operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
-
         /**************************/
         /*** Funnel and Chimney ***/
         /**************************/
@@ -95,16 +94,15 @@ public class RobotContainer {
 
         // Bottom button puts balls into the shooter
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-        
-        
+
         /***********************/
         /*** Intake Controls ***/
         /***********************/
 
         // Right Trigger Extends Intake and Acquires
         operator.getRightTriggerButton()
-            .whenPressed(new IntakeExtendCommand(intake))
-            .whileHeld(new IntakeAcquireCommand(intake));
+                .whenPressed(new IntakeExtendCommand(intake))
+                .whileHeld(new IntakeAcquireCommand(intake));
 
         // Left Trigger Deacquires
         operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
@@ -112,14 +110,12 @@ public class RobotContainer {
         // Right Button Retracts Intake
         operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
 
-
         /*********************/
         /*** Woof Controls ***/
         /*********************/
 
         // Right Bumper Uses Encoder
         operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
-
 
         /*****************************/
         /*** Shooter Speed Control ***/
@@ -134,7 +130,11 @@ public class RobotContainer {
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadLeft()
                 .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.TRENCH_SHOT));
-        
+
+        driver.getTopButton()
+                .whileHeld(
+                        new DrivetrainMovementCommand.DriveCommand(drivetrain, 1.0)
+                                .setMaxSpeed(0.5));
     }
 
     public void configureAutons() {

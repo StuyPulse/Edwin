@@ -18,7 +18,6 @@ public class DrivetrainGoalCommand extends DrivetrainAlignmentCommand {
     public DrivetrainGoalCommand(Drivetrain drivetrain, Number distance) {
         super(drivetrain, new DrivetrainGoalAligner(distance));
         setMaxSpeed(Constants.Alignment.Speed.LIMELIGHT_MAX_SPEED);
-        useInterpolation();
         useMinTime();
     }
 }

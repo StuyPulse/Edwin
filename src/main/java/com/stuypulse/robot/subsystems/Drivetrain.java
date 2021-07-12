@@ -200,9 +200,14 @@ public class Drivetrain extends SubsystemBase {
      * NAVX *
      ********/
 
+    // Gets current Angle of the Robot as a double (contiuous / not +-180)
+    public double getRawAngle() {
+        return navx.getAngle();
+    }
+
     // Gets current Angle of the Robot
     public Angle getAngle() {
-        return Angle.fromDegrees(navx.getAngle());
+        return Angle.fromDegrees(getRawAngle());
     }
 
     private void resetNavX() {

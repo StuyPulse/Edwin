@@ -182,7 +182,9 @@ public interface Constants {
         double MAX_DISTANCE = Units.feetToMeters(54);
 
         double MIN_ALIGNMENT_TIME = 1.0;
-        double INTERPOLATION_PERIOD = 0.25;
+
+        SmartNumber SENSOR_FUSION_RC =
+                new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.5);
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Drivetrain/Alignment/Auto Tune/P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Drivetrain/Alignment/Auto Tune/I", 0.0);
@@ -294,7 +296,7 @@ public interface Constants {
         SmartNumber MOVE_SLOW_SPEED = new SmartNumber("Climber/Move Slow Speed", 0.1);
         SmartNumber MOVE_LIFT_UP_SPEED = new SmartNumber("Climber/Move Speed Up", 1.0);
         SmartNumber MOVE_LIFT_DOWN_SPEED = new SmartNumber("Climber/Move Speed Down", -1.0);
-        
+
         double SETUP_WAIT_TIME = 0.2;
     }
 
@@ -307,14 +309,13 @@ public interface Constants {
 
     public interface WoofSettings {
         double TURN_SPEED = 1.0;
-        
+
         double WOOF_GEAR = 20;
         double CONTROL_PANEL_RATIO = 10;
-        
-        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.1);
-        
-        double TARGET_CONTROL_PANEL_TURNS = 3;
 
+        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.1);
+
+        double TARGET_CONTROL_PANEL_TURNS = 3;
     }
 
     public interface IntakeSettings {

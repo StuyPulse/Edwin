@@ -29,13 +29,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Drivetrain extends SubsystemBase {
+import com.stuypulse.robot.util.gear.*;
 
-    // Enum used to store the state of the gear
-    public static enum Gear {
-        HIGH,
-        LOW
-    };
+public class Drivetrain extends SubsystemBase {
 
     // An array of motors on the left and right side of the drive train
     private CANSparkMax[] leftMotors;
@@ -44,6 +40,9 @@ public class Drivetrain extends SubsystemBase {
     // An encoder for each side of the drive train
     private CANEncoder leftNEO;
     private CANEncoder rightNEO;
+
+    private EncoderIntegrator leftIntegrator;
+    private EncoderIntegrator rightIntegrator;
 
     // DifferentialDrive and Gear Information
     private Gear gear;
@@ -74,12 +73,18 @@ public class Drivetrain extends SubsystemBase {
                     new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless)
                 };
 
+        // Gear shifiting
+        gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
+        setGear(Gear.HIGH);
+
         // Create list of encoders based on motors
         leftNEO = leftMotors[0].getEncoder();
         rightNEO = rightMotors[0].getEncoder();
+            
+        leftIntegrator = new EncoderIntegrator();
+        rightIntegrator = new EncoderIntegrator();
 
-        leftNEO.setPosition(0);
-        rightNEO.setPosition(0);
+        resetEncoders();
 
         // Make differential drive object
         drivetrain =
@@ -87,8 +92,6 @@ public class Drivetrain extends SubsystemBase {
                         new SpeedControllerGroup(leftMotors),
                         new SpeedControllerGroup(rightMotors));
 
-        // Add Gear Shifter
-        gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
         navx = new AHRS(SPI.Port.kMXP);
@@ -107,7 +110,6 @@ public class Drivetrain extends SubsystemBase {
         leftMotors[1].setIdleMode(IdleMode.kBrake);
         rightMotors[0].setIdleMode(IdleMode.kBrake);
         rightMotors[1].setIdleMode(IdleMode.kBrake);
-        setHighGear();
 
         // Add Children to Subsystem
         addChild("Gear Shift", gearShift);
@@ -119,12 +121,6 @@ public class Drivetrain extends SubsystemBase {
     /***********************
      * MOTOR CONFIGURATION *
      ***********************/
-
-    // Set the distance traveled in one rotation of the motor
-    public void setNEODistancePerRotation(double distance) {
-        leftNEO.setPositionConversionFactor(distance);
-        rightNEO.setPositionConversionFactor(distance);
-    }
 
     // Set the smart current limit of all the motors
     public void setSmartCurrentLimit(int limit) {
@@ -170,20 +166,8 @@ public class Drivetrain extends SubsystemBase {
 
     // Sets the current gear the robot is in
     public void setGear(Gear gear) {
-        if (this.gear != gear) {
-            this.gear = gear;
-            if (this.gear == Gear.HIGH) {
-                gearShift.set(true);
-                setNEODistancePerRotation(
-                        DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
-                reset();
-            } else {
-                gearShift.set(false);
-                setNEODistancePerRotation(
-                        DrivetrainSettings.Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
-                reset();
-            }
-        }
+        this.gear = gear;
+        gearShift.set(gear == Gear.HIGH);
     }
 
     // Sets robot into low gear
@@ -214,16 +198,37 @@ public class Drivetrain extends SubsystemBase {
      *********************/
 
     // Distance
+    private double getLeftRotations() {
+        return leftNEO.getPosition();
+    }
+
     public double getLeftDistance() {
-        return leftNEO.getPosition() * DrivetrainSettings.Encoders.LEFT_YEILD;
+        return leftIntegrator.getDistance();
+    }
+
+    private double getRightRotations() {
+        return rightNEO.getPosition();
     }
 
     public double getRightDistance() {
-        return rightNEO.getPosition() * DrivetrainSettings.Encoders.RIGHT_YEILD;
+        return rightIntegrator.getDistance();
     }
 
     public double getDistance() {
         return (getLeftDistance() + getRightDistance()) / 2.0;
+    }
+
+    private void updateDistance() {
+        leftIntegrator.update(getGear(), getLeftRotations());
+        rightIntegrator.update(getGear(), getRightRotations());
+    }
+
+    private void resetEncoders() {
+        leftNEO.setPosition(0);
+        rightNEO.setPosition(0);
+
+        leftIntegrator.reset();
+        rightIntegrator.reset();
     }
 
     // Velocity
@@ -271,8 +276,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void reset(Pose2d location) {
         resetNavX();
-        leftNEO.setPosition(0);
-        rightNEO.setPosition(0);
+        resetEncoders();
         resetOdometer(location);
     }
 
@@ -359,6 +363,10 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        // Encoder data (requires periodic updating)
+        updateDistance();
+
+        // Odemetry (and related debug information)
         updateOdometry();
         field.setRobotPose(getPose());
 

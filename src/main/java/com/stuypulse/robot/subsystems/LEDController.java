@@ -114,7 +114,7 @@ public class LEDController extends SubsystemBase {
                 
                 // Shooter Modes have their own LEDs
                 else if(intake.isBallDetected()) {
-                    this.setColor(LEDColor.LIME_SOLID);
+                    this.setColor(LEDColor.GREEN_SOLID);
                 } else {
                     if (shooter.isReady()) {
                         switch (shooter.getMode()) {
@@ -122,7 +122,7 @@ public class LEDController extends SubsystemBase {
                                 setColor(LEDColor.WHITE_SOLID);
                                 break;
                             case TRENCH_SHOT:
-                                setColor(LEDColor.ORANGE_SOLID);
+                                setColor(LEDColor.RED_SOLID);
                                 break;
                             default:
                                 setColor(LEDColor.OFF);
@@ -133,7 +133,7 @@ public class LEDController extends SubsystemBase {
                                 setColor(LEDColor.WHITE_PULSE);
                                 break;
                             case TRENCH_SHOT:
-                                setColor(LEDColor.ORANGE_PULSE);
+                                setColor(LEDColor.RED_PULSE);
                                 break;
                             default:
                                 setColor(LEDColor.OFF);

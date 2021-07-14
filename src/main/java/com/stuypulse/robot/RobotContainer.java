@@ -129,12 +129,12 @@ public class RobotContainer {
 
         // Everything that is not meant to shoot, stops the shooter
         operator.getDPadUp().whenPressed(new ShooterStopCommand(shooter));
-        operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
+        operator.getDPadDown().whenPressed(new ShooterStopCommand(shooter));
 
         // Move to different zone
-        operator.getDPadDown()
-                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadLeft()
+                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
+        operator.getDPadRight()
                 .whileHeld(new ShooterControlCommand(shooter, ShooterMode.TRENCH_SHOT));
 
         /*****************/
@@ -143,11 +143,13 @@ public class RobotContainer {
         
         // Left Button Aligns just sideways
         driver.getLeftButton()
-                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setMaxSpeed(0));
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setMaxSpeed(0))
+                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
         
         // Bottom Button Aligns to the right distance
         driver.getBottomButton()
-                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter));
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter))
+                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
         
     }
 

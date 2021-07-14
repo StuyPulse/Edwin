@@ -118,8 +118,8 @@ public interface Constants {
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.05);
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.1);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.03);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
@@ -184,7 +184,7 @@ public interface Constants {
         double MIN_ALIGNMENT_TIME = 1.0;
 
         SmartNumber SENSOR_FUSION_RC =
-                new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.5);
+                new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.1);
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Drivetrain/Alignment/Auto Tune/P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Drivetrain/Alignment/Auto Tune/I", 0.0);

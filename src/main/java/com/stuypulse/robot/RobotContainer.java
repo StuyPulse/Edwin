@@ -73,28 +73,31 @@ public class RobotContainer {
         /***********************/
 
         // Setup Climber before Climbing (Move Left Stick Up)
-        new Button(() -> operator.getLeftY() >= 0.5)
+        new Button(() -> operator.getRightY() >= 0.5)
                 .whileHeld(new ClimberSetupCommand(climber, intake));
 
         // Start Climbing (Move Left Stick Down)
-        new Button(() -> operator.getLeftY() <= -0.5)
+        new Button(() -> operator.getRightY() <= -0.5)
                 .whenPressed(new IntakeRetractCommand(intake))
                 .whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
         // Toggle Brake (Push In Left Stick)
-        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        operator.getRightAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
         /**************************/
         /*** Funnel and Chimney ***/
         /**************************/
 
         // Reverse each component if it gets stuck
-        operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-        operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
+        operator.getLeftButton()
+                .whileHeld(new FunnelUnfunnelCommand(funnel))
+                .whileHeld(new ChimneyDownCommand(chimney));
 
         // Bottom button puts balls into the shooter
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-
+        operator.getRightButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+        
+        
         /***********************/
         /*** Intake Controls ***/
         /***********************/
@@ -108,7 +111,7 @@ public class RobotContainer {
         operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
 
         // Right Button Retracts Intake
-        operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
+        operator.getTopButton().whenPressed(new IntakeRetractCommand(intake));
 
         /*********************/
         /*** Woof Controls ***/
@@ -117,6 +120,9 @@ public class RobotContainer {
         // Right Bumper Uses Encoder
         operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
 
+        // Left Stick moves woof manually
+        // // it is handled by the default commands
+        
         /*****************************/
         /*** Shooter Speed Control ***/
         /*****************************/
@@ -127,20 +133,29 @@ public class RobotContainer {
 
         // Move to different zone
         operator.getDPadDown()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.INITIATION_LINE));
+                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadLeft()
-                .whileHeld(new ShootAlignCommand(drivetrain, shooter, ShooterMode.TRENCH_SHOT));
+                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.TRENCH_SHOT));
 
-        driver.getTopButton()
-                .whileHeld(
-                        new DrivetrainMovementCommand.DriveCommand(drivetrain, 1.0)
-                                .setMaxSpeed(0.5));
+        /*****************/
+        /*** Alignment ***/
+        /*****************/
+        
+        // Left Button Aligns just sideways
+        driver.getLeftButton()
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setMaxSpeed(0));
+        
+        // Bottom Button Aligns to the right distance
+        driver.getBottomButton()
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter));
+        
     }
 
     public void configureAutons() {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
 
         autonChooser.setDefaultOption("Old Six Ball Trench Auton", new OldSixBallTrenchAuton(this));
+        autonChooser.setDefaultOption("Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
 
         autonChooser.addOption("Bounce Path", new BouncePathAutonCommand(drivetrain));
         autonChooser.addOption("Barrel Racing Path", new BarrelRacingAuton(drivetrain));

@@ -5,7 +5,7 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.stuylib.input.Gamepad;
-
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.robot.subsystems.Woof;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,11 +24,7 @@ public class WoofManualControlCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (Math.abs(gamepad.getRightX()) > 0.1) {
-            woof.turn(gamepad.getRightX());
-        } else {
-            woof.stop();
-        }
+        woof.turn(SLMath.deadband(gamepad.getLeftX(), 0.25));
     }
 
     @Override

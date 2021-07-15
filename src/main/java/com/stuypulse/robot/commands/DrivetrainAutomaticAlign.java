@@ -3,6 +3,10 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Shooter;
 
+/**
+ * Command that aligns with the goal based on the shooting range stored in the
+ * shooter
+ */
 public class DrivetrainAutomaticAlign extends DrivetrainGoalCommand {
 
     private static class ShooterAligner extends DrivetrainGoalAligner {
@@ -15,20 +19,13 @@ public class DrivetrainAutomaticAlign extends DrivetrainGoalCommand {
             this.shooter = shooter;
         }
 
-        private Number getUpdatedDistance() {
-            return this.shooter.getMode().distance; 
-        }
-
         public void init() {
             super.init(); // turns on the limelight
-            this.distance = getUpdatedDistance();
+            this.distance = shooter.getMode().distance;
         }
 
     }
 
-    // This class is no longer necessary, as one could technically make a GoalAlignment 
-    // command with just a shooter (if the simple code changes are made). However this 
-    // class was already used so for now it's easier
     public DrivetrainAutomaticAlign(Drivetrain drivetrain, Shooter shooter) {
         super(drivetrain, new ShooterAligner(shooter));
     }

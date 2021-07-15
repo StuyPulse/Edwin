@@ -28,10 +28,37 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.stuypulse.robot.util.gear.*;
+import com.stuypulse.robot.util.Encoder;
 
 public class Drivetrain extends SubsystemBase {
 
+    public enum Gear {
+
+        // Create all the gear settings with their ratios
+    
+        HIGH(DrivetrainSettings.Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION),
+        LOW(DrivetrainSettings.Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
+    
+        // Store the gear ratio
+    
+        private final Number ratio;
+    
+        private Gear(Number ratio) {
+            this.ratio = ratio;
+        }
+    
+        // Functions to use the gear ratio
+    
+        public Number getRatio() {
+            return this.ratio;
+        }
+    
+        public double getScaledDistance(double rotations) {
+            return getRatio().doubleValue() * rotations;
+        }
+    
+    }
+    
     // An array of motors on the left and right side of the drive train
     private CANSparkMax[] leftMotors;
     private CANSparkMax[] rightMotors;

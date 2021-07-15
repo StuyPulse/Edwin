@@ -1,6 +1,7 @@
-package com.stuypulse.robot.util.gear;
+package com.stuypulse.robot.util;
 
 import com.revrobotics.CANEncoder;
+import com.stuypulse.robot.subsystems.Drivetrain.Gear;
 
 /**
  * TODO: add javadocs !!!

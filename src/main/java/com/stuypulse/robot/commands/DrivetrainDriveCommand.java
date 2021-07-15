@@ -12,7 +12,6 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.util.gear.Gear;
 
 /**
  * DrivetrainDriveCommand takes in a drivetrain and a gamepad and feeds the signals to the
@@ -88,11 +87,11 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     }
 
     // If the drivetrain goes into high or low gear
-    public Gear getGear() {
+    public Drivetrain.Gear getGear() {
         if (gamepad.getRawRightButton()) {
-            return Gear.LOW;
+            return Drivetrain.Gear.LOW;
         } else {
-            return Gear.HIGH;
+            return Drivetrain.Gear.HIGH;
         }
     }
 

@@ -15,7 +15,7 @@ import com.stuypulse.stuylib.util.StopWatch;
 
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.util.gear.Gear;
+import com.stuypulse.robot.subsystems.Drivetrain.Gear;
 
 /**
  * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two controllers. This lets
@@ -211,7 +211,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     }
 
     // Alignment must use low gear
-    public Gear getGear() {
+    public Drivetrain.Gear getGear() {
         return Gear.LOW;
     }
 

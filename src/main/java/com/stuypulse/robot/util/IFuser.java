@@ -1,9 +1,8 @@
 package com.stuypulse.robot.util;
 
 import com.stuypulse.stuylib.streams.IStream;
-import com.stuypulse.stuylib.streams.filters.HighPassFilter;
-import com.stuypulse.stuylib.streams.filters.IFilter;
 
+import com.stuypulse.stuylib.streams.filters.HighPassFilter;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 /**
@@ -18,51 +17,37 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
  */
 public class IFuser implements IStream {
 
-    // Two input streams: one being low frequency updates and the other 
-    // being high frequency updates
+    /**
+     * Two input streams: one being low frequency updates and the other 
+     * being high frequency updates.
+     * 
+     * The low and high frequency streams are passed through a low pass
+     * and high pass filter respectively.
+     */
     private IStream lowFreq, highFreq;
-
-    // The low pass and high pass filters
-    private IFilter lowPass, highPass;
 
     /**
      * Creates an input fuser stream
      * 
      * @param rc window size value given to both the high and low pass filter
-     * @param lowFreq an input stream of low frequency data 
-     * @param highFreq an input stream of high frequency data
+     * @param lowFrequencyData an input stream of low frequency data 
+     * @param highFrequencyData an input stream of high frequency data
      */
-    public IFuser(Number rc, IStream lowFreq, IStream highFreq) {
-        lowPass = new LowPassFilter(rc);
-        highPass = new HighPassFilter(rc);
-
-        this.lowFreq = lowFreq;
-        this.highFreq = highFreq;
-    }
-
-    /**
-     * @return data from the low frequency stream through the low pass filter
-     */
-    private double getLowPass() {
-        return lowPass.get(lowFreq.get());
-    }
-
-    /**
-     * @return data from the high frequency stream through the high pass filter
-     */
-    private double getHighPass() {
-        return highPass.get(highFreq.get());
+    public IFuser(Number rc, IStream lowFrequencyData, IStream highFrequencyData) {
+        lowFreq = lowFrequencyData.filtered(new LowPassFilter(rc));
+        highFreq = highFrequencyData.filtered(new HighPassFilter(rc));
     }
 
     /**
      * Returns the combined low pass and high pass data.
      * 
-     * Provides the IStream interface for an IFuser.
+     * Provides the IStream interface for an IFuser using 
+     * two filtered IStreams.
      * 
      * @return the combined low pass and high pass data
      */
     public double get() {
-        return (getLowPass() + getHighPass());
+        return lowFreq.get() + highFreq.get();
     }
 
 }

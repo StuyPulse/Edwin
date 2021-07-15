@@ -7,7 +7,6 @@ package com.stuypulse.robot.subsystems;
 import com.stuypulse.stuylib.math.Angle;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -38,11 +37,8 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax[] rightMotors;
 
     // An encoder for each side of the drive train
-    private CANEncoder leftNEO;
-    private CANEncoder rightNEO;
-
-    private EncoderIntegrator leftIntegrator;
-    private EncoderIntegrator rightIntegrator;
+    private Encoder leftEncoder;
+    private Encoder rightEncoder;
 
     // DifferentialDrive and Gear Information
     private Gear gear;
@@ -78,12 +74,9 @@ public class Drivetrain extends SubsystemBase {
         setGear(Gear.HIGH);
 
         // Create list of encoders based on motors
-        leftNEO = leftMotors[0].getEncoder();
-        rightNEO = rightMotors[0].getEncoder();
+        leftEncoder = new Encoder(leftMotors[0].getEncoder());
+        rightEncoder = new Encoder(rightMotors[0].getEncoder());
             
-        leftIntegrator = new EncoderIntegrator();
-        rightIntegrator = new EncoderIntegrator();
-
         resetEncoders();
 
         // Make differential drive object
@@ -203,20 +196,13 @@ public class Drivetrain extends SubsystemBase {
      *********************/
 
     // Distance
-    private double getLeftRotations() {
-        return leftNEO.getPosition();
-    }
 
     public double getLeftDistance() {
-        return leftIntegrator.getDistance();
-    }
-
-    private double getRightRotations() {
-        return rightNEO.getPosition();
+        return leftEncoder.getDistance() * DrivetrainSettings.Encoders.LEFT_YEILD;
     }
 
     public double getRightDistance() {
-        return rightIntegrator.getDistance();
+        return rightEncoder.getDistance() * DrivetrainSettings.Encoders.RIGHT_YEILD;
     }
 
     public double getDistance() {
@@ -224,25 +210,22 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private void updateDistance() {
-        leftIntegrator.update(getGear(), getLeftRotations());
-        rightIntegrator.update(getGear(), getRightRotations());
+        leftEncoder.periodic(getGear());
+        rightEncoder.periodic(getGear());
     }
 
     private void resetEncoders() {
-        leftNEO.setPosition(0);
-        rightNEO.setPosition(0);
-
-        leftIntegrator.reset();
-        rightIntegrator.reset();
+        leftEncoder.reset();
+        rightEncoder.reset();
     }
 
     // Velocity
     public double getLeftVelocity() {
-        return leftNEO.getVelocity() * DrivetrainSettings.Encoders.LEFT_YEILD;
+        return leftEncoder.getRPM() * DrivetrainSettings.Encoders.LEFT_YEILD;
     }
 
     public double getRightVelocity() {
-        return rightNEO.getVelocity() * DrivetrainSettings.Encoders.RIGHT_YEILD;
+        return rightEncoder.getRPM() * DrivetrainSettings.Encoders.RIGHT_YEILD;
     }
 
     public double getVelocity() {

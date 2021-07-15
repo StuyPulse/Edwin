@@ -61,7 +61,7 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         drivetrain.setDefaultCommand(new DrivetrainDriveCommand(drivetrain, driver));
         woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
-        
+
         // NOPE! Not Anymore, It's Annoying.
         // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
     }
@@ -73,28 +73,29 @@ public class RobotContainer {
         /***********************/
 
         // Setup Climber before Climbing (Move Left Stick Up)
-        new Button(() -> operator.getLeftY() >= 0.5)
+        new Button(() -> operator.getRightY() >= 0.5)
                 .whileHeld(new ClimberSetupCommand(climber, intake));
 
         // Start Climbing (Move Left Stick Down)
-        new Button(() -> operator.getLeftY() <= -0.5)
+        new Button(() -> operator.getRightY() <= -0.5)
                 .whenPressed(new IntakeRetractCommand(intake))
                 .whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
         // Toggle Brake (Push In Left Stick)
-        operator.getLeftAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
-
+        operator.getRightAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
         /**************************/
         /*** Funnel and Chimney ***/
         /**************************/
 
         // Reverse each component if it gets stuck
-        operator.getLeftButton().whileHeld(new FunnelUnfunnelCommand(funnel));
-        operator.getTopButton().whileHeld(new ChimneyDownCommand(chimney));
+        operator.getLeftButton()
+                .whileHeld(new FunnelUnfunnelCommand(funnel))
+                .whileHeld(new ChimneyDownCommand(chimney));
 
         // Bottom button puts balls into the shooter
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+        operator.getRightButton().whileHeld(new FeedBallsCommand(funnel, chimney));
         
         
         /***********************/
@@ -103,15 +104,14 @@ public class RobotContainer {
 
         // Right Trigger Extends Intake and Acquires
         operator.getRightTriggerButton()
-            .whenPressed(new IntakeExtendCommand(intake))
-            .whileHeld(new IntakeAcquireCommand(intake));
+                .whenPressed(new IntakeExtendCommand(intake))
+                .whileHeld(new IntakeAcquireCommand(intake));
 
         // Left Trigger Deacquires
         operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
 
         // Right Button Retracts Intake
-        operator.getRightButton().whenPressed(new IntakeRetractCommand(intake));
-
+        operator.getTopButton().whenPressed(new IntakeRetractCommand(intake));
 
         /*********************/
         /*** Woof Controls ***/
@@ -120,23 +120,36 @@ public class RobotContainer {
         // Right Bumper Uses Encoder
         operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
 
-
+        // Left Stick moves woof manually
+        // // it is handled by the default commands
+        
         /*****************************/
         /*** Shooter Speed Control ***/
         /*****************************/
 
         // Everything that is not meant to shoot, stops the shooter
         operator.getDPadUp().whenPressed(new ShooterStopCommand(shooter));
-        operator.getDPadRight().whenPressed(new ShooterStopCommand(shooter));
+        operator.getDPadDown().whenPressed(new ShooterStopCommand(shooter));
 
         // Move to different zone
-        operator.getDPadDown()
-                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadLeft()
+                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
+        operator.getDPadRight()
                 .whileHeld(new ShooterControlCommand(shooter, ShooterMode.TRENCH_SHOT));
 
+        /*****************/
+        /*** Alignment ***/
+        /*****************/
+        
+        // Left Button Aligns just sideways
+        driver.getLeftButton()
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setMaxSpeed(0))
+                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
+        
+        // Bottom Button Aligns to the right distance
         driver.getBottomButton()
-                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter));
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter))
+                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
         
     }
 

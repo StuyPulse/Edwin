@@ -1,15 +1,13 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.commands.auton.routines;
 
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.Constants.AutoSettings;
-
+import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.*;
-import com.stuypulse.robot.subsystems.Chimney;
-import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.Funnel;
-import com.stuypulse.robot.subsystems.Intake;
-import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 

@@ -7,6 +7,8 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.streams.filters.HighPassFilter;
+import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.IFilterGroup;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
@@ -54,13 +56,17 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Distance that the command will try to align with
     protected Aligner aligner;
 
-    // Use encoder values with alignment command
-    private boolean useInterpolation;
-    private double targetDistance;
-    private Angle targetAngle;
+    // Variables for fusing the alignment
+    // data with the encoder data
+    private double initAngleMeasurement;
+    private double initSpeedMeasurement;
+
+    private IFilter speedLowPass;
+    private IFilter speedHighPass;
+    private IFilter angleLowPass;
+    private IFilter angleHighPass;
 
     // Used to check timeout of alignment
-    private StopWatch pollingTimer;
     private StopWatch timer;
 
     // Misc Settings
@@ -94,10 +100,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.aligner = aligner;
 
         // Timer used to check when to update the errors
-        this.useInterpolation = false;
-        this.pollingTimer = new StopWatch();
-        this.targetAngle = Angle.fromDegrees(0);
-        this.targetDistance = 0;
+        this.initAngleMeasurement = 0;
+        this.initSpeedMeasurement = 0;
+
+        this.speedHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.speedLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.angleHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
 
         // Used to check the alignment time.
         this.timer = new StopWatch();
@@ -142,12 +151,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return this;
     }
 
-    // Uses encoders to interpolate alignmnet data
-    public DrivetrainAlignmentCommand useInterpolation() {
-        this.useInterpolation = true;
-        return this;
-    }
-
     // Set the gear and other things when initializing
     public void initialize() {
         aligner.init();
@@ -163,32 +166,36 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.angle.setOutputFilter(
                 new IFilterGroup(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER)));
 
-        updateTargets();
-        pollingTimer.reset();
-    }
-
-    // Update the targets with new alignment data
-    public void updateTargets() {
-        targetDistance = drivetrain.getDistance() + aligner.getSpeedError();
-        targetAngle = drivetrain.getAngle().add(aligner.getAngleError());
+        this.initAngleMeasurement = drivetrain.getRawAngle();
+        this.initSpeedMeasurement = drivetrain.getDistance();
     }
 
     // Get distance left to travel
     public double getSpeedError() {
-        if (this.useInterpolation) {
-            return targetDistance - drivetrain.getDistance();
-        } else {
-            return aligner.getSpeedError();
-        }
+        // Get the low freqencies of the raw aligner
+        double alignData = aligner.getSpeedError();
+        double lowpass = speedLowPass.get(alignData);
+
+        // Get the high frequencies of the encoder data
+        double encoderData = initSpeedMeasurement - drivetrain.getDistance();
+        double highpass = speedHighPass.get(encoderData);
+
+        // Combine the data and return it
+        return lowpass + highpass;
     }
 
     // Get angle left to turn
     public Angle getAngleError() {
-        if (this.useInterpolation) {
-            return targetAngle.sub(drivetrain.getAngle());
-        } else {
-            return aligner.getAngleError();
-        }
+        // Get the low freqencies of the raw aligner
+        double alignData = aligner.getAngleError().toDegrees();
+        double lowpass = angleLowPass.get(alignData);
+
+        // Get the high frequencies of the encoder data
+        double encoderData = initAngleMeasurement - drivetrain.getRawAngle();
+        double highpass = angleHighPass.get(encoderData);
+
+        // Combine the data and return it
+        return Angle.fromDegrees(lowpass + highpass);
     }
 
     // Speed robot should move
@@ -217,12 +224,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Execute loop while also updating PID controllers
     public void execute() {
         super.execute();
-
-        // Update targets if time has come
-        if (pollingTimer.getTime() > Alignment.INTERPOLATION_PERIOD) {
-            updateTargets();
-            pollingTimer.reset();
-        }
     }
 
     // Command is finished if all of the errors are small enough

@@ -165,6 +165,13 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.angle.setOutputFilter(
                 new IFilterGroup(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER)));
 
+        // Reset the filters when the command is initialized
+        this.speedHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.speedLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.angleHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+
+        // Update the target measurement to report an error based on what the aligner initially sees
         this.targetSpeedMeasurement = drivetrain.getRawAngle() + aligner.getSpeedError();
         this.targetAngleMeasurement = drivetrain.getDistance() + aligner.getAngleError().toDegrees();
     }

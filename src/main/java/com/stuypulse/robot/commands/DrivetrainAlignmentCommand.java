@@ -172,8 +172,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
 
         // Update the target measurement to report an error based on what the aligner initially sees
-        this.targetSpeedMeasurement = drivetrain.getRawAngle() + aligner.getSpeedError();
-        this.targetAngleMeasurement = drivetrain.getDistance() + aligner.getAngleError().toDegrees();
+        this.targetSpeedMeasurement = drivetrain.getDistance() + aligner.getSpeedError();
+        this.targetAngleMeasurement = drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
     }
 
     // Get distance left to travel

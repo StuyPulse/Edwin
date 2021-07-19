@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class WoofFiveBallAuton extends SequentialCommandGroup {
     
-    private static final String START_PATH = "BarrelRacingPath/Start.wpilib.json";
-    private static final String TO_GOAL_PATH = "BarrelRacingPath/ToGoal.wpilib.json";
+    private static final String START_PATH = "WoofFiveBall/Start.wpilib.json";
+    private static final String TO_GOAL_PATH = "WoofFiveBall/ToGoal.wpilib.json";
 
     // These Deadlines are not supposed to be reached, 
     // but act as a guarentee that the auton will complete ontime
@@ -42,7 +42,7 @@ public class WoofFiveBallAuton extends SequentialCommandGroup {
             new LEDSetCommand(robot.getLEDController(), LEDColor.WHITE_SOLID),
             
             new IntakeExtendCommand(robot.getIntake()),
-            new ShooterControlCommand(robot.getShooter(), ShooterMode.INITIATION_LINE),
+            new ShooterControlCommand(robot.getShooter(), ShooterMode.TRENCH_SHOT),
 
             new WaitCommand(0.1),
             new IntakeAcquireForeverCommand(robot.getIntake()),
@@ -52,16 +52,21 @@ public class WoofFiveBallAuton extends SequentialCommandGroup {
         // Move the drivetrain back to the 2 balls in the opposite trench
         addCommands(
             new LEDSetCommand(robot.getLEDController(), LEDColor.YELLOW_SOLID),
-            new DrivetrainRamseteCommand(robot.getDrivetrain(), START_PATH).robotRelative().withTimeout(MAX_START_TIME)
+            
+            new DrivetrainRamseteCommand(
+                robot.getDrivetrain(), 
+                START_PATH
+            ).robotRelative().withTimeout(MAX_START_TIME)
         );
         
         // Then move the drivetrain closer to the goal and feed the balls until they are up in the shooter
         addCommands(
             new LEDSetCommand(robot.getLEDController(), LEDColor.ORANGE_SOLID),
-            new ParallelRaceGroup(
-                new FeedBallsAutomaticCommand(robot.getChimney(), robot.getFunnel()),
-                new DrivetrainRamseteCommand(robot.getDrivetrain(), TO_GOAL_PATH).fieldRelative()
-            ).withTimeout(MAX_TO_GOAL_TIME)
+
+            new DrivetrainRamseteCommand(
+                robot.getDrivetrain(), 
+                TO_GOAL_PATH
+            ).fieldRelative().withTimeout(MAX_TO_GOAL_TIME)
         ); 
 
         // Align the robot to the target using the limelight
@@ -70,7 +75,10 @@ public class WoofFiveBallAuton extends SequentialCommandGroup {
 
             // This command currently will cause the drivetrain encoders to reset
             // make sure to keep this in mind when adding future motion profiling autons
-            new DrivetrainAutomaticAlign(robot.getDrivetrain(), robot.getShooter()).withTimeout(MAX_ALIGN_TIME)
+            new DrivetrainAlignAndFeedCommand(
+                robot,
+                robot.getShooter().getMode().distance.doubleValue()
+            ).withTimeout(MAX_ALIGN_TIME)
         );
 
         // Feed balls until the end of the Auton

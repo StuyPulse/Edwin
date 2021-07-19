@@ -4,5 +4,6 @@
   "maxVelocity": 7.0,
   "maxAcceleration": 8.0,
   "wheelBase": 3.2,
-  "gameName": "Infinite Recharge"
+  "gameName": "Infinite Recharge",
+  "outputDir": "../../../src/main/deploy/WoofFiveBall"
 }

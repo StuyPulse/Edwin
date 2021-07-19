@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class WoofFiveBallAuton extends SequentialCommandGroup {
     
-    private static final String START_PATH = "WoofFiveBall/Start.wpilib.json";
-    private static final String TO_GOAL_PATH = "WoofFiveBall/ToGoal.wpilib.json";
+    private static final String START_PATH = "WoofFiveBall/output/Start.wpilib.json";
+    private static final String TO_GOAL_PATH = "WoofFiveBall/output/ToGoal.wpilib.json";
 
     // These Deadlines are not supposed to be reached, 
     // but act as a guarentee that the auton will complete ontime

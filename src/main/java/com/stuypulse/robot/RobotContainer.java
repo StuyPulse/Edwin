@@ -159,7 +159,7 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Old Six Ball Trench Auton", new OldSixBallTrenchAuton(this));
         autonChooser.setDefaultOption("Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
 
-        autonChooser.setDefaultOption("Woof Five Ball Auton", new WoofFiveBallAuton(this));
+        autonChooser.setDefaultOption("(I) Woof Five Ball Auton", new WoofFiveBallAuton(this));
 
         autonChooser.addOption("[IR&H] Bounce Path", new BouncePathAutonCommand(drivetrain));
         autonChooser.addOption("[IR&H] Barrel Racing Path", new BarrelRacingAuton(drivetrain));

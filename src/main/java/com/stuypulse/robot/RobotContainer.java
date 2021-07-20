@@ -143,12 +143,12 @@ public class RobotContainer {
         
         // Left Button Aligns just sideways
         driver.getLeftButton()
-                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setMaxSpeed(0))
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setMaxSpeed(0).setNeverFinish())
                 .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
         
         // Bottom Button Aligns to the right distance
         driver.getBottomButton()
-                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter))
+                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setNeverFinish())
                 .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
         
     }

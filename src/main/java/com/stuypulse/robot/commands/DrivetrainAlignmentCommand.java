@@ -7,14 +7,13 @@ package com.stuypulse.robot.commands;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
-import com.stuypulse.stuylib.streams.filters.HighPassFilter;
-import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.IFilterGroup;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.stuylib.util.StopWatch;
 
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.util.IFuser;
 
 /**
  * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two controllers. This lets
@@ -55,15 +54,15 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Distance that the command will try to align with
     protected Aligner aligner;
 
-    // Variables for fusing the alignment
-    // data with the encoder data
+    // Streams that fuse aligment data with drivetrain
+    // measurements
+    private IFuser speedFuser, angleFuser;
+
+
+    // Measurements for normalizing alignment data
+    // when fusing
     private double targetAngleMeasurement;
     private double targetSpeedMeasurement;
-
-    private IFilter speedLowPass;
-    private IFilter speedHighPass;
-    private IFilter angleLowPass;
-    private IFilter angleHighPass;
 
     // Used to check timeout of alignment
     private StopWatch timer;
@@ -101,11 +100,10 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         // Timer used to check when to update the errors
         this.targetAngleMeasurement = 0;
         this.targetSpeedMeasurement = 0;
-
-        this.speedHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
-        this.speedLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
-        this.angleHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
-        this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+        
+        // Fused alignement data streams, these are setup in initialize
+        this.speedFuser = null;
+        this.angleFuser = null;
 
         // Used to check the alignment time.
         this.timer = new StopWatch();
@@ -166,10 +164,17 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
                 new IFilterGroup(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER)));
 
         // Reset the filters when the command is initialized
-        this.speedHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
-        this.speedLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
-        this.angleHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
-        this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.speedFuser = new IFuser(
+            Alignment.SENSOR_FUSION_RC,
+            aligner::getSpeedError,
+            () -> targetSpeedMeasurement - drivetrain.getDistance()
+        );
+
+        this.angleFuser = new IFuser(
+            Alignment.SENSOR_FUSION_RC,
+            () -> aligner.getAngleError().toDegrees(),
+            () -> targetAngleMeasurement - drivetrain.getRawAngle()
+        );
 
         // Update the target measurement to report an error based on what the aligner initially sees
         this.targetSpeedMeasurement = drivetrain.getDistance() + aligner.getSpeedError();
@@ -178,30 +183,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Get distance left to travel
     public double getSpeedError() {
-        // Get the low freqencies of the raw aligner
-        double alignData = aligner.getSpeedError();
-        double lowpass = speedLowPass.get(alignData);
-
-        // Get the high frequencies of the encoder data
-        double encoderData = targetSpeedMeasurement - drivetrain.getDistance();
-        double highpass = speedHighPass.get(encoderData);
-
-        // Combine the data and return it
-        return lowpass + highpass;
+        return speedFuser.get(); 
     }
 
     // Get angle left to turn
     public Angle getAngleError() {
-        // Get the low freqencies of the raw aligner
-        double alignData = aligner.getAngleError().toDegrees();
-        double lowpass = angleLowPass.get(alignData);
-
-        // Get the high frequencies of the encoder data
-        double encoderData = targetAngleMeasurement - drivetrain.getRawAngle();
-        double highpass = angleHighPass.get(encoderData);
-
-        // Combine the data and return it
-        return Angle.fromDegrees(lowpass + highpass);
+        return Angle.fromDegrees(angleFuser.get());
     }
 
     // Speed robot should move

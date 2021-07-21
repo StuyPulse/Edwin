@@ -29,7 +29,7 @@ public class ColorSensor extends SubsystemBase {
         NONE;
 
         // Each color will store information about its position
-        private WColor next, rotated;
+        private WColor next;
 
         // Use a static block to setup circular references
         static {
@@ -38,25 +38,11 @@ public class ColorSensor extends SubsystemBase {
             https://firstfrc.blob.core.windows.net/frc2021/Manual/Sections/2021FRCGameManualSection03.pdf
             */
 
-            // Setup Yellow
+            // Setup each color's next reference
             YELLOW.next = CYAN; 
-            YELLOW.rotated = GREEN;
-            
-            // Setup Cyan
             CYAN.next = GREEN;
-            CYAN.rotated = RED;
-            
-            // Setup Green
-            GREEN.next = RED;
-            GREEN.rotated = YELLOW;
-
-            // Setup Red
             RED.next = YELLOW;
-            RED.rotated = CYAN; 
-
-            // Setup Error state
             NONE.next = NONE;
-            NONE.rotated = NONE;
         }
 
         // Getters 
@@ -65,7 +51,7 @@ public class ColorSensor extends SubsystemBase {
         }
 
         public WColor getRotatedColor() {
-            return this.rotated;
+            return this.next.next;
         }
 
     };

@@ -184,7 +184,7 @@ public interface Constants {
         double MIN_ALIGNMENT_TIME = 1.0;
 
         SmartNumber SENSOR_FUSION_RC =
-                new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.25);
+                new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.2);
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Drivetrain/Alignment/Auto Tune/P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Drivetrain/Alignment/Auto Tune/I", 0.0);

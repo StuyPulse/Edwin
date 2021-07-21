@@ -34,6 +34,11 @@ public abstract class DrivetrainCommand extends CommandBase {
 
     public abstract boolean useCurvatureDrive();
 
+    // Shift gears during initialize
+    public void initialize() {
+        drivetrain.setGear(this.getGear());
+    }
+
     // Update the drivetrain with the new speed and angle
     public void execute() {
         drivetrain.setGear(this.getGear());

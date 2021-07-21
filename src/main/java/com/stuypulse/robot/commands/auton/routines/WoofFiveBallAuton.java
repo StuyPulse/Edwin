@@ -6,7 +6,7 @@ import com.stuypulse.robot.commands.*;
 import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -75,9 +75,13 @@ public class WoofFiveBallAuton extends SequentialCommandGroup {
 
             // This command currently will cause the drivetrain encoders to reset
             // make sure to keep this in mind when adding future motion profiling autons
-            new DrivetrainAlignAndFeedCommand(
-                robot,
-                robot.getShooter().getMode().distance.doubleValue()
+            new ParallelDeadlineGroup(
+                new DrivetrainAutomaticAlign(robot.getDrivetrain(), robot.getShooter()).setMaxSpeed(0.0),
+                
+                new FeedBallsInAutoCommand(
+                    robot.getFunnel(), 
+                    robot.getChimney()
+                )
             ).withTimeout(MAX_ALIGN_TIME)
         );
 

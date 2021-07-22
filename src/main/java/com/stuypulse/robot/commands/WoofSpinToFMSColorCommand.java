@@ -29,10 +29,10 @@ public class WoofSpinToFMSColorCommand extends CommandBase {
         if (goal == WColor.NONE || curr == WColor.NONE)
             return;
         
-        // If the goal is behind us (1 away), spin backwards
-        if (curr.getNextColor() == goal)
+        // If we are in front of the goal (1 away), spin backwards...
+        if (curr == goal.getNextColor())
             woof.turn(-WoofSettings.TURN_SPEED);
-        // If the goal is more than (1 away), spin forwards
+        // Otherwise, spin forwards
         else
             woof.turn(+WoofSettings.TURN_SPEED);
 

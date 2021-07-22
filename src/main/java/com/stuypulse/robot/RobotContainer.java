@@ -119,9 +119,10 @@ public class RobotContainer {
 
         // Right Bumper Uses Encoder
         operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
+        operator.getLeftBumper().whenPressed(new WoofSpinToFMSColorCommand(woof));
 
         // Left Stick moves woof manually
-        // // it is handled by the default commands
+        // it is handled by the default commands
         
         /*****************************/
         /*** Shooter Speed Control ***/

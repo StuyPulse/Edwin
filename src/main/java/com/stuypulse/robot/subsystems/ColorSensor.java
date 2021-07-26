@@ -41,6 +41,7 @@ public class ColorSensor extends SubsystemBase {
             // Setup each color's next reference
             YELLOW.next = CYAN;
             CYAN.next = GREEN;
+            GREEN.next = RED;
             RED.next = YELLOW;
             NONE.next = NONE;
         }
@@ -120,10 +121,8 @@ public class ColorSensor extends SubsystemBase {
         // SmartDashboard
 
         SmartDashboard.putNumber("Color Sensor/Raw Color Red", getRawColor().red);
-        SmartDashboard.putNumber(
-                "Color Sensor/Raw Color Blue", getRawColor().blue);
-        SmartDashboard.putNumber(
-                "Color Sensor/Raw Color Green", getRawColor().green);
+        SmartDashboard.putNumber("Color Sensor/Raw Color Blue", getRawColor().blue);
+        SmartDashboard.putNumber("Color Sensor/Raw Color Green", getRawColor().green);
 
         SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red", getRawDetectedColor().red);
         SmartDashboard.putNumber(

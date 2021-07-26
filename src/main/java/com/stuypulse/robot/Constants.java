@@ -312,9 +312,9 @@ public interface Constants {
 
         double WOOF_GEAR = 20;
         double CONTROL_PANEL_RATIO = 10;
-        
+
         SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.05);
-        
+
         double TARGET_CONTROL_PANEL_TURNS = 3;
     }
 
@@ -366,11 +366,12 @@ public interface Constants {
          * Movement Auton Command
          *********************************************************************************************/
         double DISTANCE_TO_MOVE_AT_START = Units.feetToMeters(3.25); // feet
-        
+
         /*********************************************************************************************
          * Six Ball Auton (Acquire balls from the trench from the starting position)
          *********************************************************************************************/
         double DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET = Units.feetToMeters(5 * 1.208);
+
         double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = Units.feetToMeters(5 * 1.208 + 0.5);
 
         double ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES = 15;
@@ -379,7 +380,6 @@ public interface Constants {
          * Six Ball Auton (Movement limits)
          *********************************************************************************************/
         double DRIVETRAIN_SPEED_LIMIT = 0.55;
-
 
         /*********************************************************************************************
          * Shoot Three (At Start) Auton Command

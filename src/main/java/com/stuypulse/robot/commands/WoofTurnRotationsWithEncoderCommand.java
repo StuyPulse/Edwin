@@ -5,6 +5,8 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.WoofSettings;
+import com.stuypulse.robot.subsystems.LEDController;
+import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 import com.stuypulse.robot.subsystems.Woof;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -12,14 +14,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class WoofTurnRotationsWithEncoderCommand extends CommandBase {
 
     private final Woof woof;
+    private final LEDController ledController;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public WoofTurnRotationsWithEncoderCommand(Woof woof) {
+    public WoofTurnRotationsWithEncoderCommand(Woof woof, LEDController led) {
         this.woof = woof;
+        this.ledController = led;
         addRequirements(woof);
     }
 
@@ -35,7 +39,16 @@ public class WoofTurnRotationsWithEncoderCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return woof.getControlPanelRotations() >= WoofSettings.TARGET_CONTROL_PANEL_TURNS;
+        boolean isFinished =
+                woof.getControlPanelRotations() >= WoofSettings.TARGET_CONTROL_PANEL_TURNS;
+
+        if (isFinished) {
+            ledController.setColor(LEDColor.GREEN_SOLID);
+        } else {
+            ledController.setColor(LEDColor.YELLOW_SOLID);
+        }
+
+        return isFinished;
     }
 
     @Override

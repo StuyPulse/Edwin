@@ -187,7 +187,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Update the target measurement to report an error based on what the aligner initially sees
         this.targetSpeedMeasurement = drivetrain.getDistance() + aligner.getSpeedError();
-        this.targetAngleMeasurement = drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
+        this.targetAngleMeasurement =
+                drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
     }
 
     // Get distance left to travel
@@ -245,7 +246,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public void execute() {
         super.execute();
 
-        if(ledController != null) {
+        if (ledController != null) {
             ledController.setColor(LEDColor.YELLOW_PULSE);
         }
     }
@@ -277,7 +278,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public void end(boolean interrupted) {
         // Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_OFF);
 
-        if(ledController != null) {
+        if (ledController != null) {
             ledController.setColor(LEDColor.GREEN_SOLID);
         }
     }

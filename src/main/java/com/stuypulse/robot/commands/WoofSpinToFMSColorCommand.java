@@ -6,6 +6,8 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.robot.Constants.WoofSettings;
 import com.stuypulse.robot.subsystems.ColorSensor.WColor;
+import com.stuypulse.robot.subsystems.LEDController;
+import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 import com.stuypulse.robot.subsystems.Woof;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -14,9 +16,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class WoofSpinToFMSColorCommand extends CommandBase {
 
     private Woof woof;
+    private LEDController ledController;
 
-    public WoofSpinToFMSColorCommand(Woof woof) {
+    public WoofSpinToFMSColorCommand(Woof woof, LEDController led) {
         this.woof = woof;
+        this.ledController = led;
         addRequirements(woof);
     }
 
@@ -36,7 +40,15 @@ public class WoofSpinToFMSColorCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return woof.getTargetColor() == woof.getCurrentColor();
+        boolean isFinished = woof.getTargetColor() == woof.getCurrentColor();
+
+        if (isFinished) {
+            ledController.setColor(LEDColor.GREEN_SOLID);
+        } else {
+            ledController.setColor(LEDColor.YELLOW_PULSE);
+        }
+
+        return isFinished;
     }
 
     @Override

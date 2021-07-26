@@ -6,6 +6,7 @@ package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.util.StopWatch;
+
 import com.stuypulse.robot.Constants.LEDSettings;
 import com.stuypulse.robot.RobotContainer;
 
@@ -77,7 +78,7 @@ public class LEDController extends SubsystemBase {
 
     // Stopwatch to check when to start overriding manual updates
     private StopWatch lastUpdate;
-    
+
     // The current color to set the LEDs to
     private LEDColor currentColor;
 
@@ -86,7 +87,7 @@ public class LEDController extends SubsystemBase {
 
     public LEDController(int port, RobotContainer container) {
         this.controller = new PWMSparkMax(port);
-        
+
         this.lastUpdate = new StopWatch();
         this.currentColor = LEDColor.OFF;
 
@@ -105,55 +106,56 @@ public class LEDController extends SubsystemBase {
 
     // Set the LED color
     private void setColorDefault(LEDColor color) {
-        if(!DriverStation.getInstance().isAutonomous() && LEDSettings.MANUAL_UPDATE_TIME < lastUpdate.getTime()) {
+        if (!DriverStation.getInstance().isAutonomous()
+                && LEDSettings.MANUAL_UPDATE_TIME < lastUpdate.getTime()) {
             currentColor = color;
         }
     }
 
     // Update the LED color depending on what is happening with the robot
     public void updateColors() {
-            if (robotContainer != null) {
-                Gamepad driver = robotContainer.getDriver();
-                Shooter shooter = robotContainer.getShooter();
-                Intake intake = robotContainer.getIntake();
+        if (robotContainer != null) {
+            Gamepad driver = robotContainer.getDriver();
+            Shooter shooter = robotContainer.getShooter();
+            Intake intake = robotContainer.getIntake();
 
-                // Fun Driver LEDs
-                /**/ if (driver.getRawDPadUp()) this.setColorDefault(LEDColor.RAINBOW);
-                else if (driver.getRawDPadDown()) this.setColorDefault(LEDColor.SINELON);
-                else if (driver.getRawDPadLeft()) this.setColorDefault(LEDColor.WAVE);
-                else if (driver.getRawDPadRight()) this.setColorDefault(LEDColor.BEAT);
-                else if (driver.getRawLeftBumper()) this.setColorDefault(LEDColor.RED_PULSE);
-                else if (driver.getRawRightBumper()) this.setColorDefault(LEDColor.BLUE_PULSE);
+            // Fun Driver LEDs
+            /**/ if (driver.getRawDPadUp()) this.setColorDefault(LEDColor.RAINBOW);
+            else if (driver.getRawDPadDown()) this.setColorDefault(LEDColor.SINELON);
+            else if (driver.getRawDPadLeft()) this.setColorDefault(LEDColor.WAVE);
+            else if (driver.getRawDPadRight()) this.setColorDefault(LEDColor.BEAT);
+            else if (driver.getRawLeftBumper()) this.setColorDefault(LEDColor.RED_PULSE);
+            else if (driver.getRawRightBumper()) this.setColorDefault(LEDColor.BLUE_PULSE);
 
-                // Shooter Modes have their own LEDs
-                else if (intake.isBallDetected()) {
-                    this.setColorDefault(LEDColor.GREEN_SOLID);
+            // Shooter Modes have their own LEDs
+            else if (intake.isBallDetected()) {
+                this.setColorDefault(LEDColor.GREEN_SOLID);
+            } else {
+                if (shooter.isReady()) {
+                    switch (shooter.getMode()) {
+                        case INITIATION_LINE:
+                            setColorDefault(LEDColor.WHITE_SOLID);
+                            break;
+                        case TRENCH_SHOT:
+                            setColorDefault(LEDColor.RED_SOLID);
+                            break;
+                        default:
+                            setColorDefault(LEDColor.OFF);
+                    }
                 } else {
-                    if (shooter.isReady()) {
-                        switch (shooter.getMode()) {
-                            case INITIATION_LINE:
-                                setColorDefault(LEDColor.WHITE_SOLID);
-                                break;
-                            case TRENCH_SHOT:
-                                setColorDefault(LEDColor.RED_SOLID);
-                                break;
-                            default:
-                                setColorDefault(LEDColor.OFF);
-                        }
-                    } else {
-                        switch (shooter.getMode()) {
-                            case INITIATION_LINE:
-                                setColorDefault(LEDColor.WHITE_PULSE);
-                                break;
-                            case TRENCH_SHOT:
-                                setColorDefault(LEDColor.RED_PULSE);
-                                break;
-                            default:
-                                setColorDefault(LEDColor.OFF);
-                        }
+                    switch (shooter.getMode()) {
+                        case INITIATION_LINE:
+                            setColorDefault(LEDColor.WHITE_PULSE);
+                            break;
+                        case TRENCH_SHOT:
+                            setColorDefault(LEDColor.RED_PULSE);
+                            break;
+                        default:
+                            setColorDefault(LEDColor.OFF);
                     }
                 }
             }
+        }
     }
 
     // Update the LEDs

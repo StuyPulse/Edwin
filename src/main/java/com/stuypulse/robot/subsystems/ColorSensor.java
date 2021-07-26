@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ColorSensor extends SubsystemBase {
 
-    // Woof Color enum 
+    // Woof Color enum
     public static enum WColor {
         // Create all colors on the control panel
         YELLOW,
         CYAN,
         GREEN,
         RED,
-        
+
         // To avoid null pointer exceptions when returning error states
         NONE;
 
@@ -34,18 +34,18 @@ public class ColorSensor extends SubsystemBase {
         // Use a static block to setup circular references
         static {
             /*
-            Control Panel Reference: 
+            Control Panel Reference:
             https://firstfrc.blob.core.windows.net/frc2021/Manual/Sections/2021FRCGameManualSection03.pdf
             */
 
             // Setup each color's next reference
-            YELLOW.next = CYAN; 
+            YELLOW.next = CYAN;
             CYAN.next = GREEN;
             RED.next = YELLOW;
             NONE.next = NONE;
         }
 
-        // Getters 
+        // Getters
         public WColor getNextColor() {
             return this.next;
         }
@@ -53,7 +53,6 @@ public class ColorSensor extends SubsystemBase {
         public WColor getRotatedColor() {
             return this.next.next;
         }
-
     };
 
     private ColorSensorV3 colorSensor;
@@ -69,42 +68,37 @@ public class ColorSensor extends SubsystemBase {
         colorMatcher.addColorMatch(Colors.RED_TARGET);
     }
 
-    /**
-     * @return reports the color that should be under the GAME sensor
-     */
+    /** @return reports the color that should be under the GAME sensor */
     public WColor getFMSColor() {
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
 
-        if (gameData == null || gameData.length() <= 0)
-            return WColor.NONE;
-        
+        if (gameData == null || gameData.length() <= 0) return WColor.NONE;
+
         switch (gameData.charAt(0)) {
-            case 'Y': return WColor.YELLOW;
-            case 'B': return WColor.CYAN;
-            case 'G': return WColor.GREEN;
-            case 'R': return WColor.RED;
-            default: return WColor.NONE;
+            case 'Y':
+                return WColor.YELLOW;
+            case 'B':
+                return WColor.CYAN;
+            case 'G':
+                return WColor.GREEN;
+            case 'R':
+                return WColor.RED;
+            default:
+                return WColor.NONE;
         }
     }
 
-    /**
-     * @return reports the color that should be under OUR sensor (based on the FMS
-     *         color)
-     */
+    /** @return reports the color that should be under OUR sensor (based on the FMS color) */
     public WColor getTargetColor() {
         return getFMSColor().getRotatedColor();
     }
 
-    /**
-     * @return gets the color reported by OUR sensor
-     */
+    /** @return gets the color reported by OUR sensor */
     public Color getRawDetectedColor() {
         return colorMatcher.matchClosestColor(colorSensor.getColor()).color;
     }
 
-    /**
-     * @return gets the color reported by OUR sensor
-     */
+    /** @return gets the color reported by OUR sensor */
     public WColor getDetectedColor() {
         final Color color = getRawDetectedColor();
 

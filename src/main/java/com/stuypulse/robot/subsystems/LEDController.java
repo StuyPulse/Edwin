@@ -114,7 +114,7 @@ public class LEDController extends SubsystemBase {
                 else if (driver.getRawRightBumper()) this.setColor(LEDColor.BLUE_PULSE);
 
                 // Shooter Modes have their own LEDs
-                else if(intake.isBallDetected()) {
+                else if (intake.isBallDetected()) {
                     this.setColor(LEDColor.GREEN_SOLID);
                 } else {
                     if (shooter.isReady()) {

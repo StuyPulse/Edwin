@@ -6,6 +6,7 @@ package com.stuypulse.robot.commands;
 
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
+
 import com.stuypulse.robot.subsystems.Woof;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;

@@ -22,7 +22,7 @@ public class Woof extends SubsystemBase {
     // Motor and Encoder
     private final CANSparkMax motor;
     private final CANEncoder encoder;
-    
+
     // Color sensor
     private final ColorSensor colorSensor;
 

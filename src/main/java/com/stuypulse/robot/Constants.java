@@ -251,7 +251,7 @@ public interface Constants {
             public interface Limelight {
                 double HEIGHT = Units.feetToMeters(2) + Units.inchesToMeters(10);
                 double DISTANCE = Units.feetToMeters(0);
-                double PITCH = 25;
+                double PITCH = 23;
                 double YAW = 0.0;
             }
         }

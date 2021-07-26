@@ -15,6 +15,8 @@ import com.stuypulse.stuylib.util.StopWatch;
 
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.LEDController;
+import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 
 /**
  * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two controllers. This lets
@@ -57,8 +59,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Variables for fusing the alignment
     // data with the encoder data
-    private double initAngleMeasurement;
-    private double initSpeedMeasurement;
+    private double targetAngleMeasurement;
+    private double targetSpeedMeasurement;
 
     private IFilter speedLowPass;
     private IFilter speedHighPass;
@@ -67,6 +69,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Used to check timeout of alignment
     private StopWatch timer;
+
+    // LED Controller to update based on status
+    private LEDController ledController;
 
     // Misc Settings
     private boolean continuous; // Removes check for velocity
@@ -99,8 +104,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.aligner = aligner;
 
         // Timer used to check when to update the errors
-        this.initAngleMeasurement = 0;
-        this.initSpeedMeasurement = 0;
+        this.targetAngleMeasurement = 0;
+        this.targetSpeedMeasurement = 0;
 
         this.speedHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
         this.speedLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
@@ -109,6 +114,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Used to check the alignment time.
         this.timer = new StopWatch();
+
+        // LED Controller to update based on status
+        this.ledController = null;
 
         // Normally end the command once aligned
         this.neverFinish = false;
@@ -150,6 +158,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return this;
     }
 
+    // Update the alignment command to use a LED controller to report status
+    public DrivetrainAlignmentCommand setLEDController(LEDController ledController) {
+        this.ledController = ledController;
+        return this;
+    }
+
     // Set the gear and other things when initializing
     public void initialize() {
         aligner.init();
@@ -165,8 +179,16 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.angle.setOutputFilter(
                 new IFilterGroup(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER)));
 
-        this.initAngleMeasurement = drivetrain.getRawAngle();
-        this.initSpeedMeasurement = drivetrain.getDistance();
+        // Reset the filters when the command is initialized
+        this.speedHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.speedLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.angleHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+
+        // Update the target measurement to report an error based on what the aligner initially sees
+        this.targetSpeedMeasurement = drivetrain.getDistance() + aligner.getSpeedError();
+        this.targetAngleMeasurement =
+                drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
     }
 
     // Get distance left to travel
@@ -176,7 +198,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         double lowpass = speedLowPass.get(alignData);
 
         // Get the high frequencies of the encoder data
-        double encoderData = initSpeedMeasurement - drivetrain.getDistance();
+        double encoderData = targetSpeedMeasurement - drivetrain.getDistance();
         double highpass = speedHighPass.get(encoderData);
 
         // Combine the data and return it
@@ -190,7 +212,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         double lowpass = angleLowPass.get(alignData);
 
         // Get the high frequencies of the encoder data
-        double encoderData = initAngleMeasurement - drivetrain.getRawAngle();
+        double encoderData = targetAngleMeasurement - drivetrain.getRawAngle();
         double highpass = angleHighPass.get(encoderData);
 
         // Combine the data and return it
@@ -223,6 +245,10 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Execute loop while also updating PID controllers
     public void execute() {
         super.execute();
+
+        if (ledController != null) {
+            ledController.setColor(LEDColor.YELLOW_PULSE);
+        }
     }
 
     // Command is finished if all of the errors are small enough
@@ -251,5 +277,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Turn limelight off when no longer aligning due to rules
     public void end(boolean interrupted) {
         // Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_OFF);
+
+        if (ledController != null) {
+            ledController.setColor(LEDColor.GREEN_SOLID);
+        }
     }
 }

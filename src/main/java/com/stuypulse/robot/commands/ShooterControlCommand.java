@@ -17,7 +17,7 @@ public class ShooterControlCommand extends InstantCommand {
     public ShooterControlCommand(Shooter shooter, ShooterMode mode) {
         this.shooter = shooter;
         this.mode = mode;
-        
+
         addRequirements(shooter);
     }
 

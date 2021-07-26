@@ -329,6 +329,8 @@ public interface Constants {
     }
 
     public interface LEDSettings {
+        double MANUAL_UPDATE_TIME = 0.65;
+
         double BLINK_TIME = 0.5;
     }
 

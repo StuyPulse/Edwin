@@ -74,6 +74,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     private LEDController ledController;
 
     // Misc Settings
+    private boolean useFusion;
     private boolean continuous; // Removes check for velocity
     private boolean neverFinish; // Waits to be interrupted
     private boolean minTime; // Waits to be interrupted
@@ -111,6 +112,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.speedLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
         this.angleHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
         this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
+        this.useFusion = true;
 
         // Used to check the alignment time.
         this.timer = new StopWatch();
@@ -158,6 +160,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return this;
     }
 
+    public DrivetrainAlignmentCommand useNoFusion() {
+        this.useFusion = false;
+        return this;
+    }
+
+
     // Update the alignment command to use a LED controller to report status
     public DrivetrainAlignmentCommand setLEDController(LEDController ledController) {
         this.ledController = ledController;
@@ -166,6 +174,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Set the gear and other things when initializing
     public void initialize() {
+        super.initialize();
+
         aligner.init();
         timer.reset();
 
@@ -193,6 +203,10 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Get distance left to travel
     public double getSpeedError() {
+        if(!useFusion) {
+            return aligner.getSpeedError();
+        }
+
         // Get the low freqencies of the raw aligner
         double alignData = aligner.getSpeedError();
         double lowpass = speedLowPass.get(alignData);
@@ -207,6 +221,10 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Get angle left to turn
     public Angle getAngleError() {
+        if(!useFusion) {
+            return aligner.getAngleError();
+        }
+
         // Get the low freqencies of the raw aligner
         double alignData = aligner.getAngleError().toDegrees();
         double lowpass = angleLowPass.get(alignData);

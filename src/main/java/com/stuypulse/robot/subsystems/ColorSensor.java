@@ -94,8 +94,13 @@ public class ColorSensor extends SubsystemBase {
     }
 
     /** @return gets the color reported by OUR sensor */
+    public Color getRawColor() {
+        return colorSensor.getColor();
+    }
+
+    /** @return gets the color reported by OUR sensor matched to the list of valid colors */
     public Color getRawDetectedColor() {
-        return colorMatcher.matchClosestColor(colorSensor.getColor()).color;
+        return colorMatcher.matchClosestColor(getRawColor()).color;
     }
 
     /** @return gets the color reported by OUR sensor */
@@ -113,6 +118,12 @@ public class ColorSensor extends SubsystemBase {
     @Override
     public void periodic() {
         // SmartDashboard
+
+        SmartDashboard.putNumber("Color Sensor/Raw Color Red", getRawColor().red);
+        SmartDashboard.putNumber(
+                "Color Sensor/Raw Color Blue", getRawColor().blue);
+        SmartDashboard.putNumber(
+                "Color Sensor/Raw Color Green", getRawColor().green);
 
         SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red", getRawDetectedColor().red);
         SmartDashboard.putNumber(

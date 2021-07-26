@@ -313,7 +313,7 @@ public interface Constants {
         double WOOF_GEAR = 20;
         double CONTROL_PANEL_RATIO = 10;
         
-        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.0);
+        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.05);
         
         double TARGET_CONTROL_PANEL_TURNS = 3;
     }
@@ -333,21 +333,21 @@ public interface Constants {
     }
 
     public interface Colors {
-        double CYAN_RED = 0.2;
-        double CYAN_GREEN = 0.56;
-        double CYAN_BLUE = 0.3;
+        double CYAN_RED = 0.14;
+        double CYAN_GREEN = 0.43;
+        double CYAN_BLUE = 0.42;
 
-        double GREEN_RED = 0.25;
-        double GREEN_GREEN = 0.65;
-        double GREEN_BLUE = 0.17;
+        double GREEN_RED = 0.17;
+        double GREEN_GREEN = 0.59;
+        double GREEN_BLUE = 0.24;
 
-        double RED_RED = 0.60;
-        double RED_GREEN = 0.35;
-        double RED_BLUE = 0.1;
+        double RED_RED = 0.53;
+        double RED_GREEN = 0.34;
+        double RED_BLUE = 0.13;
 
-        double YELLOW_RED = 0.30;
-        double YELLOW_GREEN = 0.50;
-        double YELLOW_BLUE = 0.1;
+        double YELLOW_RED = 0.33;
+        double YELLOW_GREEN = 0.57;
+        double YELLOW_BLUE = 0.10;
 
         Color CYAN_TARGET =
                 ColorMatch.makeColor(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);

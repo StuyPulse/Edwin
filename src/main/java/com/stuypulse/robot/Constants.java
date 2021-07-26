@@ -312,9 +312,9 @@ public interface Constants {
 
         double WOOF_GEAR = 20;
         double CONTROL_PANEL_RATIO = 10;
-        
-        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.0);
-        
+
+        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.05);
+
         double TARGET_CONTROL_PANEL_TURNS = 3;
     }
 
@@ -329,25 +329,27 @@ public interface Constants {
     }
 
     public interface LEDSettings {
+        double MANUAL_UPDATE_TIME = 0.65;
+
         double BLINK_TIME = 0.5;
     }
 
     public interface Colors {
-        double CYAN_RED = 0.2;
-        double CYAN_GREEN = 0.56;
-        double CYAN_BLUE = 0.3;
+        double CYAN_RED = 0.14;
+        double CYAN_GREEN = 0.43;
+        double CYAN_BLUE = 0.42;
 
-        double GREEN_RED = 0.25;
-        double GREEN_GREEN = 0.65;
-        double GREEN_BLUE = 0.17;
+        double GREEN_RED = 0.17;
+        double GREEN_GREEN = 0.59;
+        double GREEN_BLUE = 0.24;
 
-        double RED_RED = 0.60;
-        double RED_GREEN = 0.35;
-        double RED_BLUE = 0.1;
+        double RED_RED = 0.53;
+        double RED_GREEN = 0.34;
+        double RED_BLUE = 0.13;
 
-        double YELLOW_RED = 0.30;
-        double YELLOW_GREEN = 0.50;
-        double YELLOW_BLUE = 0.1;
+        double YELLOW_RED = 0.33;
+        double YELLOW_GREEN = 0.57;
+        double YELLOW_BLUE = 0.10;
 
         Color CYAN_TARGET =
                 ColorMatch.makeColor(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
@@ -364,11 +366,12 @@ public interface Constants {
          * Movement Auton Command
          *********************************************************************************************/
         double DISTANCE_TO_MOVE_AT_START = Units.feetToMeters(3.25); // feet
-        
+
         /*********************************************************************************************
          * Six Ball Auton (Acquire balls from the trench from the starting position)
          *********************************************************************************************/
         double DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET = Units.feetToMeters(5 * 1.208);
+
         double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = Units.feetToMeters(5 * 1.208 + 0.5);
 
         double ANGLE_TO_ACQUIRE_FROM_TRENCH_IN_DEGREES = 15;
@@ -377,7 +380,6 @@ public interface Constants {
          * Six Ball Auton (Movement limits)
          *********************************************************************************************/
         double DRIVETRAIN_SPEED_LIMIT = 0.55;
-
 
         /*********************************************************************************************
          * Shoot Three (At Start) Auton Command

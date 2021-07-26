@@ -96,8 +96,7 @@ public class RobotContainer {
         // Bottom button puts balls into the shooter
         operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
         operator.getRightButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-        
-        
+
         /***********************/
         /*** Intake Controls ***/
         /***********************/
@@ -118,11 +117,13 @@ public class RobotContainer {
         /*********************/
 
         // Right Bumper Uses Encoder
-        operator.getRightBumper().whenPressed(new WoofTurnRotationsWithEncoderCommand(woof));
+        operator.getRightBumper()
+                .whenPressed(new WoofTurnRotationsWithEncoderCommand(woof, ledController));
+        operator.getLeftBumper().whenPressed(new WoofSpinToFMSColorCommand(woof, ledController));
 
         // Left Stick moves woof manually
-        // // it is handled by the default commands
-        
+        // it is handled by the default commands
+
         /*****************************/
         /*** Shooter Speed Control ***/
         /*****************************/
@@ -140,24 +141,31 @@ public class RobotContainer {
         /*****************/
         /*** Alignment ***/
         /*****************/
-        
+
         // Left Button Aligns just sideways
         driver.getLeftButton()
-                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setMaxSpeed(0).setNeverFinish())
+                .whileHeld(
+                        new DrivetrainAutomaticAlign(drivetrain, shooter)
+                                .setMaxSpeed(0)
+                                .setNeverFinish()
+                                .setLEDController(ledController))
                 .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
-        
+
         // Bottom Button Aligns to the right distance
         driver.getBottomButton()
-                .whileHeld(new DrivetrainAutomaticAlign(drivetrain, shooter).setNeverFinish())
+                .whileHeld(
+                        new DrivetrainAutomaticAlign(drivetrain, shooter)
+                                .setNeverFinish()
+                                .setLEDController(ledController))
                 .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
-        
     }
 
     public void configureAutons() {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
 
         autonChooser.setDefaultOption("Old Six Ball Trench Auton", new OldSixBallTrenchAuton(this));
-        autonChooser.setDefaultOption("Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
+        autonChooser.setDefaultOption(
+                "Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
 
         autonChooser.setDefaultOption("(I) Woof Five Ball Auton", new WoofFiveBallAuton(this));
 

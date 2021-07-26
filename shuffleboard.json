@@ -132,36 +132,15 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "3,3": {
+          "6,0": {
             "size": [
               3,
-              1
+              2
             ],
             "content": {
-              "_type": "Number Bar",
-              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Detected Color Blue",
-              "_title": "Raw Detected Color Blue",
-              "Range/Min": 0.0,
-              "Range/Max": 1.0,
-              "Range/Center": 0.0,
-              "Visuals/Num tick marks": 5,
-              "Visuals/Show text": true
-            }
-          },
-          "3,2": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Number Bar",
-              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Detected Color Green",
-              "_title": "Raw Detected Color Green",
-              "Range/Min": 0.0,
-              "Range/Max": 1.0,
-              "Range/Center": 0.0,
-              "Visuals/Num tick marks": 5,
-              "Visuals/Show text": true
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Detected Color",
+              "_title": "Detected Color"
             }
           },
           "3,1": {
@@ -170,14 +149,9 @@
               1
             ],
             "content": {
-              "_type": "Number Bar",
-              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Detected Color Red",
-              "_title": "Raw Detected Color Red",
-              "Range/Min": 0.0,
-              "Range/Max": 1.0,
-              "Range/Center": 0.0,
-              "Visuals/Num tick marks": 5,
-              "Visuals/Show text": true
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Rotated FMS Color",
+              "_title": "Rotated FMS Color"
             }
           },
           "3,0": {
@@ -187,8 +161,74 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Color Sensor/Detected Color",
-              "_title": "Detected Color"
+              "_source0": "network_table:///SmartDashboard/Color Sensor/FMS Color",
+              "_title": "FMS Color"
+            }
+          },
+          "7,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Detected Color Blue",
+              "_title": "SmartDashboard/Color Sensor/Raw Detected Color Blue"
+            }
+          },
+          "5,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Detected Color Green",
+              "_title": "SmartDashboard/Color Sensor/Raw Detected Color Green"
+            }
+          },
+          "3,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Detected Color Red",
+              "_title": "SmartDashboard/Color Sensor/Raw Detected Color Red"
+            }
+          },
+          "3,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Color Red",
+              "_title": "Raw Color Red"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Color Blue",
+              "_title": "Raw Color Blue"
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Color Sensor/Raw Color Green",
+              "_title": "Raw Color Green"
             }
           }
         }
@@ -645,6 +685,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Limelight Yaw",
               "_title": "SmartDashboard/Limelight Yaw"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain/Alignment/Sensor Fusion RC",
+              "_title": "Alignment/Sensor Fusion RC"
             }
           }
         }

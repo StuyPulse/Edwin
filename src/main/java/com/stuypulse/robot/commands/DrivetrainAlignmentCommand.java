@@ -15,6 +15,8 @@ import com.stuypulse.stuylib.util.StopWatch;
 
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.subsystems.Drivetrain;
+import com.stuypulse.robot.subsystems.LEDController;
+import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 
 /**
  * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two controllers. This lets
@@ -68,6 +70,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Used to check timeout of alignment
     private StopWatch timer;
 
+    // LED Controller to update based on status
+    private LEDController ledController;
+
     // Misc Settings
     private boolean useFusion;
     private boolean continuous; // Removes check for velocity
@@ -111,6 +116,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Used to check the alignment time.
         this.timer = new StopWatch();
+
+        // LED Controller to update based on status
+        this.ledController = null;
 
         // Normally end the command once aligned
         this.neverFinish = false;
@@ -158,6 +166,12 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     }
 
 
+    // Update the alignment command to use a LED controller to report status
+    public DrivetrainAlignmentCommand setLEDController(LEDController ledController) {
+        this.ledController = ledController;
+        return this;
+    }
+
     // Set the gear and other things when initializing
     public void initialize() {
         super.initialize();
@@ -183,7 +197,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
         // Update the target measurement to report an error based on what the aligner initially sees
         this.targetSpeedMeasurement = drivetrain.getDistance() + aligner.getSpeedError();
-        this.targetAngleMeasurement = drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
+        this.targetAngleMeasurement =
+                drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
     }
 
     // Get distance left to travel
@@ -248,6 +263,10 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Execute loop while also updating PID controllers
     public void execute() {
         super.execute();
+
+        if (ledController != null) {
+            ledController.setColor(LEDColor.YELLOW_PULSE);
+        }
     }
 
     // Command is finished if all of the errors are small enough
@@ -276,5 +295,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     // Turn limelight off when no longer aligning due to rules
     public void end(boolean interrupted) {
         // Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_OFF);
+
+        if (ledController != null) {
+            ledController.setColor(LEDColor.GREEN_SOLID);
+        }
     }
 }

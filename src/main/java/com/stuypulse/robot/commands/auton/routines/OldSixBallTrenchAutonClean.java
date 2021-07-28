@@ -49,8 +49,8 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new DrivetrainMovementCommand(
                 robot.getDrivetrain(), 
                 0, 
-                AutoSettings.DISTANCE_FROM_START_TO_TRENCH_IN_FEET + AutoSettings.DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET
-            ).setMaxSpeed(AutoSettings.DRIVETRAIN_SPEED_LIMIT).withTimeout(3)
+                5.7
+            ).setMaxSpeed(AutoSettings.DRIVETRAIN_SPEED_LIMIT).withTimeout(6)
             // new DrivetrainMovementCommand(drivetrain, 0, -DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setTimeout(1.5),
         );
         
@@ -64,9 +64,9 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
 
             // Have the balls be fed up to the top of the chute while the drivetrain
             // is aligning. Ends when the alignment ends or after 3.5 seconds.
-            new DrivetrainAlignAndFeedCommand(
-                robot, 
-                Alignment.TRENCH_DISTANCE
+            new DrivetrainAutomaticAlign(
+                robot.getDrivetrain(), 
+                robot.getShooter()
             ).withTimeout(3.5)
         ); 
 
@@ -96,7 +96,7 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new DrivetrainMovementCommand(
                 robot.getDrivetrain(), 
                 0, 
-                AutoSettings.DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET
+                2
             ).setMaxSpeed(AutoSettings.DRIVETRAIN_SPEED_LIMIT).withTimeout(2.0)
         );
 
@@ -107,9 +107,9 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new LEDSetCommand(robot.getLEDController(), LEDColor.BLUE_SOLID),
 
             // Feed the balls as far up as possible (without shooting) while aligning
-            new DrivetrainAlignAndFeedCommand(
-                robot, 
-                Alignment.TRENCH_DISTANCE
+            new DrivetrainAutomaticAlign(
+                robot.getDrivetrain(), 
+                robot.getShooter()
             ).withTimeout(4)
         );
 

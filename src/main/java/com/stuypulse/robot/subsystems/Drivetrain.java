@@ -274,7 +274,7 @@ public class Drivetrain extends SubsystemBase {
         resetNavX();
         leftNEO.setPosition(0);
         rightNEO.setPosition(0); 
-        odometry.resetPosition(start, getAngle().getRotation2d());
+        odometry.resetPosition(location, getAngle().getRotation2d());
     }
 
     public void reset() {

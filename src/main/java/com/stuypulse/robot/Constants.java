@@ -370,6 +370,8 @@ public interface Constants {
         /*********************************************************************************************
          * Six Ball Auton (Acquire balls from the trench from the starting position)
          *********************************************************************************************/
+        
+        double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = Units.feetToMeters(5 * 1.208);
         double DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET = Units.feetToMeters(5 * 1.208);
 
         double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = Units.feetToMeters(5 * 1.208 + 0.5);
@@ -389,10 +391,9 @@ public interface Constants {
         /*********************************************************************************************
          * Shoot at start and take 3 balls from trench
          *********************************************************************************************/
-        double ANGLE_FROM_START_TO_TRENCH = Units.feetToMeters(37.7);
+        double ANGLE_FROM_START_TO_TRENCH = 37.7;
 
-        double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = Units.feetToMeters(5);
-        double DISTANCE_FROM_BALL_TO_BALL = Units.feetToMeters(36);
+        double DISTANCE_FROM_BALL_TO_BALL = Units.feetToMeters(3);
         double DISTANCE_FROM_TRENCH_TO_GOAL = Units.feetToMeters(20);
 
         /*********************************************************************************************
@@ -401,22 +402,22 @@ public interface Constants {
          *********************************************************************************************/
         double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
 
-        double DISTANCE_FROM_TRENCH_TO_RDVS = Units.feetToMeters(109.85);
+        double DISTANCE_FROM_TRENCH_TO_RDVS = Units.inchesToMeters(109.85);
         double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; // estimation between 0 - 54.12
-        double DISTANCE_BETWEEN_TWO_BALL = Units.feetToMeters(16.57);
+        double DISTANCE_BETWEEN_TWO_BALL = Units.inchesToMeters(16.57);
         double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL =
-                Units.feetToMeters(40); // estimation according to field
+                Units.inchesToMeters(40); // estimation according to field
         // markings
 
         /*********************************************************************************************
          * Shoot three at start and get 3 balls from rdvs
          *********************************************************************************************/
 
-        double DISTANCE_FROM_START_TO_RDVS = Units.feetToMeters(107.83);
+        double DISTANCE_FROM_START_TO_RDVS = Units.inchesToMeters(107.83);
 
         double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; // estimation from common knowledge
         double DISTANCE_FOR_THREE_BALLS_IN_RDVS =
-                Units.feetToMeters(36); // estimate. Probably higher
+                Units.inchesToMeters(36); // estimate. Probably higher
 
         /*********************************************************************************************
          * Shoot three at start, and then get 5 balls from rdvs
@@ -424,6 +425,6 @@ public interface Constants {
 
         double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
 
-        double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = Units.feetToMeters(25.42);
+        double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = Units.inchesToMeters(25.42);
     }
 }

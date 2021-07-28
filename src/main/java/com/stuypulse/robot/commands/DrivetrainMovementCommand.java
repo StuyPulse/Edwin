@@ -103,6 +103,7 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle, double distance) {
         super(drivetrain, new Aligner(drivetrain, angle, distance));
+        useNoFusion();
     }
 
     /**
@@ -113,5 +114,6 @@ public class DrivetrainMovementCommand extends DrivetrainAlignmentCommand {
      */
     public DrivetrainMovementCommand(Drivetrain drivetrain, double angle) {
         super(drivetrain, new Aligner(drivetrain, angle));
+        useNoFusion();
     }
 }

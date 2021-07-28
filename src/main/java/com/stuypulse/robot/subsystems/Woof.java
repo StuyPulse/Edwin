@@ -9,6 +9,7 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import com.stuypulse.robot.Constants.Ports;
@@ -31,6 +32,8 @@ public class Woof extends SubsystemBase {
 
     public Woof() {
         motor = new CANSparkMax(Ports.Woof.MOTOR_PORT, MotorType.kBrushless);
+        motor.setIdleMode(IdleMode.kCoast);
+        motor.setSmartCurrentLimit(10);
         encoder = motor.getEncoder();
 
         turnSpeed = 0.0;

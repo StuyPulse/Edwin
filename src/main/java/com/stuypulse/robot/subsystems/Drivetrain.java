@@ -266,10 +266,6 @@ public class Drivetrain extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
-    private void resetOdometer(Pose2d start) {
-        odometry.resetPosition(start, DrivetrainSettings.Odometry.STARTING_ANGLE);
-    }
-
     /************************
      * OVERALL SENSOR RESET *
      ************************/
@@ -277,12 +273,12 @@ public class Drivetrain extends SubsystemBase {
     public void reset(Pose2d location) {
         resetNavX();
         leftNEO.setPosition(0);
-        rightNEO.setPosition(0);
-        resetOdometer(location);
+        rightNEO.setPosition(0); 
+        odometry.resetPosition(start, getAngle().getRotation2d());
     }
 
     public void reset() {
-        reset(DrivetrainSettings.Odometry.STARTING_POSITION);
+        reset(getPose());
     }
 
     /*********************

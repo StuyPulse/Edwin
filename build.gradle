@@ -76,23 +76,22 @@ dependencies {
 }
 
 spotless {
-   java {
-      licenseHeader """
-      /* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
-      /* This work is licensed under the terms of the MIT license */
-      /* found in the root directory of this project. */
-      """
+    enforceCheck = false
+    java {
+        licenseHeader """
+        /* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+        /* This work is licensed under the terms of the MIT license */
+        /* found in the root directory of this project. */
+        """
 
-      googleJavaFormat().aosp()
+        googleJavaFormat().aosp()
 
-      trimTrailingWhitespace()
-      endWithNewline()
+        trimTrailingWhitespace()
+        endWithNewline()
 
-      importOrder('com.stuypulse.stuylib', 'com.stuypulse', 'edu.wpi')
-      removeUnusedImports()
-
-
-   }
+        importOrder('com.stuypulse.stuylib', 'com.stuypulse', 'edu.wpi')
+        removeUnusedImports()
+    }
 }
 
 // Simulation configuration (e.g. environment variables).

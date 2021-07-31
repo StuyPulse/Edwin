@@ -1,8 +1,8 @@
 {
   "lengthUnit": "Meter",
   "exportUnit": "Always Meters",
-  "maxVelocity": 2.5,
-  "maxAcceleration": 2.0,
+  "maxVelocity": 2.25,
+  "maxAcceleration": 2.5,
   "trackWidth": 1.2,
   "gameName": "Infinite Recharge 2021",
   "outputDir": "../../../src/main/deploy/WoofFiveBall"

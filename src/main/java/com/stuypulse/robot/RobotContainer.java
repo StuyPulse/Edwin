@@ -161,12 +161,14 @@ public class RobotContainer {
     }
 
     public void configureAutons() {
-        autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
+        autonChooser.addOption("Do Nothing", new DoNothingAutonCommand(ledController));
 
         autonChooser.setDefaultOption(
                 "Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
 
-        autonChooser.setDefaultOption("Woof Five Ball Auton", new WoofFiveBallAuton(this));
+        autonChooser.addOption("Woof Five Ball Auton", new WoofFiveBallAuton(this));
+
+        autonChooser.addOption("Eight Ball Auton", new EightBallAuton(this));
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }

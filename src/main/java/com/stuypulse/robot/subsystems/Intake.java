@@ -7,6 +7,7 @@ package com.stuypulse.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.IntakeSettings;
 import com.stuypulse.robot.Constants.Ports;
 
@@ -69,6 +70,9 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         // SmartDashboard
-        SmartDashboard.putBoolean("Intake/Ball Detected", isBallDetected());
+        
+        if(Constants.DEBUG_MODE.get()) {
+            SmartDashboard.putBoolean("Intake/Ball Detected", isBallDetected());
+        }
     }
 }

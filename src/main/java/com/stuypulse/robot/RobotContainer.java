@@ -13,6 +13,7 @@ import com.stuypulse.robot.commands.auton.routines.*;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,8 +40,8 @@ public class RobotContainer {
     private final Woof woof = new Woof();
 
     // Gamepads
-    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+    public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -48,6 +49,7 @@ public class RobotContainer {
     public RobotContainer() {
         // Disable telementry to reduce lag
         LiveWindow.disableAllTelemetry();
+        DriverStation.getInstance().silenceJoystickConnectionWarning(true);
 
         // Set pump to false to avoid warning
         pump.set(false);
@@ -145,8 +147,7 @@ public class RobotContainer {
         // Left Button Aligns just sideways
         driver.getLeftButton()
                 .whileHeld(
-                        new DrivetrainAutomaticAlign(drivetrain, shooter)
-                                .setMaxSpeed(0)
+                        new DrivetrainGoalCommand(drivetrain, -1)
                                 .setNeverFinish()
                                 .setLEDController(ledController))
                 .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));

@@ -32,6 +32,8 @@ public interface Constants {
 
     Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
+    SmartBoolean DEBUG_MODE = new SmartBoolean("Debug Mode", false);
+
     public interface Ports {
 
         public interface Gamepad {
@@ -106,7 +108,7 @@ public interface Constants {
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
         SmartNumber QUICKTURN_THRESHOLD =
-                new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
+                new SmartNumber("Driver Settings/Quickturn Threshold", 0.08);
 
         // How much to slow down quick turn
         SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 1.0);
@@ -118,8 +120,8 @@ public interface Constants {
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.075);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.025);
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.06);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;

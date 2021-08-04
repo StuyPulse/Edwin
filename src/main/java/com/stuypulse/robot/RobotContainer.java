@@ -13,6 +13,7 @@ import com.stuypulse.robot.commands.auton.routines.*;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,8 +40,8 @@ public class RobotContainer {
     private final Woof woof = new Woof();
 
     // Gamepads
-    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+    public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -48,6 +49,7 @@ public class RobotContainer {
     public RobotContainer() {
         // Disable telementry to reduce lag
         LiveWindow.disableAllTelemetry();
+        DriverStation.getInstance().silenceJoystickConnectionWarning(true);
 
         // Set pump to false to avoid warning
         pump.set(false);
@@ -63,7 +65,7 @@ public class RobotContainer {
         woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
 
         // NOPE! Not Anymore, It's Annoying.
-        // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
+        chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
     }
 
     private void configureButtonBindings() {
@@ -73,11 +75,11 @@ public class RobotContainer {
         /***********************/
 
         // Setup Climber before Climbing (Move Left Stick Up)
-        new Button(() -> operator.getRightY() >= 0.5)
+        new Button(() -> operator.getRightY() >= 0.75)
                 .whileHeld(new ClimberSetupCommand(climber, intake));
 
         // Start Climbing (Move Left Stick Down)
-        new Button(() -> operator.getRightY() <= -0.5)
+        new Button(() -> operator.getRightY() <= -0.75)
                 .whenPressed(new IntakeRetractCommand(intake))
                 .whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
@@ -145,8 +147,7 @@ public class RobotContainer {
         // Left Button Aligns just sideways
         driver.getLeftButton()
                 .whileHeld(
-                        new DrivetrainAutomaticAlign(drivetrain, shooter)
-                                .setMaxSpeed(0)
+                        new DrivetrainGoalCommand(drivetrain, -1)
                                 .setNeverFinish()
                                 .setLEDController(ledController))
                 .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
@@ -161,17 +162,19 @@ public class RobotContainer {
     }
 
     public void configureAutons() {
-        autonChooser.setDefaultOption("Do Nothing", new DoNothingAutonCommand(ledController));
+        autonChooser.addOption("Do Nothing", new DoNothingAutonCommand(ledController));
 
-        autonChooser.setDefaultOption("Old Six Ball Trench Auton", new OldSixBallTrenchAuton(this));
         autonChooser.setDefaultOption(
-                "Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
+                "6Ball Auto", new OldSixBallTrenchAutonClean(this));
 
-        autonChooser.setDefaultOption("(I) Woof Five Ball Auton", new WoofFiveBallAuton(this));
+        autonChooser.addOption("5Ball Auto", new WoofFiveBallAuton(this));
 
-        autonChooser.addOption("[IR&H] Bounce Path", new BouncePathAutonCommand(drivetrain));
-        autonChooser.addOption("[IR&H] Barrel Racing Path", new BarrelRacingAuton(drivetrain));
-        autonChooser.addOption("[IR&H] Slalom Path", new SlalomPathAutonCommand(drivetrain));
+
+        autonChooser.addOption("Moby Auto", new MobilityAuton(this));
+
+        autonChooser.addOption("3Ball Auto", new ThreeBallAuton(this));
+
+        autonChooser.addOption("8Ball Auto", new EightBallAuton(this));
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }
@@ -208,6 +211,10 @@ public class RobotContainer {
 
     public Chimney getChimney() {
         return chimney;
+    }
+
+    public Pump getPump() {
+        return pump;
     }
 
     public Gamepad getDriver() {

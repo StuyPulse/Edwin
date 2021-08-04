@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.WoofSettings;
 
@@ -84,8 +85,12 @@ public class Woof extends SubsystemBase {
         motor.set(turnFilter.get(turnSpeed));
 
         // SmartDashboard
-        SmartDashboard.putNumber("Woof/Motor Rotations", getMotorRotations());
-        SmartDashboard.putNumber("Woof/Woof Rotations", getWoofRotations());
-        SmartDashboard.putNumber("Woof/Control Panel Rotations", getControlPanelRotations());
+
+        
+        if(Constants.DEBUG_MODE.get()) {
+            SmartDashboard.putNumber("Woof/Motor Rotations", getMotorRotations());
+            SmartDashboard.putNumber("Woof/Woof Rotations", getWoofRotations());
+            SmartDashboard.putNumber("Woof/Control Panel Rotations", getControlPanelRotations());
+        }
     }
 }

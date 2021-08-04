@@ -65,7 +65,7 @@ public class RobotContainer {
         woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
 
         // NOPE! Not Anymore, It's Annoying.
-        chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
+        // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
     }
 
     private void configureButtonBindings() {

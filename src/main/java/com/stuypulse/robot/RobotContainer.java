@@ -65,7 +65,7 @@ public class RobotContainer {
         woof.setDefaultCommand(new WoofManualControlCommand(woof, operator));
 
         // NOPE! Not Anymore, It's Annoying.
-        // chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
+        chimney.setDefaultCommand(new FeedBallsAutomaticCommand(chimney, funnel));
     }
 
     private void configureButtonBindings() {
@@ -75,11 +75,11 @@ public class RobotContainer {
         /***********************/
 
         // Setup Climber before Climbing (Move Left Stick Up)
-        new Button(() -> operator.getRightY() >= 0.5)
+        new Button(() -> operator.getRightY() >= 0.75)
                 .whileHeld(new ClimberSetupCommand(climber, intake));
 
         // Start Climbing (Move Left Stick Down)
-        new Button(() -> operator.getRightY() <= -0.5)
+        new Button(() -> operator.getRightY() <= -0.75)
                 .whenPressed(new IntakeRetractCommand(intake))
                 .whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
@@ -165,11 +165,16 @@ public class RobotContainer {
         autonChooser.addOption("Do Nothing", new DoNothingAutonCommand(ledController));
 
         autonChooser.setDefaultOption(
-                "Old Six Ball Trench Auton Clean", new OldSixBallTrenchAutonClean(this));
+                "6Ball Auto", new OldSixBallTrenchAutonClean(this));
 
-        autonChooser.addOption("Woof Five Ball Auton", new WoofFiveBallAuton(this));
+        autonChooser.addOption("5Ball Auto", new WoofFiveBallAuton(this));
 
-        autonChooser.addOption("Eight Ball Auton", new EightBallAuton(this));
+
+        autonChooser.addOption("Moby Auto", new MobilityAuton(this));
+
+        autonChooser.addOption("3Ball Auto", new ThreeBallAuton(this));
+
+        autonChooser.addOption("8Ball Auto", new EightBallAuton(this));
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }
@@ -206,6 +211,10 @@ public class RobotContainer {
 
     public Chimney getChimney() {
         return chimney;
+    }
+
+    public Pump getPump() {
+        return pump;
     }
 
     public Gamepad getDriver() {

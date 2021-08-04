@@ -27,8 +27,7 @@ public class WoofFiveBallAuton extends SequentialCommandGroup {
 
     // These Deadlines are not supposed to be reached, 
     // but act as a guarentee that the auton will complete ontime
-    private static final double MAX_START_TIME = 15.0; // TODO: Time how long this takes and + 1 second
-    private static final double MAX_TO_GOAL_TIME = 15.0; // TODO: Time how long this takes and + 1 second
+    private static final double MAX_PATH_TIME = 15.0; // TODO: Time how long this takes and + 1 second
     
     private static final double MAX_ALIGN_TIME = 3.0; // TODO: Time how long this takes and + 1 second
 
@@ -50,25 +49,17 @@ public class WoofFiveBallAuton extends SequentialCommandGroup {
         );
         
         // Move the drivetrain back to the 2 balls in the opposite trench
+        // Also reapproach the goal to shoot
         addCommands(
             new LEDSetCommand(robot.getLEDController(), LEDColor.YELLOW_SOLID),
             
             new DrivetrainRamseteCommand(
                 robot.getDrivetrain(), 
-                START_PATH
-            ).robotRelative().withTimeout(MAX_START_TIME)
+                START_PATH,
+                TO_GOAL_PATH
+            ).robotRelative().withTimeout(MAX_PATH_TIME)
         );
         
-        // Then move the drivetrain closer to the goal and feed the balls until they are up in the shooter
-        addCommands(
-            new LEDSetCommand(robot.getLEDController(), LEDColor.ORANGE_SOLID),
-
-            new DrivetrainRamseteCommand(
-                robot.getDrivetrain(), 
-                TO_GOAL_PATH
-            ).fieldRelative().withTimeout(MAX_TO_GOAL_TIME)
-        ); 
-
         // Align the robot to the target using the limelight
         addCommands(
             new LEDSetCommand(robot.getLEDController(), LEDColor.RED_SOLID),

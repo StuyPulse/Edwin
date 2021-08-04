@@ -56,7 +56,10 @@ public class EightBallAuton extends SequentialCommandGroup {
             new ParallelDeadlineGroup(
                 new DrivetrainRamseteCommand(
                     robot.getDrivetrain(),
-                    START_PATH
+                    START_PATH,
+                    TO_REND_PATH,
+                    R_BALLS_PATH,
+                    TO_TRENCH_PATH
                 ).robotRelative(),
                 
                 new FeedBallsCommand(
@@ -72,24 +75,8 @@ public class EightBallAuton extends SequentialCommandGroup {
 
             new DrivetrainRamseteCommand(
                 robot.getDrivetrain(),
-                TO_REND_PATH
-            ).fieldRelative()
-        );
-
-        addCommands(
-            new LEDSetCommand(leds, LEDColor.BLUE_SOLID),
-
-            new DrivetrainRamseteCommand(
-                robot.getDrivetrain(),
-                R_BALLS_PATH
-            ).fieldRelative()
-        );
-
-        addCommands(
-            new LEDSetCommand(leds, LEDColor.BLUE_SOLID),
-
-            new DrivetrainRamseteCommand(
-                robot.getDrivetrain(),
+                TO_REND_PATH,
+                R_BALLS_PATH,
                 TO_TRENCH_PATH
             ).fieldRelative()
         );

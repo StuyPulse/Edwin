@@ -7,6 +7,7 @@ package com.stuypulse.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.FunnelSettings;
 import com.stuypulse.robot.Constants.Ports;
 
@@ -36,6 +37,9 @@ public class Funnel extends SubsystemBase {
     @Override
     public void periodic() {
         // SmartDashboard
-        SmartDashboard.putNumber("Funnel/Motor Speed", motor.get());
+        
+        if(Constants.DEBUG_MODE.get()) {
+            SmartDashboard.putNumber("Funnel/Motor Speed", motor.get());
+        }
     }
 }

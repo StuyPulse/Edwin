@@ -76,7 +76,7 @@ public class WoofFiveBallAuton extends SequentialCommandGroup {
             // This command currently will cause the drivetrain encoders to reset
             // make sure to keep this in mind when adding future motion profiling autons
             new ParallelDeadlineGroup(
-                new DrivetrainAutomaticAlign(robot.getDrivetrain(), robot.getShooter()).setMaxSpeed(0.0),
+                new DrivetrainGoalCommand(robot.getDrivetrain(), -1),
                 
                 new FeedBallsInAutoCommand(
                     robot.getFunnel(), 

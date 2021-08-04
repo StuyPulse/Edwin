@@ -7,6 +7,7 @@ package com.stuypulse.robot.subsystems;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Colors;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -120,19 +121,23 @@ public class ColorSensor extends SubsystemBase {
     public void periodic() {
         // SmartDashboard
 
-        SmartDashboard.putNumber("Color Sensor/Raw Color Red", getRawColor().red);
-        SmartDashboard.putNumber("Color Sensor/Raw Color Blue", getRawColor().blue);
-        SmartDashboard.putNumber("Color Sensor/Raw Color Green", getRawColor().green);
+        if(Constants.DEBUG_MODE.get()) {
 
-        SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red", getRawDetectedColor().red);
-        SmartDashboard.putNumber(
-                "Color Sensor/Raw Detected Color Blue", getRawDetectedColor().blue);
-        SmartDashboard.putNumber(
-                "Color Sensor/Raw Detected Color Green", getRawDetectedColor().green);
+            // This Causes Loop Overrun
+            // SmartDashboard.putNumber("Color Sensor/Raw Color Red", getRawColor().red);
+            // SmartDashboard.putNumber("Color Sensor/Raw Color Blue", getRawColor().blue);
+            // SmartDashboard.putNumber("Color Sensor/Raw Color Green", getRawColor().green);
+    
+            // SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red", getRawDetectedColor().red);
+            // SmartDashboard.putNumber(
+            //         "Color Sensor/Raw Detected Color Blue", getRawDetectedColor().blue);
+            // SmartDashboard.putNumber(
+            //         "Color Sensor/Raw Detected Color Green", getRawDetectedColor().green);
+    
+            SmartDashboard.putString("Color Sensor/FMS Color", getFMSColor().name());
+            SmartDashboard.putString("Color Sensor/Rotated FMS Color", getTargetColor().name());
 
-        SmartDashboard.putString("Color Sensor/FMS Color", getFMSColor().name());
-        SmartDashboard.putString("Color Sensor/Rotated FMS Color", getTargetColor().name());
-
-        SmartDashboard.putString("Color Sensor/Detected Color", getDetectedColor().name());
+            SmartDashboard.putString("Color Sensor/Detected Color", getDetectedColor().name());
+        }
     }
 }

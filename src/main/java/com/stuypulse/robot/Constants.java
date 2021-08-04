@@ -32,6 +32,8 @@ public interface Constants {
 
     Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
+    SmartBoolean DEBUG_MODE = new SmartBoolean("Debug Mode", false);
+
     public interface Ports {
 
         public interface Gamepad {
@@ -85,7 +87,7 @@ public interface Constants {
             // int SOLENOID_PORT_A = 6;
             int SOLENOID_PORT_A = 4;
             int SOLENOID_PORT_B = 5;
-            int SENSOR_PORT = 4;
+            int SENSOR_PORT = 7;
             // int SOLENOID_PORT_B = 7;
         }
 
@@ -106,7 +108,7 @@ public interface Constants {
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
         SmartNumber QUICKTURN_THRESHOLD =
-                new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
+                new SmartNumber("Driver Settings/Quickturn Threshold", 0.08);
 
         // How much to slow down quick turn
         SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 1.0);
@@ -118,8 +120,8 @@ public interface Constants {
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.1);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.03);
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.06);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
@@ -212,7 +214,7 @@ public interface Constants {
                     new SmartNumber("Drivetrain/Alignment/Speed/Out Filter", 0.2);
 
             // Max speed for limelight to move
-            double LIMELIGHT_MAX_SPEED = 0.9;
+            double LIMELIGHT_MAX_SPEED = 0.8;
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = Units.inchesToMeters(3.0);
@@ -313,7 +315,7 @@ public interface Constants {
         double WOOF_GEAR = 20;
         double CONTROL_PANEL_RATIO = 10;
 
-        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.05);
+        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.02);
 
         double TARGET_CONTROL_PANEL_TURNS = 3;
     }
@@ -370,6 +372,8 @@ public interface Constants {
         /*********************************************************************************************
          * Six Ball Auton (Acquire balls from the trench from the starting position)
          *********************************************************************************************/
+        
+        double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = Units.feetToMeters(5 * 1.208);
         double DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET = Units.feetToMeters(5 * 1.208);
 
         double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = Units.feetToMeters(5 * 1.208 + 0.5);
@@ -379,7 +383,7 @@ public interface Constants {
         /*********************************************************************************************
          * Six Ball Auton (Movement limits)
          *********************************************************************************************/
-        double DRIVETRAIN_SPEED_LIMIT = 0.55;
+        double DRIVETRAIN_SPEED_LIMIT = 0.6;
 
         /*********************************************************************************************
          * Shoot Three (At Start) Auton Command
@@ -389,10 +393,9 @@ public interface Constants {
         /*********************************************************************************************
          * Shoot at start and take 3 balls from trench
          *********************************************************************************************/
-        double ANGLE_FROM_START_TO_TRENCH = Units.feetToMeters(37.7);
+        double ANGLE_FROM_START_TO_TRENCH = 37.7;
 
-        double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = Units.feetToMeters(5);
-        double DISTANCE_FROM_BALL_TO_BALL = Units.feetToMeters(36);
+        double DISTANCE_FROM_BALL_TO_BALL = Units.feetToMeters(3);
         double DISTANCE_FROM_TRENCH_TO_GOAL = Units.feetToMeters(20);
 
         /*********************************************************************************************
@@ -401,22 +404,22 @@ public interface Constants {
          *********************************************************************************************/
         double ANGLE_FROM_TRENCH_TO_RDVS = 125.88;
 
-        double DISTANCE_FROM_TRENCH_TO_RDVS = Units.feetToMeters(109.85);
+        double DISTANCE_FROM_TRENCH_TO_RDVS = Units.inchesToMeters(109.85);
         double ANGLE_FROM_RDVS_TO_TWO_BALL = 25; // estimation between 0 - 54.12
-        double DISTANCE_BETWEEN_TWO_BALL = Units.feetToMeters(16.57);
+        double DISTANCE_BETWEEN_TWO_BALL = Units.inchesToMeters(16.57);
         double DISTANCE_FROM_RDVS_TO_INTERSECTION_BEWTWEEN_TWO_BALL_AND_GOAL =
-                Units.feetToMeters(40); // estimation according to field
+                Units.inchesToMeters(40); // estimation according to field
         // markings
 
         /*********************************************************************************************
          * Shoot three at start and get 3 balls from rdvs
          *********************************************************************************************/
 
-        double DISTANCE_FROM_START_TO_RDVS = Units.feetToMeters(107.83);
+        double DISTANCE_FROM_START_TO_RDVS = Units.inchesToMeters(107.83);
 
         double ANGLE_FROM_START_POINT_TO_THREE_BALL = 247.5; // estimation from common knowledge
         double DISTANCE_FOR_THREE_BALLS_IN_RDVS =
-                Units.feetToMeters(36); // estimate. Probably higher
+                Units.inchesToMeters(36); // estimate. Probably higher
 
         /*********************************************************************************************
          * Shoot three at start, and then get 5 balls from rdvs
@@ -424,6 +427,6 @@ public interface Constants {
 
         double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
 
-        double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = Units.feetToMeters(25.42);
+        double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = Units.inchesToMeters(25.42);
     }
 }

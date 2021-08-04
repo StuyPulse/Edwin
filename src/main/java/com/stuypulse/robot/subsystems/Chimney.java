@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.ChimneySettings;
 import com.stuypulse.robot.Constants.Ports;
 
@@ -62,7 +63,10 @@ public class Chimney extends SubsystemBase {
     @Override
     public void periodic() {
         // SmartDashboard
-        SmartDashboard.putBoolean("Chimney/Upper Chimney Sensor", getUpperChimneyValue());
-        SmartDashboard.putBoolean("Chimney/Lower Chimney Sensor", getLowerChimneyValue());
+        
+        if(Constants.DEBUG_MODE.get()) {
+            SmartDashboard.putBoolean("Chimney/Upper Chimney Sensor", getUpperChimneyValue());
+            SmartDashboard.putBoolean("Chimney/Lower Chimney Sensor", getLowerChimneyValue());
+        }
     }
 }

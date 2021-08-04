@@ -17,6 +17,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.ShooterSettings;
 
@@ -234,11 +235,14 @@ public class Shooter extends SubsystemBase {
         }
 
         // SmartDashboard
-        SmartDashboard.putString("Shooter/Mode", getMode().name());
-        SmartDashboard.putNumber("Shooter/Target RPM", getTargetRPM());
-        SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
-        SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
-        SmartDashboard.putBoolean("Shooter/Hood Extended", hoodSolenoid.get());
+        
+        if(Constants.DEBUG_MODE.get()) {
+            SmartDashboard.putString("Shooter/Mode", getMode().name());
+            SmartDashboard.putNumber("Shooter/Target RPM", getTargetRPM());
+            SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
+            SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
+            SmartDashboard.putBoolean("Shooter/Hood Extended", hoodSolenoid.get());
+        }
     }
 
     /********

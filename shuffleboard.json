@@ -817,10 +817,7 @@
               "Y-axis/Automatic bounds": false,
               "Y-axis/Upper bound": 3500.0,
               "Y-axis/Lower bound": 1500.0,
-              "Y-axis/Unit": "RPM",
-              "Visible data/SmartDashboard/Shooter/Feeder RPM": true,
-              "Visible data/SmartDashboard/Shooter/Shooter RPM": true,
-              "Visible data/SmartDashboard/Shooter/Target RPM": true
+              "Y-axis/Unit": "RPM"
             }
           },
           "8,1": {
@@ -1137,9 +1134,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 69.0,
-    "y": 25.0,
-    "width": 1611.0,
-    "height": 983.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 838.4000244140625
   }
 }

@@ -32,6 +32,8 @@ public interface Constants {
 
     Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
+    SmartBoolean DEBUG_MODE = new SmartBoolean("Debug Mode", false);
+
     public interface Ports {
 
         public interface Gamepad {
@@ -85,7 +87,7 @@ public interface Constants {
             // int SOLENOID_PORT_A = 6;
             int SOLENOID_PORT_A = 4;
             int SOLENOID_PORT_B = 5;
-            int SENSOR_PORT = 4;
+            int SENSOR_PORT = 7;
             // int SOLENOID_PORT_B = 7;
         }
 
@@ -106,7 +108,7 @@ public interface Constants {
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
         SmartNumber QUICKTURN_THRESHOLD =
-                new SmartNumber("Driver Settings/Quickturn Threshold", 0.05);
+                new SmartNumber("Driver Settings/Quickturn Threshold", 0.08);
 
         // How much to slow down quick turn
         SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 1.0);
@@ -118,8 +120,8 @@ public interface Constants {
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.1);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.03);
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.06);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
@@ -212,7 +214,7 @@ public interface Constants {
                     new SmartNumber("Drivetrain/Alignment/Speed/Out Filter", 0.2);
 
             // Max speed for limelight to move
-            double LIMELIGHT_MAX_SPEED = 0.9;
+            double LIMELIGHT_MAX_SPEED = 0.8;
 
             // What is an acceptable error
             double MAX_SPEED_ERROR = Units.inchesToMeters(3.0);
@@ -313,7 +315,7 @@ public interface Constants {
         double WOOF_GEAR = 20;
         double CONTROL_PANEL_RATIO = 10;
 
-        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.05);
+        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.02);
 
         double TARGET_CONTROL_PANEL_TURNS = 3;
     }
@@ -381,7 +383,7 @@ public interface Constants {
         /*********************************************************************************************
          * Six Ball Auton (Movement limits)
          *********************************************************************************************/
-        double DRIVETRAIN_SPEED_LIMIT = 0.55;
+        double DRIVETRAIN_SPEED_LIMIT = 0.6;
 
         /*********************************************************************************************
          * Shoot Three (At Start) Auton Command

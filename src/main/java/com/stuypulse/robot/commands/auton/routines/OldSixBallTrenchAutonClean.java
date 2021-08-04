@@ -8,8 +8,7 @@ import com.stuypulse.robot.commands.*;
 import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.*;
 
 /**
  * A revised version of the old six ball trench auton that used PID loops
@@ -49,8 +48,8 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new DrivetrainMovementCommand(
                 robot.getDrivetrain(), 
                 0, 
-                5.7
-            ).setMaxSpeed(AutoSettings.DRIVETRAIN_SPEED_LIMIT).withTimeout(6)
+                AutoSettings.DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET + AutoSettings.DISTANCE_FROM_START_TO_TRENCH_IN_FEET
+            ).setMaxSpeed(AutoSettings.DRIVETRAIN_SPEED_LIMIT).withTimeout(3)
             // new DrivetrainMovementCommand(drivetrain, 0, -DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET).setTimeout(1.5),
         );
         
@@ -67,7 +66,7 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new DrivetrainAutomaticAlign(
                 robot.getDrivetrain(), 
                 robot.getShooter()
-            ).withTimeout(3.5)
+            ).withTimeout(3)
         ); 
 
         /**
@@ -81,7 +80,7 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new FeedBallsCommand(
                 robot.getFunnel(), 
                 robot.getChimney()
-            ).withTimeout(1.0)
+            ).withTimeout(1.2)
         );
         
 
@@ -96,7 +95,7 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new DrivetrainMovementCommand(
                 robot.getDrivetrain(), 
                 0, 
-                2
+                AutoSettings.DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET
             ).setMaxSpeed(AutoSettings.DRIVETRAIN_SPEED_LIMIT).withTimeout(2.0)
         );
 
@@ -107,10 +106,17 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new LEDSetCommand(robot.getLEDController(), LEDColor.BLUE_SOLID),
 
             // Feed the balls as far up as possible (without shooting) while aligning
-            new DrivetrainAutomaticAlign(
-                robot.getDrivetrain(), 
-                robot.getShooter()
-            ).withTimeout(4)
+            new ParallelDeadlineGroup(
+                new DrivetrainAutomaticAlign(
+                    robot.getDrivetrain(), 
+                    robot.getShooter()
+                ).setContinuous().withTimeout(2),
+
+                new FeedBallsAutomaticCommand(
+                    robot.getChimney(),
+                    robot.getFunnel()
+                )
+            )
         );
 
         /**

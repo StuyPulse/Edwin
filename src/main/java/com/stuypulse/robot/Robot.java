@@ -68,7 +68,9 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+        robotContainer.getPump().stop();
+    }
 
     /**
      * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
@@ -110,5 +112,7 @@ public class Robot extends TimedRobot {
 
     /** This function is called periodically during test mode. */
     @Override
-    public void testPeriodic() {}
+    public void testPeriodic() {
+        robotContainer.getPump().compress();
+    }
 }

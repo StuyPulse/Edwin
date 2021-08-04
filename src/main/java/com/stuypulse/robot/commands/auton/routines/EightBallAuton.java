@@ -2,6 +2,7 @@ package com.stuypulse.robot.commands.auton.routines;
 
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.DrivetrainRamseteCommand;
+import com.stuypulse.robot.commands.DrivetrainGoalCommand;
 import com.stuypulse.robot.commands.FeedBallsCommand;
 import com.stuypulse.robot.commands.IntakeAcquireForeverCommand;
 import com.stuypulse.robot.commands.IntakeExtendCommand;
@@ -12,6 +13,7 @@ import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class EightBallAuton extends SequentialCommandGroup {
@@ -21,8 +23,8 @@ public class EightBallAuton extends SequentialCommandGroup {
     private static final String R_BALLS_PATH = "EightBallAuto/output/RBalls.wpilib.json";
     private static final String TO_TRENCH_PATH = "EightBallAuto/output/ToTrench.wpilib.json";
 
-    private static final double START_SHOOT_TIME = 1.5;
-    private static final double END_SHOOT_TIME = 1.5;
+    private static final double START_WAIT_TIME = 1.75;
+    private static final double START_SHOOT_TIME = 0.5; 
 
     public EightBallAuton(RobotContainer robot) {
         
@@ -31,16 +33,17 @@ public class EightBallAuton extends SequentialCommandGroup {
         addCommands(
             new LEDSetCommand(leds, LEDColor.WHITE_SOLID),
             
-            new IntakeExtendCommand(robot.getIntake()),
             new ShooterControlCommand(robot.getShooter(), ShooterMode.TRENCH_SHOT),
-            new WaitCommand(0.1),
+            new IntakeExtendCommand(robot.getIntake()),
+            new WaitCommand(0.05),
             new IntakeAcquireForeverCommand(robot.getIntake()),
             new WaitCommand(1.0)
         );
 
         addCommands(
             new LEDSetCommand(leds, LEDColor.GREEN_SOLID),
-
+            
+            new WaitCommand(START_WAIT_TIME),
             new FeedBallsCommand(
                 robot.getFunnel(), 
                 robot.getChimney()
@@ -50,9 +53,17 @@ public class EightBallAuton extends SequentialCommandGroup {
         addCommands(
             new LEDSetCommand(leds, LEDColor.RED_SOLID),
 
-            new DrivetrainRamseteCommand(
-                robot.getDrivetrain(),
-                START_PATH
+            new ParallelDeadlineGroup(
+                new DrivetrainRamseteCommand(
+                    robot.getDrivetrain(),
+                    START_PATH
+                ).robotRelative(),
+                
+                new FeedBallsCommand(
+                    robot.getFunnel(), 
+                    robot.getChimney()
+                ).withTimeout(3.0 * START_SHOOT_TIME)
+
             )
         );
 
@@ -62,7 +73,7 @@ public class EightBallAuton extends SequentialCommandGroup {
             new DrivetrainRamseteCommand(
                 robot.getDrivetrain(),
                 TO_REND_PATH
-            )
+            ).fieldRelative()
         );
 
         addCommands(
@@ -71,16 +82,7 @@ public class EightBallAuton extends SequentialCommandGroup {
             new DrivetrainRamseteCommand(
                 robot.getDrivetrain(),
                 R_BALLS_PATH
-            )
-        );
-
-        addCommands(
-            new LEDSetCommand(leds, LEDColor.BLUE_SOLID),
-
-            new DrivetrainRamseteCommand(
-                robot.getDrivetrain(),
-                TO_REND_PATH
-            )
+            ).fieldRelative()
         );
 
         addCommands(
@@ -89,6 +91,19 @@ public class EightBallAuton extends SequentialCommandGroup {
             new DrivetrainRamseteCommand(
                 robot.getDrivetrain(),
                 TO_TRENCH_PATH
+            ).fieldRelative()
+        );
+
+        addCommands(
+            new LEDSetCommand(leds, LEDColor.BLUE_SOLID),
+
+            new ParallelDeadlineGroup(
+                new DrivetrainGoalCommand(robot.getDrivetrain(), -1),
+
+                new FeedBallsCommand(
+                    robot.getFunnel(), 
+                    robot.getChimney()
+                )
             )
         );
 
@@ -98,7 +113,7 @@ public class EightBallAuton extends SequentialCommandGroup {
             new FeedBallsCommand(
                 robot.getFunnel(), 
                 robot.getChimney()
-            ).withTimeout(END_SHOOT_TIME)
+            )
         );
 
     }

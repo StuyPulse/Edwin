@@ -315,7 +315,7 @@ public interface Constants {
         double WOOF_GEAR = 20;
         double CONTROL_PANEL_RATIO = 10;
 
-        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.05);
+        SmartNumber TURN_FILTER = new SmartNumber("Woof/Turn Filter", 0.02);
 
         double TARGET_CONTROL_PANEL_TURNS = 3;
     }

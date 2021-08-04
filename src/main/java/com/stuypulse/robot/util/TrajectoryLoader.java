@@ -46,8 +46,8 @@ public class TrajectoryLoader {
     public static Trajectory getTrajectory(String... paths) {
         Trajectory trajectory = getTrajectory(paths[0]);
         
-        for(int i = 1; i < paths.size; ++i) {
-            trajectory = trajectory.concatinate(paths[i]);
+        for(int i = 1; i < paths.length; ++i) {
+            trajectory = trajectory.concatenate(getTrajectory(paths[i]));
         }
 
         return trajectory;

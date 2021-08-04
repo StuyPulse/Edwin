@@ -66,7 +66,7 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new DrivetrainAutomaticAlign(
                 robot.getDrivetrain(), 
                 robot.getShooter()
-            ).withTimeout(2.5)
+            ).withTimeout(3)
         ); 
 
         /**
@@ -80,7 +80,7 @@ public class OldSixBallTrenchAutonClean extends SequentialCommandGroup {
             new FeedBallsCommand(
                 robot.getFunnel(), 
                 robot.getChimney()
-            ).withTimeout(1.0)
+            ).withTimeout(1.2)
         );
         
 

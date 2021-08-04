@@ -41,6 +41,10 @@ public class DrivetrainRamseteCommand extends RamseteCommand {
         this(drivetrain, TrajectoryLoader.getTrajectory(path));
     }
 
+    public DrivetrainRamseteCommand(Drivetrain drivetrain, String... paths) {
+        this(drivetrain, TrajectoryLoader.getTrajectory(paths));
+    }
+
     // [DEFAULT] Resets the drivetrain to the begining of the trajectory
     public DrivetrainRamseteCommand robotRelative() {
         this.resetPosition = true;

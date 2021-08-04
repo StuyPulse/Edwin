@@ -40,4 +40,16 @@ public class TrajectoryLoader {
             return DEFAULT_TRAJECTORY;
         }
     }
+
+    
+    // Function that gets multiple trajectories and concatinates them together
+    public static Trajectory getTrajectory(String... paths) {
+        Trajectory trajectory = getTrajectory(paths[0]);
+        
+        for(int i = 1; i < paths.size; ++i) {
+            trajectory = trajectory.concatinate(paths[i]);
+        }
+
+        return trajectory;
+    }
 }

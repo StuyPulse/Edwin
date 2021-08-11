@@ -5,6 +5,7 @@
 package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.stuylib.math.Angle;
+import com.stuypulse.stuylib.math.SLMath;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
@@ -274,7 +275,7 @@ public class Drivetrain extends SubsystemBase {
     public void reset(Pose2d location) {
         resetNavX();
         leftNEO.setPosition(0);
-        rightNEO.setPosition(0); 
+        rightNEO.setPosition(0);
         odometry.resetPosition(location, getAngle().getRotation2d());
     }
 
@@ -330,17 +331,36 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // Drives using curvature drive algorithm
-    public void curvatureDrive(double speed, double rotation, boolean quickturn) {
-        drivetrain.curvatureDrive(speed, rotation, quickturn);
+    public void curvatureDrive(double xSpeed, double zRotation, double baseTS) {
+        // Clamp all inputs to valid values;
+        xSpeed = SLMath.clamp(xSpeed, -1.0, 1.0);
+        zRotation = SLMath.clamp(zRotation, -1.0, 1.0);
+        baseTS = SLMath.clamp(baseTS, 0.0, 1.0);
+
+        // Find the amount to slow down turning by.
+        // This is proportional to the speed but has a base value
+        // that it starts from (allows turning in place)
+        double turnAdj = Math.abs(xSpeed);
+        turnAdj = baseTS + turnAdj * (1.0 - baseTS);
+
+        // Find the speeds of the left and right wheels
+        double lSpeed = xSpeed + zRotation * turnAdj;
+        double rSpeed = xSpeed - zRotation * turnAdj;
+
+        // Find the maximum output of the wheels, so that if a wheel tries to go > 1.0
+        // it will be scaled down proportionally with the other wheels.
+        double scale = Math.min(1.0, Math.min(Math.abs(lSpeed), Math.abs(rSpeed)));
+
+        lSpeed /= scale;
+        rSpeed /= scale;
+
+        // Feed the inputs to the drivetrain
+        drivetrain.tankDrive(lSpeed, rSpeed, false);
     }
 
     // Drives using curvature drive algorithm with automatic quick turn
-    public void curvatureDrive(double speed, double rotation) {
-        if (Math.abs(speed) < DrivetrainSettings.QUICKTURN_THRESHOLD.get()) {
-            curvatureDrive(speed, rotation * DrivetrainSettings.QUICKTURN_SPEED.get(), true);
-        } else {
-            curvatureDrive(speed, rotation, false);
-        }
+    public void curvatureDrive(double xSpeed, double zRotation) {
+        this.curvatureDrive(xSpeed, zRotation, DrivetrainSettings.BASE_TURNING_SPEED.get());
     }
 
     /*******************
@@ -365,12 +385,13 @@ public class Drivetrain extends SubsystemBase {
         field.setRobotPose(getPose());
 
         // Smart Dashboard Information
-        
-        if(Constants.DEBUG_MODE.get()) {
-                
+
+        if (Constants.DEBUG_MODE.get()) {
+
             SmartDashboard.putData("Drivetrain/Field", field);
             SmartDashboard.putString(
-                    "Drivetrain/Current Gear", getGear().equals(Gear.HIGH) ? "High Gear" : "Low Gear");
+                    "Drivetrain/Current Gear",
+                    getGear().equals(Gear.HIGH) ? "High Gear" : "Low Gear");
             SmartDashboard.putNumber("Drivetrain/Odometer X Position (m)", getPose().getX());
             SmartDashboard.putNumber("Drivetrain/Odometer Y Position (m)", getPose().getY());
             SmartDashboard.putNumber(

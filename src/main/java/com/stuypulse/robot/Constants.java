@@ -107,11 +107,7 @@ public interface Constants {
 
     public interface DrivetrainSettings {
         // If speed is below this, use quick turn
-        SmartNumber QUICKTURN_THRESHOLD =
-                new SmartNumber("Driver Settings/Quickturn Threshold", 0.08);
-
-        // How much to slow down quick turn
-        SmartNumber QUICKTURN_SPEED = new SmartNumber("Driver Settings/Quickturn Speed", 1.0);
+        SmartNumber BASE_TURNING_SPEED = new SmartNumber("Driver Settings/Base Turn Speed", 0.4);
 
         // Low Pass Filter and deadband for Driver Controls
         SmartNumber SPEED_DEADBAND = new SmartNumber("Driver Settings/Speed Deadband", 0.0);
@@ -120,8 +116,8 @@ public interface Constants {
         SmartNumber SPEED_POWER = new SmartNumber("Driver Settings/Speed Power", 1.0);
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
-        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.06);
+        SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.25);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.05);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
@@ -144,13 +140,13 @@ public interface Constants {
                     new SimpleMotorFeedforward(FeedForward.S, FeedForward.V, FeedForward.A);
 
             interface FeedForward {
-                double S = 0.244;
-                double V = 2.1;
-                double A = 0.539;
+                double S = 0.367;
+                double V = 2.07;
+                double A = 0.47;
             }
 
             interface PID {
-                double P = 0.00358;
+                double P = 0.00337;
                 double I = 0;
                 double D = 0;
             }
@@ -186,7 +182,7 @@ public interface Constants {
         double MIN_ALIGNMENT_TIME = 1.0;
 
         SmartNumber SENSOR_FUSION_RC =
-                new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.2);
+                new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.4);
 
         SmartNumber AUTOTUNE_P = new SmartNumber("Drivetrain/Alignment/Auto Tune/P", 0.8);
         SmartNumber AUTOTUNE_I = new SmartNumber("Drivetrain/Alignment/Auto Tune/I", 0.0);
@@ -372,8 +368,9 @@ public interface Constants {
         /*********************************************************************************************
          * Six Ball Auton (Acquire balls from the trench from the starting position)
          *********************************************************************************************/
-        
+
         double DISTANCE_FROM_START_TO_TRENCH_IN_FEET = Units.feetToMeters(5 * 1.208);
+
         double DISTANCE_TO_ACQUIRE_TWO_BALLS_IN_FEET = Units.feetToMeters(5 * 1.208);
 
         double DISTANCE_TO_ACQUIRE_THIRD_BALL_IN_FEET = Units.feetToMeters(5 * 1.208 + 0.5);

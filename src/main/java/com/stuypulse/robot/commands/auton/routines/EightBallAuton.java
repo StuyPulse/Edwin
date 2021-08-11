@@ -69,18 +69,7 @@ public class EightBallAuton extends SequentialCommandGroup {
 
             )
         );
-
-        addCommands(
-            new LEDSetCommand(leds, LEDColor.PURPLE_SOLID),
-
-            new DrivetrainRamseteCommand(
-                robot.getDrivetrain(),
-                TO_REND_PATH,
-                R_BALLS_PATH,
-                TO_TRENCH_PATH
-            ).fieldRelative()
-        );
-
+        
         addCommands(
             new LEDSetCommand(leds, LEDColor.BLUE_SOLID),
 

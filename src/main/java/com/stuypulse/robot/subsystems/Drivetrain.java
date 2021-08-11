@@ -349,7 +349,7 @@ public class Drivetrain extends SubsystemBase {
 
         // Find the maximum output of the wheels, so that if a wheel tries to go > 1.0
         // it will be scaled down proportionally with the other wheels.
-        double scale = Math.min(1.0, Math.min(Math.abs(lSpeed), Math.abs(rSpeed)));
+        double scale = Math.max(1.0, Math.max(Math.abs(lSpeed), Math.abs(rSpeed)));
 
         lSpeed /= scale;
         rSpeed /= scale;

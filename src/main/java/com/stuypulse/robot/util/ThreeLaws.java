@@ -14,13 +14,7 @@ public interface ThreeLaws {
     public void firstLaw();
 
     /*
-     * Reason why Vincent wrote a declaration of Vincependence: 2 + 2 = 3 Reason why
-     * "party mode" exists: 2 + 2 = 4 Reason why Justin comes to meetings: bc henry
-     * is there and he is the only person that he can flex newbie education on
-     * Reason why SE is lagging behind: Engineering sucks Reason why SE sucks: still
-     * cant have food in here but its not a lab Reason why this is being written:
-     * Nuubies are dum Reason why above statement is false: veteran cant even spell
-     * newbie right
+     * lol
      *
      * //\ V \ \ \_ \,'.`-. |\ `. `. ( \ `. `-. _,.-:\ \ \ `. `-._ __..--' ,-';/ \
      * `. `-. `-..___..---' _.--' ,'/ `. `. `-._ __..--' ,' / `. `-_ ``--..'' _.-'

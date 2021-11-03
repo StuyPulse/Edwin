@@ -71,11 +71,6 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     public double getSpeed() {
         double s = speed.get();
 
-        // Bottom Button is for driving backwards
-        if (gamepad.getRawBottomButton()) {
-            return -s;
-        }
-
         return s;
     }
 

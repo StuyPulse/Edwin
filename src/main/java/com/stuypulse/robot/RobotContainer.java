@@ -149,6 +149,7 @@ public class RobotContainer {
                 .whileHeld(
                         new DrivetrainGoalCommand(drivetrain, -1)
                                 .setNeverFinish()
+                                .setMaxSpeed(0)
                                 .setLEDController(ledController))
                 .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
 

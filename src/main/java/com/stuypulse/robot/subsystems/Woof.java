@@ -28,28 +28,22 @@ public class Woof extends SubsystemBase {
     // Color sensor
     private final ColorSensor colorSensor;
 
-    private double turnSpeed;
-    private final IFilter turnFilter;
-
     public Woof() {
         motor = new CANSparkMax(Ports.Woof.MOTOR_PORT, MotorType.kBrushless);
         motor.setIdleMode(IdleMode.kCoast);
         motor.setSmartCurrentLimit(10);
         encoder = motor.getEncoder();
 
-        turnSpeed = 0.0;
-        turnFilter = new LowPassFilter(WoofSettings.TURN_FILTER);
-
         colorSensor = new ColorSensor();
     }
 
     // Controlling the motor
     public void turn(double speed) {
-        turnSpeed = turnFilter.get(speed);
+        motor.set(speed);
     }
 
     public void stop() {
-        turnSpeed = 0;
+        turn(0);
     }
 
     // Get number of rotations the motor has made
@@ -57,10 +51,13 @@ public class Woof extends SubsystemBase {
         return encoder.getPosition();
     }
 
+    // Get the numer of times to woof has rotated
     public double getWoofRotations() {
         return getMotorRotations() / WoofSettings.WOOF_GEAR;
     }
 
+    // Get the number of times to control panel has been rotated
+    // assuming the WOOF were spinning it
     public double getControlPanelRotations() {
         return getWoofRotations() / WoofSettings.CONTROL_PANEL_RATIO;
     }
@@ -81,12 +78,8 @@ public class Woof extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Update The Woof Speed
-        motor.set(turnFilter.get(turnSpeed));
-
         // SmartDashboard
 
-        
         if(Constants.DEBUG_MODE.get()) {
             SmartDashboard.putNumber("Woof/Motor Rotations", getMotorRotations());
             SmartDashboard.putNumber("Woof/Woof Rotations", getWoofRotations());

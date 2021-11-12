@@ -139,6 +139,8 @@ public class RobotContainer {
                 .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadRight()
                 .whileHeld(new ShooterControlCommand(shooter, ShooterMode.TRENCH_SHOT));
+        operator.getDPadDown()
+                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.SUPER_TRENCH_SHOT));
 
         /*****************/
         /*** Alignment ***/

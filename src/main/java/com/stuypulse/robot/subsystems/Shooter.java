@@ -40,7 +40,12 @@ public class Shooter extends SubsystemBase {
         TRENCH_SHOT(
                 new SmartNumber("Shooting/Yellow Zone/Distance", 5.5),
                 new SmartNumber("Shooting/Yellow Zone/RPM", 3000),
-                new SmartBoolean("Shooting/Yellow Zone/Hood Extended", false));
+                new SmartBoolean("Shooting/Yellow Zone/Hood Extended", false)),
+
+        SUPER_TRENCH_SHOT(
+                new SmartNumber("Shooting/Pink Zone/Distance", 6.0),
+                new SmartNumber("Shooting/Pink Zone/RPM", 3600),
+                new SmartBoolean("Shooting/Pink Zone/Hood Extended", false));
 
         public final SmartNumber distance;
         public final SmartNumber rpm;

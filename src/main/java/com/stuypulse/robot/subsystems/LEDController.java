@@ -119,6 +119,9 @@ public class LEDController extends SubsystemBase {
             Shooter shooter = robotContainer.getShooter();
             Intake intake = robotContainer.getIntake();
 
+            // Low Gear LEDs
+            if(driver.getRawRightButton()) this.setColorDefault(LEDColor.BLUE_SOLID);
+
             // Fun Driver LEDs
             /**/ if (driver.getRawDPadUp()) this.setColorDefault(LEDColor.RAINBOW);
             else if (driver.getRawDPadDown()) this.setColorDefault(LEDColor.SINELON);
@@ -139,6 +142,9 @@ public class LEDController extends SubsystemBase {
                         case TRENCH_SHOT:
                             setColorDefault(LEDColor.RED_SOLID);
                             break;
+                        case SUPER_TRENCH_SHOT:
+                            setColorDefault(LEDColor.PINK_SOLID);
+                            break;
                         default:
                             setColorDefault(LEDColor.OFF);
                     }
@@ -149,6 +155,9 @@ public class LEDController extends SubsystemBase {
                             break;
                         case TRENCH_SHOT:
                             setColorDefault(LEDColor.RED_PULSE);
+                            break;
+                        case SUPER_TRENCH_SHOT:
+                            setColorDefault(LEDColor.PINK_PULSE);
                             break;
                         default:
                             setColorDefault(LEDColor.OFF);

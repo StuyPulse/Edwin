@@ -8,6 +8,8 @@ import com.stuypulse.robot.Constants.WoofSettings;
 import com.stuypulse.robot.subsystems.ColorSensor.WColor;
 import com.stuypulse.robot.subsystems.LEDController;
 import com.stuypulse.robot.subsystems.LEDController.LEDColor;
+import com.stuypulse.stuylib.streams.filters.IFilter;
+import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 import com.stuypulse.robot.subsystems.Woof;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,10 +20,19 @@ public class WoofSpinToFMSColorCommand extends CommandBase {
     private Woof woof;
     private LEDController ledController;
 
+    private IFilter turnFilter;
+
     public WoofSpinToFMSColorCommand(Woof woof, LEDController led) {
         this.woof = woof;
         this.ledController = led;
+
+        this.turnFilter = new LowPassFilter(WoofSettings.TURN_FILTER);
+
         addRequirements(woof);
+    }
+
+    private void turn(double value) {
+        woof.turn(turnFilter.get(value));
     }
 
     @Override
@@ -33,9 +44,9 @@ public class WoofSpinToFMSColorCommand extends CommandBase {
         if (goal == WColor.NONE || curr == WColor.NONE) return;
 
         // If we are in front of the goal (1 away), spin backwards...
-        if (curr == goal.getNextColor()) woof.turn(-WoofSettings.TURN_SPEED);
+        if (curr == goal.getNextColor()) turn(-WoofSettings.TURN_SPEED);
         // Otherwise, spin forwards
-        else woof.turn(+WoofSettings.TURN_SPEED);
+        else turn(+WoofSettings.TURN_SPEED);
     }
 
     @Override

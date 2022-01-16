@@ -10,6 +10,7 @@ import com.stuypulse.robot.Constants.Ports;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,7 +22,7 @@ public class Pump extends SubsystemBase {
 
     public Pump() {
         enabled = new SmartBoolean("Pump/Compressor Enabled", false);
-        compressor = new Compressor();
+        compressor = new Compressor(PneumaticsModuleType.CTREPCM);
         pressureGauge = new AnalogInput(Ports.Pneumatics.ANALOG_PRESSURE_SWITCH_PORT);
 
         // Add Children to Subsystem
@@ -51,7 +52,11 @@ public class Pump extends SubsystemBase {
 
     @Override
     public void periodic() {
-        compressor.setClosedLoopControl(enabled.get());
+        if (enabled.get()) {
+            compressor.enableDigital();
+        } else {
+            compressor.disable();
+        }
 
         // SmartDashboard
         SmartDashboard.putNumber("Pump/Robot Air Pressure", getPressure() / 1000.0);

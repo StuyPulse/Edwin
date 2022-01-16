@@ -21,6 +21,7 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.ShooterSettings;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -139,7 +140,7 @@ public class Shooter extends SubsystemBase {
         feederCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
 
         // Hood Stuff
-        hoodSolenoid = new Solenoid(Ports.Shooter.HOOD_SOLENOID);
+        hoodSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Shooter.HOOD_SOLENOID);
 
         // Setting Modes Stuff
         shooterMotor.setIdleMode(IdleMode.kCoast);

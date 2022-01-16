@@ -17,6 +17,7 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -90,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
                         new MotorControllerGroup(rightMotors));
 
         // Add Gear Shifter
-        gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
+        gearShift = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
         navx = new AHRS(SPI.Port.kMXP);

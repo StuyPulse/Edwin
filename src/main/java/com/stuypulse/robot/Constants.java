@@ -8,8 +8,6 @@ import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import com.revrobotics.ColorMatch;
-
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -350,12 +348,12 @@ public interface Constants {
         double YELLOW_BLUE = 0.10;
 
         Color CYAN_TARGET =
-                ColorMatch.makeColor(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
+                new Color(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
         Color GREEN_TARGET =
-                ColorMatch.makeColor(Colors.GREEN_RED, Colors.GREEN_GREEN, Colors.GREEN_BLUE);
-        Color RED_TARGET = ColorMatch.makeColor(Colors.RED_RED, Colors.RED_GREEN, Colors.RED_BLUE);
+            new Color(Colors.GREEN_RED, Colors.GREEN_GREEN, Colors.GREEN_BLUE);
+        Color RED_TARGET = new Color(Colors.RED_RED, Colors.RED_GREEN, Colors.RED_BLUE);
         Color YELLOW_TARGET =
-                ColorMatch.makeColor(Colors.YELLOW_RED, Colors.YELLOW_GREEN, Colors.YELLOW_BLUE);
+            new Color(Colors.YELLOW_RED, Colors.YELLOW_GREEN, Colors.YELLOW_BLUE);
     }
 
     // TODO check all values for correctlynessly

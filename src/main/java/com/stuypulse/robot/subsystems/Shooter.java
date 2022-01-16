@@ -12,7 +12,7 @@ import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.TimedRateLimit;
 
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -68,10 +68,10 @@ public class Shooter extends SubsystemBase {
     private final CANSparkMax feederMotor;
 
     // Encoders
-    private final CANEncoder shooterEncoderA;
-    private final CANEncoder shooterEncoderB;
-    private final CANEncoder shooterEncoderC;
-    private final CANEncoder feederEncoder;
+    private final RelativeEncoder shooterEncoderA;
+    private final RelativeEncoder shooterEncoderB;
+    private final RelativeEncoder shooterEncoderC;
+    private final RelativeEncoder feederEncoder;
 
     // Hood Solenoid
     private final Solenoid hoodSolenoid;

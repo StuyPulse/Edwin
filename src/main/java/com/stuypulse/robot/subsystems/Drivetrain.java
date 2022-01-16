@@ -8,7 +8,7 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,8 +20,8 @@ import com.stuypulse.robot.Constants.Ports;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,8 +44,8 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax[] rightMotors;
 
     // An encoder for each side of the drive train
-    private CANEncoder leftNEO;
-    private CANEncoder rightNEO;
+    private RelativeEncoder leftNEO;
+    private RelativeEncoder rightNEO;
 
     // DifferentialDrive and Gear Information
     private Gear gear;
@@ -86,8 +86,8 @@ public class Drivetrain extends SubsystemBase {
         // Make differential drive object
         drivetrain =
                 new DifferentialDrive(
-                        new SpeedControllerGroup(leftMotors),
-                        new SpeedControllerGroup(rightMotors));
+                        new MotorControllerGroup(leftMotors),
+                        new MotorControllerGroup(rightMotors));
 
         // Add Gear Shifter
         gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
@@ -300,11 +300,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        for (SpeedController motor : leftMotors) {
+        for (MotorController motor : leftMotors) {
             motor.setVoltage(leftVolts * DrivetrainSettings.LEFT_VOLTAGE_MUL);
         }
 
-        for (SpeedController motor : rightMotors) {
+        for (MotorController motor : rightMotors) {
             motor.setVoltage(rightVolts * DrivetrainSettings.RIGHT_VOLTAGE_MUL);
         }
 

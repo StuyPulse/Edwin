@@ -7,7 +7,7 @@ package com.stuypulse.robot.subsystems;
 import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -23,7 +23,7 @@ public class Woof extends SubsystemBase {
 
     // Motor and Encoder
     private final CANSparkMax motor;
-    private final CANEncoder encoder;
+    private final RelativeEncoder encoder;
 
     // Color sensor
     private final ColorSensor colorSensor;

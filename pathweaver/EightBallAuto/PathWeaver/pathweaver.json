@@ -1,0 +1,9 @@
+{
+  "lengthUnit": "Meter",
+  "exportUnit": "Always Meters",
+  "maxVelocity": 3.0,
+  "maxAcceleration": 3.2,
+  "trackWidth": 0.9,
+  "gameName": "Infinite Recharge 2021",
+  "outputDir": "../../../src/main/deploy/EightBallAuto"
+}

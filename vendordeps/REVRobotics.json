@@ -65,7 +65,7 @@
     ],
     "jsonUrl": "http://www.revrobotics.com/content/sw/max/sdk/REVRobotics.json",
     "mavenUrls": [
-        "http://www.revrobotics.com/content/sw/max/sdk/maven/"
+        "https://www.revrobotics.com/content/sw/max/sdk/maven/"
     ],
     "name": "REVRobotics",
     "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",

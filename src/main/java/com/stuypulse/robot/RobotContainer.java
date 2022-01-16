@@ -49,7 +49,7 @@ public class RobotContainer {
     public RobotContainer() {
         // Disable telementry to reduce lag
         LiveWindow.disableAllTelemetry();
-        DriverStation.getInstance().silenceJoystickConnectionWarning(true);
+        DriverStation.silenceJoystickConnectionWarning(true);
 
         // Set pump to false to avoid warning
         pump.set(false);

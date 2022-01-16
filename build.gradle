@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2021.3.1"
+    id "edu.wpi.first.GradleRIO" version "2022.1.1"
     id "com.diffplug.spotless" version "5.10.2"
 }
 
@@ -15,7 +15,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 def ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main"
-final String STUYLIB_VERSION = 'v2021.2.2'
+final String STUYLIB_VERSION = 'v2022.1.0'
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
@@ -79,7 +79,7 @@ spotless {
     enforceCheck = false
     java {
         licenseHeader """
-        /* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+        /* Copyright (c) 2022 StuyPulse Robotics. All rights reserved. */
         /* This work is licensed under the terms of the MIT license */
         /* found in the root directory of this project. */
         """

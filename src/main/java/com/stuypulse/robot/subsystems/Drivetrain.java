@@ -269,6 +269,10 @@ public class Drivetrain extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
+    public Field2d getField() {
+        return field;
+    }
+
     /************************
      * OVERALL SENSOR RESET *
      ************************/

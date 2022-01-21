@@ -60,6 +60,7 @@ public class DrivetrainRamseteCommand extends RamseteCommand {
     @Override
     public void initialize() {
         super.initialize();
+        drivetrain.getField().getObject("Trajectory").setTrajectory(trajectory);
 
         drivetrain.setHighGear();
 

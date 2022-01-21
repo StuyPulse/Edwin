@@ -89,6 +89,11 @@ public class Drivetrain extends SubsystemBase {
                 new DifferentialDrive(
                         new MotorControllerGroup(leftMotors),
                         new MotorControllerGroup(rightMotors));
+        
+        // Flip right side motors 
+        for (CANSparkMax motor : rightMotors) {
+            motor.setInverted(true);
+        }
 
         // Add Gear Shifter
         gearShift = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Drivetrain.GEAR_SHIFT);
@@ -245,6 +250,20 @@ public class Drivetrain extends SubsystemBase {
 
     public double getVelocity() {
         return (getLeftVelocity() + getRightVelocity()) / 2.0;
+    }
+
+    // Angle
+    private double getEncoderRotations() {
+        // this distance is in meters (converted from rotations by the encoder)
+        double distance = getLeftDistance() - getRightDistance(); 
+
+        // undo the conversion done by the encoder to get rotations
+        distance /= leftNEO.getPositionConversionFactor();
+        return distance;
+    }
+
+    public Angle getEncoderAngle() {
+        return Angle.fromRotations(getEncoderRotations());
     }
 
     /**********************
@@ -414,6 +433,7 @@ public class Drivetrain extends SubsystemBase {
             SmartDashboard.putNumber("Drivetrain/Velocity Right (m per s)", getRightVelocity());
 
             SmartDashboard.putNumber("Drivetrain/Angle NavX (deg)", getAngle().toDegrees());
+            SmartDashboard.putNumber("Drivetrain/Encoder Angle (deg)", getEncoderAngle().toDegrees());
             SmartDashboard.putBoolean("Drivetrain/Is Aligned", getIsAligned());
         }
     }

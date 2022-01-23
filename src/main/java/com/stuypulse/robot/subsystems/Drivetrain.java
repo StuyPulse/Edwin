@@ -8,7 +8,7 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,16 +17,17 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,8 +45,8 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax[] rightMotors;
 
     // An encoder for each side of the drive train
-    private CANEncoder leftNEO;
-    private CANEncoder rightNEO;
+    private RelativeEncoder leftNEO;
+    private RelativeEncoder rightNEO;
 
     // DifferentialDrive and Gear Information
     private Gear gear;
@@ -86,11 +87,11 @@ public class Drivetrain extends SubsystemBase {
         // Make differential drive object
         drivetrain =
                 new DifferentialDrive(
-                        new SpeedControllerGroup(leftMotors),
-                        new SpeedControllerGroup(rightMotors));
-
+                        new MotorControllerGroup(leftMotors),
+                        new MotorControllerGroup(rightMotors));
+        
         // Add Gear Shifter
-        gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
+        gearShift = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
         navx = new AHRS(SPI.Port.kMXP);
@@ -103,7 +104,7 @@ public class Drivetrain extends SubsystemBase {
         field = new Field2d();
 
         // Configure Motors and Other Things
-        setInverted(DrivetrainSettings.IS_INVERTED);
+        setInverted(DrivetrainSettings.IS_INVERTED, !DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         leftMotors[0].setIdleMode(IdleMode.kBrake);
         leftMotors[1].setIdleMode(IdleMode.kBrake);
@@ -151,13 +152,13 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // Set isInverted of all the motors
-    public void setInverted(boolean inverted) {
+    public void setInverted(boolean leftSide, boolean rightSide) {
         for (CANSparkMax motor : leftMotors) {
-            motor.setInverted(inverted);
+            motor.setInverted(leftSide);
         }
 
         for (CANSparkMax motor : rightMotors) {
-            motor.setInverted(inverted);
+            motor.setInverted(rightSide);
         }
     }
 
@@ -246,6 +247,20 @@ public class Drivetrain extends SubsystemBase {
         return (getLeftVelocity() + getRightVelocity()) / 2.0;
     }
 
+    // Angle
+    private double getEncoderRotations() {
+        // this distance is in meters (converted from rotations by the encoder)
+        double distance = getLeftDistance() - getRightDistance(); 
+
+        // undo the conversion done by the encoder to get rotations
+        distance /= leftNEO.getPositionConversionFactor();
+        return distance;
+    }
+
+    public Angle getEncoderAngle() {
+        return Angle.fromRotations(getEncoderRotations());
+    }
+
     /**********************
      * ODOMETRY FUNCTIONS *
      **********************/
@@ -266,6 +281,10 @@ public class Drivetrain extends SubsystemBase {
     public Pose2d getPose() {
         updateOdometry();
         return odometry.getPoseMeters();
+    }
+
+    public Field2d getField() {
+        return field;
     }
 
     /************************
@@ -300,11 +319,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        for (SpeedController motor : leftMotors) {
+        for (MotorController motor : leftMotors) {
             motor.setVoltage(leftVolts * DrivetrainSettings.LEFT_VOLTAGE_MUL);
         }
 
-        for (SpeedController motor : rightMotors) {
+        for (MotorController motor : rightMotors) {
             motor.setVoltage(rightVolts * DrivetrainSettings.RIGHT_VOLTAGE_MUL);
         }
 
@@ -340,8 +359,7 @@ public class Drivetrain extends SubsystemBase {
         // Find the amount to slow down turning by.
         // This is proportional to the speed but has a base value
         // that it starts from (allows turning in place)
-        double turnAdj = Math.abs(xSpeed);
-        turnAdj = baseTS + turnAdj * (1.0 - baseTS);
+        double turnAdj = Math.max(baseTS, Math.abs(xSpeed));
 
         // Find the speeds of the left and right wheels
         double lSpeed = xSpeed + zRotation * turnAdj;
@@ -409,6 +427,7 @@ public class Drivetrain extends SubsystemBase {
             SmartDashboard.putNumber("Drivetrain/Velocity Right (m per s)", getRightVelocity());
 
             SmartDashboard.putNumber("Drivetrain/Angle NavX (deg)", getAngle().toDegrees());
+            SmartDashboard.putNumber("Drivetrain/Encoder Angle (deg)", getEncoderAngle().toDegrees());
             SmartDashboard.putBoolean("Drivetrain/Is Aligned", getIsAligned());
         }
     }

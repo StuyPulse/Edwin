@@ -12,7 +12,7 @@ import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.TimedRateLimit;
 
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -21,6 +21,7 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.ShooterSettings;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -68,10 +69,10 @@ public class Shooter extends SubsystemBase {
     private final CANSparkMax feederMotor;
 
     // Encoders
-    private final CANEncoder shooterEncoderA;
-    private final CANEncoder shooterEncoderB;
-    private final CANEncoder shooterEncoderC;
-    private final CANEncoder feederEncoder;
+    private final RelativeEncoder shooterEncoderA;
+    private final RelativeEncoder shooterEncoderB;
+    private final RelativeEncoder shooterEncoderC;
+    private final RelativeEncoder feederEncoder;
 
     // Hood Solenoid
     private final Solenoid hoodSolenoid;
@@ -139,7 +140,7 @@ public class Shooter extends SubsystemBase {
         feederCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
 
         // Hood Stuff
-        hoodSolenoid = new Solenoid(Ports.Shooter.HOOD_SOLENOID);
+        hoodSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Shooter.HOOD_SOLENOID);
 
         // Setting Modes Stuff
         shooterMotor.setIdleMode(IdleMode.kCoast);

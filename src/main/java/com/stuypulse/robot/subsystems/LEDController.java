@@ -11,7 +11,7 @@ import com.stuypulse.robot.Constants.LEDSettings;
 import com.stuypulse.robot.RobotContainer;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PWMSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -106,7 +106,7 @@ public class LEDController extends SubsystemBase {
 
     // Set the LED color
     private void setColorDefault(LEDColor color) {
-        if (!DriverStation.getInstance().isAutonomous()
+        if (!DriverStation.isAutonomous()
                 && LEDSettings.MANUAL_UPDATE_TIME < lastUpdate.getTime()) {
             currentColor = color;
         }

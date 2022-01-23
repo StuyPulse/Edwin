@@ -8,16 +8,14 @@ import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import com.revrobotics.ColorMatch;
-
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Units;
+import edu.wpi.first.math.util.Units;
 import java.nio.file.Path;
 
 /**
@@ -117,7 +115,7 @@ public interface Constants {
         SmartNumber ANGLE_POWER = new SmartNumber("Driver Settings/Turn Power", 1.0);
 
         SmartNumber SPEED_FILTER = new SmartNumber("Driver Settings/Speed Filtering", 0.2);
-        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.02);
+        SmartNumber ANGLE_FILTER = new SmartNumber("Driver Settings/Turn Filtering", 0.01);
 
         // Current Limit for the motors
         int CURRENT_LIMIT = 40;
@@ -350,12 +348,12 @@ public interface Constants {
         double YELLOW_BLUE = 0.10;
 
         Color CYAN_TARGET =
-                ColorMatch.makeColor(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
+                new Color(Colors.CYAN_RED, Colors.CYAN_GREEN, Colors.CYAN_BLUE);
         Color GREEN_TARGET =
-                ColorMatch.makeColor(Colors.GREEN_RED, Colors.GREEN_GREEN, Colors.GREEN_BLUE);
-        Color RED_TARGET = ColorMatch.makeColor(Colors.RED_RED, Colors.RED_GREEN, Colors.RED_BLUE);
+            new Color(Colors.GREEN_RED, Colors.GREEN_GREEN, Colors.GREEN_BLUE);
+        Color RED_TARGET = new Color(Colors.RED_RED, Colors.RED_GREEN, Colors.RED_BLUE);
         Color YELLOW_TARGET =
-                ColorMatch.makeColor(Colors.YELLOW_RED, Colors.YELLOW_GREEN, Colors.YELLOW_BLUE);
+            new Color(Colors.YELLOW_RED, Colors.YELLOW_GREEN, Colors.YELLOW_BLUE);
     }
 
     // TODO check all values for correctlynessly

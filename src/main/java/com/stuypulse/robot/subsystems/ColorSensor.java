@@ -72,7 +72,7 @@ public class ColorSensor extends SubsystemBase {
 
     /** @return reports the color that should be under the GAME sensor */
     public WColor getFMSColor() {
-        String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        String gameData = DriverStation.getGameSpecificMessage();
 
         if (gameData == null || gameData.length() <= 0) return WColor.NONE;
 

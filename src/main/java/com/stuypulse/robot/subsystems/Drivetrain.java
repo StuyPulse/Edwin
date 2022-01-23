@@ -90,11 +90,6 @@ public class Drivetrain extends SubsystemBase {
                         new MotorControllerGroup(leftMotors),
                         new MotorControllerGroup(rightMotors));
         
-        // Flip right side motors 
-        for (CANSparkMax motor : rightMotors) {
-            motor.setInverted(true);
-        }
-
         // Add Gear Shifter
         gearShift = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Drivetrain.GEAR_SHIFT);
 

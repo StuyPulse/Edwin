@@ -40,8 +40,8 @@ public class RobotContainer {
     private final Woof woof = new Woof();
 
     // Gamepads
-    public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
+    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();

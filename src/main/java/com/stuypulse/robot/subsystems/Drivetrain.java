@@ -109,7 +109,7 @@ public class Drivetrain extends SubsystemBase {
         field = new Field2d();
 
         // Configure Motors and Other Things
-        setInverted(DrivetrainSettings.IS_INVERTED);
+        setInverted(DrivetrainSettings.IS_INVERTED, !DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         leftMotors[0].setIdleMode(IdleMode.kBrake);
         leftMotors[1].setIdleMode(IdleMode.kBrake);
@@ -157,13 +157,13 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // Set isInverted of all the motors
-    public void setInverted(boolean inverted) {
+    public void setInverted(boolean leftSide, boolean rightSide) {
         for (CANSparkMax motor : leftMotors) {
-            motor.setInverted(inverted);
+            motor.setInverted(leftSide);
         }
 
         for (CANSparkMax motor : rightMotors) {
-            motor.setInverted(inverted);
+            motor.setInverted(rightSide);
         }
     }
 
@@ -364,8 +364,7 @@ public class Drivetrain extends SubsystemBase {
         // Find the amount to slow down turning by.
         // This is proportional to the speed but has a base value
         // that it starts from (allows turning in place)
-        double turnAdj = Math.abs(xSpeed);
-        turnAdj = baseTS + turnAdj * (1.0 - baseTS);
+        double turnAdj = Math.max(baseTS, Math.abs(xSpeed));
 
         // Find the speeds of the left and right wheels
         double lSpeed = xSpeed + zRotation * turnAdj;

@@ -11,7 +11,7 @@ import com.stuypulse.robot.Constants.LEDSettings;
 import com.stuypulse.robot.RobotContainer;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PWMSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -120,15 +120,22 @@ public class LEDController extends SubsystemBase {
             Intake intake = robotContainer.getIntake();
 
             // Low Gear LEDs
-            if(driver.getRawRightButton()) this.setColorDefault(LEDColor.BLUE_SOLID);
+            if (driver.getRawRightButton())
+                this.setColorDefault(LEDColor.BLUE_SOLID);
 
             // Fun Driver LEDs
-            /**/ if (driver.getRawDPadUp()) this.setColorDefault(LEDColor.RAINBOW);
-            else if (driver.getRawDPadDown()) this.setColorDefault(LEDColor.SINELON);
-            else if (driver.getRawDPadLeft()) this.setColorDefault(LEDColor.WAVE);
-            else if (driver.getRawDPadRight()) this.setColorDefault(LEDColor.BEAT);
-            else if (driver.getRawLeftBumper()) this.setColorDefault(LEDColor.RED_PULSE);
-            else if (driver.getRawRightBumper()) this.setColorDefault(LEDColor.BLUE_PULSE);
+            /**/ if (driver.getRawDPadUp())
+                this.setColorDefault(LEDColor.RAINBOW);
+            else if (driver.getRawDPadDown())
+                this.setColorDefault(LEDColor.SINELON);
+            else if (driver.getRawDPadLeft())
+                this.setColorDefault(LEDColor.WAVE);
+            else if (driver.getRawDPadRight())
+                this.setColorDefault(LEDColor.BEAT);
+            else if (driver.getRawLeftBumper())
+                this.setColorDefault(LEDColor.RED_PULSE);
+            else if (driver.getRawRightBumper())
+                this.setColorDefault(LEDColor.BLUE_PULSE);
 
             // Shooter Modes have their own LEDs
             else if (intake.isBallDetected()) {

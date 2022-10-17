@@ -12,6 +12,7 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.ClimberSettings;
 import com.stuypulse.robot.Constants.Ports;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,7 +24,7 @@ public class Climber extends SubsystemBase {
 
     public Climber() {
         liftMotor = new CANSparkMax(Ports.Climber.LIFT_MOTOR_PORT, MotorType.kBrushless);
-        liftSolenoid = new Solenoid(Ports.Climber.LIFT_SOLENOID_CHANNEL);
+        liftSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Climber.LIFT_SOLENOID_CHANNEL);
 
         liftMotor.setInverted(true);
 
@@ -76,7 +77,7 @@ public class Climber extends SubsystemBase {
     public void periodic() {
         // SmartDashboard
 
-        if(Constants.DEBUG_MODE.get()) {
+        if (Constants.DEBUG_MODE.get()) {
             SmartDashboard.putBoolean("Climber/Is At Bottom", isAtBottom());
         }
     }

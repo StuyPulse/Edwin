@@ -8,9 +8,9 @@ import com.stuypulse.robot.Constants.DrivetrainSettings.Motion;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.util.TrajectoryLoader;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 public class DrivetrainRamseteCommand extends RamseteCommand {

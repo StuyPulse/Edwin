@@ -12,7 +12,7 @@ import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IFilter;
 import com.stuypulse.stuylib.streams.filters.TimedRateLimit;
 
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -21,6 +21,7 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Ports;
 import com.stuypulse.robot.Constants.ShooterSettings;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,7 +35,7 @@ public class Shooter extends SubsystemBase {
 
         INITIATION_LINE(
                 new SmartNumber("Shooting/Green Zone/Distance", 2.24),
-                new SmartNumber("Shooting/Green Zone/RPM", 2075),
+                new SmartNumber("Shooting/Green Zone/RPM", 500), // 2075
                 new SmartBoolean("Shooting/Green Zone/Hood Extended", true)),
 
         TRENCH_SHOT(
@@ -58,8 +59,7 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    public static final IFilter INTEGRAL_FILTER =
-            (x) -> SLMath.clamp(x, ShooterSettings.I_LIMIT.doubleValue());
+    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.clamp(x, ShooterSettings.I_LIMIT.doubleValue());
 
     // Motors
     private final CANSparkMax shooterMotor;
@@ -68,10 +68,10 @@ public class Shooter extends SubsystemBase {
     private final CANSparkMax feederMotor;
 
     // Encoders
-    private final CANEncoder shooterEncoderA;
-    private final CANEncoder shooterEncoderB;
-    private final CANEncoder shooterEncoderC;
-    private final CANEncoder feederEncoder;
+    private final RelativeEncoder shooterEncoderA;
+    private final RelativeEncoder shooterEncoderB;
+    private final RelativeEncoder shooterEncoderC;
+    private final RelativeEncoder feederEncoder;
 
     // Hood Solenoid
     private final Solenoid hoodSolenoid;
@@ -107,39 +107,24 @@ public class Shooter extends SubsystemBase {
         feederEncoder = feederMotor.getEncoder();
 
         // PID Stuff
-        shooterController =
-                new PIDController(
-                                ShooterSettings.Shooter.P,
-                                ShooterSettings.Shooter.I,
-                                ShooterSettings.Shooter.D)
-                        .setIntegratorFilter(
-                                (i) -> {
-                                    if (shooterController.isDone(
-                                            ShooterSettings.I_RANGE.doubleValue()))
-                                        return SLMath.clamp(
-                                                i, ShooterSettings.I_LIMIT.doubleValue());
-                                    else return 0;
-                                });
-
-        feederController =
-                new PIDController(
-                                ShooterSettings.Feeder.P,
-                                ShooterSettings.Feeder.I,
-                                ShooterSettings.Feeder.D)
-                        .setIntegratorFilter(
-                                (i) -> {
-                                    if (feederController.isDone(
-                                            ShooterSettings.I_RANGE.doubleValue()))
-                                        return SLMath.clamp(
-                                                i, ShooterSettings.I_LIMIT.doubleValue());
-                                    else return 0;
-                                });
+        shooterController = new PIDController(
+                ShooterSettings.Shooter.P,
+                ShooterSettings.Shooter.I,
+                ShooterSettings.Shooter.D)
+                        .setIntegratorFilter(ShooterSettings.I_RANGE.doubleValue(),
+                                ShooterSettings.I_LIMIT.doubleValue());
+        feederController = new PIDController(
+                ShooterSettings.Feeder.P,
+                ShooterSettings.Feeder.I,
+                ShooterSettings.Feeder.D)
+                        .setIntegratorFilter(ShooterSettings.I_RANGE.doubleValue(),
+                                ShooterSettings.I_LIMIT.doubleValue());
 
         shooterCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
         feederCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
 
         // Hood Stuff
-        hoodSolenoid = new Solenoid(Ports.Shooter.HOOD_SOLENOID);
+        hoodSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Shooter.HOOD_SOLENOID);
 
         // Setting Modes Stuff
         shooterMotor.setIdleMode(IdleMode.kCoast);
@@ -175,8 +160,8 @@ public class Shooter extends SubsystemBase {
 
     public double getShooterRPM() {
         return (Math.abs(shooterEncoderA.getVelocity())
-                        + Math.abs(shooterEncoderB.getVelocity())
-                        + Math.abs(shooterEncoderC.getVelocity()))
+                + Math.abs(shooterEncoderB.getVelocity())
+                + Math.abs(shooterEncoderC.getVelocity()))
                 / 3.0;
     }
 
@@ -240,8 +225,8 @@ public class Shooter extends SubsystemBase {
         }
 
         // SmartDashboard
-        
-        if(Constants.DEBUG_MODE.get()) {
+
+        if (Constants.DEBUG_MODE.get()) {
             SmartDashboard.putString("Shooter/Mode", getMode().name());
             SmartDashboard.putNumber("Shooter/Target RPM", getTargetRPM());
             SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());

@@ -21,9 +21,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -41,7 +44,7 @@ public class RobotContainer {
 
     // Gamepads
     public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new Logitech.DMode(Ports.Gamepad.OPERATOR);
+    public final Gamepad operator = new Xbox(Ports.Gamepad.OPERATOR);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -49,7 +52,6 @@ public class RobotContainer {
     public RobotContainer() {
         // Disable telementry to reduce lag
         LiveWindow.disableAllTelemetry();
-        DriverStation.getInstance().silenceJoystickConnectionWarning(true);
 
         // Set pump to false to avoid warning
         pump.set(false);
@@ -84,7 +86,7 @@ public class RobotContainer {
                 .whileHeld(new ClimberRobotClimbCommand(climber, intake));
 
         // Toggle Brake (Push In Left Stick)
-        operator.getRightAnalogButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        operator.getRightButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
 
         /**************************/
         /*** Funnel and Chimney ***/
@@ -171,7 +173,6 @@ public class RobotContainer {
                 "6Ball Auto", new OldSixBallTrenchAutonClean(this));
 
         autonChooser.addOption("5Ball Auto", new WoofFiveBallAuton(this));
-
 
         autonChooser.addOption("Moby Auto", new MobilityAuton(this));
 

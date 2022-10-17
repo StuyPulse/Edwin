@@ -6,10 +6,10 @@ package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.SLMath;
-
+import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,16 +17,17 @@ import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.Constants.Ports;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,8 +45,8 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax[] rightMotors;
 
     // An encoder for each side of the drive train
-    private CANEncoder leftNEO;
-    private CANEncoder rightNEO;
+    private RelativeEncoder leftNEO;
+    private RelativeEncoder rightNEO;
 
     // DifferentialDrive and Gear Information
     private Gear gear;
@@ -64,17 +65,15 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         // Add Motors to list
-        leftMotors =
-                new CANSparkMax[] {
-                    new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
-                    new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless)
-                };
+        leftMotors = new CANSparkMax[] {
+                new CANSparkMax(Ports.Drivetrain.LEFT_TOP, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.LEFT_BOTTOM, MotorType.kBrushless)
+        };
 
-        rightMotors =
-                new CANSparkMax[] {
-                    new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
-                    new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless)
-                };
+        rightMotors = new CANSparkMax[] {
+                new CANSparkMax(Ports.Drivetrain.RIGHT_TOP, MotorType.kBrushless),
+                new CANSparkMax(Ports.Drivetrain.RIGHT_BOTTOM, MotorType.kBrushless)
+        };
 
         // Create list of encoders based on motors
         leftNEO = leftMotors[0].getEncoder();
@@ -84,26 +83,24 @@ public class Drivetrain extends SubsystemBase {
         rightNEO.setPosition(0);
 
         // Make differential drive object
-        drivetrain =
-                new DifferentialDrive(
-                        new SpeedControllerGroup(leftMotors),
-                        new SpeedControllerGroup(rightMotors));
+        drivetrain = new DifferentialDrive(
+                new MotorControllerGroup(leftMotors),
+                new MotorControllerGroup(rightMotors));
 
         // Add Gear Shifter
-        gearShift = new Solenoid(Ports.Drivetrain.GEAR_SHIFT);
+        gearShift = new Solenoid(PneumaticsModuleType.CTREPCM, Ports.Drivetrain.GEAR_SHIFT);
 
         // Initialize NAVX
         navx = new AHRS(SPI.Port.kMXP);
 
         // Initialize Odometry
-        odometry =
-                new DifferentialDriveOdometry(
-                        DrivetrainSettings.Odometry.STARTING_ANGLE,
-                        DrivetrainSettings.Odometry.STARTING_POSITION);
+        odometry = new DifferentialDriveOdometry(
+                DrivetrainSettings.Odometry.STARTING_ANGLE,
+                DrivetrainSettings.Odometry.STARTING_POSITION);
         field = new Field2d();
 
         // Configure Motors and Other Things
-        setInverted(DrivetrainSettings.IS_INVERTED);
+        setInverted(DrivetrainSettings.IS_INVERTED, !DrivetrainSettings.IS_INVERTED);
         setSmartCurrentLimit(DrivetrainSettings.CURRENT_LIMIT);
         leftMotors[0].setIdleMode(IdleMode.kBrake);
         leftMotors[1].setIdleMode(IdleMode.kBrake);
@@ -151,13 +148,13 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // Set isInverted of all the motors
-    public void setInverted(boolean inverted) {
+    public void setInverted(boolean leftSide, boolean rightSide) {
         for (CANSparkMax motor : leftMotors) {
-            motor.setInverted(inverted);
+            motor.setInverted(leftSide);
         }
 
         for (CANSparkMax motor : rightMotors) {
-            motor.setInverted(inverted);
+            motor.setInverted(rightSide);
         }
     }
 
@@ -300,11 +297,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        for (SpeedController motor : leftMotors) {
+        for (MotorController motor : leftMotors) {
             motor.setVoltage(leftVolts * DrivetrainSettings.LEFT_VOLTAGE_MUL);
         }
 
-        for (SpeedController motor : rightMotors) {
+        for (MotorController motor : rightMotors) {
             motor.setVoltage(rightVolts * DrivetrainSettings.RIGHT_VOLTAGE_MUL);
         }
 
@@ -340,8 +337,7 @@ public class Drivetrain extends SubsystemBase {
         // Find the amount to slow down turning by.
         // This is proportional to the speed but has a base value
         // that it starts from (allows turning in place)
-        double turnAdj = Math.abs(xSpeed);
-        turnAdj = baseTS + turnAdj * (1.0 - baseTS);
+        double turnAdj = Math.min(baseTS, Math.abs(xSpeed));
 
         // Find the speeds of the left and right wheels
         double lSpeed = xSpeed + zRotation * turnAdj;

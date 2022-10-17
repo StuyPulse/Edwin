@@ -13,6 +13,7 @@ import com.stuypulse.robot.Constants.Ports;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,7 +27,8 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
         motor = new CANSparkMax(Ports.Intake.MOTOR_PORT, MotorType.kBrushless);
-        solenoid = new DoubleSolenoid(Ports.Intake.SOLENOID_PORT_A, Ports.Intake.SOLENOID_PORT_B);
+        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Ports.Intake.SOLENOID_PORT_A,
+                Ports.Intake.SOLENOID_PORT_B);
 
         sensor = new DigitalInput(Ports.Intake.SENSOR_PORT);
 
@@ -70,8 +72,8 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         // SmartDashboard
-        
-        if(Constants.DEBUG_MODE.get()) {
+
+        if (Constants.DEBUG_MODE.get()) {
             SmartDashboard.putBoolean("Intake/Ball Detected", isBallDetected());
         }
     }

@@ -98,6 +98,8 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+
+        robotContainer.getPump().compress();
     }
 
     /** This function is called periodically during operator control. */

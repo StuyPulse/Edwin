@@ -43,7 +43,7 @@ public class RobotContainer {
     private final Woof woof = new Woof();
 
     // Gamepads
-    public final Gamepad driver = new PS4(Ports.Gamepad.DRIVER);
+    public final Gamepad driver = new Xbox(Ports.Gamepad.DRIVER);
     public final Gamepad operator = new Xbox(Ports.Gamepad.OPERATOR);
 
     // Autons

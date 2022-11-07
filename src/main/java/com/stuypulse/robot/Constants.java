@@ -177,13 +177,25 @@ public interface Constants {
     }
 
     public interface Alignment {
+        static double imperialToMeters(int feet, double inches) {
+            return Units.feetToMeters(feet) + Units.inchesToMeters(inches);
+        }
+
         double TRENCH_DISTANCE = Units.inchesToMeters(199);
         double INITATION_LINE_DISTANCE = Units.inchesToMeters(88);
+
+        double RING_SHOT_DISTANCE = Units.inchesToMeters(50);
 
         double MIN_DISTANCE = Units.feetToMeters(3);
         double MAX_DISTANCE = Units.feetToMeters(54);
 
         double MIN_ALIGNMENT_TIME = 1.0;
+
+        double CENTER_TO_HUB = imperialToMeters(2, 0);
+        double HUB_HEIGHT = imperialToMeters(8, 8);
+        double HEIGHT_DIFFERENCE = HUB_HEIGHT - Measurements.Limelight.HEIGHT;
+
+        double TARGET_X_ANGLE = 0;
 
         SmartNumber SENSOR_FUSION_RC = new SmartNumber("Drivetrain/Alignment/Sensor Fusion RC", 0.4);
 
@@ -421,5 +433,8 @@ public interface Constants {
         double ANGLE_FROM_THREE_BALL_TO_TWO_BALL = 90;
 
         double DISTANCE_FROM_THREE_BALL_TO_TWO_BALL = Units.inchesToMeters(25.42);
+    }
+
+    static void reportWarning(String string) {
     }
 }

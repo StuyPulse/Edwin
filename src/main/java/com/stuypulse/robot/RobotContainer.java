@@ -43,8 +43,8 @@ public class RobotContainer {
     private final Woof woof = new Woof();
 
     // Gamepads
-    public final Gamepad driver = new Xbox(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new Xbox(Ports.Gamepad.OPERATOR);
+    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new Autogamepad(Ports.Gamepad.OPERATOR);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();

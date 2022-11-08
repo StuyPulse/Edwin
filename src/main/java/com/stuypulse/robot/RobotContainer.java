@@ -13,12 +13,11 @@ import com.stuypulse.robot.commands.auton.routines.*;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -43,8 +42,8 @@ public class RobotContainer {
     private final Woof woof = new Woof();
 
     // Gamepads
-    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new Autogamepad(Ports.Gamepad.OPERATOR);
+    public final Gamepad driver = new Xbox(Ports.Gamepad.DRIVER);
+    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -77,16 +76,16 @@ public class RobotContainer {
         /***********************/
 
         // Setup Climber before Climbing (Move Left Stick Up)
-        new Button(() -> operator.getRightY() >= 0.75)
-                .whileHeld(new ClimberSetupCommand(climber, intake));
+        new Trigger(() -> operator.getRightY() >= 0.75)
+                .whileTrue(new ClimberSetupCommand(climber, intake));
 
         // Start Climbing (Move Left Stick Down)
-        new Button(() -> operator.getRightY() <= -0.75)
-                .whenPressed(new IntakeRetractCommand(intake))
-                .whileHeld(new ClimberRobotClimbCommand(climber, intake));
+        new Trigger(() -> operator.getRightY() <= -0.75)
+                .onTrue(new IntakeRetractCommand(intake))
+                .whileTrue(new ClimberRobotClimbCommand(climber, intake));
 
         // Toggle Brake (Push In Left Stick)
-        operator.getRightButton().whenPressed(new ClimberToggleLiftBrakeCommand(climber));
+        operator.getRightButton().onTrue(new ClimberToggleLiftBrakeCommand(climber));
 
         /**************************/
         /*** Funnel and Chimney ***/
@@ -94,12 +93,12 @@ public class RobotContainer {
 
         // Reverse each component if it gets stuck
         operator.getLeftButton()
-                .whileHeld(new FunnelUnfunnelCommand(funnel))
-                .whileHeld(new ChimneyDownCommand(chimney));
+                .whileTrue(new FunnelUnfunnelCommand(funnel))
+                .whileTrue(new ChimneyDownCommand(chimney));
 
         // Bottom button puts balls into the shooter
-        operator.getBottomButton().whileHeld(new FeedBallsCommand(funnel, chimney));
-        operator.getRightButton().whileHeld(new FeedBallsCommand(funnel, chimney));
+        operator.getBottomButton().whileTrue(new FeedBallsCommand(funnel, chimney));
+        operator.getRightButton().whileTrue(new FeedBallsCommand(funnel, chimney));
 
         /***********************/
         /*** Intake Controls ***/
@@ -107,14 +106,14 @@ public class RobotContainer {
 
         // Right Trigger Extends Intake and Acquires
         operator.getRightTriggerButton()
-                .whenPressed(new IntakeExtendCommand(intake))
-                .whileHeld(new IntakeAcquireCommand(intake));
+                .onTrue(new IntakeExtendCommand(intake))
+                .whileTrue(new IntakeAcquireCommand(intake));
 
         // Left Trigger Deacquires
-        operator.getLeftTriggerButton().whileHeld(new IntakeDeacquireCommand(intake));
+        operator.getLeftTriggerButton().whileTrue(new IntakeDeacquireCommand(intake));
 
         // Right Button Retracts Intake
-        operator.getTopButton().whenPressed(new IntakeRetractCommand(intake));
+        operator.getTopButton().onTrue(new IntakeRetractCommand(intake));
 
         /*********************/
         /*** Woof Controls ***/
@@ -122,8 +121,8 @@ public class RobotContainer {
 
         // Right Bumper Uses Encoder
         operator.getRightBumper()
-                .whenPressed(new WoofTurnRotationsWithEncoderCommand(woof, ledController));
-        operator.getLeftBumper().whenPressed(new WoofSpinToFMSColorCommand(woof, ledController));
+                .onTrue(new WoofTurnRotationsWithEncoderCommand(woof, ledController));
+        operator.getLeftBumper().onTrue(new WoofSpinToFMSColorCommand(woof, ledController));
 
         // Left Stick moves woof manually
         // it is handled by the default commands
@@ -133,16 +132,16 @@ public class RobotContainer {
         /*****************************/
 
         // Everything that is not meant to shoot, stops the shooter
-        operator.getDPadUp().whenPressed(new ShooterStopCommand(shooter));
-        operator.getDPadDown().whenPressed(new ShooterStopCommand(shooter));
+        operator.getDPadUp().onTrue(new ShooterStopCommand(shooter));
+        operator.getDPadDown().onTrue(new ShooterStopCommand(shooter));
 
         // Move to different zone
         operator.getDPadLeft()
-                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
+                .whileTrue(new ShooterControlCommand(shooter, ShooterMode.INITIATION_LINE));
         operator.getDPadRight()
-                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.TRENCH_SHOT));
+                .whileTrue(new ShooterControlCommand(shooter, ShooterMode.TRENCH_SHOT));
         operator.getDPadDown()
-                .whileHeld(new ShooterControlCommand(shooter, ShooterMode.SUPER_TRENCH_SHOT));
+                .whileTrue(new ShooterControlCommand(shooter, ShooterMode.SUPER_TRENCH_SHOT));
 
         /*****************/
         /*** Alignment ***/
@@ -150,20 +149,20 @@ public class RobotContainer {
 
         // Left Button Aligns just sideways
         driver.getLeftButton()
-                .whileHeld(
+                .whileTrue(
                         new DrivetrainGoalCommand(drivetrain, -1)
                                 .setNeverFinish()
                                 .setMaxSpeed(0)
                                 .setLEDController(ledController))
-                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
+                .whileTrue(new FeedBallsAutomaticCommand(chimney, funnel));
 
         // Bottom Button Aligns to the right distance
         driver.getBottomButton()
-                .whileHeld(
+                .whileTrue(
                         new DrivetrainAutomaticAlign(drivetrain, shooter)
                                 .setNeverFinish()
                                 .setLEDController(ledController))
-                .whileHeld(new FeedBallsAutomaticCommand(chimney, funnel));
+                .whileTrue(new FeedBallsAutomaticCommand(chimney, funnel));
     }
 
     public void configureAutons() {

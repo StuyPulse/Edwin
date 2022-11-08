@@ -106,7 +106,7 @@ public class LEDController extends SubsystemBase {
 
     // Set the LED color
     private void setColorDefault(LEDColor color) {
-        if (!DriverStation.getInstance().isAutonomous()
+        if (!DriverStation.isAutonomous()
                 && LEDSettings.MANUAL_UPDATE_TIME < lastUpdate.getTime()) {
             currentColor = color;
         }

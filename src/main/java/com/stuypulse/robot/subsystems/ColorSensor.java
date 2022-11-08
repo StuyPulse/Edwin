@@ -35,9 +35,10 @@ public class ColorSensor extends SubsystemBase {
         // Use a static block to setup circular references
         static {
             /*
-            Control Panel Reference:
-            https://firstfrc.blob.core.windows.net/frc2021/Manual/Sections/2021FRCGameManualSection03.pdf
-            */
+             * Control Panel Reference:
+             * https://firstfrc.blob.core.windows.net/frc2021/Manual/Sections/
+             * 2021FRCGameManualSection03.pdf
+             */
 
             // Setup each color's next reference
             YELLOW.next = CYAN;
@@ -72,9 +73,10 @@ public class ColorSensor extends SubsystemBase {
 
     /** @return reports the color that should be under the GAME sensor */
     public WColor getFMSColor() {
-        String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        String gameData = DriverStation.getGameSpecificMessage();
 
-        if (gameData == null || gameData.length() <= 0) return WColor.NONE;
+        if (gameData == null || gameData.length() <= 0)
+            return WColor.NONE;
 
         switch (gameData.charAt(0)) {
             case 'Y':
@@ -90,7 +92,10 @@ public class ColorSensor extends SubsystemBase {
         }
     }
 
-    /** @return reports the color that should be under OUR sensor (based on the FMS color) */
+    /**
+     * @return reports the color that should be under OUR sensor (based on the FMS
+     *         color)
+     */
     public WColor getTargetColor() {
         return getFMSColor().getRotatedColor();
     }
@@ -100,7 +105,10 @@ public class ColorSensor extends SubsystemBase {
         return colorSensor.getColor();
     }
 
-    /** @return gets the color reported by OUR sensor matched to the list of valid colors */
+    /**
+     * @return gets the color reported by OUR sensor matched to the list of valid
+     *         colors
+     */
     public Color getRawDetectedColor() {
         return colorMatcher.matchClosestColor(getRawColor()).color;
     }
@@ -109,10 +117,14 @@ public class ColorSensor extends SubsystemBase {
     public WColor getDetectedColor() {
         final Color color = getRawDetectedColor();
 
-        if (color == Colors.YELLOW_TARGET) return WColor.YELLOW;
-        if (color == Colors.CYAN_TARGET) return WColor.CYAN;
-        if (color == Colors.GREEN_TARGET) return WColor.GREEN;
-        if (color == Colors.RED_TARGET) return WColor.RED;
+        if (color == Colors.YELLOW_TARGET)
+            return WColor.YELLOW;
+        if (color == Colors.CYAN_TARGET)
+            return WColor.CYAN;
+        if (color == Colors.GREEN_TARGET)
+            return WColor.GREEN;
+        if (color == Colors.RED_TARGET)
+            return WColor.RED;
 
         return WColor.NONE;
     }
@@ -121,19 +133,21 @@ public class ColorSensor extends SubsystemBase {
     public void periodic() {
         // SmartDashboard
 
-        if(Constants.DEBUG_MODE.get()) {
+        if (Constants.DEBUG_MODE.get()) {
 
             // This Causes Loop Overrun
             // SmartDashboard.putNumber("Color Sensor/Raw Color Red", getRawColor().red);
             // SmartDashboard.putNumber("Color Sensor/Raw Color Blue", getRawColor().blue);
-            // SmartDashboard.putNumber("Color Sensor/Raw Color Green", getRawColor().green);
-    
-            // SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red", getRawDetectedColor().red);
+            // SmartDashboard.putNumber("Color Sensor/Raw Color Green",
+            // getRawColor().green);
+
+            // SmartDashboard.putNumber("Color Sensor/Raw Detected Color Red",
+            // getRawDetectedColor().red);
             // SmartDashboard.putNumber(
-            //         "Color Sensor/Raw Detected Color Blue", getRawDetectedColor().blue);
+            // "Color Sensor/Raw Detected Color Blue", getRawDetectedColor().blue);
             // SmartDashboard.putNumber(
-            //         "Color Sensor/Raw Detected Color Green", getRawDetectedColor().green);
-    
+            // "Color Sensor/Raw Detected Color Green", getRawDetectedColor().green);
+
             SmartDashboard.putString("Color Sensor/FMS Color", getFMSColor().name());
             SmartDashboard.putString("Color Sensor/Rotated FMS Color", getTargetColor().name());
 

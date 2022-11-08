@@ -19,22 +19,27 @@ import com.stuypulse.robot.subsystems.LEDController;
 import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 
 /**
- * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two controllers. This lets
+ * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two
+ * controllers. This lets
  * you align the robot with whatever controllers you want. Most commonly, a
- * DrivetrainPIDAlignmentCommand is used instead as it automatically provides the controllers for
+ * DrivetrainPIDAlignmentCommand is used instead as it automatically provides
+ * the controllers for
  * you.
  */
 public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     /**
-     * This interface allows you to create classes that instruct the drivetrain to move based off of
-     * error for speed and angle. If you use an aligner to define your class, you can do things like
+     * This interface allows you to create classes that instruct the drivetrain to
+     * move based off of
+     * error for speed and angle. If you use an aligner to define your class, you
+     * can do things like
      * auto tune.
      */
     public interface Aligner {
         // Called when command initialize is called,
         // Useful for relative encoder commands
-        public default void init() {}
+        public default void init() {
+        }
 
         // The amount of positional error
         public default double getSpeedError() {
@@ -83,9 +88,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
      * This creates a command that aligns the robot
      *
      * @param drivetrain Drivetrain used by command to move
-     * @param distance target distance for robot to drive to
-     * @param speed controller used to align distance
-     * @param angle controller used to align the angle
+     * @param distance   target distance for robot to drive to
+     * @param speed      controller used to align distance
+     * @param angle      controller used to align the angle
      */
     public DrivetrainAlignmentCommand(
             Drivetrain drivetrain, Aligner aligner, Controller speed, Controller angle) {
@@ -130,7 +135,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
      * This creates a command that aligns the robot
      *
      * @param drivetrain Drivetrain used by command to move
-     * @param distance target distance for robot to drive to
+     * @param distance   target distance for robot to drive to
      */
     public DrivetrainAlignmentCommand(Drivetrain drivetrain, Aligner aligner) {
         this(drivetrain, aligner, Alignment.Speed.getPID(), Alignment.Angle.getPID());
@@ -165,7 +170,6 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         return this;
     }
 
-
     // Update the alignment command to use a LED controller to report status
     public DrivetrainAlignmentCommand setLEDController(LEDController ledController) {
         this.ledController = ledController;
@@ -179,13 +183,15 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         aligner.init();
         timer.reset();
 
-        this.speed.setErrorFilter(new LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER));
+        // this.speed.setErrorFilter(new
+        // LowPassFilter(Alignment.Speed.IN_SMOOTH_FILTER));
         this.speed.setOutputFilter(
                 new IFilterGroup(
                         (x) -> SLMath.clamp(x, maxSpeed),
                         new LowPassFilter(Alignment.Speed.OUT_SMOOTH_FILTER)));
 
-        this.angle.setErrorFilter(new LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER));
+        // this.angle.setErrorFilter(new
+        // LowPassFilter(Alignment.Angle.IN_SMOOTH_FILTER));
         this.angle.setOutputFilter(
                 new IFilterGroup(new LowPassFilter(Alignment.Angle.OUT_SMOOTH_FILTER)));
 
@@ -195,15 +201,15 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.angleHighPass = new HighPassFilter(Alignment.SENSOR_FUSION_RC);
         this.angleLowPass = new LowPassFilter(Alignment.SENSOR_FUSION_RC);
 
-        // Update the target measurement to report an error based on what the aligner initially sees
+        // Update the target measurement to report an error based on what the aligner
+        // initially sees
         this.targetSpeedMeasurement = drivetrain.getDistance() + aligner.getSpeedError();
-        this.targetAngleMeasurement =
-                drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
+        this.targetAngleMeasurement = drivetrain.getRawAngle() + aligner.getAngleError().toDegrees();
     }
 
     // Get distance left to travel
     public double getSpeedError() {
-        if(!useFusion) {
+        if (!useFusion) {
             return aligner.getSpeedError();
         }
 
@@ -221,7 +227,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
 
     // Get angle left to turn
     public Angle getAngleError() {
-        if(!useFusion) {
+        if (!useFusion) {
             return aligner.getAngleError();
         }
 
@@ -241,12 +247,14 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public double getSpeed() {
         // The more unaligned the robot is, the less it moves
         double s = 1.5 - Math.abs(angle.getError()) / Alignment.Angle.MAX_ANGLE_ERROR;
-        return speed.update(this.getSpeedError()) * SLMath.clamp(s, 0, 1.0);
+        // return speed.update(this.getSpeedError()) * SLMath.clamp(s, 0, 1.0);
+        return -1;
     }
 
     // Angle robot has to turn
     public double getAngle() {
-        return angle.update(getAngleError().toDegrees());
+        // return angle.update(getAngleError().toDegrees());
+        return -1;
     }
 
     // Alignment must use low gear
@@ -286,9 +294,11 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
             return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR * 2.5)
                     && angle.isDone(Alignment.Angle.MAX_ANGLE_ERROR * 1.5));
         } else {
-            return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR, Alignment.Speed.MAX_SPEED_VEL)
-                    && angle.isDone(
-                            Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+            // return (speed.isDone(Alignment.Speed.MAX_SPEED_ERROR,
+            // Alignment.Speed.MAX_SPEED_VEL)
+            // && angle.isDone(
+            // Alignment.Angle.MAX_ANGLE_ERROR, Alignment.Angle.MAX_ANGLE_VEL));
+            return false;
         }
     }
 

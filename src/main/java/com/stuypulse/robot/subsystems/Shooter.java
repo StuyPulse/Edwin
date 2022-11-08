@@ -4,13 +4,13 @@
 
 package com.stuypulse.robot.subsystems;
 
-import com.stuypulse.stuylib.control.PIDCalculator;
-import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.control.feedback.PIDCalculator;
+import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IFilter;
-import com.stuypulse.stuylib.streams.filters.TimedRateLimit;
+import com.stuypulse.stuylib.streams.filters.RateLimit;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
@@ -111,14 +111,14 @@ public class Shooter extends SubsystemBase {
                 ShooterSettings.Shooter.P,
                 ShooterSettings.Shooter.I,
                 ShooterSettings.Shooter.D)
-                        .setIntegratorFilter(ShooterSettings.I_RANGE.doubleValue(),
-                                ShooterSettings.I_LIMIT.doubleValue());
+                .setIntegratorFilter(ShooterSettings.I_RANGE.doubleValue(),
+                        ShooterSettings.I_LIMIT.doubleValue());
         feederController = new PIDController(
                 ShooterSettings.Feeder.P,
                 ShooterSettings.Feeder.I,
                 ShooterSettings.Feeder.D)
-                        .setIntegratorFilter(ShooterSettings.I_RANGE.doubleValue(),
-                                ShooterSettings.I_LIMIT.doubleValue());
+                .setIntegratorFilter(ShooterSettings.I_RANGE.doubleValue(),
+                        ShooterSettings.I_LIMIT.doubleValue());
 
         shooterCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
         feederCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
@@ -139,7 +139,7 @@ public class Shooter extends SubsystemBase {
         feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
 
         // Set Current Shooter Mode to Disabled
-        targetRPM = new TimedRateLimit(800);
+        targetRPM = new RateLimit(800);
         currentMode = ShooterMode.DISABLED;
 
         // Add Children to Subsystem

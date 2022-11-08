@@ -4,14 +4,15 @@
 
 package com.stuypulse.robot.commands;
 
-import com.stuypulse.stuylib.control.PIDCalculator;
-import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.control.feedback.PIDCalculator;
+import com.stuypulse.stuylib.control.feedback.PIDController;
 
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.subsystems.Drivetrain;
 
 /**
- * This class will move the drivetrain and make measurements so that you can calculate optimal P I
+ * This class will move the drivetrain and make measurements so that you can
+ * calculate optimal P I
  * and D values for the angle controller.
  */
 public class DrivetrainAutoAngleCommand extends DrivetrainAlignmentCommand {
@@ -20,7 +21,7 @@ public class DrivetrainAutoAngleCommand extends DrivetrainAlignmentCommand {
      * This creates a command that aligns the robot
      *
      * @param drivetrain Drivetrain used by command to move
-     * @param distance target distance for robot to drive to
+     * @param distance   target distance for robot to drive to
      */
     public DrivetrainAutoAngleCommand(
             Drivetrain drivetrain, DrivetrainAlignmentCommand.Aligner aligner) {

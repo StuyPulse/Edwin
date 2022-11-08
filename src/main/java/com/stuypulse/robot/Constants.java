@@ -4,11 +4,9 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
-
-import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;

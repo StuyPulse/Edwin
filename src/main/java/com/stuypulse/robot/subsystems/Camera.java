@@ -7,7 +7,7 @@ import org.photonvision.common.hardware.VisionLEDMode;
 import com.stuypulse.robot.Constants;
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.control.feedback.PIDController;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;

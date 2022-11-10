@@ -13,6 +13,8 @@ import com.stuypulse.robot.commands.auton.routines.*;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,7 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
     // Subsystems
-    private final LEDController ledController = new LEDController(0, this);
+    // private final LEDController ledController = new LEDController(0, this);
     private final Chimney chimney = new Chimney();
     private final Climber climber = new Climber();
     private final Drivetrain drivetrain = new Drivetrain();
@@ -42,7 +44,7 @@ public class RobotContainer {
     private final Woof woof = new Woof();
 
     // Gamepads
-    public final Gamepad driver = new Xbox(Ports.Gamepad.DRIVER);
+    public final PS4Controller driver = new PS4Controller(Ports.Gamepad.DRIVER);
     public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
     // Autons
@@ -120,9 +122,10 @@ public class RobotContainer {
         /*********************/
 
         // Right Bumper Uses Encoder
-        operator.getRightBumper()
-                .onTrue(new WoofTurnRotationsWithEncoderCommand(woof, ledController));
-        operator.getLeftBumper().onTrue(new WoofSpinToFMSColorCommand(woof, ledController));
+        // operator.getRightBumper()
+        // .onTrue(new WoofTurnRotationsWithEncoderCommand(woof, ledController));
+        // operator.getLeftBumper().onTrue(new WoofSpinToFMSColorCommand(woof,
+        // ledController));
 
         // Left Stick moves woof manually
         // it is handled by the default commands
@@ -148,36 +151,37 @@ public class RobotContainer {
         /*****************/
 
         // Left Button Aligns just sideways
-        driver.getLeftButton()
-                .whileTrue(
-                        new DrivetrainGoalCommand(drivetrain, -1)
-                                .setNeverFinish()
-                                .setMaxSpeed(0)
-                                .setLEDController(ledController))
-                .whileTrue(new FeedBallsAutomaticCommand(chimney, funnel));
+        // driver.getLeftButton()
+        // .whileTrue(
+        // new DrivetrainGoalCommand(drivetrain, -1)
+        // .setNeverFinish()
+        // .setMaxSpeed(0)
+        // .setLEDController(ledController))
+        // .whileTrue(new FeedBallsAutomaticCommand(chimney, funnel));
 
         // Bottom Button Aligns to the right distance
-        driver.getBottomButton()
-                .whileTrue(
-                        new DrivetrainAutomaticAlign(drivetrain, shooter)
-                                .setNeverFinish()
-                                .setLEDController(ledController))
-                .whileTrue(new FeedBallsAutomaticCommand(chimney, funnel));
+        // driver.getBottomButton()
+        // .whileTrue(
+        // new DrivetrainAutomaticAlign(drivetrain, shooter)
+        // .setNeverFinish()
+        // .setLEDController(ledController))
+        // .whileTrue(new FeedBallsAutomaticCommand(chimney, funnel));
     }
 
     public void configureAutons() {
-        autonChooser.addOption("Do Nothing", new DoNothingAutonCommand(ledController));
+        // autonChooser.addOption("Do Nothing", new
+        // DoNothingAutonCommand(ledController));
 
-        autonChooser.setDefaultOption(
-                "6Ball Auto", new OldSixBallTrenchAutonClean(this));
+        // autonChooser.setDefaultOption(
+        // "6Ball Auto", new OldSixBallTrenchAutonClean(this));
 
-        autonChooser.addOption("5Ball Auto", new WoofFiveBallAuton(this));
+        // autonChooser.addOption("5Ball Auto", new WoofFiveBallAuton(this));
 
-        autonChooser.addOption("Moby Auto", new MobilityAuton(this));
+        // autonChooser.addOption("Moby Auto", new MobilityAuton(this));
 
-        autonChooser.addOption("3Ball Auto", new ThreeBallAuton(this));
+        // autonChooser.addOption("3Ball Auto", new ThreeBallAuton(this));
 
-        autonChooser.addOption("8Ball Auto", new EightBallAuton(this));
+        // autonChooser.addOption("8Ball Auto", new EightBallAuton(this));
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }
@@ -192,9 +196,9 @@ public class RobotContainer {
         return autonChooser.getSelected();
     }
 
-    public LEDController getLEDController() {
-        return ledController;
-    }
+    // public LEDController getLEDController() {
+    // return ledController;
+    // }
 
     public Drivetrain getDrivetrain() {
         return drivetrain;
@@ -220,7 +224,7 @@ public class RobotContainer {
         return pump;
     }
 
-    public Gamepad getDriver() {
+    public PS4Controller getDriver() {
         return driver;
     }
 

@@ -15,8 +15,8 @@ import com.stuypulse.stuylib.util.StopWatch;
 
 import com.stuypulse.robot.Constants.Alignment;
 import com.stuypulse.robot.subsystems.Drivetrain;
-import com.stuypulse.robot.subsystems.LEDController;
-import com.stuypulse.robot.subsystems.LEDController.LEDColor;
+// import com.stuypulse.robot.subsystems.LEDController;
+// import com.stuypulse.robot.subsystems.LEDController.LEDColor;
 
 /**
  * Drivetrain Alignment Command takes in a drivetrain, an aligner, and two
@@ -76,7 +76,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     private StopWatch timer;
 
     // LED Controller to update based on status
-    private LEDController ledController;
+    // private LEDController ledController;
 
     // Misc Settings
     private boolean useFusion;
@@ -123,7 +123,7 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
         this.timer = new StopWatch();
 
         // LED Controller to update based on status
-        this.ledController = null;
+        // this.ledController = null;
 
         // Normally end the command once aligned
         this.neverFinish = false;
@@ -171,10 +171,11 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     }
 
     // Update the alignment command to use a LED controller to report status
-    public DrivetrainAlignmentCommand setLEDController(LEDController ledController) {
-        this.ledController = ledController;
-        return this;
-    }
+    // public DrivetrainAlignmentCommand setLEDController(LEDController
+    // ledController) {
+    // this.ledController = ledController;
+    // return this;
+    // }
 
     // Set the gear and other things when initializing
     public void initialize() {
@@ -272,9 +273,9 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public void execute() {
         super.execute();
 
-        if (ledController != null) {
-            ledController.setColor(LEDColor.YELLOW_PULSE);
-        }
+        // if (ledController != null) {
+        // ledController.setColor(LEDColor.YELLOW_PULSE);
+        // }
     }
 
     // Command is finished if all of the errors are small enough
@@ -306,8 +307,8 @@ public class DrivetrainAlignmentCommand extends DrivetrainCommand {
     public void end(boolean interrupted) {
         // Limelight.getInstance().setLEDMode(Limelight.LEDMode.FORCE_OFF);
 
-        if (ledController != null) {
-            ledController.setColor(LEDColor.GREEN_SOLID);
-        }
+        // if (ledController != null) {
+        // ledController.setColor(LEDColor.GREEN_SOLID);
+        // }
     }
 }

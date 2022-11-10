@@ -5,10 +5,14 @@
 package com.stuypulse.robot.commands;
 
 import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.Xbox;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.FilteredIStream;
 import com.stuypulse.stuylib.streams.IStream;
 import com.stuypulse.stuylib.streams.filters.LowPassFilter;
+
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 
 import com.stuypulse.robot.Constants.DrivetrainSettings;
 import com.stuypulse.robot.subsystems.Drivetrain;
@@ -20,7 +24,7 @@ import com.stuypulse.robot.subsystems.Drivetrain;
  */
 public class DrivetrainDriveCommand extends DrivetrainCommand {
 
-    private Gamepad gamepad;
+    private PS4Controller gamepad;
 
     private IStream rawSpeed;
     private IStream rawAngle;
@@ -28,7 +32,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
     private IStream speed;
     private IStream angle;
 
-    public DrivetrainDriveCommand(Drivetrain drivetrain, Gamepad gamepad) {
+    public DrivetrainDriveCommand(Drivetrain drivetrain, PS4Controller gamepad) {
         // Pass Drivetrain to the super class
         super(drivetrain);
 
@@ -41,7 +45,7 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
         // Create an IStream that gets the speed from the controller
         this.rawSpeed = () -> {
-            return this.gamepad.getRightTrigger() - this.gamepad.getLeftTrigger();
+            return this.gamepad.getL2Axis() - this.gamepad.getR2Axis();
         };
 
         // Create an IStream that gets the angle from the controller
@@ -80,11 +84,17 @@ public class DrivetrainDriveCommand extends DrivetrainCommand {
 
     // If the drivetrain goes into high or low gear
     public Drivetrain.Gear getGear() {
-        if (gamepad.getRawRightButton()) {
+        if (gamepad.getSquareButtonPressed()) {
             return Drivetrain.Gear.LOW;
         } else {
             return Drivetrain.Gear.HIGH;
         }
+    }
+
+    @Override
+    public void execute() {
+        super.execute();
+        System.out.println(gamepad.getL2Axis() + " | " + gamepad.getR2Axis());
     }
 
     // Humans need curvature drive because they're st00p1d

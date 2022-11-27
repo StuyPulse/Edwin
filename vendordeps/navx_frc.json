@@ -1,33 +1,36 @@
 {
     "fileName": "navx_frc.json",
     "name": "KauaiLabs_navX_FRC",
-    "version": "4.0.447",
+    "version": "2023.1.0-beta-4",
     "uuid": "cb311d09-36e9-4143-a032-55bb2b94443b",
     "mavenUrls": [
-        "https://repo1.maven.org/maven2/"
+        "https://raw.githubusercontent.com/rzblue/navx-frc/maven/maven/release/"
     ],
-    "jsonUrl": "https://www.kauailabs.com/dist/frc/2022/navx_frc.json",
+    "jsonUrl": "https://raw.githubusercontent.com/rzblue/navx-frc/maven/navx_frc.json",
     "javaDependencies": [
         {
             "groupId": "com.kauailabs.navx.frc",
-            "artifactId": "navx-java",
-            "version": "4.0.447"
+            "artifactId": "navx-frc-java",
+            "version": "2023.1.0-beta-4"
         }
     ],
     "jniDependencies": [],
     "cppDependencies": [
         {
             "groupId": "com.kauailabs.navx.frc",
-            "artifactId": "navx-cpp",
-            "version": "4.0.447",
+            "artifactId": "navx-frc-cpp",
+            "version": "2023.1.0-beta-4",
             "headerClassifier": "headers",
             "sourcesClassifier": "sources",
             "sharedLibrary": false,
-            "libName": "navx_frc",
+            "libName": "navx-frc",
             "skipInvalidPlatforms": true,
             "binaryPlatforms": [
+                "linuxarm32",
+                "linuxarm64",
+                "linuxx86-64",
                 "linuxathena",
-				"linuxraspbian",
+                "osxx86-64",
                 "windowsx86-64"
             ]
         }

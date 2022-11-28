@@ -19,11 +19,9 @@ import static com.stuypulse.robot.constants.Field.*;
 
 public class Camera extends SubsystemBase {
     /** HARDWARE */
-    private final Shooter shooter;
     private final PhotonCamera camera;
 
-    public Camera(Shooter shooter, Drivetrain drivetrain) {
-        this.shooter = shooter;
+    public Camera() {
 
         this.camera = new PhotonCamera("Edwin Camera");
     }
@@ -34,7 +32,6 @@ public class Camera extends SubsystemBase {
 
     public boolean hasTarget() {
         return hasAnyTarget()
-                && shooter.isReady()
                 && Alignment.MIN_DISTANCE < getDistance()
                 && getDistance() < Alignment.MAX_DISTANCE;
     }

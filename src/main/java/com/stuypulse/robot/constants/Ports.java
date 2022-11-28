@@ -30,4 +30,11 @@ public interface Ports {
 
         int GEAR_SHIFT = 0;
     }
+
+    public interface Intake {
+        int MOTOR_PORT = 18;
+        int SOLENOID_PORT_A = 4;
+        int SOLENOID_PORT_B = 5;
+        int SENSOR_PORT = 7;
+    }
 }

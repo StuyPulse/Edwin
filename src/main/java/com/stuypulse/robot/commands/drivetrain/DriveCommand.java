@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands;
+package com.stuypulse.robot.commands.drivetrain;
 
 import static com.stuypulse.robot.constants.Settings.Driver.*;
 import com.stuypulse.robot.subsystems.Drivetrain;
@@ -18,20 +18,17 @@ public class DriveCommand extends CommandBase {
     public DriveCommand(Drivetrain drivetrain, Gamepad gamepad) {
         this.drivetrain = drivetrain;
 
-        this.speed =
-                IStream.create(() -> gamepad.getRightTrigger() - gamepad.getLeftTrigger())
-                        .filtered(
-                                x -> SLMath.deadband(x, SPEED_DEADBAND.get()),
-                                x -> SLMath.spow(x, SPEED_POWER.get()),
-                                new LowPassFilter(SPEED_FILTER));
+        this.speed = IStream.create(() -> gamepad.getRightTrigger() - gamepad.getLeftTrigger())
+                .filtered(
+                        x -> SLMath.deadband(x, SPEED_DEADBAND.get()),
+                        x -> SLMath.spow(x, SPEED_POWER.get()),
+                        new LowPassFilter(SPEED_FILTER));
 
-        this.angle =
-                IStream.create(() -> gamepad.getLeftX())
-                        .filtered(
-                                x -> SLMath.deadband(x, ANGLE_DEADBAND.get()),
-                                x -> SLMath.spow(x, ANGLE_POWER.get()),
-                                new LowPassFilter(ANGLE_FILTER));
-
+        this.angle = IStream.create(() -> gamepad.getLeftX())
+                .filtered(
+                        x -> SLMath.deadband(x, ANGLE_DEADBAND.get()),
+                        x -> SLMath.spow(x, ANGLE_POWER.get()),
+                        new LowPassFilter(ANGLE_FILTER));
 
         addRequirements(drivetrain);
     }

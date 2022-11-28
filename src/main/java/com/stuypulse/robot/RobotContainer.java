@@ -5,7 +5,7 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.commands.DriveCommand;
+import com.stuypulse.robot.commands.drivetrain.DriveCommand;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.Drivetrain;
@@ -23,7 +23,7 @@ public class RobotContainer {
     // Gamepads
     public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
     public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
-    
+
     // Subsystem
 
     public final Pump pump = new Pump();
@@ -53,7 +53,8 @@ public class RobotContainer {
     /*** BUTTONS ***/
     /***************/
 
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+    }
 
     /**************/
     /*** AUTONS ***/

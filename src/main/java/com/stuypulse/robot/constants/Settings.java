@@ -116,6 +116,10 @@ public interface Settings {
         }
     }
 
+    public interface Intake {
+        double MOTOR_SPEED = 0.8;
+    }
+
     public interface Alignment {
         IStream RING_DISTANCE = new SmartNumber("Limelight/Ring Distance", 150).filtered(Units::inchesToMeters);
         IStream PAD_DISTANCE = new SmartNumber("Limelight/Pad Distance", 217).filtered(Units::inchesToMeters);

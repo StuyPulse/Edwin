@@ -24,9 +24,9 @@ public class Shooter extends SubsystemBase {
 
     private final CANSparkMax shooterA, shooterB, shooterC, feeder;
     private final RelativeEncoder shooterAEncoder, shooterBEncoder, shooterCEncoder, feederEncoder;
-    
+
     private final Solenoid hood;
-    
+
     private final Controller shooterController, feederController;
 
     private final SmartNumber targetRPM;
@@ -46,9 +46,9 @@ public class Shooter extends SubsystemBase {
         hood = new Solenoid(PneumaticsModuleType.CTREPCM, HOOD);
 
         shooterController = new Feedforward.Flywheel(ShooterFF.S, ShooterFF.V, ShooterFF.A).velocity()
-                            .add(new PIDController(ShooterFB.P, ShooterFB.I, ShooterFB.D));
+                .add(new PIDController(ShooterFB.P, ShooterFB.I, ShooterFB.D));
         feederController = new Feedforward.Flywheel(FeederFF.S, FeederFF.V, FeederFF.A).velocity()
-                            .add(new PIDController(FeederFB.P, FeederFB.I, FeederFB.D));
+                .add(new PIDController(FeederFB.P, FeederFB.I, FeederFB.D));
 
         targetRPM = new SmartNumber("Shooter/Target RPM", 0);
         targetFilter = new LowPassFilter(CHANGE_RC);
@@ -65,7 +65,8 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getShooterRPM() {
-        return (Math.abs(shooterAEncoder.getVelocity()) + shooterBEncoder.getVelocity() + shooterCEncoder.getVelocity()) / 3;
+        return (Math.abs(shooterAEncoder.getVelocity()) + shooterBEncoder.getVelocity() + shooterCEncoder.getVelocity())
+                / 3;
     }
 
     public double getFeederRPM() {
@@ -95,6 +96,14 @@ public class Shooter extends SubsystemBase {
         shooterB.stopMotor();
         shooterC.stopMotor();
         feeder.stopMotor();
+    }
+
+    public void extendHood() {
+        hood.set(true);
+    }
+
+    public void retractHood() {
+        hood.set(false);
     }
 
     @Override

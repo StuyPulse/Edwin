@@ -44,6 +44,10 @@ public interface Settings {
         SmartNumber TOLERANCE = new SmartNumber("Shooter/Speed Error", 100);
         SmartNumber MIN_RPM = new SmartNumber("Shooter/Min RPM", 250);
 
+        SmartNumber PAD_RPM = new SmartNumber("Shooter/Pad RPM", 3650);
+        SmartNumber RING_RPM = new SmartNumber("Shooter/Ring RPM", 2950);
+        SmartNumber FENDER_RPM = new SmartNumber("Shooter/Fender RPM", 2500);
+
         double FEEDER_MULTIPLIER = 0.9;
 
         public interface ShooterFF {

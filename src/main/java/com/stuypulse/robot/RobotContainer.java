@@ -6,8 +6,10 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.drivetrain.DriveCommand;
+import com.stuypulse.robot.commands.drivetrain.DrivetrainAlignCommand;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.subsystems.Camera;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Pump;
 import com.stuypulse.robot.subsystems.Shooter;
@@ -28,6 +30,7 @@ public class RobotContainer {
 
     public final Pump pump = new Pump();
     public final Drivetrain drivetrain = new Drivetrain();
+    public final Camera camera = new Camera();
     public final Shooter shooter = new Shooter();
 
     // Autons
@@ -54,6 +57,8 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
+        driver.getBottomButton().whileTrue(new DrivetrainAlignCommand(drivetrain, camera));
+
     }
 
     /**************/

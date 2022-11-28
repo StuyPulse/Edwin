@@ -7,10 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import static com.stuypulse.robot.constants.Ports.Drivetrain.*;
 import static com.stuypulse.robot.constants.Settings.Drivetrain.*;
 import static com.stuypulse.robot.constants.Motors.Drivetrain.*;
-import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.control.feedback.PIDController;
-import com.stuypulse.stuylib.control.feedforward.Feedforward;
-import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -193,11 +189,6 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         odometry.update(getRotation2d(), getLeftDistance(), getRightDistance());
         field.setRobotPose(getPose());
-        
-        // driveVolts(
-        //     leftController.update(leftTargetSpeed.get(), getLeftVelocity()), 
-        //     rightController.update(rightTargetSpeed.get(), getRightVelocity())
-        // );
 
         // LOGGING
 

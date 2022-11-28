@@ -23,10 +23,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
-    
+
+    // Enum used to store the state of the gear
+    public static enum Gear {
+        HIGH,
+        LOW
+    };
+
     private final CANSparkMax[] left;
     private final CANSparkMax[] right;
-    
+
     private final RelativeEncoder leftEncoder;
     private final RelativeEncoder rightEncoder;
 
@@ -35,8 +41,9 @@ public class Drivetrain extends SubsystemBase {
 
     private final DifferentialDrive drivetrain;
 
+    private Gear gear;
     private final Solenoid gearShift;
-    
+
     private final AHRS navx;
 
     private final DifferentialDriveOdometry odometry;
@@ -46,31 +53,34 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         left = new CANSparkMax[] {
-            new CANSparkMax(LEFT_TOP, MotorType.kBrushless), 
-            new CANSparkMax(LEFT_BOTTOM, MotorType.kBrushless)
+                new CANSparkMax(LEFT_TOP, MotorType.kBrushless),
+                new CANSparkMax(LEFT_BOTTOM, MotorType.kBrushless)
         };
 
         right = new CANSparkMax[] {
-            new CANSparkMax(RIGHT_TOP, MotorType.kBrushless), 
-            new CANSparkMax(RIGHT_BOTTOM, MotorType.kBrushless)
+                new CANSparkMax(RIGHT_TOP, MotorType.kBrushless),
+                new CANSparkMax(RIGHT_BOTTOM, MotorType.kBrushless)
         };
 
         leftEncoder = left[0].getEncoder();
         rightEncoder = right[0].getEncoder();
 
         configMotors();
-        
-        // leftController = new Feedforward.Drivetrain(Motion.Feedforward.kS, Motion.Feedforward.kV, Motion.Feedforward.kA).velocity()
-        //     .add(new PIDController(Motion.PID.kP, Motion.PID.kI, Motion.PID.kD));
-        
-        // rightController = new Feedforward.Drivetrain(Motion.Feedforward.kS, Motion.Feedforward.kV, Motion.Feedforward.kA).velocity()
-        //     .add(new PIDController(Motion.PID.kP, Motion.PID.kI, Motion.PID.kD));
+
+        // leftController = new Feedforward.Drivetrain(Motion.Feedforward.kS,
+        // Motion.Feedforward.kV, Motion.Feedforward.kA).velocity()
+        // .add(new PIDController(Motion.PID.kP, Motion.PID.kI, Motion.PID.kD));
+
+        // rightController = new Feedforward.Drivetrain(Motion.Feedforward.kS,
+        // Motion.Feedforward.kV, Motion.Feedforward.kA).velocity()
+        // .add(new PIDController(Motion.PID.kP, Motion.PID.kI, Motion.PID.kD));
 
         // leftTargetSpeed = new SmartNumber("Edwin/Left Target Speed", 0);
         // rightTargetSpeed = new SmartNumber("Edwin/Right TargetSpeed", 0);
 
         drivetrain = new DifferentialDrive(new MotorControllerGroup(left), new MotorControllerGroup(right));
 
+        gear = Gear.HIGH;
         gearShift = new Solenoid(PneumaticsModuleType.CTREPCM, GEAR_SHIFT);
         gearShift.set(true);
 
@@ -105,6 +115,12 @@ public class Drivetrain extends SubsystemBase {
      * ENCODER FUNCTIONS *
      *********************/
 
+    // Set the distance traveled in one rotation of the motor
+    public void setNEODistancePerRotation(double distance) {
+        leftEncoder.setPositionConversionFactor(distance);
+        rightEncoder.setPositionConversionFactor(distance);
+    }
+
     // Distance
     private double getLeftDistance() {
         return leftEncoder.getPosition();
@@ -114,6 +130,10 @@ public class Drivetrain extends SubsystemBase {
         return rightEncoder.getPosition();
     }
 
+    public double getDistance() {
+        return (getLeftDistance() + getRightDistance()) / 2.0;
+    }
+
     // Velocity
     private double getLeftVelocity() {
         return leftEncoder.getVelocity();
@@ -121,6 +141,10 @@ public class Drivetrain extends SubsystemBase {
 
     private double getRightVelocity() {
         return rightEncoder.getVelocity();
+    }
+
+    public double getVelocity() {
+        return (getLeftVelocity() + getRightVelocity()) / 2.0;
     }
 
     /***************
@@ -147,15 +171,22 @@ public class Drivetrain extends SubsystemBase {
         odometry.resetPosition(getRotation2d(), 0, 0, pose);
     }
 
+    private void resetNavX() {
+        navx.reset();
+    }
+
+    public double getGyroAngle() {
+        return navx.getAngle();
+    }
+
     public DifferentialDriveKinematics getKinematics() {
         return kinematics;
     }
 
     public TrajectoryConfig getTrajectoryConfig() {
         return new TrajectoryConfig(
-            Motion.MAX_VELOCITY, 
-            Motion.MAX_ACCELERATION
-        ).setKinematics(kinematics);
+                Motion.MAX_VELOCITY,
+                Motion.MAX_ACCELERATION).setKinematics(kinematics);
     }
 
     /********************
@@ -183,6 +214,55 @@ public class Drivetrain extends SubsystemBase {
         for (CANSparkMax motor : right) {
             motor.setVoltage(rightVolts);
         }
+    }
+
+    /***************
+     * GEAR SHIFT *
+     ***************/
+
+    // Gets the current gear the robot is in
+    public Gear getGear() {
+        return gear;
+    }
+
+    // Sets the current gear the robot is in
+    public void setGear(Gear gear) {
+        if (this.gear != gear) {
+            this.gear = gear;
+            if (this.gear == Gear.HIGH) {
+                gearShift.set(true);
+                setNEODistancePerRotation(
+                        Encoders.HIGH_GEAR_DISTANCE_PER_ROTATION);
+                reset();
+            } else {
+                gearShift.set(false);
+                setNEODistancePerRotation(
+                        Encoders.LOW_GEAR_DISTANCE_PER_ROTATION);
+                reset();
+            }
+        }
+    }
+
+    // Sets robot into low gear
+    public void setLowGear() {
+        setGear(Gear.LOW);
+    }
+
+    // Sets robot into high gear
+    public void setHighGear() {
+        setGear(Gear.HIGH);
+    }
+
+    public void reset(Pose2d location) {
+        resetNavX();
+        odometry.resetPosition(location.getRotation(), leftEncoder.getPosition(), rightEncoder.getPosition(),
+                getPose());
+        leftEncoder.setPosition(0);
+        rightEncoder.setPosition(0);
+    }
+
+    public void reset() {
+        reset(getPose());
     }
 
     @Override

@@ -52,7 +52,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     // MOVE THE MOTORS
-    public void convey() {
+    public void liftUp() {
         conveyorMotor.set(Settings.Conveyor.LIFT_UP_SPEED);
     }
 
@@ -60,7 +60,7 @@ public class Conveyor extends SubsystemBase {
         conveyorMotor.set(-Settings.Conveyor.LIFT_UP_SPEED);
     }
 
-    public void stop() {
+    public void stopLift() {
         conveyorMotor.stopMotor();
     }
 

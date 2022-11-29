@@ -7,9 +7,17 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.drivetrain.DriveCommand;
 import com.stuypulse.robot.commands.drivetrain.DrivetrainAlignCommand;
+import com.stuypulse.robot.commands.intake.IntakeAcquireCommand;
+import com.stuypulse.robot.commands.intake.IntakeDeacquireCommand;
+import com.stuypulse.robot.commands.intake.IntakeExtendCommand;
+import com.stuypulse.robot.commands.shooter.ShooterRingShot;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.conveyor.ConveyorShootCommand;
+import com.stuypulse.robot.commands.conveyor.ConveyorStopCommand;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.robot.subsystems.Camera;
+import com.stuypulse.robot.subsystems.Conveyor;
 import com.stuypulse.robot.subsystems.Drivetrain;
 import com.stuypulse.robot.subsystems.Pump;
 import com.stuypulse.robot.subsystems.Shooter;
@@ -30,6 +38,8 @@ public class RobotContainer {
 
     public final Pump pump = new Pump();
     public final Drivetrain drivetrain = new Drivetrain();
+    public final Intake intake = new Intake();
+    public final Conveyor conveyor = new Conveyor();
     public final Camera camera = new Camera();
     public final Shooter shooter = new Shooter();
 
@@ -59,6 +69,15 @@ public class RobotContainer {
     private void configureButtonBindings() {
         driver.getBottomButton().whileTrue(new DrivetrainAlignCommand(drivetrain, camera));
 
+        operator.getLeftTriggerButton().onTrue(new IntakeExtendCommand(intake))
+                .whileTrue(new IntakeAcquireCommand(intake));
+        operator.getRightTriggerButton().onTrue(new IntakeExtendCommand(intake))
+                .whileTrue(new IntakeDeacquireCommand(intake));
+
+        operator.getTopButton().whileTrue(new ConveyorStopCommand(conveyor));
+        operator.getBottomButton().whileTrue(new ConveyorShootCommand(conveyor));
+
+        operator.getDPadRight().onTrue(new ShooterRingShot(shooter));
     }
 
     /**************/

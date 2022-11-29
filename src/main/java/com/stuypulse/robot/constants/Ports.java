@@ -37,4 +37,12 @@ public interface Ports {
         int SOLENOID_PORT_B = 5;
         int SENSOR_PORT = 7;
     }
+
+    public interface Conveyor {
+        int LIFT_MOTOR_PORT = 8;
+        int FUNNEL = 9;
+
+        int LOWER_SENSOR_PORT = 5;
+        int UPPER_SENSOR_PORT = 6;
+    }
 }

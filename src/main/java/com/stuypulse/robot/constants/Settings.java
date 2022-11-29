@@ -120,6 +120,17 @@ public interface Settings {
         double MOTOR_SPEED = 0.8;
     }
 
+    public interface Conveyor {
+        double FUNNEL_SPEED = 0.8;
+        double UNFUNNEL_SPEED = -FUNNEL_SPEED;
+
+        double ENCODER_APPROACH_STALL_THRESHOLD = 3.0;
+
+        double LIFT_UP_SPEED = 10;
+        double ENCODER_RADIUS = -1;
+        double BALL_PER_ROTATIONS = -0.5;
+    }
+
     public interface Alignment {
         IStream RING_DISTANCE = new SmartNumber("Limelight/Ring Distance", 150).filtered(Units::inchesToMeters);
         IStream PAD_DISTANCE = new SmartNumber("Limelight/Pad Distance", 217).filtered(Units::inchesToMeters);

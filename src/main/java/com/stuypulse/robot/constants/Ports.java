@@ -14,11 +14,13 @@ public interface Ports {
     }
 
     public interface Shooter {
-        int SHOOTER_A = 12;
-        int SHOOTER_B = 13;
-        int SHOOTER_C = 14;
+        int HOOD_SOLENOID = 1;
+
+        int LEFT = 12;
+        int MIDDLE = 13;
+        int RIGHT = 14;
+
         int FEEDER = 11;
-        int HOOD = 1;
     }
 
     public interface Drivetrain {

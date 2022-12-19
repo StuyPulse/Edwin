@@ -1,21 +1,28 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.commands.shooter;
 
 import com.stuypulse.robot.subsystems.Shooter;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class ShooterSetRPMCommand extends InstantCommand {
-    private final Shooter shooter;
-    private final Number targetRPM;
 
-    public ShooterSetRPMCommand(Shooter shooter, Number targetRPM) {
+    private final Shooter shooter;
+    private final ShooterMode mode;
+
+    public ShooterSetRPMCommand(Shooter shooter, ShooterMode mode) {
         this.shooter = shooter;
-        this.targetRPM = targetRPM;
+        this.mode = mode;
+
         addRequirements(shooter);
     }
 
     @Override
     public void initialize() {
-        shooter.setTargetRPM(targetRPM);
+        this.shooter.setMode(this.mode);
     }
 }

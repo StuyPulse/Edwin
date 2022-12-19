@@ -5,9 +5,9 @@ import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class ShooterRingShot extends SequentialCommandGroup {
-    public ShooterRingShot(Shooter shooter) {
+public class ShooterLaunchPadShot extends SequentialCommandGroup {
+    public ShooterLaunchPadShot(Shooter shooter) {
         addCommands(
-                new ShooterSetRPMCommand(shooter, ShooterMode.RING_SHOT));
+                new ShooterSetRPMCommand(shooter, ShooterMode.LAUNCH_PAD_SHOT));
     }
 }

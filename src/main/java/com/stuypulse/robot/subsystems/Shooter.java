@@ -1,121 +1,264 @@
+/* Copyright (c) 2021 StuyPulse Robotics. All rights reserved. */
+/* This work is licensed under the terms of the MIT license */
+/* found in the root directory of this project. */
+
 package com.stuypulse.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import static com.stuypulse.robot.constants.Ports.Shooter.*;
-import static com.stuypulse.robot.constants.Settings.Shooter.*;
-import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.feedback.PIDCalculator;
 import com.stuypulse.stuylib.control.feedback.PIDController;
-import com.stuypulse.stuylib.control.feedforward.Feedforward;
+import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.filters.IFilter;
-import com.stuypulse.stuylib.streams.filters.LowPassFilter;
+import com.stuypulse.stuylib.streams.filters.RateLimit;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import com.stuypulse.robot.constants.Settings;
+import static com.stuypulse.robot.constants.Ports.Shooter.*;
+import com.stuypulse.robot.constants.Settings.ShooterSettings;
+
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
- * @author Ivan Chen (@anivanchen)
- */
 public class Shooter extends SubsystemBase {
+    public enum ShooterMode {
+        DISABLED(
+                new SmartNumber("Shooting/DISABLED/Distance", -1.0),
+                new SmartNumber("Shooting/DISABLED/RPM", 0),
+                new SmartBoolean("Shooting/DISABLED/Hood Extended", false)),
 
-    private final CANSparkMax shooterA, shooterB, shooterC, feeder;
-    private final RelativeEncoder shooterAEncoder, shooterBEncoder, shooterCEncoder, feederEncoder;
+        RING_SHOT(
+                new SmartNumber("Shooting/RING_SHOT/Distance", Units.inchesToMeters(150)),
+                new SmartNumber("Shooting/RING_SHOT/RPM", 2350),
+                new SmartBoolean("Shooting/RING_SHOT/Hood Extended",
+                        true)),
+        LAUNCH_PAD_SHOT(new SmartNumber("Shooting/RING_SHOT/Distance", Units.inchesToMeters(500)),
+                new SmartNumber("Shooting/RING_SHOT/RPM", 3500),
+                new SmartBoolean("Shooting/RING_SHOT/Hood Extended", false));
 
-    private final Solenoid hood;
+        // INITIATION_LINE(
+        // new SmartNumber("Shooting/Green Zone/Distance", 2.24),
+        // new SmartNumber("Shooting/Green Zone/RPM", 2075),
+        // new SmartBoolean("Shooting/Green Zone/Hood Extended", true)),
 
-    private final Controller shooterController, feederController;
+        // TRENCH_SHOT(
+        // new SmartNumber("Shooting/Yellow Zone/Distance", 5.5),
+        // new SmartNumber("Shooting/Yellow Zone/RPM", 3000),
+        // new SmartBoolean("Shooting/Yellow Zone/Hood Extended", false)),
 
-    private final SmartNumber targetRPM;
-    private final IFilter targetFilter;
+        // SUPER_TRENCH_SHOT(
+        // new SmartNumber("Shooting/Pink Zone/Distance", 6.0),
+        // new SmartNumber("Shooting/Pink Zone/RPM", 3600),
+        // new SmartBoolean("Shooting/Pink Zone/Hood Extended", false));
 
-    public Shooter() {
-        shooterA = new CANSparkMax(SHOOTER_A, MotorType.kBrushless);
-        shooterB = new CANSparkMax(SHOOTER_B, MotorType.kBrushless);
-        shooterC = new CANSparkMax(SHOOTER_C, MotorType.kBrushless);
-        feeder = new CANSparkMax(FEEDER, MotorType.kBrushless);
+        public final SmartNumber distance;
+        public final SmartNumber rpm;
+        public final SmartBoolean extendHood;
 
-        shooterAEncoder = shooterA.getEncoder();
-        shooterBEncoder = shooterB.getEncoder();
-        shooterCEncoder = shooterC.getEncoder();
-        feederEncoder = feeder.getEncoder();
-
-        hood = new Solenoid(PneumaticsModuleType.CTREPCM, HOOD);
-
-        shooterController = new Feedforward.Flywheel(ShooterFF.S, ShooterFF.V, ShooterFF.A).velocity()
-                .add(new PIDController(ShooterFB.P, ShooterFB.I, ShooterFB.D));
-        feederController = new Feedforward.Flywheel(FeederFF.S, FeederFF.V, FeederFF.A).velocity()
-                .add(new PIDController(FeederFB.P, FeederFB.I, FeederFB.D));
-
-        targetRPM = new SmartNumber("Shooter/Target RPM", 0);
-        targetFilter = new LowPassFilter(CHANGE_RC);
-
-        hood.set(false);
+        ShooterMode(SmartNumber distance, SmartNumber rpm, SmartBoolean extendHood) {
+            this.distance = distance;
+            this.rpm = rpm;
+            this.extendHood = extendHood;
+        }
     }
 
+    public static final IFilter INTEGRAL_FILTER = (x) -> SLMath.clamp(x, ShooterSettings.I_LIMIT.doubleValue());
+
+    // Motors
+    private final CANSparkMax shooterMotor;
+    private final CANSparkMax shooterFollowerA;
+    private final CANSparkMax shooterFollowerB;
+    private final CANSparkMax feederMotor;
+
+    // Encoders
+    private final RelativeEncoder shooterEncoderA;
+    private final RelativeEncoder shooterEncoderB;
+    private final RelativeEncoder shooterEncoderC;
+    private final RelativeEncoder feederEncoder;
+
+    // Hood Solenoid
+    private final Solenoid hoodSolenoid;
+
+    // Target RPM
+    private IFilter targetRPM;
+    private ShooterMode currentMode;
+
+    // PID Controllers for the shooter and feeder
+    private PIDController shooterController;
+    private PIDController feederController;
+
+    private PIDCalculator shooterCalculator;
+    private PIDCalculator feederCalculator;
+
+    public Shooter() {
+        // Shooter Stuff
+        shooterMotor = new CANSparkMax(MIDDLE, MotorType.kBrushless);
+        shooterFollowerA = new CANSparkMax(LEFT, MotorType.kBrushless);
+        shooterFollowerB = new CANSparkMax(RIGHT, MotorType.kBrushless);
+
+        shooterFollowerA.follow(shooterMotor, true);
+        shooterFollowerB.follow(shooterMotor, false);
+
+        shooterEncoderA = shooterMotor.getEncoder();
+        shooterEncoderB = shooterFollowerA.getEncoder();
+        shooterEncoderC = shooterFollowerB.getEncoder();
+
+        // Feeder Stuff
+        feederMotor = new CANSparkMax(FEEDER, MotorType.kBrushless);
+
+        feederMotor.setInverted(true);
+        feederEncoder = feederMotor.getEncoder();
+
+        // PID Stuff
+        shooterController = new PIDController(
+                ShooterSettings.Shooter.P,
+                ShooterSettings.Shooter.I,
+                ShooterSettings.Shooter.D)
+                .setIntegratorFilter(
+                        ShooterSettings.I_RANGE, ShooterSettings.I_LIMIT);
+
+        feederController = new PIDController(
+                ShooterSettings.Feeder.P,
+                ShooterSettings.Feeder.I,
+                ShooterSettings.Feeder.D)
+                .setIntegratorFilter(
+                        ShooterSettings.I_RANGE, ShooterSettings.I_LIMIT);
+
+        shooterCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
+        feederCalculator = new PIDCalculator(ShooterSettings.Shooter.BANGBANG_SPEED);
+
+        // Hood Stuff
+        hoodSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, HOOD_SOLENOID);
+
+        // Setting Modes Stuff
+        shooterMotor.setIdleMode(IdleMode.kCoast);
+        shooterFollowerA.setIdleMode(IdleMode.kCoast);
+        shooterFollowerB.setIdleMode(IdleMode.kCoast);
+
+        shooterMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+        shooterFollowerA.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+        shooterFollowerB.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+
+        feederMotor.setIdleMode(IdleMode.kCoast);
+        feederMotor.setSmartCurrentLimit(ShooterSettings.CURRENT_LIMIT);
+
+        // Set Current Shooter Mode to Disabled
+        targetRPM = new RateLimit(800);
+        currentMode = ShooterMode.DISABLED;
+
+        // Add Children to Subsystem
+        addChild("Hood Solenoid", hoodSolenoid);
+    }
+
+    /************
+     * SHOOTING *
+     ************/
+
     public double getRawTargetRPM() {
-        return targetRPM.get();
+        return getMode().rpm.get();
     }
 
     public double getTargetRPM() {
-        return targetFilter.get(getRawTargetRPM());
+        return targetRPM.get(getRawTargetRPM());
     }
 
     public double getShooterRPM() {
-        return (Math.abs(shooterAEncoder.getVelocity()) + shooterBEncoder.getVelocity() + shooterCEncoder.getVelocity())
-                / 3;
+        return (Math.abs(shooterEncoderA.getVelocity())
+                + Math.abs(shooterEncoderB.getVelocity())
+                + Math.abs(shooterEncoderC.getVelocity()))
+                / 3.0;
     }
 
     public double getFeederRPM() {
-        return feederEncoder.getVelocity();
+        return Math.abs(feederEncoder.getVelocity());
+    }
+
+    public void setMode(ShooterMode mode) {
+        this.currentMode = mode;
+    }
+
+    public ShooterMode getMode() {
+        return this.currentMode;
     }
 
     public boolean isReady() {
-        return shooterController.isDone(TOLERANCE.get()) && feederController.isDone(TOLERANCE.get());
-    }
-
-    public void setTargetRPM(Number target) {
-        targetRPM.set(target);
-    }
-
-    public void runShooter(double voltage) {
-        shooterA.setVoltage(voltage);
-        shooterB.setVoltage(voltage);
-        shooterC.setVoltage(voltage);
-    }
-
-    public void runFeeder(double voltage) {
-        feeder.setVoltage(voltage * FEEDER_MULTIPLIER);
-    }
-
-    public void stop() {
-        shooterA.stopMotor();
-        shooterB.stopMotor();
-        shooterC.stopMotor();
-        feeder.stopMotor();
-    }
-
-    public void extendHood() {
-        hood.set(true);
-    }
-
-    public void retractHood() {
-        hood.set(false);
+        return shooterController.isDone(ShooterSettings.TOLERANCE)
+                && feederController.isDone(ShooterSettings.TOLERANCE);
     }
 
     @Override
     public void periodic() {
-        if (getTargetRPM() > MIN_RPM.get()) {
-            runShooter(shooterController.update(getTargetRPM(), getShooterRPM()));
-            runFeeder(feederController.update(getTargetRPM(), getFeederRPM()));
+        // Set the hood according to the mode
+        if (getMode().extendHood.get()) {
+            this.extendHoodSolenoid();
         } else {
-            stop();
+            this.retractHoodSolenoid();
         }
 
-        SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
-        SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
+        // If the shooter is in disabled mode, then just coast
+        if (getMode().equals(ShooterMode.DISABLED)
+                || getRawTargetRPM() < ShooterSettings.TOLERANCE) {
+            shooterMotor.stopMotor();
+            feederMotor.stopMotor();
+        }
+
+        // Otherwise control the shooter using a control algorithm
+        else {
+            // Feed forward
+            double shootSpeed = getTargetRPM() * ShooterSettings.Shooter.FF.get();
+            double feederSpeed = getTargetRPM() * ShooterSettings.Feeder.FF.get();
+
+            // Automatically tune the PID controllers
+            if (ShooterSettings.AUTOTUNE.get()) {
+                shootSpeed += shooterCalculator.update(getTargetRPM(), getShooterRPM());
+                feederSpeed += feederCalculator.update(getTargetRPM(), getFeederRPM());
+
+                shooterController.setPID(shooterCalculator.getPIDController());
+                feederController.setPID(feederCalculator.getPIDController());
+            }
+
+            // Just use normal PID control
+            else {
+                shootSpeed += shooterController.update(getTargetRPM(), getShooterRPM());
+                feederSpeed += feederController.update(getTargetRPM(), getFeederRPM());
+            }
+
+            // Set the speeds of the motors, and prevent bad values
+            shooterMotor.setVoltage(SLMath.clamp(shootSpeed, -1.0, 16));
+            feederMotor.setVoltage(SLMath.clamp(feederSpeed, -1.0, 16));
+        }
+
+        // SmartDashboard
+
+        if (Settings.DEBUG_MODE.get()) {
+            SmartDashboard.putString("Shooter/Mode", getMode().name());
+            SmartDashboard.putNumber("Shooter/Target RPM", getTargetRPM());
+            SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
+            SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
+            SmartDashboard.putBoolean("Shooter/Hood Extended", hoodSolenoid.get());
+        }
+    }
+
+    /********
+     * HOOD *
+     ********/
+
+    public void extendHoodSolenoid() {
+        hoodSolenoid.set(true);
+    }
+
+    public void retractHoodSolenoid() {
+        hoodSolenoid.set(false);
+    }
+
+    public void setDefaultSolenoidPosition() {
+        retractHoodSolenoid();
     }
 }

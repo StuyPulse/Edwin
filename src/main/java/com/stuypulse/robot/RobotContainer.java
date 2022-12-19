@@ -10,8 +10,11 @@ import com.stuypulse.robot.commands.drivetrain.DrivetrainAlignCommand;
 import com.stuypulse.robot.commands.intake.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.intake.IntakeDeacquireCommand;
 import com.stuypulse.robot.commands.intake.IntakeExtendCommand;
+import com.stuypulse.robot.commands.shooter.ShooterLaunchPadShot;
 import com.stuypulse.robot.commands.shooter.ShooterRingShot;
+import com.stuypulse.robot.commands.shooter.ShooterStopCommand;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.conveyor.ConveyorLiftDownCommand;
 import com.stuypulse.robot.commands.conveyor.ConveyorShootCommand;
 import com.stuypulse.robot.commands.conveyor.ConveyorStopCommand;
 import com.stuypulse.robot.constants.Ports;
@@ -24,9 +27,14 @@ import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
@@ -37,11 +45,11 @@ public class RobotContainer {
     // Subsystem
 
     public final Pump pump = new Pump();
-    public final Drivetrain drivetrain = new Drivetrain();
     public final Intake intake = new Intake();
     public final Conveyor conveyor = new Conveyor();
     public final Camera camera = new Camera();
     public final Shooter shooter = new Shooter();
+    public final Drivetrain drivetrain = new Drivetrain(camera);
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -68,8 +76,21 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         driver.getBottomButton().whileTrue(new DrivetrainAlignCommand(drivetrain, camera));
+        driver.getRightButton().whileTrue(new ConveyorShootCommand(conveyor));
+        driver.getTopButton().whileTrue(new ConveyorLiftDownCommand(conveyor));
+        // driver.getLeftButton().whileTrue(new ConveyorStopCommand(conveyor));
+        driver.getLeftButton()
+                .onTrue(new InstantCommand(
+                        () -> drivetrain.setPose(new Pose2d(3.302, 0, new Rotation2d())),
+                        drivetrain));
 
-        operator.getLeftTriggerButton().onTrue(new IntakeExtendCommand(intake))
+        driver.getDPadUp().onTrue(new ShooterRingShot(shooter));
+        driver.getDPadLeft().onTrue(new ShooterLaunchPadShot(shooter));
+        driver.getRightBumper().onTrue(new ShooterStopCommand(shooter));
+
+        // driver..getDPadLeft().onTrue(new Shooter)
+
+        operator.getLeftTriggerButton()
                 .whileTrue(new IntakeAcquireCommand(intake));
         operator.getRightTriggerButton().onTrue(new IntakeExtendCommand(intake))
                 .whileTrue(new IntakeDeacquireCommand(intake));
@@ -78,6 +99,7 @@ public class RobotContainer {
         operator.getBottomButton().whileTrue(new ConveyorShootCommand(conveyor));
 
         operator.getDPadRight().onTrue(new ShooterRingShot(shooter));
+        // operat
     }
 
     /**************/

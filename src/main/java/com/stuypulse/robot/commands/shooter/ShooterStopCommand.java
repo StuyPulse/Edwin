@@ -1,19 +1,13 @@
 package com.stuypulse.robot.commands.shooter;
 
 import com.stuypulse.robot.subsystems.Shooter;
+import com.stuypulse.robot.subsystems.Shooter.ShooterMode;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class ShooterStopCommand extends InstantCommand {
-    private final Shooter shooter;
-
+public class ShooterStopCommand extends SequentialCommandGroup {
     public ShooterStopCommand(Shooter shooter) {
-        this.shooter = shooter;
-        addRequirements(shooter);
-    }
-
-    @Override
-    public void initialize() {
-        shooter.setTargetRPM(0.0);
+        addCommands(
+                new ShooterSetRPMCommand(shooter, ShooterMode.DISABLED));
     }
 }

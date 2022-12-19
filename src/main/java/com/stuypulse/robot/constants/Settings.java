@@ -5,10 +5,14 @@
 
 package com.stuypulse.robot.constants;
 
+import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 import com.stuypulse.stuylib.streams.IStream;
+import com.stuypulse.stuylib.streams.filters.IFilterGroup;
+import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
 import edu.wpi.first.math.util.Units;
 
@@ -38,40 +42,33 @@ public interface Settings {
 
     }
 
-    public interface Shooter {
+    public interface ShooterSettings {
 
-        SmartNumber CHANGE_RC = new SmartNumber("Shooter/RC", 0.1);
-        SmartNumber TOLERANCE = new SmartNumber("Shooter/Speed Error", 100);
-        SmartNumber MIN_RPM = new SmartNumber("Shooter/Min RPM", 250);
+        int CURRENT_LIMIT = 40;
 
-        SmartNumber PAD_RPM = new SmartNumber("Shooter/Pad RPM", 3650);
-        SmartNumber RING_RPM = new SmartNumber("Shooter/Ring RPM", 2950);
-        SmartNumber FENDER_RPM = new SmartNumber("Shooter/Fender RPM", 2500);
+        double TOLERANCE = 100;
 
-        double FEEDER_MULTIPLIER = 0.9;
+        SmartBoolean AUTOTUNE = new SmartBoolean("Shooter/Auto Tune", false);
 
-        public interface ShooterFF {
-            SmartNumber S = new SmartNumber("Shooter/Shooter/S", 0.0);
-            SmartNumber V = new SmartNumber("Shooter/Shooter/V", 0.0);
-            SmartNumber A = new SmartNumber("Shooter/Shooter/A", 0.0);
+        SmartNumber I_LIMIT = new SmartNumber("Shooter/I Limit", 1.0);
+        SmartNumber I_RANGE = new SmartNumber("Shooter/I Range", 400);
+
+        public interface Shooter {
+            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.011); // 0.0162989522473
+            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.04); // 0.0820395194249
+            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.0013); // 0.000809536203473
+            SmartNumber FF = new SmartNumber("Shooter/Shooter/FF", 0.0023);
+
+            double BANGBANG_SPEED = 1;
         }
 
-        public interface ShooterFB {
-            SmartNumber P = new SmartNumber("Shooter/Shooter/P", 0.0);
-            SmartNumber I = new SmartNumber("Shooter/Shooter/I", 0.0);
-            SmartNumber D = new SmartNumber("Shooter/Shooter/D", 0.0);
-        }
+        public interface Feeder {
+            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.01); // 0.0157904851743
+            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.03); // 0.0652808665387
+            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.001); // 0.000954871753622
+            SmartNumber FF = new SmartNumber("Shooter/Feeder/FF", 0.00235);
 
-        public interface FeederFF {
-            SmartNumber S = new SmartNumber("Shooter/Feeder/S", 0.0);
-            SmartNumber V = new SmartNumber("Shooter/Feeder/V", 0.0);
-            SmartNumber A = new SmartNumber("Shooter/Feeder/A", 0.0);
-        }
-
-        public interface FeederFB {
-            SmartNumber P = new SmartNumber("Shooter/Feeder/P", 0.0);
-            SmartNumber I = new SmartNumber("Shooter/Feeder/I", 0.0);
-            SmartNumber D = new SmartNumber("Shooter/Feeder/D", 0.0);
+            double BANGBANG_SPEED = 1;
         }
     }
 
@@ -132,10 +129,14 @@ public interface Settings {
     }
 
     public interface Alignment {
-        IStream RING_DISTANCE = new SmartNumber("Limelight/Ring Distance", 150).filtered(Units::inchesToMeters);
+        IStream RING_DISTANCE = new SmartNumber("Limelight/Ring Distance",
+                50).filtered(Units::inchesToMeters);
         IStream PAD_DISTANCE = new SmartNumber("Limelight/Pad Distance", 217).filtered(Units::inchesToMeters);
 
-        double MIN_DISTANCE = Units.feetToMeters(3);
+        IStream APRIL_TAG_DISTANCE = new SmartNumber("Limelight/April Tag Distance", 100)
+                .filtered(Units::inchesToMeters);
+
+        double MIN_DISTANCE = Units.feetToMeters(1);
         double MAX_DISTANCE = Units.feetToMeters(54);
 
         double MIN_ALIGNMENT_TIME = 1.0;
@@ -156,8 +157,9 @@ public interface Settings {
             SmartNumber D = new SmartNumber("Drivetrain/Alignment/Speed/D", 0.0656168);
 
             // Get PID Controller
-            public static PIDController getPID() {
-                return new PIDController(P, I, D);
+            public static Controller getPID() {
+                return new PIDController(P, I, D)
+                        .setOutputFilter(new IFilterGroup(SLMath::clamp, new LowPassFilter(OUT_SMOOTH_FILTER)));
             }
 
             // Bang Bang speed when measuring PID Values
@@ -182,8 +184,9 @@ public interface Settings {
             SmartNumber D = new SmartNumber("Drivetrain/Alignment/Angle/D", 0.0023);
 
             // Get PID Controller
-            public static PIDController getPID() {
-                return new PIDController(P, I, D);
+            public static Controller getPID() {
+                return new PIDController(P, I, D)
+                        .setOutputFilter(new IFilterGroup(SLMath::clamp, new LowPassFilter(OUT_SMOOTH_FILTER)));
             }
 
             // Bang Bang speed when measuring PID Values
@@ -200,10 +203,13 @@ public interface Settings {
 
         public interface Measurements {
 
+            SmartNumber APRIL_TAG_16H52_2 = new SmartNumber("April Tag 2 Height", Units.inchesToMeters(88));
+            SmartNumber APRIL_TAG_16H52_1 = new SmartNumber("April Tag 1 Height", Units.inchesToMeters(85.75));
+
             public interface Limelight {
                 double HEIGHT = Units.feetToMeters(2) + Units.inchesToMeters(10);
                 double DISTANCE = Units.feetToMeters(0);
-                double PITCH = 23;
+                double PITCH = Units.degreesToRadians(23);
                 double YAW = 0.0;
 
                 // What angle error should make us start distance alignment

@@ -6,16 +6,24 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import static com.stuypulse.robot.constants.Ports.Drivetrain.*;
 import static com.stuypulse.robot.constants.Settings.Drivetrain.*;
+
 import static com.stuypulse.robot.constants.Motors.Drivetrain.*;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -23,6 +31,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
+
+    Camera camera;
 
     // Enum used to store the state of the gear
     public static enum Gear {
@@ -47,11 +57,13 @@ public class Drivetrain extends SubsystemBase {
     private final AHRS navx;
 
     private final DifferentialDriveOdometry odometry;
+    private final DifferentialDrivePoseEstimator poseEstimator;
     private final DifferentialDriveKinematics kinematics;
 
     private final Field2d field;
 
-    public Drivetrain() {
+    public Drivetrain(Camera camera) {
+        this.camera = camera;
         left = new CANSparkMax[] {
                 new CANSparkMax(LEFT_TOP, MotorType.kBrushless),
                 new CANSparkMax(LEFT_BOTTOM, MotorType.kBrushless)
@@ -85,11 +97,16 @@ public class Drivetrain extends SubsystemBase {
         gearShift.set(true);
 
         navx = new AHRS(SPI.Port.kMXP);
+        leftEncoder.setPosition(0);
+        rightEncoder.setPosition(0);
 
         odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
-        kinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
 
-        setPose(new Pose2d());
+        poseEstimator = new DifferentialDrivePoseEstimator(getKinematics(), getRotation2d(), 0, TRACK_WIDTH, getPose());
+        kinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.01, 0.1, Units.degreesToRadians(3)));
+
+        setPose(new Pose2d(3.302, 0, new Rotation2d()));
 
         field = new Field2d();
         SmartDashboard.putData("Edwin/Field", field);
@@ -169,6 +186,8 @@ public class Drivetrain extends SubsystemBase {
         rightEncoder.setPosition(0.);
 
         odometry.resetPosition(getRotation2d(), 0, 0, pose);
+
+        poseEstimator.resetPosition(getRotation2d(), 0, 0, pose);
     }
 
     private void resetNavX() {
@@ -255,10 +274,19 @@ public class Drivetrain extends SubsystemBase {
 
     public void reset(Pose2d location) {
         resetNavX();
-        odometry.resetPosition(location.getRotation(), leftEncoder.getPosition(), rightEncoder.getPosition(),
-                getPose());
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
+        odometry.resetPosition(
+                location.getRotation(),
+                leftEncoder.getPosition(),
+                rightEncoder.getPosition(),
+                getPose());
+
+        poseEstimator.resetPosition(
+                location.getRotation(),
+                leftEncoder.getPosition(),
+                rightEncoder.getPosition(),
+                getPose());
     }
 
     public void reset() {
@@ -268,6 +296,7 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         odometry.update(getRotation2d(), getLeftDistance(), getRightDistance());
+        poseEstimator.update(getRotation2d(), getLeftDistance(), getRightDistance());
         field.setRobotPose(getPose());
 
         // LOGGING
@@ -278,9 +307,25 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Edwin/Left Vel", getLeftVelocity());
         SmartDashboard.putNumber("Edwin/Right Vel", getRightVelocity());
 
-        SmartDashboard.putNumber("Edwin/Pose X", getPose().getX());
-        SmartDashboard.putNumber("Edwin/Pose Y", getPose().getY());
-        SmartDashboard.putNumber("Edwin/Gyro Angle", getRotation2d().getDegrees());
+        SmartDashboard.putNumber("Edwin/Odometry Pose X", getPose().getX());
+        SmartDashboard.putNumber("Edwin/Odometry Pose Y", getPose().getY());
+        SmartDashboard.putNumber("Edwin/Odometry Gyro Angle", getRotation2d().getDegrees());
+
+        Pose2d estimatedPose = poseEstimator.getEstimatedPosition();
+
+        SmartDashboard.putNumber("Edwin/Estimater Pose X", estimatedPose.getX());
+        SmartDashboard.putNumber("Edwin/Estimater Pose Y", estimatedPose.getY());
+        SmartDashboard.putNumber("Edwin/Estimater Pose Angle", estimatedPose.getRotation().getDegrees());
+
+        if (camera.hasAnyTarget()) {
+            Pose3d pose = camera.getPose3d();
+            Translation2d robotPosition = new Translation2d(pose.getX(), pose.getY());
+            if (getPose().getTranslation().minus(robotPosition).getNorm() < 1.0) {
+                poseEstimator.addVisionMeasurement(
+                        new Pose2d(pose.getX(), pose.getY(), pose.getRotation().toRotation2d()),
+                        Timer.getFPGATimestamp());
+            }
+        }
     }
 
     public Field2d getField2d() {

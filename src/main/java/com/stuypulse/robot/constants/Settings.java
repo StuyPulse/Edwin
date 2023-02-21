@@ -6,6 +6,8 @@
 package com.stuypulse.robot.constants;
 
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.angle.AngleController;
+import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.network.SmartBoolean;
@@ -184,8 +186,8 @@ public interface Settings {
             SmartNumber D = new SmartNumber("Drivetrain/Alignment/Angle/D", 0.0023);
 
             // Get PID Controller
-            public static Controller getPID() {
-                return new PIDController(P, I, D)
+            public static AngleController getPID() {
+                return new AnglePIDController(P, I, D)
                         .setOutputFilter(new IFilterGroup(SLMath::clamp, new LowPassFilter(OUT_SMOOTH_FILTER)));
             }
 

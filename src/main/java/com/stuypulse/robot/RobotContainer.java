@@ -6,7 +6,8 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.drivetrain.DriveCommand;
-import com.stuypulse.robot.commands.drivetrain.DrivetrainAlignCommand;
+// import com.stuypulse.robot.commands.drivetrain.DrivetrainAlignCommand;
+import com.stuypulse.robot.commands.drivetrain.DrivetrainPointAtAngleCommand;
 import com.stuypulse.robot.commands.intake.IntakeAcquireCommand;
 import com.stuypulse.robot.commands.intake.IntakeDeacquireCommand;
 import com.stuypulse.robot.commands.intake.IntakeExtendCommand;
@@ -26,15 +27,14 @@ import com.stuypulse.robot.subsystems.Pump;
 import com.stuypulse.robot.subsystems.Shooter;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
+import com.stuypulse.stuylib.math.Angle;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
@@ -75,7 +75,8 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
-        driver.getBottomButton().whileTrue(new DrivetrainAlignCommand(drivetrain, camera));
+        // driver.getBottomButton().whileTrue(new DrivetrainAlignCommand(drivetrain,
+        // camera));
         driver.getRightButton().whileTrue(new ConveyorShootCommand(conveyor));
         driver.getTopButton().whileTrue(new ConveyorLiftDownCommand(conveyor));
         // driver.getLeftButton().whileTrue(new ConveyorStopCommand(conveyor));
@@ -83,6 +84,7 @@ public class RobotContainer {
                 .onTrue(new InstantCommand(
                         () -> drivetrain.setPose(new Pose2d(3.302, 0, new Rotation2d())),
                         drivetrain));
+        driver.getBottomButton().whileTrue(new DrivetrainPointAtAngleCommand(drivetrain, Angle.kZero));
 
         driver.getDPadUp().onTrue(new ShooterRingShot(shooter));
         driver.getDPadLeft().onTrue(new ShooterLaunchPadShot(shooter));

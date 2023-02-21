@@ -100,10 +100,11 @@ public class Drivetrain extends SubsystemBase {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
 
+        kinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
+
         odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
 
-        poseEstimator = new DifferentialDrivePoseEstimator(getKinematics(), getRotation2d(), 0, TRACK_WIDTH, getPose());
-        kinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
+        poseEstimator = new DifferentialDrivePoseEstimator(getKinematics(), getRotation2d(), 0, 0, getPose());
         poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.01, 0.1, Units.degreesToRadians(3)));
 
         setPose(new Pose2d(3.302, 0, new Rotation2d()));

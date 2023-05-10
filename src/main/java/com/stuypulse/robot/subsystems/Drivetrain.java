@@ -226,7 +226,7 @@ public class Drivetrain extends SubsystemBase {
         drivetrain.arcadeDrive(speed, angle);
     }
 
-    private void driveVolts(double leftVolts, double rightVolts) {
+    public void driveVolts(double leftVolts, double rightVolts) {
         for (CANSparkMax motor : left) {
             motor.setVoltage(leftVolts);
         }
